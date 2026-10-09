@@ -43,7 +43,7 @@ proportions, no cartoon/low-poly). Rules:
 **Done when:** every category has a verified candidate or an explicit GAP with a fallback.
 </details>
 
-## T-006 · Gemini 3.1 Pro · READY — Exact asset IDs, machine-verified (research only, no downloads)
+## T-006 · Gemini 3.1 Pro · REVIEW — Exact asset IDs, machine-verified (research only, no downloads)
 Produce `docs/reports/T-006.md` with **exact IDs**, per area (Vale / Wood / Barrens / shared):
 1. **Poly Haven** textures (terrain ×4 per area, architecture ×6, bark ×3) and models (props, rocks, logs, ferns,
    shrubs, twig atlases for trees). Verify each ID by fetching `https://api.polyhaven.com/info/<id>` (must return
