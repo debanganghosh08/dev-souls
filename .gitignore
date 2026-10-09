@@ -1,5 +1,31 @@
+# Godot cache, raw downloads, builds
 .godot/
 .cache/
 builds/
 *.tmp
 .env*
+
+# Assets are NOT backed up to GitHub (D-005): rebuilt from verified ID lists by the download script
+assets/
+*.glb
+*.gltf
+*.bin
+*.fbx
+*.blend
+*.blend1
+*.obj
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.exr
+*.hdr
+*.tga
+*.ktx2
+*.ogg
+*.wav
+*.mp3
+*.zip
+*.exe
+*.pck
+*.import

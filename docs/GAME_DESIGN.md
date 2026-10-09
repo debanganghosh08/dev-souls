@@ -44,7 +44,7 @@ a hermit's stilt hut, a drowned shrine. Fauna: deer, boar, frogs, owls, wolves (
 
 ### C. Sunscar Barrens — thirst
 Cracked plains, red hills, cactus, a few lone trees, salt flats, abandoned sheds, a dry well, a windmill,
-cliff-side caves. Fauna: vultures, a goat herd, wild dogs and Hollowed bandits (hostile).
+cliff-side caves. Fauna: vultures, wild horses, wild dogs and Hollowed bandits (hostile).
 - **Kindling 3 (Red):** in the **Mirage House** at the very edge of the map — only solid at dusk
   (daytime it is a shimmer you walk through). The blind cartographer's hint: *"Where the heat lies,
   the house does not. Go when the sun bleeds."*

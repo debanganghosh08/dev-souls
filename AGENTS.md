@@ -24,7 +24,9 @@ It is a separate project from `../souls-portfolio` (the web portfolio) — **nev
 3. Run the task's checks. Commit with message `<ID>: <summary>`.
 4. Write `docs/reports/<ID>.md`: what changed, checks run + results, screenshots path if visual, open questions,
    anything you were unsure about. Keep it under 40 lines. Mark the task `REVIEW` in `TASKS.md`.
-5. The lead reviews the diff + report, then merges to `main` or sends it back with notes.
+5. The lead reviews the diff + report, then merges to `main` or sends it back with notes. Only the lead pushes,
+   only `main`, to the private backup `origin` (github.com/debanganghosh08/dev-souls). Never push task branches.
+   **Never commit assets or binaries** (models, textures, audio, builds) — `.gitignore` blocks them; don't force it.
 If a spec is unclear or contradicts the design: **stop and ask in the report** — never invent lore or scope.
 **Never present a guess as a fact.** Versions, URLs, sizes, licences: write only what you read on the source
 page, and mark anything else `UNVERIFIED`.

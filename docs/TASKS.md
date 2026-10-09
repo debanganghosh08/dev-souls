@@ -43,7 +43,9 @@ proportions, no cartoon/low-poly). Rules:
 **Done when:** every category has a verified candidate or an explicit GAP with a fallback.
 </details>
 
-## T-006 · Gemini 3.1 Pro · REVIEW — Exact asset IDs, machine-verified (research only, no downloads)
+## T-006 · Gemini · DONE (merged 2026-10-10) — Exact asset IDs, machine-verified
+**Lead check:** re-verified all 38 Poly Haven IDs (API), 4 Poly Pizza animals (CC0 1.0, correct titles) and 24
+Freesound sounds (CC0) — all pass. Goat = GAP → dropped (D-003). This report is the source list for the D4 download script.
 Produce `docs/reports/T-006.md` with **exact IDs**, per area (Vale / Wood / Barrens / shared):
 1. **Poly Haven** textures (terrain ×4 per area, architecture ×6, bark ×3) and models (props, rocks, logs, ferns,
    shrubs, twig atlases for trees). Verify each ID by fetching `https://api.polyhaven.com/info/<id>` (must return
