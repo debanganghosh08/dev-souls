@@ -19,12 +19,15 @@ It is a separate project from `../souls-portfolio` (the web portfolio) — **nev
 
 ## Task protocol (how agents talk to each other — through files, not chat)
 1. Pick the top `READY` task assigned to you in `docs/TASKS.md`. Do only that task.
-2. Work on a git branch `task/<ID>`; touch only the files the task allows.
+2. Create the branch `task/<ID>` **from `main`** (`git checkout main; git checkout -b task/<ID>`); touch only the
+   files the task allows. When finished, switch back to `main` so the next task starts clean.
 3. Run the task's checks. Commit with message `<ID>: <summary>`.
 4. Write `docs/reports/<ID>.md`: what changed, checks run + results, screenshots path if visual, open questions,
    anything you were unsure about. Keep it under 40 lines. Mark the task `REVIEW` in `TASKS.md`.
 5. The lead reviews the diff + report, then merges to `main` or sends it back with notes.
 If a spec is unclear or contradicts the design: **stop and ask in the report** — never invent lore or scope.
+**Never present a guess as a fact.** Versions, URLs, sizes, licences: write only what you read on the source
+page, and mark anything else `UNVERIFIED`.
 
 ## Hard rules
 - **Licences: CC0 only** (Quaternius, Kenney, Poly Haven, ambientCG, Poly Pizza items marked CC0). Plugins MIT only.
