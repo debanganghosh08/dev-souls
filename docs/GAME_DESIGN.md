@@ -28,7 +28,7 @@ background while the player walks the pass — no loading screens.
 ### A. Ashen Vale (spawn) — grief
 Grey grass, dead orchards, the **Mirror Pond** with the spawn grave, a broken village, hills, small ponds,
 and **Castle Morrow** (ruined: courtyard, chapel with bell, collapsed keep, sluice house, crypt).
-Fauna: crows, stray dogs, a lame horse, rats in the crypt. Mood: overcast, fog, ash flakes, slow wind.
+Fauna: crows, stray dogs, a lame horse; Hollowed (lost humans, hostile) in the crypt. Mood: overcast, fog, ash flakes, slow wind.
 - **Kindling 1 (Grey):** in the chapel bell. Ring the three castle bells in the order written on the
   graveyard headstones → the chapel bell falls → the Kindling is in the bell-bed.
 - **The pond seal:** the Mirror Pond can only be entered when drained. The sluice house needs the
@@ -44,7 +44,7 @@ a hermit's stilt hut, a drowned shrine. Fauna: deer, boar, frogs, owls, wolves (
 
 ### C. Sunscar Barrens — thirst
 Cracked plains, red hills, cactus, a few lone trees, salt flats, abandoned sheds, a dry well, a windmill,
-cliff-side caves. Fauna: vultures, lizards, a goat herd, scorpions (small hostile).
+cliff-side caves. Fauna: vultures, a goat herd, wild dogs and Hollowed bandits (hostile).
 - **Kindling 3 (Red):** in the **Mirage House** at the very edge of the map — only solid at dusk
   (daytime it is a shimmer you walk through). The blind cartographer's hint: *"Where the heat lies,
   the house does not. Go when the sun bleeds."*
@@ -96,7 +96,8 @@ Inventory, flags and opened things persist. Respawning at the grave every time o
 
 ## Combat (deliberately simple)
 Light attack, heavy attack, dodge-roll, stamina bar. 2–3 weapons (staff, sword, hammer) + torch.
-Passive animals flee; wolves, scorpions and crypt rats attack with a simple chase/lunge AI. No bosses in v1.
+Passive animals flee; wolves, wild dogs and the Hollowed (human enemies, same rig as the player) attack with a
+simple chase/lunge AI. No bosses in v1.
 
 ## Art, audio, feel
 Realistic-leaning stylised (CC0 PBR textures, Quaternius-style models), heavy fog, volumetric light,

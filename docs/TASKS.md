@@ -23,7 +23,11 @@ cut from `task/T-001` instead of `main`.
 ## T-004 · Gemini Flash · BLOCKED (needs T-003 story approval) — NPC dialogue drafts
 13 `.dialogue` files per the NPC table, ≤ 12 lines each, flag-reactive, souls voice, hints never answers.
 
-## T-005 · Gemini 3.1 Pro · REVIEW — Realistic-leaning CC0 asset sourcing, verified (research only, no downloads)
+## T-005 · Gemini · DONE (merged 2026-10-10) — Realistic-leaning CC0 asset sourcing
+**Lead note:** good report. Deer/boar/pigeon IDs match `../souls-portfolio` credits. Horse/dog/wolf/frog/goat are
+marked VERIFIED without a page or model ID — treat as UNVERIFIED. Outcomes recorded in `docs/DECISIONS.md` D-001..D-004.
+<details><summary>Original spec</summary>
+
 Same categories as T-002, but the target look is **realistic-leaning dark fantasy** (PBR textures, real-world
 proportions, no cartoon/low-poly). Rules:
 - **Open every URL** and record what the page actually says. Write `VERIFIED` only for facts you read on the page
@@ -37,3 +41,17 @@ proportions, no cartoon/low-poly). Rules:
 - End with a short recommendation: one primary source per category and the total size of the chosen set.
 **Files allowed:** `docs/reports/T-005.md`, the T-005 line in `docs/TASKS.md`. Branch `task/T-005` **from `main`**.
 **Done when:** every category has a verified candidate or an explicit GAP with a fallback.
+</details>
+
+## T-006 · Gemini 3.1 Pro · READY — Exact asset IDs, machine-verified (research only, no downloads)
+Produce `docs/reports/T-006.md` with **exact IDs**, per area (Vale / Wood / Barrens / shared):
+1. **Poly Haven** textures (terrain ×4 per area, architecture ×6, bark ×3) and models (props, rocks, logs, ferns,
+   shrubs, twig atlases for trees). Verify each ID by fetching `https://api.polyhaven.com/info/<id>` (must return
+   JSON with a `name`); write the ID only if that call succeeded. Record its `type` and `name` exactly.
+2. **Poly Pizza** animals: for horse, dog, wolf, frog, goat give the `poly.pizza/m/<id>` URL and the licence text
+   exactly as shown on that page. Not CC0 or not found → `GAP`.
+3. **Freesound** CC0 sounds: rain on leaves, heavy rain, desert wind, cold wind, distant church bell, crows,
+   footsteps on grass/stone/sand, fire crackle, water drip (cave), thunder. Give `freesound.org/s/<id>/`, the
+   licence text on the page, duration. 2 candidates each.
+Use a table; mark anything you did not fetch as `UNVERIFIED`. No size estimates.
+**Files allowed:** `docs/reports/T-006.md`, the T-006 line here. Branch `task/T-006` from `main`.
