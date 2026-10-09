@@ -3,7 +3,7 @@
 Status: `READY` → `IN PROGRESS` → `REVIEW` → `DONE` (or `BLOCKED`). Protocol: see `AGENTS.md`.
 Reports go in `docs/reports/<ID>.md`.
 
-## T-001 · Gemini 3.1 Pro · READY — Verify tools, versions, licences (research only, no installs)
+## T-001 · Gemini 3.1 Pro · REVIEW — Verify tools, versions, licences (research only, no installs)
 Find the current stable version, download URL, licence and Godot-version compatibility of:
 Godot 4 (standard build, Windows), Terrain3D, Dialogue Manager, GUT, Jolt (built-in status in current Godot),
 Inno Setup, itch.io `butler`. Note anything that changed recently (breaking changes, deprecations).
