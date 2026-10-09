@@ -23,7 +23,7 @@ cut from `task/T-001` instead of `main`.
 ## T-004 · Gemini Flash · BLOCKED (needs T-003 story approval) — NPC dialogue drafts
 13 `.dialogue` files per the NPC table, ≤ 12 lines each, flag-reactive, souls voice, hints never answers.
 
-## T-005 · Gemini 3.1 Pro · READY — Realistic-leaning CC0 asset sourcing, verified (research only, no downloads)
+## T-005 · Gemini 3.1 Pro · REVIEW — Realistic-leaning CC0 asset sourcing, verified (research only, no downloads)
 Same categories as T-002, but the target look is **realistic-leaning dark fantasy** (PBR textures, real-world
 proportions, no cartoon/low-poly). Rules:
 - **Open every URL** and record what the page actually says. Write `VERIFIED` only for facts you read on the page
