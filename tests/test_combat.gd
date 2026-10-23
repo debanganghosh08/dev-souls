@@ -193,3 +193,25 @@ func _probe_line(text: String, prefix: String) -> Dictionary:
 				out[kv[0]] = kv[1]
 		return out
 	return out
+
+
+# The main probe kills the wolf before its first bite lands, so the hostile-damage path was unverified.
+# This drives it on its own: the player stands next to the wolf and never attacks.
+func test_headless_probe_wolf_actually_bites_the_player() -> void:
+	var output: Array = []
+	var args: PackedStringArray = [
+		"--headless", "--path", ProjectSettings.globalize_path("res://"),
+		GREYBOX, "--quit-after", "1200", "--", "--probe-bite",
+	]
+	var code: int = OS.execute(OS.get_executable_path(), args, output, true)
+	var text: String = "\n".join(PackedStringArray(output))
+	assert_eq(code, 0, "child headless bite probe exits cleanly")
+	assert_false("SCRIPT ERROR" in text, "bite probe printed no script errors")
+	var bite: Dictionary = _probe_line(text, "PROBE bite")
+	assert_true(not bite.is_empty(), "bite probe printed its line")
+	if bite.is_empty():
+		return
+	assert_eq(bite["bitten"], "true", "a hostile wolf damaged the player (hp=%s)" % bite["player_hp"])
+	assert_eq(bite["wolf_state"], "ATTACK", "the wolf reached ATTACK beside the player")
+	assert_true(float(bite["player_hp"]) < 100.0, "player health fell below full (hp=%s)" % bite["player_hp"])
+	assert_true(float(bite["player_hp"]) > 0.0, "the player was not killed outright in one cooldown window")

@@ -9,6 +9,7 @@ const PROBE_STAIR_FRAMES := 90
 const PROBE_INTERACT_FRAMES := 12
 const PROBE_COMBAT_FRAMES := 60
 const PROBE_MAX_FRAMES := 600
+const PROBE_BITE_FRAMES := 400
 const PIT_DROP_POINT := Vector3(23.0, 0.5, 0.0)
 const STAIR_START_POINT := Vector3(0.0, 0.6, 7.0)
 const CHEST_APPROACH_POINT := Vector3(2.0, 0.6, -2.0)
@@ -32,6 +33,7 @@ var _probe_phase: int = 0
 var _probe_peak_y: float = -1000.0
 var _probe_hit: bool = false
 var _probe_hit_damage: float = 0.0
+var _probe_bite: bool = false
 
 
 func _ready() -> void:
@@ -49,8 +51,9 @@ func _ready() -> void:
 	_label.visible = false
 	if _game != null:
 		_game.state = _game.State.PLAYING
+	_probe_bite = OS.get_cmdline_user_args().has("--probe-bite") and get_tree().current_scene == self
 	_probe = OS.get_cmdline_user_args().has("--probe") and get_tree().current_scene == self
-	if _probe:
+	if _probe or _probe_bite:
 		# Interacting autosaves. Redirect to a throwaway slot BEFORE anything writes, so a probe run can
 		# neither overwrite nor delete the player's real save.
 		var save: Node = get_node_or_null(^"/root/SaveGame")
@@ -87,6 +90,33 @@ func _process(delta: float) -> void:
 	]
 
 
+# The main probe kills the wolf before it ever bites, so the hostile-damage path — the thing that gives the
+# world stakes — would otherwise go unverified. This stands the player next to the wolf and never attacks.
+func _run_bite_probe() -> void:
+	var wolf: Creature = get_node_or_null(^"Creatures/Wolf") as Creature
+	if wolf == null or _game == null:
+		print("PROBE bite error=no_wolf")
+		get_tree().quit()
+		return
+	_probe_frames += 1
+	if _probe_frames == 1:
+		_player.global_position = wolf.global_position + Vector3(1.2, 0.0, 0.0)
+		_player.velocity = Vector3.ZERO
+		return
+	if _probe_frames < PROBE_BITE_FRAMES:
+		return
+	print("PROBE bite player_hp=%.1f wolf_state=%s dist=%.2f bitten=%s" % [
+		_player.health_fraction() * _player.max_health,
+		wolf.state_name(),
+		_player.global_position.distance_to(wolf.global_position),
+		_player.health_fraction() < 1.0,
+	])
+	var save: Node = get_node_or_null(^"/root/SaveGame")
+	if save != null:
+		save.delete()
+	get_tree().quit()
+
+
 func _hour() -> float:
 	return _game.time_of_day if _game != null else 0.0
 
@@ -105,6 +135,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # Headless probe: lets the test suite assert on real physics without driving the loop itself.
 func _physics_process(_delta: float) -> void:
+	if _probe_bite:
+		_run_bite_probe()
+		return
 	if not _probe or _game == null:
 		return
 	_probe_frames += 1
