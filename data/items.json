@@ -1,0 +1,67 @@
+{
+	"kindling_grey": {
+		"name": "Grey Kindling",
+		"kind": "kindling",
+		"lore": "Ash-coloured wood that has forgotten how to burn. The Hearth will remember for it."
+	},
+	"kindling_green": {
+		"name": "Green Kindling",
+		"kind": "kindling",
+		"lore": "Still sap-wet, cut from a tree that never asked to die. It will hiss before it catches."
+	},
+	"kindling_red": {
+		"name": "Red Kindling",
+		"kind": "kindling",
+		"lore": "Stained dark at one end. Whatever it was pulled from, it was not a tree."
+	},
+	"sluice_wheel": {
+		"name": "Sluice Wheel",
+		"kind": "tool",
+		"lore": "Rusted iron, heavier than it looks. Someone drained the pond on purpose."
+	},
+	"storm_lantern": {
+		"name": "Storm Lantern",
+		"kind": "tool",
+		"lore": "Its glass is cracked and its flame leans toward Hollowmere's low places, as if listening."
+	},
+	"bell_rope": {
+		"name": "Bell Rope",
+		"kind": "tool",
+		"lore": "Frayed hemp from the chapel tower. The bell has not rung since the water left."
+	},
+	"castle_key": {
+		"name": "Castle Key",
+		"kind": "key",
+		"lore": "Cold even in a warm hand. The lord of Hollowmere locked his gate from the inside."
+	},
+	"name_fragment_crypt": {
+		"name": "Name Fragment (Crypt)",
+		"kind": "fragment",
+		"lore": "A syllable scratched into a coffin lid. The dead kept what the living let go."
+	},
+	"name_fragment_shrine": {
+		"name": "Name Fragment (Shrine)",
+		"kind": "fragment",
+		"lore": "Pressed into cold wax at a candle shrine. The Wick left it here and kept walking."
+	},
+	"name_fragment_windmill": {
+		"name": "Name Fragment (Windmill)",
+		"kind": "fragment",
+		"lore": "Carved into a sail that no longer turns. The wind in Hollowmere has nothing left to say."
+	},
+	"torch": {
+		"name": "Torch",
+		"kind": "tool",
+		"lore": "A borrowed flame. It burns a little faster the closer you carry it to the drained pond."
+	},
+	"hammer": {
+		"name": "Hammer",
+		"kind": "tool",
+		"lore": "Its head is pitted from striking things that were not nails. Walls, mostly. Some bone."
+	},
+	"sword": {
+		"name": "Sword",
+		"kind": "tool",
+		"lore": "Notched and honest. Whoever carried it before you did not come back for it."
+	}
+}
