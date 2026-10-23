@@ -7,56 +7,544 @@
     "Freesound audio: downloads require a Freesound API key / OAuth2 token; see docs/reports/W3-01.md. Not listed."
   ],
   "assets": [
-    { "id": "aerial_grass_rock", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "vale", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/vale/aerial_grass_rock/" },
-    { "id": "brown_mud_03", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "vale", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/vale/brown_mud_03/" },
-    { "id": "coast_land_rocks_01", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "vale", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/vale/coast_land_rocks_01/" },
-    { "id": "brown_mud_rocks_01", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "vale", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/vale/brown_mud_rocks_01/" },
-
-    { "id": "brown_mud_leaves_01", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "wood", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/wood/brown_mud_leaves_01/" },
-    { "id": "aerial_mud_1", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "wood", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/wood/aerial_mud_1/" },
-    { "id": "dry_decay_leaves", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "wood", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/wood/dry_decay_leaves/" },
-    { "id": "mossy_rock", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "wood", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/wood/mossy_rock/" },
-
-    { "id": "cracked_red_ground", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "barrens", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/barrens/cracked_red_ground/" },
-    { "id": "red_sand", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "barrens", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/barrens/red_sand/" },
-    { "id": "dry_ground_01", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "barrens", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/barrens/dry_ground_01/" },
-    { "id": "sandstone_cracks", "source": "polyhaven", "type": "texture", "category": "terrain", "area": "barrens", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/barrens/sandstone_cracks/" },
-
-    { "id": "castle_wall_slates", "source": "polyhaven", "type": "texture", "category": "architecture", "area": "shared", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/castle_wall_slates/" },
-    { "id": "medieval_blocks_03", "source": "polyhaven", "type": "texture", "category": "architecture", "area": "shared", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/medieval_blocks_03/" },
-    { "id": "stone_wall_04", "source": "polyhaven", "type": "texture", "category": "architecture", "area": "shared", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/stone_wall_04/" },
-    { "id": "roof_slates_02", "source": "polyhaven", "type": "texture", "category": "architecture", "area": "shared", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/roof_slates_02/" },
-    { "id": "weathered_planks", "source": "polyhaven", "type": "texture", "category": "architecture", "area": "shared", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/weathered_planks/" },
-    { "id": "rough_plaster_broken", "source": "polyhaven", "type": "texture", "category": "architecture", "area": "shared", "resolution": "2k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/rough_plaster_broken/" },
-
-    { "id": "bark_brown_01", "source": "polyhaven", "type": "texture", "category": "bark", "area": "shared", "resolution": "1k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/bark_brown_01/" },
-    { "id": "bark_brown_02", "source": "polyhaven", "type": "texture", "category": "bark", "area": "shared", "resolution": "1k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/bark_brown_02/" },
-    { "id": "pine_bark", "source": "polyhaven", "type": "texture", "category": "bark", "area": "shared", "resolution": "1k", "maps": ["diffuse", "nor_gl", "rough", "ao", "disp"], "dest": "assets/textures/shared/pine_bark/" },
-
-    { "id": "treasure_chest", "source": "polyhaven", "type": "model", "category": "props", "area": "shared", "resolution": "1k", "dest": "assets/models/props/treasure_chest/" },
-    { "id": "wine_barrel_01", "source": "polyhaven", "type": "model", "category": "props", "area": "shared", "resolution": "1k", "dest": "assets/models/props/wine_barrel_01/" },
-    { "id": "wooden_lantern_01", "source": "polyhaven", "type": "model", "category": "props", "area": "shared", "resolution": "1k", "dest": "assets/models/props/wooden_lantern_01/" },
-    { "id": "wooden_crate_01", "source": "polyhaven", "type": "model", "category": "props", "area": "shared", "resolution": "1k", "dest": "assets/models/props/wooden_crate_01/" },
-    { "id": "large_castle_door", "source": "polyhaven", "type": "model", "category": "props", "area": "shared", "resolution": "2k", "dest": "assets/models/props/large_castle_door/" },
-
-    { "id": "namaqualand_boulder_02", "source": "polyhaven", "type": "model", "category": "rocks", "area": "shared", "resolution": "1k", "dest": "assets/models/rocks/namaqualand_boulder_02/" },
-    { "id": "namaqualand_boulder_03", "source": "polyhaven", "type": "model", "category": "rocks", "area": "shared", "resolution": "1k", "dest": "assets/models/rocks/namaqualand_boulder_03/" },
-    { "id": "rock_moss_set_01", "source": "polyhaven", "type": "model", "category": "rocks", "area": "shared", "resolution": "1k", "dest": "assets/models/rocks/rock_moss_set_01/" },
-    { "id": "rock_moss_set_02", "source": "polyhaven", "type": "model", "category": "rocks", "area": "shared", "resolution": "1k", "dest": "assets/models/rocks/rock_moss_set_02/" },
-
-    { "id": "dead_tree_trunk", "source": "polyhaven", "type": "model", "category": "logs", "area": "shared", "resolution": "1k", "dest": "assets/models/logs/dead_tree_trunk/" },
-    { "id": "dead_tree_trunk_02", "source": "polyhaven", "type": "model", "category": "logs", "area": "shared", "resolution": "1k", "dest": "assets/models/logs/dead_tree_trunk_02/" },
-    { "id": "tree_stump_01", "source": "polyhaven", "type": "model", "category": "logs", "area": "shared", "resolution": "1k", "dest": "assets/models/logs/tree_stump_01/" },
-
-    { "id": "fern_02", "source": "polyhaven", "type": "model", "category": "foliage", "area": "shared", "resolution": "1k", "dest": "assets/models/foliage/fern_02/" },
-    { "id": "shrub_02", "source": "polyhaven", "type": "model", "category": "foliage", "area": "shared", "resolution": "1k", "dest": "assets/models/foliage/shrub_02/" },
-    { "id": "shrub_03", "source": "polyhaven", "type": "model", "category": "foliage", "area": "shared", "resolution": "1k", "dest": "assets/models/foliage/shrub_03/" },
-    { "id": "fir_tree_01", "source": "polyhaven", "type": "model", "category": "trees", "area": "shared", "resolution": "1k", "optional": true, "dest": "assets/models/trees/fir_tree_01/" },
-    { "id": "pine_tree_01", "source": "polyhaven", "type": "model", "category": "trees", "area": "shared", "resolution": "1k", "optional": true, "dest": "assets/models/trees/pine_tree_01/" },
-
-    { "id": "qvTrSG9pZF", "name": "horse", "source": "polypizza", "type": "model", "category": "animals", "area": "shared", "dest": "assets/models/animals/horse.glb" },
-    { "id": "2kUk0QqpCg", "name": "dog", "source": "polypizza", "type": "model", "category": "animals", "area": "shared", "dest": "assets/models/animals/dog.glb" },
-    { "id": "P1gU3Qkr9r", "name": "wolf", "source": "polypizza", "type": "model", "category": "animals", "area": "shared", "dest": "assets/models/animals/wolf.glb" },
-    { "id": "37wofOCOzG", "name": "frog", "source": "polypizza", "type": "model", "category": "animals", "area": "shared", "dest": "assets/models/animals/frog.glb" }
+    {
+      "id": "aerial_grass_rock",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "vale",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/vale/aerial_grass_rock/"
+    },
+    {
+      "id": "brown_mud_03",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "vale",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/vale/brown_mud_03/"
+    },
+    {
+      "id": "coast_land_rocks_01",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "vale",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/vale/coast_land_rocks_01/"
+    },
+    {
+      "id": "brown_mud_rocks_01",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "vale",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/vale/brown_mud_rocks_01/"
+    },
+    {
+      "id": "brown_mud_leaves_01",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "wood",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/wood/brown_mud_leaves_01/"
+    },
+    {
+      "id": "aerial_mud_1",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "wood",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/wood/aerial_mud_1/"
+    },
+    {
+      "id": "dry_decay_leaves",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "wood",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/wood/dry_decay_leaves/"
+    },
+    {
+      "id": "mossy_rock",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "wood",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/wood/mossy_rock/"
+    },
+    {
+      "id": "cracked_red_ground",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "barrens",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/barrens/cracked_red_ground/"
+    },
+    {
+      "id": "red_sand",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "barrens",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/barrens/red_sand/"
+    },
+    {
+      "id": "dry_ground_01",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "barrens",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/barrens/dry_ground_01/"
+    },
+    {
+      "id": "sandstone_cracks",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "terrain",
+      "area": "barrens",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/barrens/sandstone_cracks/"
+    },
+    {
+      "id": "castle_wall_slates",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "architecture",
+      "area": "shared",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/castle_wall_slates/"
+    },
+    {
+      "id": "medieval_blocks_03",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "architecture",
+      "area": "shared",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/medieval_blocks_03/"
+    },
+    {
+      "id": "stone_wall_04",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "architecture",
+      "area": "shared",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/stone_wall_04/"
+    },
+    {
+      "id": "roof_slates_02",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "architecture",
+      "area": "shared",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/roof_slates_02/"
+    },
+    {
+      "id": "weathered_planks",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "architecture",
+      "area": "shared",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/weathered_planks/"
+    },
+    {
+      "id": "rough_plaster_broken",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "architecture",
+      "area": "shared",
+      "resolution": "2k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/rough_plaster_broken/"
+    },
+    {
+      "id": "bark_brown_01",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "bark",
+      "area": "shared",
+      "resolution": "1k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/bark_brown_01/"
+    },
+    {
+      "id": "bark_brown_02",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "bark",
+      "area": "shared",
+      "resolution": "1k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/bark_brown_02/"
+    },
+    {
+      "id": "pine_bark",
+      "source": "polyhaven",
+      "type": "texture",
+      "category": "bark",
+      "area": "shared",
+      "resolution": "1k",
+      "maps": [
+        "diffuse",
+        "nor_gl",
+        "rough",
+        "ao",
+        "disp"
+      ],
+      "dest": "assets/textures/shared/pine_bark/"
+    },
+    {
+      "id": "treasure_chest",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "props",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/props/treasure_chest/"
+    },
+    {
+      "id": "wine_barrel_01",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "props",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/props/wine_barrel_01/"
+    },
+    {
+      "id": "wooden_lantern_01",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "props",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/props/wooden_lantern_01/"
+    },
+    {
+      "id": "wooden_crate_01",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "props",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/props/wooden_crate_01/"
+    },
+    {
+      "id": "large_castle_door",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "props",
+      "area": "shared",
+      "resolution": "2k",
+      "dest": "assets/models/props/large_castle_door/"
+    },
+    {
+      "id": "namaqualand_boulder_02",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "rocks",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/rocks/namaqualand_boulder_02/"
+    },
+    {
+      "id": "namaqualand_boulder_03",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "rocks",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/rocks/namaqualand_boulder_03/"
+    },
+    {
+      "id": "rock_moss_set_01",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "rocks",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/rocks/rock_moss_set_01/"
+    },
+    {
+      "id": "rock_moss_set_02",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "rocks",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/rocks/rock_moss_set_02/"
+    },
+    {
+      "id": "dead_tree_trunk",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "logs",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/logs/dead_tree_trunk/"
+    },
+    {
+      "id": "dead_tree_trunk_02",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "logs",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/logs/dead_tree_trunk_02/"
+    },
+    {
+      "id": "tree_stump_01",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "logs",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/logs/tree_stump_01/"
+    },
+    {
+      "id": "fern_02",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "foliage",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/foliage/fern_02/"
+    },
+    {
+      "id": "shrub_02",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "foliage",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/foliage/shrub_02/"
+    },
+    {
+      "id": "shrub_03",
+      "source": "polyhaven",
+      "type": "model",
+      "category": "foliage",
+      "area": "shared",
+      "resolution": "1k",
+      "dest": "assets/models/foliage/shrub_03/"
+    },
+    {
+      "id": "qvTrSG9pZF",
+      "name": "horse",
+      "source": "polypizza",
+      "type": "model",
+      "category": "animals",
+      "area": "shared",
+      "dest": "assets/models/animals/horse.glb"
+    },
+    {
+      "id": "2kUk0QqpCg",
+      "name": "dog",
+      "source": "polypizza",
+      "type": "model",
+      "category": "animals",
+      "area": "shared",
+      "dest": "assets/models/animals/dog.glb"
+    },
+    {
+      "id": "P1gU3Qkr9r",
+      "name": "wolf",
+      "source": "polypizza",
+      "type": "model",
+      "category": "animals",
+      "area": "shared",
+      "dest": "assets/models/animals/wolf.glb"
+    },
+    {
+      "id": "37wofOCOzG",
+      "name": "frog",
+      "source": "polypizza",
+      "type": "model",
+      "category": "animals",
+      "area": "shared",
+      "dest": "assets/models/animals/frog.glb"
+    },
+    {
+      "id": "fir_tree_01",
+      "source": "polyhaven",
+      "type": "maps",
+      "category": "twigs",
+      "area": "shared",
+      "resolution": "1k",
+      "maps": [
+        "twig_diff",
+        "twig_alpha",
+        "twig_arm",
+        "twig_ao"
+      ],
+      "dest": "assets/textures/shared/twig_fir/",
+      "note": "Alpha twig atlas only - the full scanned tree is 465/914 MB and is never fetched (D-009). Feeds the procedural tree generator (D-002)."
+    },
+    {
+      "id": "pine_tree_01",
+      "source": "polyhaven",
+      "type": "maps",
+      "category": "twigs",
+      "area": "shared",
+      "resolution": "1k",
+      "maps": [
+        "twig_diff",
+        "twig_alpha",
+        "twig_arm",
+        "twig_ao"
+      ],
+      "dest": "assets/textures/shared/twig_pine/",
+      "note": "Alpha twig atlas only - the full scanned tree is 465/914 MB and is never fetched (D-009). Feeds the procedural tree generator (D-002)."
+    }
   ]
 }

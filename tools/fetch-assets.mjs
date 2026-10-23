@@ -230,6 +230,35 @@ function planPolyhavenTexture(asset, files) {
   return { files: plan, warnings };
 }
 
+// Some Poly Haven *models* carry exactly the texture we want inside an asset far too big to ship: the two
+// scanned conifers are 465 MB and 914 MB, but their alpha-cut twig atlas is under 1 MB and is all a procedural
+// tree generator needs (D-002/D-009). `type: "maps"` takes named map keys out of any asset, geometry and all
+// other maps left behind. Keys here are the literal `files` keys from the API, not the POLYHAVEN_MAPS aliases.
+function planPolyhavenRawMaps(asset, files) {
+  if (!Array.isArray(asset.maps) || asset.maps.length === 0) {
+    throw new Error(`type "maps" needs a non-empty "maps" array of literal Poly Haven file keys`);
+  }
+  const plan = [];
+  const warnings = [];
+  for (const key of asset.maps) {
+    const entry = files[key]?.[asset.resolution];
+    if (!entry) {
+      warnings.push(`no "${key}" at ${asset.resolution} (available: ${Object.keys(files).slice(0, 12).join(", ")})`);
+      continue;
+    }
+    // Alpha and mask maps must stay PNG: JPEG has no alpha channel and would silently drop the cut-out.
+    const needsAlpha = /alpha|mask/i.test(key);
+    const fmt = needsAlpha ? entry.png : (entry.jpg || entry.png);
+    if (!fmt) {
+      warnings.push(`"${key}" has no ${needsAlpha ? "png" : "jpg/png"} at ${asset.resolution}`);
+      continue;
+    }
+    plan.push({ url: fmt.url, size: fmt.size, md5: fmt.md5, rel: path.posix.basename(new URL(fmt.url).pathname) });
+  }
+  if (plan.length === 0) throw new Error(`none of the requested maps exist at ${asset.resolution}`);
+  return { files: plan, warnings };
+}
+
 function planPolyhavenModel(asset, files) {
   const entry = files.gltf?.[asset.resolution]?.gltf;
   if (!entry) throw new Error(`no glTF at ${asset.resolution} (available: ${Object.keys(files.gltf || {}).join(", ") || "none"})`);
@@ -244,12 +273,18 @@ function planPolyhavenModel(asset, files) {
 async function resolvePolyhaven(asset) {
   const info = await fetchJson(`${POLYHAVEN_API}/info/${asset.id}`, `Poly Haven asset "${asset.id}"`);
   if (info.error || !info.name) throw new Error(`Poly Haven has no asset "${asset.id}" (${info.error || "empty info"}). Check the id on polyhaven.com.`);
-  if (info.type !== POLYHAVEN_TYPES[asset.type]) throw new Error(`Poly Haven says type ${info.type}, manifest says ${asset.type}`);
+  // "maps" pulls named texture files out of any asset, so it deliberately accepts either Poly Haven type.
+  if (asset.type !== "maps" && info.type !== POLYHAVEN_TYPES[asset.type]) {
+    throw new Error(`Poly Haven says type ${info.type}, manifest says ${asset.type}`);
+  }
   const authors = Object.keys(info.authors || {});
   if (authors.length === 0) throw new LicenceRejected("info has no authors field; cannot attribute");
   const licence = await readPolyhavenLicence(asset.id);
   const files = await fetchJson(`${POLYHAVEN_API}/files/${asset.id}`);
-  const planned = asset.type === "texture" ? planPolyhavenTexture(asset, files) : planPolyhavenModel(asset, files);
+  let planned;
+  if (asset.type === "maps") planned = planPolyhavenRawMaps(asset, files);
+  else if (asset.type === "texture") planned = planPolyhavenTexture(asset, files);
+  else planned = planPolyhavenModel(asset, files);
   return {
     name: info.name, author: authors.join(", "), sourceUrl: POLYHAVEN_PAGE + asset.id, licence,
     destDir: path.resolve(ROOT, asset.dest), ...planned,

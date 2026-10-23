@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-23T20:11:12.328Z",
+  "generated": "2026-10-23T20:16:45.079Z",
   "files": [
     {
       "id": "2kUk0QqpCg",
@@ -1704,6 +1704,102 @@
       "bytes": 1804915,
       "sha256": "4ccce4d711ddee6fcf725a26e51f5999ba5b33d9ec77f9fcc7aca863bf993a94",
       "dest": "assets/textures/shared/stone_wall_04/stone_wall_04_rough_2k.jpg"
+    },
+    {
+      "id": "fir_tree_01",
+      "source": "polyhaven",
+      "name": "Fir Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/fir_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fir_tree_01/fir_tree_01_twig_alpha_1k.png",
+      "bytes": 371026,
+      "sha256": "3f399629337e7ac3af27a01b08ffb9c0d60224a9dd374a1427761a5c2eea9d6e",
+      "dest": "assets/textures/shared/twig_fir/fir_tree_01_twig_alpha_1k.png"
+    },
+    {
+      "id": "fir_tree_01",
+      "source": "polyhaven",
+      "name": "Fir Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/fir_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fir_tree_01/fir_tree_01_twig_ao_1k.jpg",
+      "bytes": 165384,
+      "sha256": "b427b31e72cc201e9fd31f844d462f85fdafe5b170b3865bfe3d8bda5fff0fd1",
+      "dest": "assets/textures/shared/twig_fir/fir_tree_01_twig_ao_1k.jpg"
+    },
+    {
+      "id": "fir_tree_01",
+      "source": "polyhaven",
+      "name": "Fir Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/fir_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fir_tree_01/fir_tree_01_twig_arm_1k.jpg",
+      "bytes": 407309,
+      "sha256": "d66c81fc073ee7ea97a76b6da2399769f16944e50ef0e007f09c95619f597c79",
+      "dest": "assets/textures/shared/twig_fir/fir_tree_01_twig_arm_1k.jpg"
+    },
+    {
+      "id": "fir_tree_01",
+      "source": "polyhaven",
+      "name": "Fir Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/fir_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fir_tree_01/fir_tree_01_twig_diff_1k.jpg",
+      "bytes": 371741,
+      "sha256": "8c0833a10e4fd44498d848cf9e659fe250a3813984cbd679f42430eb98c61fb8",
+      "dest": "assets/textures/shared/twig_fir/fir_tree_01_twig_diff_1k.jpg"
+    },
+    {
+      "id": "pine_tree_01",
+      "source": "polyhaven",
+      "name": "Pine Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/pine_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_twig_alpha_1k.png",
+      "bytes": 351928,
+      "sha256": "6f91aa99f2c27108d6f817f874954aa7df8bfbb4dea2673e9322555a6ae79d99",
+      "dest": "assets/textures/shared/twig_pine/pine_tree_01_twig_alpha_1k.png"
+    },
+    {
+      "id": "pine_tree_01",
+      "source": "polyhaven",
+      "name": "Pine Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/pine_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/pine_tree_01/pine_tree_01_twig_ao_1k.jpg",
+      "bytes": 116297,
+      "sha256": "5a2e628df9b0ab560c7cfea1258c5ccdeb1c834a552a5067cc243a346ab4ce67",
+      "dest": "assets/textures/shared/twig_pine/pine_tree_01_twig_ao_1k.jpg"
+    },
+    {
+      "id": "pine_tree_01",
+      "source": "polyhaven",
+      "name": "Pine Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/pine_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/pine_tree_01/pine_tree_01_twig_arm_1k.jpg",
+      "bytes": 474787,
+      "sha256": "47facef9985e8c073184a64d15ea14bd2dc3b3debfb93f3671b6d5ad0dbc163d",
+      "dest": "assets/textures/shared/twig_pine/pine_tree_01_twig_arm_1k.jpg"
+    },
+    {
+      "id": "pine_tree_01",
+      "source": "polyhaven",
+      "name": "Pine Tree 01",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "source_url": "https://polyhaven.com/a/pine_tree_01",
+      "licence": "CC0 1.0 Universal - public domain dedication, no attribution required <https://creativecommons.org/publicdomain/zero/1.0/>",
+      "file_url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/pine_tree_01/pine_tree_01_twig_diff_1k.jpg",
+      "bytes": 510932,
+      "sha256": "e649f0f9bc74d1af5f1a45eaf2fe7a29adaaddfab251f746b983da301e4b80e1",
+      "dest": "assets/textures/shared/twig_pine/pine_tree_01_twig_diff_1k.jpg"
     },
     {
       "id": "weathered_planks",

@@ -54,3 +54,17 @@ nothing is written. This is how D-004 is actually enforced.
 **D-008 (2026-10-23) Godot 4.7.2 stable, Jolt physics, Forward+.** Installed via winget; not on PATH, so every
 command uses the full path in `docs/TOOLS.md` (the `_console.exe` build for anything headless). Verified: Jolt
 active, Forward+ active, 12 input actions, named 3D physics layers.
+
+**D-012 (2026-10-24) `type: "maps"` — take a texture out of an asset too big to ship.** The scanned conifers
+(D-009) hold the one thing procedural trees actually need: an alpha-cut twig atlas. `tools/fetch-assets.mjs`
+gained a `maps` asset type that pulls named texture keys out of any Poly Haven asset and leaves the geometry
+behind, forcing PNG for anything matching `alpha|mask` because JPEG has no alpha channel. Result: **2.6 MB
+instead of 1.35 GB** for both species' twig atlases, now at `assets/textures/shared/twig_{fir,pine}/`.
+Measured, not estimated. Procedural trees (W3-03) are unblocked.
+
+**D-013 (2026-10-24) Photoscan meshes are far denser than a game needs.** Measured after import: a treasure
+chest is 68k vertices, a boulder 53k, a dead trunk 52k. Godot's importer can generate LODs, but LOD0 stays
+heavy and these will be instanced in the hundreds. **Open:** decide between Godot's automatic LODs plus
+aggressive distance culling, or adding a decimation step to the pipeline (which would mean a pinned
+`@gltf-transform`/`meshoptimizer` dev dependency). Not urgent while the world is empty; decide in W3-02 before
+placing anything in bulk.
