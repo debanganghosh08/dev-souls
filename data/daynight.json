@@ -1,0 +1,41 @@
+{
+	"vale": {
+		"keyframes": [
+			{"hour": 0.0, "sun_color": "#5a6678", "sky_top": "#05070c", "sky_horizon": "#0c1017", "ground_color": "#030405", "fog_color": "#0b0e14", "fog_density": 0.030, "sun_energy": 0.0, "ambient_energy": 0.14, "star_alpha": 1.0},
+			{"hour": 4.5, "sun_color": "#6b6f7a", "sky_top": "#080b11", "sky_horizon": "#161b24", "ground_color": "#050608", "fog_color": "#12161d", "fog_density": 0.036, "sun_energy": 0.0, "ambient_energy": 0.16, "star_alpha": 0.8},
+			{"hour": 6.5, "sun_color": "#b39a8c", "sky_top": "#2a3340", "sky_horizon": "#6b6e74", "ground_color": "#1a1b1e", "fog_color": "#5a5e65", "fog_density": 0.042, "sun_energy": 0.22, "ambient_energy": 0.30, "star_alpha": 0.1},
+			{"hour": 9.0, "sun_color": "#c9c3b9", "sky_top": "#3f4a58", "sky_horizon": "#8b8f95", "ground_color": "#26282b", "fog_color": "#7c8087", "fog_density": 0.036, "sun_energy": 0.62, "ambient_energy": 0.45, "star_alpha": 0.0},
+			{"hour": 12.0, "sun_color": "#d3d0c8", "sky_top": "#4a5668", "sky_horizon": "#979ba0", "ground_color": "#2b2d30", "fog_color": "#878b91", "fog_density": 0.030, "sun_energy": 0.78, "ambient_energy": 0.50, "star_alpha": 0.0},
+			{"hour": 15.0, "sun_color": "#c8bfb3", "sky_top": "#43495a", "sky_horizon": "#8d8c8e", "ground_color": "#27282b", "fog_color": "#7e7e82", "fog_density": 0.034, "sun_energy": 0.66, "ambient_energy": 0.46, "star_alpha": 0.0},
+			{"hour": 17.5, "sun_color": "#b78b75", "sky_top": "#343a46", "sky_horizon": "#7b7470", "ground_color": "#1f1f22", "fog_color": "#6b6765", "fog_density": 0.040, "sun_energy": 0.34, "ambient_energy": 0.34, "star_alpha": 0.05},
+			{"hour": 19.5, "sun_color": "#505b6d", "sky_top": "#0d1119", "sky_horizon": "#202833", "ground_color": "#06070a", "fog_color": "#181d26", "fog_density": 0.036, "sun_energy": 0.0, "ambient_energy": 0.19, "star_alpha": 0.7},
+			{"hour": 22.0, "sun_color": "#5a6678", "sky_top": "#06080e", "sky_horizon": "#0e1219", "ground_color": "#030405", "fog_color": "#0c0f16", "fog_density": 0.031, "sun_energy": 0.0, "ambient_energy": 0.14, "star_alpha": 1.0}
+		]
+	},
+	"wood": {
+		"keyframes": [
+			{"hour": 0.0, "sun_color": "#3f4d44", "sky_top": "#030504", "sky_horizon": "#070b09", "ground_color": "#020302", "fog_color": "#07090a", "fog_density": 0.070, "sun_energy": 0.0, "ambient_energy": 0.12, "star_alpha": 1.0},
+			{"hour": 4.5, "sun_color": "#48564b", "sky_top": "#050806", "sky_horizon": "#0d1410", "ground_color": "#030403", "fog_color": "#0b100e", "fog_density": 0.075, "sun_energy": 0.0, "ambient_energy": 0.14, "star_alpha": 0.8},
+			{"hour": 6.5, "sun_color": "#8c9a7d", "sky_top": "#1a241c", "sky_horizon": "#3f4a3b", "ground_color": "#0e120f", "fog_color": "#36403a", "fog_density": 0.080, "sun_energy": 0.10, "ambient_energy": 0.26, "star_alpha": 0.1},
+			{"hour": 9.0, "sun_color": "#a8b39a", "sky_top": "#28352b", "sky_horizon": "#56624f", "ground_color": "#151a16", "fog_color": "#4a5649", "fog_density": 0.068, "sun_energy": 0.30, "ambient_energy": 0.36, "star_alpha": 0.0},
+			{"hour": 12.0, "sun_color": "#b5bfa6", "sky_top": "#2e3b31", "sky_horizon": "#606c58", "ground_color": "#181d19", "fog_color": "#515d4f", "fog_density": 0.060, "sun_energy": 0.36, "ambient_energy": 0.40, "star_alpha": 0.0},
+			{"hour": 15.0, "sun_color": "#a9b19c", "sky_top": "#2a362d", "sky_horizon": "#596451", "ground_color": "#161a17", "fog_color": "#4b5649", "fog_density": 0.066, "sun_energy": 0.30, "ambient_energy": 0.37, "star_alpha": 0.0},
+			{"hour": 17.5, "sun_color": "#8c8f78", "sky_top": "#1c261e", "sky_horizon": "#3f483a", "ground_color": "#0e120f", "fog_color": "#353f36", "fog_density": 0.076, "sun_energy": 0.16, "ambient_energy": 0.28, "star_alpha": 0.05},
+			{"hour": 19.5, "sun_color": "#3f4d44", "sky_top": "#070b08", "sky_horizon": "#121a15", "ground_color": "#040504", "fog_color": "#0f1613", "fog_density": 0.074, "sun_energy": 0.0, "ambient_energy": 0.16, "star_alpha": 0.7},
+			{"hour": 22.0, "sun_color": "#3f4d44", "sky_top": "#030504", "sky_horizon": "#080c0a", "ground_color": "#020302", "fog_color": "#080a0b", "fog_density": 0.070, "sun_energy": 0.0, "ambient_energy": 0.12, "star_alpha": 1.0}
+		]
+	},
+	"barrens": {
+		"keyframes": [
+			{"hour": 0.0, "sun_color": "#4b5870", "sky_top": "#04060c", "sky_horizon": "#0c1220", "ground_color": "#030305", "fog_color": "#0a0e18", "fog_density": 0.014, "sun_energy": 0.0, "ambient_energy": 0.11, "star_alpha": 1.0},
+			{"hour": 4.5, "sun_color": "#56607a", "sky_top": "#070a12", "sky_horizon": "#1a1f2c", "ground_color": "#050507", "fog_color": "#13171f", "fog_density": 0.016, "sun_energy": 0.0, "ambient_energy": 0.13, "star_alpha": 0.8},
+			{"hour": 6.5, "sun_color": "#d9906a", "sky_top": "#3a3340", "sky_horizon": "#9a6f5a", "ground_color": "#2a1f19", "fog_color": "#8a6a58", "fog_density": 0.020, "sun_energy": 0.35, "ambient_energy": 0.30, "star_alpha": 0.1},
+			{"hour": 9.0, "sun_color": "#e7c6a0", "sky_top": "#5f5548", "sky_horizon": "#b3977a", "ground_color": "#3d2f25", "fog_color": "#a68b70", "fog_density": 0.010, "sun_energy": 0.95, "ambient_energy": 0.50, "star_alpha": 0.0},
+			{"hour": 12.0, "sun_color": "#f0d6b2", "sky_top": "#6c5c4a", "sky_horizon": "#bfa384", "ground_color": "#45352a", "fog_color": "#ad9478", "fog_density": 0.008, "sun_energy": 1.15, "ambient_energy": 0.56, "star_alpha": 0.0},
+			{"hour": 15.0, "sun_color": "#e9c49b", "sky_top": "#665444", "sky_horizon": "#b8977a", "ground_color": "#3f3026", "fog_color": "#a98d71", "fog_density": 0.010, "sun_energy": 1.0, "ambient_energy": 0.52, "star_alpha": 0.0},
+			{"hour": 17.5, "sun_color": "#cf7a4e", "sky_top": "#3e3238", "sky_horizon": "#9c5f44", "ground_color": "#2a1d17", "fog_color": "#7f5a48", "fog_density": 0.016, "sun_energy": 0.45, "ambient_energy": 0.32, "star_alpha": 0.05},
+			{"hour": 19.5, "sun_color": "#4b5870", "sky_top": "#090c16", "sky_horizon": "#1f2638", "ground_color": "#06060a", "fog_color": "#171c2a", "fog_density": 0.016, "sun_energy": 0.0, "ambient_energy": 0.16, "star_alpha": 0.7},
+			{"hour": 22.0, "sun_color": "#4b5870", "sky_top": "#04060c", "sky_horizon": "#0d1322", "ground_color": "#030305", "fog_color": "#0b0f19", "fog_density": 0.014, "sun_energy": 0.0, "ambient_energy": 0.11, "star_alpha": 1.0}
+		]
+	}
+}

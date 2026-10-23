@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://skyenv0w2010"]
+
+[ext_resource type="Script" uid="uid://brnr2a787p8c4" path="res://scripts/systems/daynight.gd" id="1_cycle"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.29, 0.34, 0.41, 1)
+sky_horizon_color = Color(0.59, 0.61, 0.63, 1)
+sky_curve = 0.15
+ground_bottom_color = Color(0.17, 0.18, 0.19, 1)
+ground_horizon_color = Color(0.53, 0.55, 0.57, 1)
+sun_angle_max = 20.0
+sun_curve = 0.15
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+process_mode = 2
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 2
+ambient_light_color = Color(0.59, 0.61, 0.63, 1)
+ambient_light_energy = 0.45
+tonemap_mode = 3
+tonemap_white = 4.0
+glow_enabled = true
+glow_intensity = 0.35
+glow_strength = 0.9
+glow_bloom = 0.03
+glow_hdr_threshold = 1.2
+fog_enabled = true
+fog_light_color = Color(0.49, 0.5, 0.53, 1)
+fog_density = 0.03
+fog_sky_affect = 0.6
+fog_aerial_perspective = 0.3
+
+[node name="Sky" type="Node3D"]
+script = ExtResource("1_cycle")
+environment_path = NodePath("WorldEnvironment")
+sun_path = NodePath("Sun")
+moon_path = NodePath("Moon")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0)
+light_color = Color(0.83, 0.82, 0.78, 1)
+light_energy = 0.8
+shadow_enabled = true
+shadow_blur = 1.5
+directional_shadow_max_distance = 120.0
+
+[node name="Moon" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0)
+visible = false
+light_color = Color(0.62, 0.7, 0.86, 1)
+light_energy = 0.0
+shadow_enabled = false
+shadow_blur = 2.0
+directional_shadow_max_distance = 80.0
