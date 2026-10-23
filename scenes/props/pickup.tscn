@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://proppickup14"]
+
+[ext_resource type="Script" uid="uid://dhkd2wogcwb27" path="res://scripts/systems/interactables/pickup.gd" id="1_pickup"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_glow"]
+albedo_color = Color(0.5, 0.47, 0.42, 1)
+emission_enabled = true
+emission = Color(1, 0.72, 0.4, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="SphereShape3D" id="Shape_pickup"]
+radius = 0.4
+
+[sub_resource type="BoxMesh" id="Mesh_pickup"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="Pickup" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_pickup")
+prompt = "Take"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("Shape_pickup")
+
+[node name="Glow" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0.15, 0)
+material_override = SubResource("Mat_glow")
+mesh = SubResource("Mesh_pickup")

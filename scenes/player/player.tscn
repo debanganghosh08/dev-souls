@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://player0w1030"]
+[gd_scene load_steps=9 format=3 uid="uid://player0w1030"]
 
 [ext_resource type="Script" uid="uid://nk1m6f1hqajs" path="res://scripts/systems/player_controller.gd" id="1_controller"]
 [ext_resource type="Script" uid="uid://cee5fmslkt2jn" path="res://scripts/systems/camera_rig.gd" id="2_rig"]
+[ext_resource type="Script" uid="uid://jewgwjqb2ivf" path="res://scripts/systems/interaction_detector.gd" id="3_detector"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -57,3 +58,12 @@ margin = 0.2
 unique_name_in_owner = true
 fov = 65.0
 current = true
+
+[node name="InteractionDetector" type="Area3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("3_detector")
+camera_path = NodePath("%Camera")
