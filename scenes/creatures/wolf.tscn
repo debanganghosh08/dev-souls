@@ -1,0 +1,95 @@
+[gd_scene load_steps=12 format=3 uid="uid://creaturwolf1"]
+
+[ext_resource type="Script" path="res://scripts/systems/creature.gd" id="1_creature"]
+
+[sub_resource type="BoxShape3D" id="Shape_wolf"]
+size = Vector3(0.45, 0.8, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wolf"]
+albedo_color = Color(0.4, 0.4, 0.43, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_wolf"]
+material = SubResource("Mat_wolf")
+size = Vector3(0.45, 0.5, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_nose"]
+albedo_color = Color(0.85, 0.35, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_nose"]
+material = SubResource("Mat_nose")
+size = Vector3(0.16, 0.16, 0.3)
+
+[sub_resource type="Gradient" id="Grad_motes"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(1, 0.88, 0.5, 1, 1, 0.78, 0.35, 0.85, 1, 0.65, 0.25, 0)
+
+[sub_resource type="GradientTexture1D" id="GradTex_motes"]
+gradient = SubResource("Grad_motes")
+
+[sub_resource type="ParticleProcessMaterial" id="PPM_motes"]
+emission_shape = 1
+emission_sphere_radius = 0.45
+direction = Vector3(0, 1, 0)
+spread = 70.0
+initial_velocity_min = 0.5
+initial_velocity_max = 1.4
+gravity = Vector3(0, 0.35, 0)
+damping_min = 0.4
+damping_max = 0.9
+scale_min = 0.6
+scale_max = 1.2
+color = Color(1, 0.85, 0.45, 1)
+color_ramp = SubResource("GradTex_motes")
+
+[sub_resource type="StandardMaterial3D" id="Mat_motes"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.85, 0.45, 1)
+emission_enabled = true
+emission = Color(1, 0.8, 0.4, 1)
+emission_energy_multiplier = 2.0
+billboard_mode = 3
+
+[sub_resource type="QuadMesh" id="Mesh_motes"]
+material = SubResource("Mat_motes")
+size = Vector2(0.08, 0.08)
+
+[node name="Wolf" type="CharacterBody3D" groups=["animal"]]
+collision_layer = 16
+collision_mask = 3
+floor_snap_length = 0.3
+script = ExtResource("1_creature")
+max_health = 60.0
+disposition = 2
+move_speed = 2.5
+flee_speed = 7.0
+chase_speed = 5.5
+sight_range = 14.0
+wander_radius = 8.0
+home_leash = 25.0
+attack_range = 1.8
+attack_damage = 12.0
+attack_cooldown = 1.6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("Shape_wolf")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("Mesh_wolf")
+
+[node name="Nose" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.65)
+mesh = SubResource("Mesh_nose")
+
+[node name="Motes" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+emitting = false
+amount = 48
+lifetime = 1.2
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("PPM_motes")
+draw_pass_1 = SubResource("Mesh_motes")

@@ -1,10 +1,13 @@
 extends CharacterBody3D
 class_name PlayerController
-## Souls-like locomotion: camera-relative walk/sprint, dodge roll, gravity, fall tracking.
-## There is no health system yet: a hard landing only emits took_fall_damage; a lethal one asks Game to kill.
+## Souls-like locomotion: camera-relative walk/sprint, dodge roll, gravity, fall tracking, plus the player's
+## Health and the Melee child. Hard landings deal scaled damage; a lethal one or empty health asks Game to kill.
+## The player does not extend Damageable (no multiple inheritance) but offers the same take_damage shape.
 
 signal took_fall_damage(drop: float)
 signal dodged()
+signal health_changed(fraction: float)
+signal damaged(amount: float, from: Node)
 
 @export_group("Movement")
 @export var walk_speed: float = 4.2
@@ -25,9 +28,12 @@ signal dodged()
 @export var stamina_regen_per_sec: float = 30.0
 @export var stamina_regen_delay_sec: float = 0.6
 @export var sprint_drain_per_sec: float = 18.0
+@export_group("Health")
+@export var max_health: float = 100.0
 @export_group("Falling")
 @export var fall_damage_height: float = 8.0
 @export var killing_fall_height: float = 16.0
+@export var fall_damage_per_metre: float = 12.0
 @export_group("Steps")
 @export var step_up_enabled: bool = true
 @export var max_step_height: float = 0.4
@@ -37,9 +43,12 @@ var is_invulnerable: bool = false
 var is_dodging: bool = false
 
 @onready var _rig: CameraRig = %CameraRig
+@onready var _melee: Melee = get_node_or_null(^"Melee") as Melee
 
 var _stamina: Stamina = Stamina.new()
+var _health: Health = Health.new()
 var _game: Node
+var _inventory: Node
 var _state_playing: int = -1
 var _sprinting: bool = false
 var _dodge_time_left: float = 0.0
@@ -52,14 +61,21 @@ var _wish_dir: Vector3 = Vector3.ZERO
 func _ready() -> void:
 	_sync_stamina_tuning()
 	_stamina.reset()
+	_health.set_max(max_health, false)
+	_health.reset()
 	if _game == null:
-		_inject(get_node_or_null(^"/root/Game"))
+		_inject(get_node_or_null(^"/root/Game"), get_node_or_null(^"/root/Inventory"))
+	_auto_equip()
 
 
 # The Game autoload is looked up by path instead of the `Game` global so tests can hand in an instance
 # before autoloads exist (same idiom as Game._inject for SaveGame).
-func _inject(game: Node) -> void:
+func _inject(game: Node, inventory: Node = null) -> void:
 	_game = game
+	if inventory != null and inventory != _inventory:
+		_inventory = inventory
+		if not _inventory.is_connected(&"item_added", _on_item_added):
+			_inventory.connect(&"item_added", _on_item_added)
 	if _game == null:
 		return
 	_state_playing = _game.State.PLAYING
@@ -97,6 +113,36 @@ func _physics_process(delta: float) -> void:
 
 func stamina_fraction() -> float:
 	return _stamina.fraction()
+
+
+func health_fraction() -> float:
+	return _health.fraction()
+
+
+func get_stamina() -> Stamina:
+	return _stamina
+
+
+func get_health() -> Health:
+	return _health
+
+
+func get_melee() -> Melee:
+	return _melee
+
+
+# Dodge i-frames and any non-PLAYING state (dead, paused, menu) swallow damage outright.
+func take_damage(amount: float, from: Node) -> float:
+	if is_invulnerable or not _is_playing():
+		return 0.0
+	var applied: float = _health.damage(amount)
+	if applied <= 0.0:
+		return 0.0
+	damaged.emit(applied, from)
+	health_changed.emit(_health.fraction())
+	if _health.is_dead():
+		_game.kill_player()
+	return applied
 
 
 func is_sprinting() -> bool:
@@ -201,8 +247,32 @@ func _update_fall_tracking(on_floor: bool, y: float) -> void:
 	if drop <= fall_damage_height:
 		return
 	took_fall_damage.emit(drop)
-	if drop > killing_fall_height and _game != null:
-		_game.kill_player()
+	if drop > killing_fall_height:
+		if _game != null:
+			_game.kill_player()
+		return
+	take_damage(fall_damage_for(drop), null)
+
+
+# Damage grows linearly with every metre past fall_damage_height; the hard kill above killing_fall_height
+# stays in _update_fall_tracking so a lethal drop never depends on these numbers.
+func fall_damage_for(drop: float) -> float:
+	return maxf(drop - fall_damage_height, 0.0) * fall_damage_per_metre
+
+
+func _on_item_added(_id: StringName, _amount: int) -> void:
+	_auto_equip()
+
+
+# Best weapon held wins: sword > hammer > torch. Nothing held leaves the hands empty (Melee's unarmed entry).
+func _auto_equip() -> void:
+	if _melee == null or _inventory == null:
+		return
+	for id: StringName in [&"sword", &"hammer", &"torch"]:
+		if _inventory.has(id):
+			_melee.equip(id)
+			return
+	_melee.unequip()
 
 
 func _on_respawned() -> void:
@@ -214,5 +284,7 @@ func _on_respawned() -> void:
 	_sprinting = false
 	_airborne = false
 	_stamina.reset()
+	_health.reset()
+	health_changed.emit(_health.fraction())
 	if _rig != null:
 		_rig.snap_to_target()

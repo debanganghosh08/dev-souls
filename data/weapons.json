@@ -1,0 +1,26 @@
+{
+	"unarmed": {
+		"name": "Bare hands",
+		"damage_multiplier": 0.3,
+		"stamina_multiplier": 0.8,
+		"reach_bonus": -0.7
+	},
+	"torch": {
+		"name": "Torch",
+		"damage_multiplier": 0.55,
+		"stamina_multiplier": 0.9,
+		"reach_bonus": -0.2
+	},
+	"sword": {
+		"name": "Sword",
+		"damage_multiplier": 1.0,
+		"stamina_multiplier": 1.0,
+		"reach_bonus": 0.0
+	},
+	"hammer": {
+		"name": "Hammer",
+		"damage_multiplier": 1.6,
+		"stamina_multiplier": 1.5,
+		"reach_bonus": 0.2
+	}
+}
