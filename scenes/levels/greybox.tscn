@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://proplore0104" path="res://scenes/props/lore_stone.tscn" id="5_lore"]
 [ext_resource type="PackedScene" uid="uid://proplever104" path="res://scenes/props/lever.tscn" id="6_lever"]
 [ext_resource type="PackedScene" uid="uid://propdoor0104" path="res://scenes/props/door.tscn" id="7_door"]
+[ext_resource type="PackedScene" uid="uid://skyenv0w2010" path="res://scenes/environment/sky.tscn" id="8_sky"]
 
 [sub_resource type="Environment" id="Environment_grey"]
 background_mode = 1
@@ -183,12 +184,9 @@ size = Vector3(4, 3, 0.4)
 [node name="Greybox" type="Node3D"]
 script = ExtResource("1_level")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_grey")
-
-[node name="Sun" type="DirectionalLight3D" parent="."]
-rotation = Vector3(-0.85, 0.6, 0)
-shadow_enabled = true
+[node name="Sky" parent="." instance=ExtResource("8_sky")]
+area = &"vale"
+start_hour = 8.0
 
 [node name="World" type="Node3D" parent="."]
 
