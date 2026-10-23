@@ -1,0 +1,380 @@
+[gd_scene load_steps=49 format=3 uid="uid://greybox0w103"]
+
+[ext_resource type="Script" uid="uid://cntx7xmq1l8r7" path="res://scenes/levels/greybox.gd" id="1_level"]
+[ext_resource type="PackedScene" uid="uid://player0w1030" path="res://scenes/player/player.tscn" id="2_player"]
+
+[sub_resource type="Environment" id="Environment_grey"]
+background_mode = 1
+background_color = Color(0.52, 0.54, 0.58, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.62, 0.62, 0.66, 1)
+ambient_light_energy = 0.7
+fog_enabled = true
+fog_light_color = Color(0.52, 0.54, 0.58, 1)
+fog_density = 0.012
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(0.42, 0.42, 0.44, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_prop"]
+albedo_color = Color(0.58, 0.58, 0.6, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ramp"]
+albedo_color = Color(0.55, 0.52, 0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.64, 0.64, 0.66, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_pit"]
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_FloorMain"]
+size = Vector3(50, 1, 60)
+
+[sub_resource type="BoxMesh" id="Mesh_FloorMain"]
+material = SubResource("Mat_floor")
+size = Vector3(50, 1, 60)
+
+[sub_resource type="BoxShape3D" id="Shape_FloorEast"]
+size = Vector3(4, 1, 60)
+
+[sub_resource type="BoxMesh" id="Mesh_FloorEast"]
+material = SubResource("Mat_floor")
+size = Vector3(4, 1, 60)
+
+[sub_resource type="BoxShape3D" id="Shape_FloorPitNorth"]
+size = Vector3(6, 1, 27)
+
+[sub_resource type="BoxMesh" id="Mesh_FloorPitNorth"]
+material = SubResource("Mat_floor")
+size = Vector3(6, 1, 27)
+
+[sub_resource type="BoxShape3D" id="Shape_FloorPitSouth"]
+size = Vector3(6, 1, 27)
+
+[sub_resource type="BoxMesh" id="Mesh_FloorPitSouth"]
+material = SubResource("Mat_floor")
+size = Vector3(6, 1, 27)
+
+[sub_resource type="BoxShape3D" id="Shape_PitFloor"]
+size = Vector3(6, 1, 6)
+
+[sub_resource type="BoxMesh" id="Mesh_PitFloor"]
+material = SubResource("Mat_pit")
+size = Vector3(6, 1, 6)
+
+[sub_resource type="BoxShape3D" id="Shape_PitWallWest"]
+size = Vector3(0.2, 19, 6.4)
+
+[sub_resource type="BoxMesh" id="Mesh_PitWallWest"]
+material = SubResource("Mat_pit")
+size = Vector3(0.2, 19, 6.4)
+
+[sub_resource type="BoxShape3D" id="Shape_PitWallEast"]
+size = Vector3(0.2, 19, 6.4)
+
+[sub_resource type="BoxMesh" id="Mesh_PitWallEast"]
+material = SubResource("Mat_pit")
+size = Vector3(0.2, 19, 6.4)
+
+[sub_resource type="BoxShape3D" id="Shape_PitWallNorth"]
+size = Vector3(6.4, 19, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_PitWallNorth"]
+material = SubResource("Mat_pit")
+size = Vector3(6.4, 19, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_PitWallSouth"]
+size = Vector3(6.4, 19, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_PitWallSouth"]
+material = SubResource("Mat_pit")
+size = Vector3(6.4, 19, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_Ramp15"]
+size = Vector3(3, 0.3, 5.8)
+
+[sub_resource type="BoxMesh" id="Mesh_Ramp15"]
+material = SubResource("Mat_ramp")
+size = Vector3(3, 0.3, 5.8)
+
+[sub_resource type="BoxShape3D" id="Shape_Ledge"]
+size = Vector3(6, 1.5, 6)
+
+[sub_resource type="BoxMesh" id="Mesh_Ledge"]
+material = SubResource("Mat_prop")
+size = Vector3(6, 1.5, 6)
+
+[sub_resource type="BoxShape3D" id="Shape_Step1"]
+size = Vector3(3, 0.25, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_Step1"]
+material = SubResource("Mat_prop")
+size = Vector3(3, 0.25, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_Step2"]
+size = Vector3(3, 0.5, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_Step2"]
+material = SubResource("Mat_prop")
+size = Vector3(3, 0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_Step3"]
+size = Vector3(3, 0.75, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_Step3"]
+material = SubResource("Mat_prop")
+size = Vector3(3, 0.75, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_Step4"]
+size = Vector3(3, 1, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_Step4"]
+material = SubResource("Mat_prop")
+size = Vector3(3, 1, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_StairTop"]
+size = Vector3(3, 1, 3)
+
+[sub_resource type="BoxMesh" id="Mesh_StairTop"]
+material = SubResource("Mat_prop")
+size = Vector3(3, 1, 3)
+
+[sub_resource type="BoxShape3D" id="Shape_WallA"]
+size = Vector3(8, 4, 0.4)
+
+[sub_resource type="BoxMesh" id="Mesh_WallA"]
+material = SubResource("Mat_wall")
+size = Vector3(8, 4, 0.4)
+
+[sub_resource type="BoxShape3D" id="Shape_WallB"]
+size = Vector3(0.4, 4, 8)
+
+[sub_resource type="BoxMesh" id="Mesh_WallB"]
+material = SubResource("Mat_wall")
+size = Vector3(0.4, 4, 8)
+
+[sub_resource type="BoxShape3D" id="Shape_Ramp35"]
+size = Vector3(4, 0.3, 17.43)
+
+[sub_resource type="BoxMesh" id="Mesh_Ramp35"]
+material = SubResource("Mat_ramp")
+size = Vector3(4, 0.3, 17.43)
+
+[sub_resource type="BoxShape3D" id="Shape_Tower"]
+size = Vector3(6, 10, 6)
+
+[sub_resource type="BoxMesh" id="Mesh_Tower"]
+material = SubResource("Mat_prop")
+size = Vector3(6, 10, 6)
+
+[node name="Greybox" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_grey")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.85, 0.6, 0)
+shadow_enabled = true
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="FloorMain" type="StaticBody3D" parent="World"]
+position = Vector3(-5, -0.5, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="World/FloorMain"]
+shape = SubResource("Shape_FloorMain")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/FloorMain"]
+mesh = SubResource("Mesh_FloorMain")
+
+[node name="FloorEast" type="StaticBody3D" parent="World"]
+position = Vector3(28, -0.5, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="World/FloorEast"]
+shape = SubResource("Shape_FloorEast")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/FloorEast"]
+mesh = SubResource("Mesh_FloorEast")
+
+[node name="FloorPitNorth" type="StaticBody3D" parent="World"]
+position = Vector3(23, -0.5, -16.5)
+
+[node name="Shape" type="CollisionShape3D" parent="World/FloorPitNorth"]
+shape = SubResource("Shape_FloorPitNorth")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/FloorPitNorth"]
+mesh = SubResource("Mesh_FloorPitNorth")
+
+[node name="FloorPitSouth" type="StaticBody3D" parent="World"]
+position = Vector3(23, -0.5, 16.5)
+
+[node name="Shape" type="CollisionShape3D" parent="World/FloorPitSouth"]
+shape = SubResource("Shape_FloorPitSouth")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/FloorPitSouth"]
+mesh = SubResource("Mesh_FloorPitSouth")
+
+[node name="PitFloor" type="StaticBody3D" parent="World"]
+position = Vector3(23, -20.5, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="World/PitFloor"]
+shape = SubResource("Shape_PitFloor")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/PitFloor"]
+mesh = SubResource("Mesh_PitFloor")
+
+[node name="PitWallWest" type="StaticBody3D" parent="World"]
+position = Vector3(19.9, -10.5, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="World/PitWallWest"]
+shape = SubResource("Shape_PitWallWest")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/PitWallWest"]
+mesh = SubResource("Mesh_PitWallWest")
+
+[node name="PitWallEast" type="StaticBody3D" parent="World"]
+position = Vector3(26.1, -10.5, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="World/PitWallEast"]
+shape = SubResource("Shape_PitWallEast")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/PitWallEast"]
+mesh = SubResource("Mesh_PitWallEast")
+
+[node name="PitWallNorth" type="StaticBody3D" parent="World"]
+position = Vector3(23, -10.5, -3.1)
+
+[node name="Shape" type="CollisionShape3D" parent="World/PitWallNorth"]
+shape = SubResource("Shape_PitWallNorth")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/PitWallNorth"]
+mesh = SubResource("Mesh_PitWallNorth")
+
+[node name="PitWallSouth" type="StaticBody3D" parent="World"]
+position = Vector3(23, -10.5, 3.1)
+
+[node name="Shape" type="CollisionShape3D" parent="World/PitWallSouth"]
+shape = SubResource("Shape_PitWallSouth")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/PitWallSouth"]
+mesh = SubResource("Mesh_PitWallSouth")
+
+[node name="Ramp15" type="StaticBody3D" parent="World"]
+position = Vector3(-10, 0.605, 6)
+rotation = Vector3(-0.261799, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Ramp15"]
+shape = SubResource("Shape_Ramp15")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Ramp15"]
+mesh = SubResource("Mesh_Ramp15")
+
+[node name="Ledge" type="StaticBody3D" parent="World"]
+position = Vector3(-10, 0.75, 11.8)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Ledge"]
+shape = SubResource("Shape_Ledge")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Ledge"]
+mesh = SubResource("Mesh_Ledge")
+
+[node name="Step1" type="StaticBody3D" parent="World"]
+position = Vector3(0, 0.125, 8.25)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Step1"]
+shape = SubResource("Shape_Step1")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Step1"]
+mesh = SubResource("Mesh_Step1")
+
+[node name="Step2" type="StaticBody3D" parent="World"]
+position = Vector3(0, 0.25, 8.75)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Step2"]
+shape = SubResource("Shape_Step2")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Step2"]
+mesh = SubResource("Mesh_Step2")
+
+[node name="Step3" type="StaticBody3D" parent="World"]
+position = Vector3(0, 0.375, 9.25)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Step3"]
+shape = SubResource("Shape_Step3")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Step3"]
+mesh = SubResource("Mesh_Step3")
+
+[node name="Step4" type="StaticBody3D" parent="World"]
+position = Vector3(0, 0.5, 9.75)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Step4"]
+shape = SubResource("Shape_Step4")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Step4"]
+mesh = SubResource("Mesh_Step4")
+
+[node name="StairTop" type="StaticBody3D" parent="World"]
+position = Vector3(0, 0.5, 11.5)
+
+[node name="Shape" type="CollisionShape3D" parent="World/StairTop"]
+shape = SubResource("Shape_StairTop")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/StairTop"]
+mesh = SubResource("Mesh_StairTop")
+
+[node name="WallA" type="StaticBody3D" parent="World"]
+position = Vector3(12, 2, 12)
+
+[node name="Shape" type="CollisionShape3D" parent="World/WallA"]
+shape = SubResource("Shape_WallA")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/WallA"]
+mesh = SubResource("Mesh_WallA")
+
+[node name="WallB" type="StaticBody3D" parent="World"]
+position = Vector3(15.8, 2, 8.2)
+
+[node name="Shape" type="CollisionShape3D" parent="World/WallB"]
+shape = SubResource("Shape_WallB")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/WallB"]
+mesh = SubResource("Mesh_WallB")
+
+[node name="Ramp35" type="StaticBody3D" parent="World"]
+position = Vector3(-20, 4.878, -5.95)
+rotation = Vector3(0.610865, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Ramp35"]
+shape = SubResource("Shape_Ramp35")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Ramp35"]
+mesh = SubResource("Mesh_Ramp35")
+
+[node name="Tower" type="StaticBody3D" parent="World"]
+position = Vector3(-20, 5, -16)
+
+[node name="Shape" type="CollisionShape3D" parent="World/Tower"]
+shape = SubResource("Shape_Tower")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Tower"]
+mesh = SubResource("Mesh_Tower")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+unique_name_in_owner = true
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="DebugLabel" type="Label" parent="HUD"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 700.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
+text = "debug readout"
