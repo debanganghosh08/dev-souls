@@ -22,3 +22,17 @@ script (page licence string must say CC0, size and magic bytes checked) before i
 `github.com/debanganghosh08/dev-souls` (private) holds code, scenes, data, docs, scripts — **no assets or binaries**
 (models, textures, audio, builds). Assets are rebuilt from the verified ID lists by the download script. Only the
 lead pushes, only reviewed work on `main`, after each merge. Not used for hosting.
+
+**D-006 (2026-10-23) Candle shrines are respawn points.** One per area, lit by the player, becomes the respawn
+point via `Game.set_respawn()`. The spawn grave is the default until the first is lit. Why: the owner never
+answered the open question and it blocked the respawn code; walking ~1 km back after every trap death is the
+classic reason players quit. The owner can revert to grave-only at any time.
+
+**D-007 (2026-10-23) Weekly milestones, Opus leads, Fable implements.** The owner now has a long-term Claude
+subscription, so the 2026-10-19 hand-over to Gemini is void. Planning/review is cheap in tokens and high-leverage
+while bulk code is expensive, so the lead specs and reviews, Fable subagents write code against those specs, and
+Gemini (free on the owner's Google plan) does bulk content and research. Full table in `docs/PLAN.md` v2.
+
+**D-008 (2026-10-23) Godot 4.7.2 stable, Jolt physics, Forward+.** Installed via winget; not on PATH, so every
+command uses the full path in `docs/TOOLS.md` (the `_console.exe` build for anything headless). Verified: Jolt
+active, Forward+ active, 12 input actions, named 3D physics layers.

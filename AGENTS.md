@@ -11,11 +11,13 @@ It is a separate project from `../souls-portfolio` (the web portfolio) — **nev
 ## Team and roles
 | Who | Role |
 |---|---|
-| Owner (Debangan) | Final say on story, look, scope. Does in-editor painting/placement when that is faster than AI. |
-| Claude (lead, available until **2026-10-19**, limited tokens) | Architecture, core systems, hard bugs, writes task specs, reviews merges. |
-| Gemini 3.1 Pro (High), Antigravity | Main implementer: features from `TASKS.md` specs. **Becomes lead after 2026-10-19.** |
-| Gemini Flash (3.6–3.8) | Bulk content: dialogue, item text, data rows, asset lists, docs, small scripts. |
-| Claude 4.6 / GPT-OSS 120B (Antigravity) | Second-opinion reviews only, when a change is risky. |
+| Owner (Debangan) | Final say on story, look, scope. Judges how the game *feels* and *looks* — no agent can. In-editor painting/placement when that beats scripting. |
+| **Claude Opus — lead** (long-term) | Architecture, specs, reviews, hard bugs, merges, the only one who pushes. |
+| **Claude Fable 5.1 subagents** | Implement one specced system at a time, run the headless checks, write the report. |
+| Gemini 3.1 Pro / Flash (Antigravity) | Bulk content (dialogue, item text, data rows), research, asset verification. |
+| Claude Sonnet / GPT-OSS (Antigravity) | Second-opinion review when a change is risky. |
+
+Weekly milestones and the full schedule live in `docs/PLAN.md`. Tool paths and commands: `docs/TOOLS.md`.
 
 ## Task protocol (how agents talk to each other — through files, not chat)
 1. Pick the top `READY` task assigned to you in `docs/TASKS.md`. Do only that task.
@@ -47,7 +49,7 @@ page, and mark anything else `UNVERIFIED`.
 - GDScript with **static typing everywhere** (`var hp: int = 3`, typed function signatures). Godot 4 style guide.
 - One scene per thing (`scenes/npc/maren.tscn`), its script next to it. Small scripts (< 300 lines).
 - Content lives in **`data/`** (JSON + `.dialogue` files), never hard-coded in scripts.
-- Global state only through the autoloads: `Game` (flow, death/respawn), `Flags` (story/quest flags), `Save`,
+- Global state only through the autoloads: `Game` (flow, death/respawn), `Flags` (story/quest flags), `SaveGame`,
   `Inventory`, `AudioBus`. Communicate with signals, not polling.
 - No per-frame allocations in `_process`/`_physics_process`; cache node refs in `_ready`.
 - Pure logic (flags, quests, inventory, save format) gets GUT tests in `tests/`.

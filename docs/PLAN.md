@@ -1,71 +1,60 @@
-# Dev Souls — Technical plan, budgets, schedule (v1, 2026-10-09)
+# Dev Souls — Technical plan, budgets, schedule (v2, 2026-10-23)
 
-## Machine (measured 2026-10-09)
-i9-12900H 14c/20t · 32 GB RAM · RTX 3070 Ti Laptop 8 GB VRAM (+ Iris Xe) · C: 79 GB free.
-Verdict: comfortably enough for Godot 4 development and for running this game at high settings.
+## What changed in v2
+The owner now has their own long-term Claude Max subscription, so the "Claude disappears on 2026-10-19"
+deadline is **gone**. Cadence is now **one focused milestone per week**, each ending in a playable build.
+Disk allowance raised to **7–10 GB**. Everything still documented so any agent can pick up the work.
 
-## Stack (decided)
-| Need | Choice | Why |
+## Machine (measured 2026-10-09, re-checked 10-23)
+i9-12900H 14c/20t · 32 GB RAM · RTX 3070 Ti Laptop 8 GB VRAM · C: ~129 GB free. Plenty for this project.
+
+## Stack (installed / decided)
+| Need | Choice | Status |
 |---|---|---|
-| Engine | **Godot 4.x stable, standard (GDScript) build**, Forward+ renderer | Free, light (~150 MB), exports .exe, text scene files AI can read/edit |
-| Terrain + foliage | **Terrain3D** plugin (MIT) | 1–2 km terrains with clipmap LOD, texture painting, instanced foliage/rocks |
-| Physics | **Jolt** (built into Godot 4.4+, enable in Project Settings) | Fast, stable character/rigid-body physics |
-| Dialogue | **Dialogue Manager** plugin (MIT) | Plain-text `.dialogue` files with flag conditions — ideal for LLM-written content |
-| Tests | **GUT** (MIT) | Headless tests for flags/inventory/save |
-| Assets | CC0: Quaternius (characters, animals, nature, modular ruins), Kenney, Poly Haven, ambientCG, Poly Pizza CC0 | Free, legal to sell |
-| Audio | CC0 (freesound CC0 filter, Sonniss GDC bundles are royalty-free) + Godot audio buses with reverb zones | — |
-| Distribution | Windows export → zip/installer (Inno Setup) → **itch.io** (free, `butler` uploads) + link on the portfolio | Steam later ($100 fee) |
-Pin exact versions on day 1 in `docs/DECISIONS.md`. Never upgrade mid-project without a reason.
+| Engine | **Godot 4.7.2 stable** (standard, GDScript), Forward+ renderer | INSTALLED 10-23 via winget. See `docs/TOOLS.md` for paths |
+| Physics | **Jolt** (built into Godot 4.4+) | Enable in project settings |
+| Terrain + foliage | **Terrain3D** (MIT) | Install in W2 |
+| Dialogue | **Dialogue Manager** (MIT) | Install in W4 |
+| Tests | GDScript headless runner (`tests/run_tests.gd`), no addon needed | W1 |
+| Assets | CC0 only — exact verified IDs in `docs/reports/T-006.md` | Download script in W3 |
+| Distribution | Windows export → Inno Setup installer → itch.io + portfolio link | W6 |
 
-## How "only render what's near the player" works
-- **Areas = separate scenes**, loaded in the background with `ResourceLoader.load_threaded_request` while the
-  player walks a connecting pass; the area behind is freed. At most 2 areas in memory.
-- **Inside an area:** Terrain3D clipmap LOD (far terrain is cheap), foliage via MultiMesh instancing,
-  **visibility ranges** (HLOD) on props/buildings, **occlusion culling** (baked occluders for castle/hills),
-  LOD meshes auto-generated on import, fog hides the far distance (also the art style).
-- Targets on the owner's RTX 3070 Ti: **60 fps at 1440p, FSR2 quality** · ≤ 2,000 draw calls · ≤ 3 M tris visible
-  · VRAM ≤ 5 GB · Fps cap 60 + V-sync default (keeps the laptop cool). Low/Medium/High presets for other PCs.
+## Model / agent architecture (token economics)
+Planning is cheap and high-leverage; bulk code is expensive. So:
+| Work | Who | Why |
+|---|---|---|
+| Architecture, specs, reviews, hard bugs, merges, pushes | **Claude Opus (lead)** | Small output, needs judgment |
+| Implementing a specced system, one at a time | **Claude Fable 5.1 subagents** | Large output, tight spec, cheap |
+| Content in bulk (dialogue, item text, data rows), research, asset verification | **Gemini in Antigravity** | Free on the owner's Google plan |
+| Second opinion on a risky change | Claude Sonnet / GPT-OSS in Antigravity | Cheap sanity check |
+Rules: one system per agent · spec names the exact files · agent runs the headless checks · lead reviews the diff
+· lead commits and pushes. No agent pushes. No agent invents lore or scope.
 
-## Size budget (hard cap 5 GB on disk)
-Godot editor 0.15 GB · export templates ~1 GB (delete non-Windows templates after install) · source assets
-≤ 2 GB · `.godot/` import cache ≤ 1 GB · builds ≤ 0.8 GB. **Shipped game ≤ 1.5 GB.**
-Textures 2K max (1K for small props), VRAM-compressed; audio OGG.
+## Weekly milestones (each ends in a playable build + a tag)
+| Week | Milestone | Verified by |
+|---|---|---|
+| **W1** (tonight, 10-23) | **Foundation:** project scaffold; autoloads Game/Flags/Save/Inventory; third-person player + camera (walk/sprint/dodge/stamina); interaction system; death + respawn; save/load; greybox test level; headless tests | Headless tests + owner walks the greybox |
+| W2 | World streaming + Terrain3D; area scenes load/free at passes; day/night cycle; fog + per-area grade; perf HUD | Walk 1 km, no hitches, fps logged |
+| W3 | **Ashen Vale**: asset download script (verified CC0 IDs), procedural trees, castle/ruins kit, village, ponds, props | Area walkable and dressed |
+| W4 | NPCs + Dialogue Manager + quest flags; 13 NPC scenes; item cards + inventory UI; main menu/pause/settings | Full Vale quest chain completable |
+| W5 | **Weeping Wood** + **Sunscar Barrens**; animals + simple combat + the Hollowed; traps | All three areas completable |
+| W6 | The Hearth, both endings, audio pass, perf pass, Windows export + installer, itch.io page | Full playthrough start → ending |
+Cut order if a week overruns: Barrens size → secrets count → NPC count (13→9) → combat variety. The
+three-Kindling story always stays.
 
-## Schedule
-Claude is available until **2026-10-19** with a shared, limited budget → Claude does the *heavy, hard-to-get-right*
-parts; everything content-shaped goes to Gemini. ★ = needs Claude.
+## Size budget (cap 10 GB on disk; shipped game ≤ 2 GB)
+Godot editor ~0.2 GB · export templates ~1 GB (Windows only, delete the rest) · source assets ≤ 3 GB ·
+`.godot/` import cache ≤ 2 GB · builds ≤ 1 GB. Textures 2K max (1K for small props); audio OGG.
 
-| Day | Date | Work | Who |
-|---|---|---|---|
-| D0 | 10-09 | Plan, design draft, Gemini onboarding | Claude ★ |
-| D1 | 10-10 | Owner installs Godot + approves story. Gemini: version/licence check + asset sourcing list | Owner, Gemini |
-| D2 | 10-11 | Project scaffold, autoloads (Game/Flags/Save/Inventory), player controller + camera, interaction, death/respawn, save/load, tests | Claude ★ |
-| D3 | 10-12 | Dialogue integration + flag-reactive NPC base, item card + inventory UI, main menu/pause/settings | Claude ★ / Gemini (UI) |
-| D4 | 10-13 | Asset pipeline (import presets, LOD, CC0 credits), player + animal rigs/animations, simple combat + animal AI | Claude ★ / Gemini (imports) |
-| D5 | 10-14 | Area A Ashen Vale: terrain, castle kit, village, ponds, atmosphere + area streaming | Claude ★ + Owner (painting) |
-| D6 | 10-15 | Area B Weeping Wood: dense forest, rain, water shader, bog | Claude ★ / Gemini |
-| D7 | 10-16 | Area C Sunscar Barrens: desert, sheds, windmill, mirage effect, dusk logic | Gemini (Claude reviews) |
-| D8 | 10-17 | Puzzles, traps, all 13 NPCs + dialogue, secrets placement | Gemini + Gemini Flash |
-| D9 | 10-18 | Hearth + endings, audio pass, perf pass, Windows export + installer | Claude ★ |
-| D10 | 10-19 | Full playthrough, bug list, **hand-over docs frozen** (DECISIONS, TASKS backlog for Gemini) | Claude ★ |
-If tokens run short, cut in this order: Barrens size → secrets count → NPC count (13 → 9) → combat enemies. The
-three-Kindling story stays.
+## Performance targets (owner's RTX 3070 Ti)
+60 fps at 1440p with FSR2 quality · ≤ 2,000 draw calls · ≤ 3 M tris visible · VRAM ≤ 5 GB · fps cap 60 + V-sync
+on by default so the laptop stays cool. Low/Medium/High presets for other machines.
 
-## After 2026-10-19 (Gemini leads)
-Gemini 3.1 Pro works through the remaining `TASKS.md` backlog (content, polish, bug fixes) with Gemini Flash for
-bulk text. Rules don't change: one task, one branch, one report, owner merges. Risky changes get a second-opinion
-review from Claude 4.6 or GPT-OSS inside Antigravity.
-
-## Token-saving rules (for all agents)
-- Data-driven: new NPC/item/quest step = data rows + a `.dialogue` file, not new code.
-- Specs in `TASKS.md` name the exact files to touch → agents never scan the repo.
-- Reports ≤ 40 lines; reviews look at the diff only.
-- Godot scene placement and terrain painting are faster by hand in the editor — the owner does them; AI writes
-  scripts that scatter/place by rule when the count is large.
-- One full-autonomy day for Claude when the shared budget allows: use it for D5–D6 (areas + streaming), the
-  hardest work.
+## Laptop safety (unchanged, applies to every agent)
+Check CPU load < 50 % before heavy jobs (imports, bakes, exports) · one heavy process at a time · never leave the
+game or editor running in the background · short runs.
 
 ## Risks
-Scope (3 areas in 10 days is tight; areas may ship greyboxed and get art after 10-19) · asset style mismatch
-(stick to one main source per category) · Windows SmartScreen warns on unsigned .exe (normal for itch.io games;
-signing costs money later) · laptop heat during bakes/exports (one heavy job at a time).
+Scope is the main one: 3 areas is a lot of content, so areas may stay greybox for a week before art lands ·
+realistic CC0 trees do not exist (solved: procedural, D-002) · unsigned .exe triggers a SmartScreen warning
+(normal for itch.io; code signing costs money later) · heat during export/bake (one job at a time).
