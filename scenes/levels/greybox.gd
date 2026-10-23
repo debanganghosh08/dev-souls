@@ -41,6 +41,12 @@ func _ready() -> void:
 	if _game != null:
 		_game.state = _game.State.PLAYING
 	_probe = OS.get_cmdline_user_args().has("--probe")
+	if _probe:
+		# Interacting autosaves. Redirect to a throwaway slot BEFORE anything writes, so a probe run can
+		# neither overwrite nor delete the player's real save.
+		var save: Node = get_node_or_null(^"/root/SaveGame")
+		if save != null:
+			save.use_slot_path("user://probe_slot.json")
 
 
 func _process(_delta: float) -> void:
@@ -117,7 +123,7 @@ func _physics_process(_delta: float) -> void:
 		_probe_phase = 3
 	elif _probe_phase == 3 and (_game.state == _game.State.DEAD or _probe_frames >= PROBE_MAX_FRAMES):
 		print("PROBE pit state=%s y=%.3f drop=%.2f" % [_state_name(), _player.global_position.y, _last_fall])
-		# The interactions above autosaved; a probe must not leave its flags in the real save slot.
+		# Remove the throwaway probe slot redirected to in _ready (never the real one).
 		var save: Node = get_node_or_null(^"/root/SaveGame")
 		if save != null:
 			save.delete()
