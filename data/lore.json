@@ -1,0 +1,30 @@
+{
+	"_missing": {
+		"title": "Worn Stone",
+		"body": "Whatever was written here has been rained on for too long. Only the shape of the letters remains, and they are not letters anyone still reads."
+	},
+	"grave_marker": {
+		"title": "Grave Marker",
+		"body": "No name. Only a shallow groove where a candle stood until the wax ran out. Someone dug this grave for you, and did not wait to see you climb out of it."
+	},
+	"chapel_inscription": {
+		"title": "Chapel Lintel",
+		"body": "When the water warms, ring the bells in the order the dead were laid down. The dead were laid down in the order they stopped tending the fire. Nobody tends it now."
+	},
+	"sluice_notice": {
+		"title": "Sluice House Notice",
+		"body": "The wheel is kept elsewhere by order of the lord, for the pond must not be drained while the thing beneath it still sleeps. If it wakes, draining it will not matter."
+	},
+	"shrine_verse": {
+		"title": "Candle Shrine Verse",
+		"body": "A wick exists to carry flame, and flame exists to be carried down. We lit these candles so the Hearth would know the way back up. It has not looked up in a long time."
+	},
+	"windmill_verse": {
+		"title": "Windmill Verse",
+		"body": "The sails turned while the wind had something to say. Now the wind only remembers. One syllable of the Name is carved where the miller could see it from his bed."
+	},
+	"crypt_verse": {
+		"title": "Crypt Verse",
+		"body": "The living let the Name go one letter at a time, and the dead picked them up. Lie still beside them a while and you will hear a coffin lid repeating the first."
+	}
+}

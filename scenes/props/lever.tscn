@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://proplever104"]
+
+[ext_resource type="Script" uid="uid://bjn4wjtrri8xn" path="res://scripts/systems/interactables/lever.gd" id="1_lever"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_iron"]
+albedo_color = Color(0.4, 0.4, 0.42, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_glow"]
+albedo_color = Color(0.35, 0.3, 0.25, 1)
+emission_enabled = true
+emission = Color(1, 0.72, 0.4, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="BoxShape3D" id="Shape_lever"]
+size = Vector3(0.6, 1.2, 0.6)
+
+[sub_resource type="BoxMesh" id="Mesh_base"]
+material = SubResource("Mat_iron")
+size = Vector3(0.4, 0.5, 0.4)
+
+[sub_resource type="CylinderMesh" id="Mesh_handle"]
+material = SubResource("Mat_iron")
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.8
+
+[sub_resource type="BoxMesh" id="Mesh_glow"]
+size = Vector3(0.12, 0.12, 0.12)
+
+[node name="Lever" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_lever")
+prompt = "Pull"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("Shape_lever")
+
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("Mesh_base")
+
+[node name="Handle" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="HandleMesh" type="MeshInstance3D" parent="Handle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("Mesh_handle")
+
+[node name="Glow" type="MeshInstance3D" parent="Handle"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+material_override = SubResource("Mat_glow")
+mesh = SubResource("Mesh_glow")

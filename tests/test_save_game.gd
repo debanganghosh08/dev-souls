@@ -4,6 +4,8 @@ const FlagsScript := preload("res://scripts/autoloads/flags.gd")
 const InventoryScript := preload("res://scripts/autoloads/inventory.gd")
 const SaveScript := preload("res://scripts/autoloads/save_game.gd")
 const GameScript := preload("res://scripts/autoloads/game.gd")
+# Never the real slot: a test run must not be able to destroy the player's save.
+const TEST_SLOT := "user://test_save_slot.json"
 
 var flags: Node
 var inv: Node
@@ -19,6 +21,7 @@ func setup() -> void:
 	save = SaveScript.new()
 	save._inject(flags, inv, game)
 	game._inject(save)
+	save.use_slot_path(TEST_SLOT)
 
 
 func teardown() -> void:
@@ -30,7 +33,7 @@ func teardown() -> void:
 
 
 func _write_raw(text: String) -> void:
-	var f: FileAccess = FileAccess.open(SaveScript.SAVE_PATH, FileAccess.WRITE)
+	var f: FileAccess = FileAccess.open(save.slot_path, FileAccess.WRITE)
 	f.store_string(text)
 	f.close()
 
@@ -68,7 +71,7 @@ func test_save_load_round_trip() -> void:
 	assert_true(save.save(), "save succeeds")
 	assert_eq(saved_count[0], 1, "saved emitted")
 	assert_true(save.has_save(), "file exists after save")
-	assert_false(FileAccess.file_exists(SaveScript.TMP_PATH), "tmp file renamed away")
+	assert_false(FileAccess.file_exists(save._tmp_path), "tmp file renamed away")
 	_clear_state()
 	assert_true(save.load_slot(), "load succeeds")
 	assert_eq(flags.all_flags(), [&"kindling_grey_taken", &"met_wick"], "flags restored")
@@ -83,7 +86,7 @@ func test_save_load_round_trip() -> void:
 func test_saved_json_shape() -> void:
 	_fill_state()
 	save.save()
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(SaveScript.SAVE_PATH))
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(save.slot_path))
 	assert_true(data is Dictionary, "save is a JSON object")
 	for key: String in ["version", "flags", "inventory", "respawn_area", "respawn_point",
 			"player_position", "time_of_day", "playtime_seconds"]:
@@ -111,7 +114,7 @@ func test_corrupt_file_returns_false_and_keeps_state() -> void:
 func test_newer_version_returns_false() -> void:
 	_fill_state()
 	save.save()
-	var text: String = FileAccess.get_file_as_string(SaveScript.SAVE_PATH)
+	var text: String = FileAccess.get_file_as_string(save.slot_path)
 	_write_raw(text.replace("\"version\": 1", "\"version\": %d" % (SaveScript.SAVE_VERSION + 1)))
 	_clear_state()
 	assert_false(save.load_slot(), "newer version rejected")
@@ -136,13 +139,13 @@ func test_autosave_is_throttled() -> void:
 	save.request_autosave()
 	save._process(0.1)
 	assert_true(save.has_save(), "first request writes on next frame once the throttle is clear")
-	var first: String = FileAccess.get_file_as_string(SaveScript.SAVE_PATH)
+	var first: String = FileAccess.get_file_as_string(save.slot_path)
 	game.time_of_day = 3.0
 	save.request_autosave()
 	save._process(1.0)
-	assert_eq(FileAccess.get_file_as_string(SaveScript.SAVE_PATH), first, "second write held within 5 s")
+	assert_eq(FileAccess.get_file_as_string(save.slot_path), first, "second write held within 5 s")
 	save._process(SaveScript.AUTOSAVE_INTERVAL_SEC)
-	assert_ne(FileAccess.get_file_as_string(SaveScript.SAVE_PATH), first, "coalesced write lands after 5 s")
+	assert_ne(FileAccess.get_file_as_string(save.slot_path), first, "coalesced write lands after 5 s")
 
 
 func test_set_respawn_requests_autosave() -> void:
@@ -151,3 +154,17 @@ func test_set_respawn_requests_autosave() -> void:
 	assert_eq(game.respawn_area, &"barrens", "area stored")
 	save._process(SaveScript.AUTOSAVE_INTERVAL_SEC + 0.1)
 	assert_true(save.has_save(), "shrine triggers an autosave within the throttle interval")
+
+
+func test_slot_path_can_be_redirected_for_tests() -> void:
+	assert_eq(save.slot_path, TEST_SLOT, "setup redirected the slot away from the real save")
+	assert_true(save._tmp_path.ends_with(".tmp"), "tmp path derives from the slot path")
+	assert_ne(save.slot_path, SaveScript.SAVE_PATH, "test slot is not the player's real slot")
+
+
+func test_slot_path_outside_user_dir_is_rejected() -> void:
+	var before: String = save.slot_path
+	save.use_slot_path("res://evil.json")
+	assert_eq(save.slot_path, before, "a non-user:// slot path is refused")
+	save.use_slot_path("/etc/passwd")
+	assert_eq(save.slot_path, before, "an absolute system path is refused")

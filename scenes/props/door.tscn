@@ -1,0 +1,81 @@
+[gd_scene load_steps=11 format=3 uid="uid://propdoor0104"]
+
+[ext_resource type="Script" uid="uid://b46l5lguhp7tj" path="res://scripts/systems/interactables/door.gd" id="1_door"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_frame"]
+albedo_color = Color(0.44, 0.42, 0.4, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_leaf"]
+albedo_color = Color(0.36, 0.3, 0.26, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_glow"]
+albedo_color = Color(0.35, 0.3, 0.25, 1)
+emission_enabled = true
+emission = Color(1, 0.72, 0.4, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="BoxShape3D" id="Shape_door_area"]
+size = Vector3(1.6, 2.4, 1.2)
+
+[sub_resource type="BoxShape3D" id="Shape_blocker"]
+size = Vector3(1.4, 2.4, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_post"]
+material = SubResource("Mat_frame")
+size = Vector3(0.2, 2.4, 0.3)
+
+[sub_resource type="BoxMesh" id="Mesh_lintel"]
+material = SubResource("Mat_frame")
+size = Vector3(1.6, 0.2, 0.3)
+
+[sub_resource type="BoxMesh" id="Mesh_leaf"]
+material = SubResource("Mat_leaf")
+size = Vector3(1.2, 2.3, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_glow"]
+size = Vector3(0.1, 0.1, 0.06)
+
+[node name="Door" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_door")
+prompt = "Open"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("Shape_door_area")
+
+[node name="PostWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 1.2, 0)
+mesh = SubResource("Mesh_post")
+
+[node name="PostEast" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 1.2, 0)
+mesh = SubResource("Mesh_post")
+
+[node name="Lintel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("Mesh_lintel")
+
+[node name="Leaf" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+
+[node name="LeafMesh" type="MeshInstance3D" parent="Leaf"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.15, 0)
+mesh = SubResource("Mesh_leaf")
+
+[node name="Glow" type="MeshInstance3D" parent="Leaf"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.0, 0.08)
+material_override = SubResource("Mat_glow")
+mesh = SubResource("Mesh_glow")
+
+[node name="Blocker" type="StaticBody3D" parent="."]
+unique_name_in_owner = true
+collision_layer = 1
+collision_mask = 0
+
+[node name="BlockerShape" type="CollisionShape3D" parent="Blocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("Shape_blocker")

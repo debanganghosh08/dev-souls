@@ -6,6 +6,11 @@ const SAVE_PATH := "user://save_slot_0.json"
 const TMP_PATH := "user://save_slot_0.tmp"
 const AUTOSAVE_INTERVAL_SEC := 5.0
 
+# Tests and headless probes must never touch the player's real slot, so the path is redirectable.
+# Everything still defaults to SAVE_PATH; only use_slot_path() moves it, and only within user://.
+var slot_path: String = SAVE_PATH
+var _tmp_path: String = TMP_PATH
+
 signal saved()
 signal loaded()
 
@@ -35,20 +40,28 @@ func _process(delta: float) -> void:
 		save()
 
 
+func use_slot_path(path: String) -> void:
+	if not path.begins_with("user://"):
+		push_error("SaveGame: slot path must be under user:// (got %s)" % path)
+		return
+	slot_path = path
+	_tmp_path = path.get_basename() + ".tmp"
+
+
 func has_save() -> bool:
-	return FileAccess.file_exists(SAVE_PATH)
+	return FileAccess.file_exists(slot_path)
 
 
 func save() -> bool:
 	var text: String = JSON.stringify(_collect(), "\t")
-	var file: FileAccess = FileAccess.open(TMP_PATH, FileAccess.WRITE)
+	var file: FileAccess = FileAccess.open(_tmp_path, FileAccess.WRITE)
 	if file == null:
-		push_error("SaveGame: cannot open %s (%s)" % [TMP_PATH, error_string(FileAccess.get_open_error())])
+		push_error("SaveGame: cannot open %s (%s)" % [_tmp_path, error_string(FileAccess.get_open_error())])
 		return false
 	file.store_string(text)
 	file.close()
 	var err: Error = DirAccess.rename_absolute(
-		ProjectSettings.globalize_path(TMP_PATH), ProjectSettings.globalize_path(SAVE_PATH))
+		ProjectSettings.globalize_path(_tmp_path), ProjectSettings.globalize_path(slot_path))
 	if err != OK:
 		push_error("SaveGame: rename failed (%s)" % error_string(err))
 		return false
@@ -61,8 +74,8 @@ func load_slot() -> bool:
 	if not has_save():
 		return false
 	var json := JSON.new()
-	if json.parse(FileAccess.get_file_as_string(SAVE_PATH)) != OK or not _is_valid(json.data):
-		push_warning("SaveGame: %s is corrupt or unreadable" % SAVE_PATH)
+	if json.parse(FileAccess.get_file_as_string(slot_path)) != OK or not _is_valid(json.data):
+		push_warning("SaveGame: %s is corrupt or unreadable" % slot_path)
 		return false
 	if int(json.data["version"]) > SAVE_VERSION:
 		push_warning("SaveGame: save version %d is newer than %d" % [int(json.data["version"]), SAVE_VERSION])
@@ -74,7 +87,7 @@ func load_slot() -> bool:
 
 func delete() -> void:
 	if has_save():
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(slot_path))
 
 
 func request_autosave() -> void:
