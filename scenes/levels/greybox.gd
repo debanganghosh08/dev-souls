@@ -12,7 +12,7 @@ const PIT_DROP_POINT := Vector3(23.0, 0.5, 0.0)
 const STAIR_START_POINT := Vector3(0.0, 0.6, 7.0)
 const CHEST_APPROACH_POINT := Vector3(2.0, 0.6, -2.0)
 const STAIR_TOP_Y := 1.0
-const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   mouse look\nE interact   Esc pause   F3 hide this readout"
+const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\ntime  %02d:%02d  %s\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   mouse look\nE interact   Esc pause   F3 hide this readout\nT +2 hours   Y hold to race the clock"
 
 @onready var _player: PlayerController = %Player
 @onready var _label: Label = %DebugLabel
@@ -50,7 +50,9 @@ func _ready() -> void:
 			save.use_slot_path("user://probe_slot.json")
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	if _game != null and Input.is_physical_key_pressed(KEY_Y):
+		_game.advance_time(delta * 2.0)
 	if not _label.visible:
 		return
 	var v: Vector3 = _player.velocity
@@ -65,15 +67,28 @@ func _process(_delta: float) -> void:
 		_state_name(),
 		_last_fall,
 		p.x, p.y, p.z,
+		int(_hour()), int(fposmod(_hour(), 1.0) * 60.0),
+		"night" if _game != null and _game.is_night() else "day",
 		_prompt if _prompt != "" else "-",
 		_refusal,
 		_reading,
 	]
 
 
+func _hour() -> float:
+	return _game.time_of_day if _game != null else 0.0
+
+
+# Raw keycodes, not input actions: these are test-level conveniences for judging the day/night look without
+# waiting out a 20-minute cycle, so they deliberately stay out of project.godot's input map.
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"debug_toggle"):
 		_label.visible = not _label.visible
+	elif event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode == KEY_T and _game != null:
+			_game.advance_time(2.0)
+
+
 
 
 # Headless probe: lets the test suite assert on real physics without driving the loop itself.

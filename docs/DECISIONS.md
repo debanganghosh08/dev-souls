@@ -33,6 +33,24 @@ subscription, so the 2026-10-19 hand-over to Gemini is void. Planning/review is 
 while bulk code is expensive, so the lead specs and reviews, Fable subagents write code against those specs, and
 Gemini (free on the owner's Google plan) does bulk content and research. Full table in `docs/PLAN.md` v2.
 
+**D-009 (2026-10-24) Photoscan trees stay quarantined; procedural trees confirmed.** Poly Haven's
+`fir_tree_01` is 465 MB and `pine_tree_01` is 914 MB — 1.35 GB for two tree species, against a 10 GB project
+cap. `tools/assets.json` marks both `optional`: their licence is checked every run but they are only fetched
+with `--include-optional`. This re-confirms D-002 (generate trees in Godot from bark + twig-card textures).
+**Follow-up worth doing:** we may still want *only the texture files* out of those two assets as twig atlases,
+without their geometry — the fetch script currently takes an asset whole or not at all.
+
+**D-010 (2026-10-24) Audio is blocked on a Freesound API key.** Freesound's API returns 401 without a token
+and the site download link 404s when not logged in, so all 24 verified CC0 sound IDs from `T-006` are out of
+the manifest for now. **Owner action:** create a free Freesound account and API key, then audio can be added.
+No substitute source and no scraping around the restriction (AGENTS.md licence rules).
+
+**D-011 (2026-10-24) Licences are asserted from the asset page, not the API.** Poly Haven's API exposes no
+licence field anywhere (`/info`, `/assets`, OpenAPI all checked), so `tools/fetch-assets.mjs` reads each asset
+page's schema.org JSON-LD and requires both the `license` URL and `copyrightNotice` to say CC0 before writing
+anything. Verified live: the CC-BY goat `d7dImmjtF8E` is refused with `SKIPPED licence ... CC-BY 3.0` and
+nothing is written. This is how D-004 is actually enforced.
+
 **D-008 (2026-10-23) Godot 4.7.2 stable, Jolt physics, Forward+.** Installed via winget; not on PATH, so every
 command uses the full path in `docs/TOOLS.md` (the `_console.exe` build for anything headless). Verified: Jolt
 active, Forward+ active, 12 input actions, named 3D physics layers.
