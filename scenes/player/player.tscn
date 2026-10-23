@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://player0w1030"]
+[gd_scene load_steps=10 format=3 uid="uid://player0w1030"]
 
 [ext_resource type="Script" uid="uid://nk1m6f1hqajs" path="res://scripts/systems/player_controller.gd" id="1_controller"]
 [ext_resource type="Script" uid="uid://cee5fmslkt2jn" path="res://scripts/systems/camera_rig.gd" id="2_rig"]
 [ext_resource type="Script" uid="uid://jewgwjqb2ivf" path="res://scripts/systems/interaction_detector.gd" id="3_detector"]
+[ext_resource type="Script" path="res://scripts/systems/melee.gd" id="4_melee"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -67,3 +68,7 @@ collision_mask = 4
 monitorable = false
 script = ExtResource("3_detector")
 camera_path = NodePath("%Camera")
+
+[node name="Melee" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_melee")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://greybox0w103"]
+[gd_scene load_steps=58 format=3 uid="uid://greybox0w103"]
 
 [ext_resource type="Script" uid="uid://cntx7xmq1l8r7" path="res://scenes/levels/greybox.gd" id="1_level"]
 [ext_resource type="PackedScene" uid="uid://player0w1030" path="res://scenes/player/player.tscn" id="2_player"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://proplever104" path="res://scenes/props/lever.tscn" id="6_lever"]
 [ext_resource type="PackedScene" uid="uid://propdoor0104" path="res://scenes/props/door.tscn" id="7_door"]
 [ext_resource type="PackedScene" uid="uid://skyenv0w2010" path="res://scenes/environment/sky.tscn" id="8_sky"]
+[ext_resource type="PackedScene" uid="uid://creaturdeer1" path="res://scenes/creatures/deer.tscn" id="9_deer"]
+[ext_resource type="PackedScene" uid="uid://creaturwolf1" path="res://scenes/creatures/wolf.tscn" id="10_wolf"]
 
 [sub_resource type="Environment" id="Environment_grey"]
 background_mode = 1
@@ -436,6 +438,22 @@ position = Vector3(-8, 0, -13)
 item = &"castle_key"
 id = &"greybox_key"
 once_flag = &"greybox_key_taken"
+
+[node name="Creatures" type="Node3D" parent="."]
+
+[node name="DeerA" parent="Creatures" instance=ExtResource("9_deer")]
+unique_name_in_owner = true
+position = Vector3(-12, 0, 20)
+
+[node name="DeerB" parent="Creatures" instance=ExtResource("9_deer")]
+unique_name_in_owner = true
+position = Vector3(-20, 0, 14)
+
+[node name="Wolf" parent="Creatures" instance=ExtResource("10_wolf")]
+unique_name_in_owner = true
+position = Vector3(-22, 0, 20)
+wander_radius = 5.0
+death_flag = &"greybox_wolf_slain"
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 unique_name_in_owner = true

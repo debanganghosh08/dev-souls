@@ -7,12 +7,15 @@ extends Node3D
 const PROBE_LAND_FRAMES := 120
 const PROBE_STAIR_FRAMES := 90
 const PROBE_INTERACT_FRAMES := 12
+const PROBE_COMBAT_FRAMES := 60
 const PROBE_MAX_FRAMES := 600
 const PIT_DROP_POINT := Vector3(23.0, 0.5, 0.0)
 const STAIR_START_POINT := Vector3(0.0, 0.6, 7.0)
 const CHEST_APPROACH_POINT := Vector3(2.0, 0.6, -2.0)
+const COMBAT_STAND_OFFSET := Vector3(0.0, 0.0, 1.6)
+const COMBAT_DEER_OFFSET := Vector3(3.0, 0.0, 0.0)
 const STAIR_TOP_Y := 1.0
-const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\ntime  %02d:%02d  %s\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   mouse look\nE interact   Esc pause   F3 hide this readout\nT +2 hours   Y hold to race the clock"
+const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%   health  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nweapon  %s   attack  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\ntime  %02d:%02d  %s\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   mouse look\nLMB light   RMB heavy   E interact   Esc pause   F3 hide this readout\nT +2 hours   Y hold to race the clock"
 
 @onready var _player: PlayerController = %Player
 @onready var _label: Label = %DebugLabel
@@ -27,11 +30,16 @@ var _probe: bool = false
 var _probe_frames: int = 0
 var _probe_phase: int = 0
 var _probe_peak_y: float = -1000.0
+var _probe_hit: bool = false
+var _probe_hit_damage: float = 0.0
 
 
 func _ready() -> void:
 	_game = get_node_or_null(^"/root/Game")
 	_player.took_fall_damage.connect(_on_fall_damage)
+	var melee: Melee = _player.get_melee()
+	if melee != null:
+		melee.hit_landed.connect(_on_hit_landed)
 	_detector = _player.get_node_or_null(^"%InteractionDetector") as InteractionDetector
 	if _detector != null:
 		_detector.focus_changed.connect(_on_focus_changed)
@@ -57,14 +65,18 @@ func _process(delta: float) -> void:
 		return
 	var v: Vector3 = _player.velocity
 	var p: Vector3 = _player.global_position
+	var melee: Melee = _player.get_melee()
 	_label.text = READOUT % [
 		Vector2(v.x, v.z).length(),
 		"(sprint)" if _player.is_sprinting() else "",
 		roundi(_player.stamina_fraction() * 100.0),
+		roundi(_player.health_fraction() * 100.0),
 		_yes_no(_player.is_on_floor()),
 		_yes_no(_player.is_dodging),
 		_yes_no(_player.is_invulnerable),
 		_state_name(),
+		melee.weapon_name() if melee != null else "-",
+		melee.state_name() if melee != null else "-",
 		_last_fall,
 		p.x, p.y, p.z,
 		int(_hour()), int(fposmod(_hour(), 1.0) * 60.0),
@@ -128,11 +140,19 @@ func _physics_process(_delta: float) -> void:
 		if _probe_frames < PROBE_INTERACT_FRAMES:
 			return
 		_probe_interactions()
+		_probe_combat_setup()
+		_probe_frames = 0
+		_probe_phase = 3
+	elif _probe_phase == 3:
+		var melee: Melee = _player.get_melee()
+		if _probe_frames < PROBE_COMBAT_FRAMES and melee != null and melee.state_name() != "IDLE":
+			return
+		_probe_combat_report()
 		_player.global_position = PIT_DROP_POINT
 		_player.velocity = Vector3.ZERO
 		_probe_frames = 0
-		_probe_phase = 3
-	elif _probe_phase == 3 and (_game.state == _game.State.DEAD or _probe_frames >= PROBE_MAX_FRAMES):
+		_probe_phase = 4
+	elif _probe_phase == 4 and (_game.state == _game.State.DEAD or _probe_frames >= PROBE_MAX_FRAMES):
 		print("PROBE pit state=%s y=%.3f drop=%.2f" % [_state_name(), _player.global_position.y, _last_fall])
 		# Remove the throwaway probe slot redirected to in _ready (never the real one).
 		var save: Node = get_node_or_null(^"/root/SaveGame")
@@ -168,6 +188,49 @@ func _probe_interactions() -> void:
 	print("PROBE door barred=%s lever_on=%s keyless=%s opened=%s is_open=%s" % [
 		barred, lever_on, keyless, opened_door, door.is_open(),
 	])
+
+
+# Combat by direct calls: the Inventory hands over a sword (auto-equipped through item_added), the player is
+# stood a stride south of the wolf facing -Z (straight at it), a deer is dropped beside them, one light swing starts.
+func _probe_combat_setup() -> void:
+	var inventory: Node = get_node_or_null(^"/root/Inventory")
+	if inventory != null:
+		inventory.add(&"sword")
+	var wolf: Creature = %Wolf
+	var deer: Creature = %DeerA
+	_player.global_position = wolf.global_position + COMBAT_STAND_OFFSET
+	_player.velocity = Vector3.ZERO
+	_player.rotation.y = 0.0
+	deer.global_position = _player.global_position + COMBAT_DEER_OFFSET
+	var melee: Melee = _player.get_melee()
+	if melee != null:
+		melee.try_attack(false)
+
+
+func _probe_combat_report() -> void:
+	var melee: Melee = _player.get_melee()
+	var wolf: Creature = %Wolf
+	var deer: Creature = %DeerA
+	print("PROBE combat equipped=%s state=%s hit=%s dmg=%.2f wolf_hp=%.1f player_hp=%.1f" % [
+		melee.equipped() if melee != null else "none",
+		melee.state_name() if melee != null else "none",
+		_probe_hit,
+		_probe_hit_damage,
+		wolf.health.current,
+		_player.health_fraction() * _player.max_health,
+	])
+	print("PROBE creature kind=deer state=%s dead=%s motes=%s" % [
+		deer.state_name(), deer.is_dead(), deer.motes_active(),
+	])
+	wolf.take_damage(1000.0, _player)
+	print("PROBE creature kind=wolf state=%s dead=%s motes=%s dissolving=%s" % [
+		wolf.state_name(), wolf.is_dead(), wolf.motes_active(), wolf.is_dissolving(),
+	])
+
+
+func _on_hit_landed(_target: Node, amount: float) -> void:
+	_probe_hit = true
+	_probe_hit_damage = amount
 
 
 func _on_focus_changed(target: Interactable) -> void:
