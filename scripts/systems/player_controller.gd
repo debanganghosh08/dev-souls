@@ -28,6 +28,10 @@ signal dodged()
 @export_group("Falling")
 @export var fall_damage_height: float = 8.0
 @export var killing_fall_height: float = 16.0
+@export_group("Steps")
+@export var step_up_enabled: bool = true
+@export var max_step_height: float = 0.4
+@export var step_probe_distance: float = 0.3
 
 var is_invulnerable: bool = false
 var is_dodging: bool = false
@@ -42,6 +46,7 @@ var _dodge_time_left: float = 0.0
 var _dodge_dir: Vector3 = Vector3.FORWARD
 var _airborne: bool = false
 var _peak_y: float = 0.0
+var _wish_dir: Vector3 = Vector3.ZERO
 
 
 func _ready() -> void:
@@ -75,11 +80,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0.0
 		velocity.z = 0.0
 		_sprinting = false
+		_wish_dir = Vector3.ZERO
 	if is_on_floor():
 		velocity.y = 0.0
 	else:
 		velocity.y = maxf(velocity.y - gravity * delta, -terminal_velocity)
 	move_and_slide()
+	if playing and step_up_enabled:
+		_try_step_up()
 	_update_fall_tracking(is_on_floor(), global_position.y)
 	if playing:
 		_face_velocity(delta)
@@ -118,6 +126,7 @@ func _update_locomotion(delta: float) -> void:
 		_start_dodge(wish_dir.normalized() if has_input else -global_basis.z)
 		return
 	_sprinting = has_input and Input.is_action_pressed(&"sprint") and _stamina.drain(sprint_drain_per_sec, delta)
+	_wish_dir = wish_dir
 	var target_speed: float = sprint_speed if _sprinting else walk_speed
 	var horizontal: Vector3 = Vector3(velocity.x, 0.0, velocity.z)
 	var target: Vector3 = wish_dir * target_speed if has_input else Vector3.ZERO
@@ -138,6 +147,7 @@ func _start_dodge(direction: Vector3) -> void:
 
 
 func _update_dodge(delta: float) -> void:
+	_wish_dir = _dodge_dir
 	_dodge_time_left -= delta
 	var elapsed_fraction: float = 1.0 - _dodge_time_left / maxf(dodge_duration, 0.001)
 	is_invulnerable = elapsed_fraction < dodge_invulnerable_fraction
@@ -146,6 +156,25 @@ func _update_dodge(delta: float) -> void:
 	if _dodge_time_left <= 0.0:
 		is_dodging = false
 		is_invulnerable = false
+
+
+# CharacterBody3D cannot climb steps: a 0.25 m stair tread reads as a wall, so the player sticks. When the
+# way ahead is blocked at foot level but clear one step higher, lift the body onto the step and settle it.
+# Teleporting is safe here only because test_move proved the raised volume is free.
+func _try_step_up() -> void:
+	if not is_on_floor() or not is_on_wall():
+		return
+	var flat: Vector3 = Vector3(_wish_dir.x, 0.0, _wish_dir.z)
+	if flat.length_squared() < 0.0001:
+		return
+	var ahead: Vector3 = flat.normalized() * step_probe_distance
+	if not test_move(global_transform, ahead):
+		return
+	var lifted: Transform3D = global_transform.translated(Vector3.UP * max_step_height)
+	if test_move(lifted, ahead):
+		return
+	global_transform = lifted.translated(ahead)
+	move_and_collide(Vector3.DOWN * (max_step_height + 0.05))
 
 
 func _face_velocity(delta: float) -> void:

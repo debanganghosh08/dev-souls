@@ -117,6 +117,14 @@ func test_headless_run_lands_and_pit_kills() -> void:
 		assert_eq(landed["floor"], "true", "player is on the floor after 120 physics frames")
 		assert_true(absf(float(landed["y"])) < 0.05, "player settled at the floor height (y=%s)" % landed["y"])
 		assert_eq(landed["pos_written"], "true", "Game.player_position was written")
+	# Guards the step-up fix: CharacterBody3D cannot climb steps on its own, so without
+	# PlayerController._try_step_up the player sticks at the first 0.25 m tread (verified by a control run
+	# with step_up_enabled = false: peak_y stayed at the 0.6 spawn height and z never passed 7.67).
+	var stairs: Dictionary = _probe_line(text, "PROBE stairs")
+	assert_true(not stairs.is_empty(), "probe printed the stairs line")
+	if not stairs.is_empty():
+		assert_eq(stairs["climbed"], "true", "player climbed the staircase (peak_y=%s)" % stairs["peak_y"])
+		assert_true(float(stairs["peak_y"]) > 0.9, "reached the 1 m stair top (peak_y=%s)" % stairs["peak_y"])
 	var pit: Dictionary = _probe_line(text, "PROBE pit")
 	assert_true(not pit.is_empty(), "probe printed the pit line")
 	if not pit.is_empty():

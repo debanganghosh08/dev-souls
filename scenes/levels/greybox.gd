@@ -4,8 +4,11 @@ extends Node3D
 ## With the user arg `--probe` (used by tests/test_player.gd) it prints two machine-readable lines and quits.
 
 const PROBE_LAND_FRAMES := 120
+const PROBE_STAIR_FRAMES := 90
 const PROBE_MAX_FRAMES := 600
 const PIT_DROP_POINT := Vector3(23.0, 0.5, 0.0)
+const STAIR_START_POINT := Vector3(0.0, 0.6, 7.0)
+const STAIR_TOP_Y := 1.0
 const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\n\nWASD move   Shift sprint   Space dodge   mouse look\nEsc pause/unpause   E respawn when dead"
 
 @onready var _player: PlayerController = %Player
@@ -16,6 +19,7 @@ var _last_fall: float = 0.0
 var _probe: bool = false
 var _probe_frames: int = 0
 var _probe_phase: int = 0
+var _probe_peak_y: float = -1000.0
 
 
 func _ready() -> void:
@@ -65,10 +69,27 @@ func _physics_process(_delta: float) -> void:
 			_player.is_on_floor(),
 			_game.player_position.is_equal_approx(_player.global_position),
 		])
+		_player.global_position = STAIR_START_POINT
+		_player.velocity = Vector3.ZERO
+		# move_back drives +Z, which is up the staircase.
+		Input.action_press(&"move_back")
+		_probe_frames = 0
+		_probe_phase = 1
+	elif _probe_phase == 1:
+		_probe_peak_y = maxf(_probe_peak_y, _player.global_position.y)
+		if _probe_frames < PROBE_STAIR_FRAMES:
+			return
+		Input.action_release(&"move_back")
+		print("PROBE stairs peak_y=%.3f climbed=%s z=%.2f" % [
+			_probe_peak_y,
+			_probe_peak_y >= STAIR_TOP_Y - 0.2,
+			_player.global_position.z,
+		])
 		_player.global_position = PIT_DROP_POINT
 		_player.velocity = Vector3.ZERO
-		_probe_phase = 1
-	elif _probe_phase == 1 and (_game.state == _game.State.DEAD or _probe_frames >= PROBE_MAX_FRAMES):
+		_probe_frames = 0
+		_probe_phase = 2
+	elif _probe_phase == 2 and (_game.state == _game.State.DEAD or _probe_frames >= PROBE_MAX_FRAMES):
 		print("PROBE pit state=%s y=%.3f drop=%.2f" % [_state_name(), _player.global_position.y, _last_fall])
 		get_tree().quit()
 
