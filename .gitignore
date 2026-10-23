@@ -29,3 +29,6 @@ assets/
 *.exe
 *.pck
 *.import
+
+# Agent worktrees (local only)
+.claude/worktrees/
