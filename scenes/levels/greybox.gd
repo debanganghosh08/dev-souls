@@ -1,8 +1,8 @@
 extends Node3D
-## Grey-box movement test level. Puts Game into PLAYING, feeds the on-screen readout, and offers two
-## debug keys: `pause` (Esc) toggles PLAYING/PAUSED (frees the mouse), `interact` (E) respawns when DEAD.
+## Grey-box movement test level. Puts Game into PLAYING and feeds the debug readout, hidden until
+## `debug_toggle` (F3). Pause, death and prompts are the UI layer's job (scenes/ui, composed by main.gd).
 ## With the user arg `--probe` (used by tests/test_player.gd and tests/test_interaction.gd) it prints
-## machine-readable lines and quits.
+## machine-readable lines and quits -- only when it is the root scene, so main.tscn's own probe can load it.
 
 const PROBE_LAND_FRAMES := 120
 const PROBE_STAIR_FRAMES := 90
@@ -12,7 +12,7 @@ const PIT_DROP_POINT := Vector3(23.0, 0.5, 0.0)
 const STAIR_START_POINT := Vector3(0.0, 0.6, 7.0)
 const CHEST_APPROACH_POINT := Vector3(2.0, 0.6, -2.0)
 const STAIR_TOP_Y := 1.0
-const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   mouse look\nE interact   Esc pause/unpause   E respawn when dead"
+const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   mouse look\nE interact   Esc pause   F3 hide this readout"
 
 @onready var _player: PlayerController = %Player
 @onready var _label: Label = %DebugLabel
@@ -38,9 +38,10 @@ func _ready() -> void:
 		_detector.interaction_refused.connect(_on_interaction_refused)
 	var stone: LoreStone = %GraveMarker
 	stone.reading_requested.connect(_on_reading_requested)
+	_label.visible = false
 	if _game != null:
 		_game.state = _game.State.PLAYING
-	_probe = OS.get_cmdline_user_args().has("--probe")
+	_probe = OS.get_cmdline_user_args().has("--probe") and get_tree().current_scene == self
 	if _probe:
 		# Interacting autosaves. Redirect to a throwaway slot BEFORE anything writes, so a probe run can
 		# neither overwrite nor delete the player's real save.
@@ -50,6 +51,8 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if not _label.visible:
+		return
 	var v: Vector3 = _player.velocity
 	var p: Vector3 = _player.global_position
 	_label.text = READOUT % [
@@ -69,15 +72,8 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _game == null:
-		return
-	if event.is_action_pressed(&"pause"):
-		if _game.state == _game.State.PLAYING:
-			_game.state = _game.State.PAUSED
-		elif _game.state == _game.State.PAUSED:
-			_game.state = _game.State.PLAYING
-	elif event.is_action_pressed(&"interact") and _game.state == _game.State.DEAD:
-		_game.respawn()
+	if event.is_action_pressed(&"debug_toggle"):
+		_label.visible = not _label.visible
 
 
 # Headless probe: lets the test suite assert on real physics without driving the loop itself.

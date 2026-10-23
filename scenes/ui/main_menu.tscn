@@ -1,0 +1,154 @@
+[gd_scene load_steps=8 format=3 uid="uid://uimainmenu105"]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://uitheme0w105" path="res://scenes/ui/souls_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" uid="uid://uisettings105" path="res://scenes/ui/settings_panel.tscn" id="3_settings"]
+
+[sub_resource type="Gradient" id="Gradient_backdrop"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.02, 0.02, 0.025, 1, 0.045, 0.04, 0.04, 1, 0.015, 0.012, 0.01, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_backdrop"]
+gradient = SubResource("Gradient_backdrop")
+fill_from = Vector2(0, 0)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_breath"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.03, 0.025, 0.02, 1, 0.07, 0.055, 0.04, 1, 0.02, 0.02, 0.02, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_breath"]
+gradient = SubResource("Gradient_breath")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Backdrop" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_backdrop")
+expand_mode = 1
+
+[node name="Breath" type="TextureRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_breath")
+expand_mode = 1
+
+[node name="Column" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -220.0
+offset_right = 200.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Title" type="Label" parent="Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_font_sizes/font_size = 60
+text = "DEV SOULS"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.47, 0.42, 1)
+theme_override_font_sizes/font_size = 18
+text = "Hollowmere lies cold"
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="Column"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="Continue" type="Button" parent="Column/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Continue"
+
+[node name="NewJourney" type="Button" parent="Column/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Journey"
+
+[node name="SettingsButton" type="Button" parent="Column/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+
+[node name="Quit" type="Button" parent="Column/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+
+[node name="Confirm" type="VBoxContainer" parent="Column"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
+
+[node name="ConfirmText" type="Label" parent="Column/Confirm"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.62, 0.5, 1)
+text = "This will unmake your journey."
+horizontal_alignment = 1
+
+[node name="Choices" type="HBoxContainer" parent="Column/Confirm"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BeginAnew" type="Button" parent="Column/Confirm/Choices"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Begin anew"
+
+[node name="Keep" type="Button" parent="Column/Confirm/Choices"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Keep"
+
+[node name="SettingsPanel" parent="." instance=ExtResource("3_settings")]
+unique_name_in_owner = true
+visible = false

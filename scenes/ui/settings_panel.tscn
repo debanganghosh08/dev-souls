@@ -1,0 +1,162 @@
+[gd_scene load_steps=3 format=3 uid="uid://uisettings105"]
+
+[ext_resource type="Script" path="res://scripts/ui/settings_panel.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://uitheme0w105" path="res://scenes/ui/souls_theme.tres" id="2_theme"]
+
+[node name="SettingsPanel" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -200.0
+offset_right = 280.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.65, 0.38, 1)
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="Rule" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="Grid" type="GridContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 12
+columns = 2
+
+[node name="MasterLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Master volume"
+
+[node name="MasterSlider" type="HSlider" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="MusicLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Music volume"
+
+[node name="MusicSlider" type="HSlider" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 0.7
+
+[node name="SfxLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Effects volume"
+
+[node name="SfxSlider" type="HSlider" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="SensitivityLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Mouse sensitivity"
+
+[node name="SensitivitySlider" type="HSlider" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 0.0005
+max_value = 0.02
+step = 0.0001
+value = 0.0025
+
+[node name="InvertLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Invert vertical look"
+
+[node name="InvertCheck" type="CheckBox" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="FullscreenCheck" type="CheckBox" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VsyncLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Vertical sync"
+
+[node name="VsyncCheck" type="CheckBox" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+
+[node name="FpsLabel" type="Label" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Frame cap"
+
+[node name="FpsOption" type="OptionButton" parent="Panel/VBox/Grid"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Reset" type="Button" parent="Panel/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset to defaults"
+
+[node name="Back" type="Button" parent="Panel/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
