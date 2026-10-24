@@ -88,9 +88,13 @@ func close() -> void:
 	if not _open:
 		return
 	_open = false
-	if _game != null and _game.state == _game.State.PAUSED:
+	# Only the overlay that took PLAYING->PAUSED gives it back, and the mouse follows that decision. If
+	# something else moved the state on (death, quit to title), recapturing here would trap the cursor on a
+	# screen that needs it free.
+	var restored: bool = _game != null and _game.state == _game.State.PAUSED
+	if restored:
 		_game.state = _game.State.PLAYING
-	UiUtil.set_mouse_captured(true)
+	UiUtil.set_mouse_captured(restored)
 	_fade_to(0.0, fade_out_sec)
 	closed.emit()
 

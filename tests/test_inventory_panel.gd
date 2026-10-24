@@ -154,3 +154,20 @@ func test_panel_opens_only_while_playing_and_restores_the_state() -> void:
 	assert_eq(_game.state, _game.State.PLAYING, "closing restores PLAYING")
 	panel.close()
 	assert_eq(_game.state, _game.State.PLAYING, "a second close is a no-op")
+
+
+func test_close_does_not_stomp_a_state_it_no_longer_owns() -> void:
+	# Soft-lock guard: if something else moved the state on while the panel was open (death, quit to title),
+	# close() must leave that state alone and not recapture the mouse onto a screen that needs it free.
+	var panel: InventoryPanel = (load(PANEL) as PackedScene).instantiate() as InventoryPanel
+	_nodes.append(panel)
+	panel._inject(_game, _inv)
+	_inv.restore({"torch": 1})
+	_game.state = _game.State.PLAYING
+	panel.open()
+	assert_true(panel.is_open(), "panel opened from PLAYING")
+	assert_eq(_game.state, _game.State.PAUSED, "opening took the screen")
+	_game.state = _game.State.MENU
+	panel.close()
+	assert_false(panel.is_open(), "panel closed")
+	assert_eq(_game.state, _game.State.MENU, "close left the state it no longer owned alone")
