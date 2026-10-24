@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://proplore0104"]
+[gd_scene load_steps=6 format=3 uid="uid://proplore0104"]
 
 [ext_resource type="Script" uid="uid://brc7htm5etxui" path="res://scripts/systems/interactables/lore_stone.gd" id="1_lore"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_stone"]
-albedo_color = Color(0.46, 0.46, 0.48, 1)
+[ext_resource type="PackedScene" path="res://assets/models/rocks/namaqualand_boulder_03/namaqualand_boulder_03_1k.gltf" id="2_model"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_glow"]
 albedo_color = Color(0.3, 0.3, 0.32, 1)
@@ -14,12 +12,11 @@ emission_energy_multiplier = 0.0
 [sub_resource type="BoxShape3D" id="Shape_stone"]
 size = Vector3(0.8, 1.2, 0.3)
 
-[sub_resource type="BoxMesh" id="Mesh_stone"]
-material = SubResource("Mat_stone")
-size = Vector3(0.8, 1.2, 0.3)
-
-[sub_resource type="BoxMesh" id="Mesh_glow"]
-size = Vector3(0.5, 0.6, 0.02)
+[sub_resource type="SphereMesh" id="Mesh_glow"]
+radius = 0.06
+height = 0.12
+radial_segments = 16
+rings = 8
 
 [node name="LoreStone" type="Area3D"]
 collision_layer = 4
@@ -31,12 +28,11 @@ prompt = "Read"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("Shape_stone")
 
-[node name="Stone" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("Mesh_stone")
+[node name="Stone" parent="." instance=ExtResource("2_model")]
+transform = Transform3D(0.45, 0, 0, 0, 0, -0.45, 0, 0.45, 0, -0.066, 0.625, 0.325)
 
 [node name="Glow" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0.3)
 material_override = SubResource("Mat_glow")
 mesh = SubResource("Mesh_glow")

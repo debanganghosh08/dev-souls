@@ -1,9 +1,48 @@
-[gd_scene load_steps=5 format=3 uid="uid://uihud000w105"]
+[gd_scene load_steps=11 format=3 uid="uid://uihud000w105"]
 
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://uitheme0w105" path="res://scenes/ui/souls_theme.tres" id="2_theme"]
 [ext_resource type="Script" path="res://scripts/ui/item_toasts.gd" id="3_toasts"]
 [ext_resource type="PackedScene" uid="uid://uilorecard105" path="res://scenes/ui/lore_card.tscn" id="4_lore"]
+
+[sub_resource type="Shader" id="Shader_vignette"]
+code = "shader_type canvas_item;
+
+// Edge-only red wash for hit feedback. `strength` is driven by hud.gd and fades back to 0 after each hit.
+uniform vec4 tint : source_color = vec4(0.55, 0.03, 0.02, 1.0);
+uniform float inner = 0.42;
+uniform float outer = 1.0;
+uniform float strength = 0.0;
+
+void fragment() {
+	float d = length(UV - vec2(0.5)) * 1.41421;
+	float a = smoothstep(inner, outer, d);
+	COLOR = vec4(tint.rgb, a * tint.a * strength);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="Mat_vignette"]
+shader = SubResource("Shader_vignette")
+shader_parameter/tint = Color(0.55, 0.03, 0.02, 1)
+shader_parameter/inner = 0.42
+shader_parameter/outer = 1.0
+shader_parameter/strength = 0.0
+
+[sub_resource type="StyleBoxFlat" id="health_trough"]
+bg_color = Color(0.03, 0.025, 0.025, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.27, 0.2, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="health_fill"]
+bg_color = Color(0.42, 0.07, 0.05, 1)
+
+[sub_resource type="StyleBoxFlat" id="ghost_fill"]
+bg_color = Color(0.72, 0.36, 0.3, 0.8)
+
+[sub_resource type="StyleBoxEmpty" id="bar_none"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_script")
@@ -19,19 +58,80 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_theme")
 
+[node name="Vignette" type="ColorRect" parent="Overlay"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("Mat_vignette")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HealthTrough" type="Panel" parent="Overlay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -96.0
+offset_right = 400.0
+offset_bottom = -72.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("health_trough")
+
+[node name="HealthGhost" type="ProgressBar" parent="Overlay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = -94.0
+offset_right = 398.0
+offset_bottom = -74.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("bar_none")
+theme_override_styles/fill = SubResource("ghost_fill")
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
+[node name="HealthBar" type="ProgressBar" parent="Overlay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = -94.0
+offset_right = 398.0
+offset_bottom = -74.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("bar_none")
+theme_override_styles/fill = SubResource("health_fill")
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
 [node name="StaminaBar" type="ProgressBar" parent="Overlay"]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -150.0
-offset_top = -54.0
-offset_right = 150.0
-offset_bottom = -46.0
-grow_horizontal = 2
+offset_left = 38.0
+offset_top = -64.0
+offset_right = 318.0
+offset_bottom = -56.0
 grow_vertical = 0
 mouse_filter = 2
 max_value = 1.0
@@ -104,6 +204,30 @@ mouse_filter = 2
 theme_override_constants/separation = 4
 alignment = 2
 script = ExtResource("3_toasts")
+
+[node name="WeaponLabel" type="Label" parent="Overlay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -360.0
+offset_top = -98.0
+offset_right = -36.0
+offset_bottom = -66.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 20
+text = "Unarmed"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="LoreCard" parent="." instance=ExtResource("4_lore")]
 unique_name_in_owner = true

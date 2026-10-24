@@ -38,7 +38,7 @@ throw the lever, try the door before and after finding the key. Then tell the le
 **W2-02 · Area streaming.** Load/free area scenes in the background while the player walks a connecting pass,
 at most two areas resident. `main.gd._begin_level()` is the single entry point to build on.
 **W2-03 · Terrain3D.** Install the addon, a 1 km² vale heightmap, texture painting by slope/height, LOD check.
-**W3-02 · Dress the greybox with real assets.** Replace grey primitives with the fetched CC0 models/textures;
+**W3-02 · Dress the greybox with real assets.** `REVIEW` — branch `task/W3-02`, report `docs/reports/W3-02.md`. Replace grey primitives with the fetched CC0 models/textures;
 import presets, LODs, a materials pass. Needs the full fetch run first (`node tools/fetch-assets.mjs`).
 **W3-03 · Procedural trees** (D-002/D-009): trunk mesh + bark PBR + alpha twig cards, 3–4 archetypes, MultiMesh
 + LOD. Consider pulling only the *texture* files from `fir_tree_01`/`pine_tree_01` without their geometry.

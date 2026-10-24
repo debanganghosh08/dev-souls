@@ -147,6 +147,7 @@ func _physics_process(_delta: float) -> void:
 			_player.is_on_floor(),
 			_game.player_position.is_equal_approx(_player.global_position),
 		])
+		_print_perf_probe()
 		_player.global_position = STAIR_START_POINT
 		_player.velocity = Vector3.ZERO
 		# move_back drives +Z, which is up the staircase.
@@ -258,6 +259,21 @@ func _probe_combat_report() -> void:
 	wolf.take_damage(1000.0, _player)
 	print("PROBE creature kind=wolf state=%s dead=%s motes=%s dissolving=%s" % [
 		wolf.state_name(), wolf.is_dead(), wolf.motes_active(), wolf.is_dissolving(),
+	])
+
+
+# Frame cost at the spawn vantage. The RenderingServer counters are the previous frame's; under --headless the
+# renderer is a null device, so they read 0 there and only mean something on a real GPU. The dressing line is
+# a CPU-side count (instances placed, MultiMesh draws before culling, LOD0 triangles if every one drew).
+func _print_perf_probe() -> void:
+	print("PROBE perf draw_calls=%d primitives=%d" % [
+		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
+		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME),
+	])
+	var dressing: LevelDressing = get_node_or_null(^"Dressing") as LevelDressing
+	var stats: Dictionary = dressing.stats() if dressing != null else {}
+	print("PROBE dressing instances=%d multimeshes=%d colliders=%d est_triangles=%d" % [
+		stats.get("instances", 0), stats.get("multimeshes", 0), stats.get("colliders", 0), stats.get("triangles", 0),
 	])
 
 
