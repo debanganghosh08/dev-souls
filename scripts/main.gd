@@ -8,7 +8,7 @@ extends Node
 ## back and recaptures. So at most one holds the screen, and none can open over DEAD or MENU. The death
 ## screen and HUD never touch the mouse or the state; Main owns the MENU <-> PLAYING transitions.
 
-const LEVEL_PATH := "res://scenes/levels/greybox.tscn"
+const LEVEL_PATH := "res://scenes/levels/vale.tscn"
 const PROBE_SLOT := "user://probe_ui_slot.json"
 const HUD_SCENE := preload("res://scenes/ui/hud.tscn")
 const DEATH_SCENE := preload("res://scenes/ui/death_screen.tscn")
