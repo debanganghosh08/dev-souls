@@ -37,7 +37,8 @@ throw the lever, try the door before and after finding the key. Then tell the le
 ## READY
 **W2-02 · Area streaming.** Load/free area scenes in the background while the player walks a connecting pass,
 at most two areas resident. `main.gd._begin_level()` is the single entry point to build on.
-**W2-03 · Terrain3D.** Install the addon, a 1 km² vale heightmap, texture painting by slope/height, LOD check.
+**W2-03 · Terrain.** `REVIEW` — branch `task/W2-03`, report `docs/reports/W2-03.md`. Built without the Terrain3D addon
+(pure GDScript heightfield + chunked ArrayMesh; running a native GDExtension is the owner's call, see the report): 1 km² vale, slope/height shader, LOD, near-player collision.
 **W3-02 · Dress the greybox with real assets.** `REVIEW` — branch `task/W3-02`, report `docs/reports/W3-02.md`. Replace grey primitives with the fetched CC0 models/textures;
 import presets, LODs, a materials pass. Needs the full fetch run first (`node tools/fetch-assets.mjs`).
 **W3-03 · Procedural trees** (D-002/D-009): trunk mesh + bark PBR + alpha twig cards, 3–4 archetypes, MultiMesh

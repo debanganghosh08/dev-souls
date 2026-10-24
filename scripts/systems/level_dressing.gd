@@ -18,6 +18,13 @@ const SCATTER_TRIES := 30
 
 @export_file("*.json") var data_path: String = ""
 @export var chunk_size: float = 24.0
+## Off when a level sets height_sampler / placement_filter first and calls build() itself.
+@export var auto_build: bool = true
+
+## Optional world ground (x, z) -> y: a set's `y` then becomes an offset above the ground, not absolute.
+var height_sampler: Callable = Callable()
+## Optional (x, z) -> bool: scatter points failing it (water, cliffs) are dropped; `place` entries are kept.
+var placement_filter: Callable = Callable()
 
 var _instances: int = 0
 var _multimeshes: int = 0
@@ -28,7 +35,7 @@ var _mesh_cache: Dictionary = {}
 
 
 func _ready() -> void:
-	if data_path != "":
+	if data_path != "" and auto_build:
 		build(load_data(data_path))
 
 
@@ -139,13 +146,15 @@ func _transforms_for(set: Dictionary, keep_out: Array, rng: RandomNumberGenerato
 	for placed: Variant in set.get("place", []):
 		if placed is Dictionary:
 			var at: Array = placed.get("at", [0, 0])
-			out.append(_make_transform(Vector3(float(at[0]), y, float(at[1])), float(placed.get("yaw", 0.0)), float(placed.get("scale", 1.0))))
+			out.append(_make_transform(GroundPlacement.ground(float(at[0]), float(at[1]), y, height_sampler), float(placed.get("yaw", 0.0)), float(placed.get("scale", 1.0))))
 	for zone: Variant in set.get("scatter", []):
 		if zone is Dictionary:
 			var points: Array[Vector3] = scatter_points(zone.get("zone", {}), int(zone.get("count", 0)), float(zone.get("min_gap", 0.0)), keep_out, rng)
 			for p: Vector3 in points:
 				var s: float = rng.randf_range(float(scale_range[0]), float(scale_range[1]))
-				out.append(_make_transform(Vector3(p.x, y, p.z), rng.randf_range(0.0, 360.0), s))
+				if placement_filter.is_valid() and not bool(placement_filter.call(p.x, p.z)):
+					continue
+				out.append(_make_transform(GroundPlacement.ground(p.x, p.z, y, height_sampler), rng.randf_range(0.0, 360.0), s))
 	return out
 
 

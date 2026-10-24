@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://vale0w2030lvl"]
+
+[ext_resource type="Script" path="res://scenes/levels/vale.gd" id="1_level"]
+[ext_resource type="Script" path="res://scripts/systems/terrain.gd" id="2_terrain"]
+[ext_resource type="PackedScene" uid="uid://skyenv0w2010" path="res://scenes/environment/sky.tscn" id="3_sky"]
+[ext_resource type="Script" uid="uid://eqmw3al4pe3q" path="res://scripts/systems/forest.gd" id="4_forest"]
+[ext_resource type="Script" path="res://scripts/systems/level_dressing.gd" id="5_dressing"]
+[ext_resource type="PackedScene" uid="uid://player0w1030" path="res://scenes/player/player.tscn" id="6_player"]
+
+[node name="Vale" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="Sky" parent="." instance=ExtResource("3_sky")]
+area = &"vale"
+start_hour = 8.0
+
+[node name="Terrain" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_terrain")
+data_path = "res://data/areas/vale.json"
+chunk_size = 64.0
+lod0_spacing = 2.0
+lod_distances = PackedFloat32Array(128, 288, 576)
+collision_radius = 110.0
+auto_build = false
+
+[node name="Water" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Forest" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_forest")
+archetype_mix = {
+"dead": 5.0,
+"fir": 3.0,
+"pine": 2.0
+}
+count = 320
+radius = 330.0
+clearing_radius = 0.0
+seed_value = 20261024
+lod1_distance = 60.0
+cull_distance = 220.0
+collider_count = 60
+auto_build = false
+
+[node name="Dressing" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_dressing")
+data_path = "res://data/dressing/vale.json"
+auto_build = false
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+unique_name_in_owner = true
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="DebugLabel" type="Label" parent="HUD"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 760.0
+offset_bottom = 400.0
+autowrap_mode = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
