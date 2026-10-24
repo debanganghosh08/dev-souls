@@ -1,0 +1,59 @@
+{
+	"_comment": "TreeGen archetypes. Ranges are [min,max] picked per seed. atlas_cells are PIXEL rects [x0,y0,x1,y1] measured on the 1k twig alpha masks (these atlases are photoscan UV layouts, NOT grids); stem = which rect edge the spray grows from. atlas_grid [cols,rows] is only used when atlas_cells is empty.",
+	"fir": {
+		"height": [14.0, 20.0], "base_radius": [0.28, 0.4], "tip_ratio": 0.05, "taper_power": 0.8,
+		"segments": 8, "rings": 12, "lean_deg": 3.0, "bend": 0.03, "gnarl": 0.0,
+		"whorls": 12, "branches_per_whorl": 7, "crown_start": 0.2, "card_length": 2.4, "tip_scale": 0.3,
+		"pitch_deg": -20.0, "pitch_jitter_deg": 8.0, "roll_jitter_deg": 55.0, "yaw_jitter_deg": 12.0,
+		"length_jitter": 0.2, "card_tint": [0.5, 0.58, 0.46],
+		"bark": "bark_brown_02", "bark_tile_m": 1.0, "bark_uv_around": 2,
+		"twig": "twig_fir", "twig_file": "fir_tree_01_twig", "atlas_size": [1024, 1024], "atlas_grid": [1, 1],
+		"atlas_cells": [
+			{"px": [212, 40, 440, 330], "stem": "bottom"},
+			{"px": [540, 90, 620, 245], "stem": "bottom"},
+			{"px": [664, 44, 970, 388], "stem": "bottom"},
+			{"px": [390, 290, 476, 400], "stem": "bottom"},
+			{"px": [500, 262, 650, 418], "stem": "bottom"},
+			{"px": [312, 408, 662, 800], "stem": "bottom"},
+			{"px": [642, 458, 930, 796], "stem": "bottom"}
+		]
+	},
+	"pine": {
+		"height": [18.0, 26.0], "base_radius": [0.32, 0.45], "tip_ratio": 0.08, "taper_power": 0.9,
+		"segments": 8, "rings": 14, "lean_deg": 4.0, "bend": 0.05, "gnarl": 0.0,
+		"whorls": 6, "branches_per_whorl": 6, "crown_start": 0.55, "card_length": 3.2, "tip_scale": 0.45,
+		"pitch_deg": 8.0, "pitch_jitter_deg": 12.0, "roll_jitter_deg": 50.0, "yaw_jitter_deg": 15.0,
+		"length_jitter": 0.25, "card_tint": [0.62, 0.66, 0.5],
+		"bark": "pine_bark", "bark_tile_m": 1.2, "bark_uv_around": 2,
+		"twig": "twig_pine", "twig_file": "pine_tree_01_twig", "atlas_size": [1024, 1024], "atlas_grid": [1, 1],
+		"atlas_cells": [
+			{"px": [40, 46, 222, 386], "stem": "bottom"},
+			{"px": [712, 376, 958, 532], "stem": "left"}
+		]
+	},
+	"dead": {
+		"height": [9.0, 14.0], "base_radius": [0.3, 0.45], "tip_ratio": 0.12, "taper_power": 0.7,
+		"segments": 7, "rings": 10, "lean_deg": 8.0, "bend": 0.12, "gnarl": 0.18,
+		"whorls": 0, "branches_per_whorl": 0, "crown_start": 0.5, "card_length": 1.0, "tip_scale": 1.0,
+		"pitch_deg": 0.0, "pitch_jitter_deg": 0.0, "roll_jitter_deg": 0.0, "yaw_jitter_deg": 0.0,
+		"length_jitter": 0.0, "card_tint": [1.0, 1.0, 1.0],
+		"bark": "bark_brown_01", "bark_tile_m": 1.0, "bark_uv_around": 2,
+		"twig": "twig_fir", "twig_file": "fir_tree_01_twig", "atlas_size": [1024, 1024], "atlas_grid": [1, 1],
+		"atlas_cells": []
+	},
+	"ancient": {
+		"height": [9.0, 12.0], "base_radius": [1.3, 1.7], "tip_ratio": 0.25, "taper_power": 0.6,
+		"segments": 10, "rings": 10, "lean_deg": 2.0, "bend": 0.08, "gnarl": 0.22,
+		"whorls": 7, "branches_per_whorl": 10, "crown_start": 0.4, "card_length": 4.5, "tip_scale": 0.55,
+		"pitch_deg": -12.0, "pitch_jitter_deg": 18.0, "roll_jitter_deg": 60.0, "yaw_jitter_deg": 18.0,
+		"length_jitter": 0.3, "card_tint": [0.42, 0.5, 0.4],
+		"bark": "bark_brown_02", "bark_tile_m": 1.5, "bark_uv_around": 4,
+		"twig": "twig_fir", "twig_file": "fir_tree_01_twig", "atlas_size": [1024, 1024], "atlas_grid": [1, 1],
+		"atlas_cells": [
+			{"px": [212, 40, 440, 330], "stem": "bottom"},
+			{"px": [664, 44, 970, 388], "stem": "bottom"},
+			{"px": [312, 408, 662, 800], "stem": "bottom"},
+			{"px": [642, 458, 930, 796], "stem": "bottom"}
+		]
+	}
+}
