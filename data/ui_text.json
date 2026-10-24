@@ -28,5 +28,21 @@
 	"fps_unlimited": "Unlimited",
 	"reset_defaults": "Reset to defaults",
 	"back": "Back",
-	"unarmed": "Unarmed"
+	"unarmed": "Unarmed",
+	"inventory_title": "Carried",
+	"inventory_progress": "%d of %d found",
+	"kindling_progress": "Kindling  %d of %d",
+	"unknown_item": "???",
+	"not_yet_found": "Not yet found.",
+	"row_count": "%s  ×%d",
+	"count_line": "Carried  ×%d",
+	"kind_kindling": "Kindling",
+	"kind_fragment": "Name Fragments",
+	"kind_key": "Keys",
+	"kind_tool": "Tools",
+	"kind_lore": "Writings",
+	"equip": "Equip",
+	"equipped": "Equipped",
+	"inventory_hint": "[%s]  close    [%s]  equip",
+	"item_card_hint": "[%s]  continue"
 }

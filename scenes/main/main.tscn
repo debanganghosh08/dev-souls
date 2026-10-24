@@ -12,6 +12,10 @@ unique_name_in_owner = true
 [node name="Overlays" type="Node" parent="."]
 unique_name_in_owner = true
 
+[node name="ItemCardLayer" type="CanvasLayer" parent="Overlays"]
+unique_name_in_owner = true
+layer = 12
+
 [node name="MainMenu" parent="." instance=ExtResource("2_menu")]
 unique_name_in_owner = true
 

@@ -1,21 +1,27 @@
 extends Node
 ## Entry point. Composes title screen, level and overlays; owns the GameSettings instance.
 ## To ship a real area, change LEVEL_PATH (or pass another path to _begin_level): nothing else here cares.
-## `--probe` (tests/test_ui.gd): prints PROBE lines through menu -> journey -> death on a throwaway save slot.
+## `--probe` hands the frame loop to MainProbe, which prints PROBE lines on a throwaway save slot.
+##
+## Overlay ownership: an overlay (pause menu, lore card, inventory panel, item card) may take the screen only
+## while Game.state == PLAYING; it alone moves the state to PAUSED, frees the mouse, and on close moves it
+## back and recaptures. So at most one holds the screen, and none can open over DEAD or MENU. The death
+## screen and HUD never touch the mouse or the state; Main owns the MENU <-> PLAYING transitions.
 
 const LEVEL_PATH := "res://scenes/levels/greybox.tscn"
 const PROBE_SLOT := "user://probe_ui_slot.json"
-const PROBE_SETTLE_FRAMES := 30
-const PROBE_DEATH_FRAMES := 5
 const HUD_SCENE := preload("res://scenes/ui/hud.tscn")
 const DEATH_SCENE := preload("res://scenes/ui/death_screen.tscn")
 const PAUSE_SCENE := preload("res://scenes/ui/pause_menu.tscn")
+const INVENTORY_SCENE := preload("res://scenes/ui/inventory_panel.tscn")
+const ITEM_CARD_SCENE := preload("res://scenes/ui/item_card.tscn")
 
 @onready var _menu: MainMenu = %MainMenu
 @onready var _loading: CanvasLayer = %Loading
 @onready var _loading_label: Label = %LoadingLabel
 @onready var _level_root: Node3D = %LevelRoot
 @onready var _overlays: Node = %Overlays
+@onready var _item_card_layer: CanvasLayer = %ItemCardLayer
 
 var _settings: GameSettings
 var _game: Node
@@ -24,18 +30,19 @@ var _level: Node
 var _hud: Hud
 var _death: DeathScreen
 var _pause: PauseMenu
+var _inventory_panel: InventoryPanel
+var _item_card: ItemCard
 var _loading_path: String = ""
 var _continue_after_load: bool = false
-var _probe: bool = false
-var _probe_phase: int = 0
-var _probe_frames: int = 0
+var _probe: MainProbe
 
 
 func _ready() -> void:
 	_game = get_node_or_null(^"/root/Game")
 	_save = get_node_or_null(^"/root/SaveGame")
-	_probe = OS.get_cmdline_user_args().has("--probe")
-	if _probe and _save != null:
+	if OS.get_cmdline_user_args().has("--probe"):
+		_probe = MainProbe.new(self)
+	if _probe != null and _save != null:
 		# Before anything can write: a probe must never read, overwrite or delete the real save.
 		_save.use_slot_path(PROBE_SLOT)
 		_save.delete()
@@ -54,8 +61,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if _loading_path != "":
 		_poll_level_load()
-	if _probe:
-		_probe_step()
+	if _probe != null:
+		_probe.step()
 
 
 # --- flow ------------------------------------------------------------------------------------------------
@@ -106,12 +113,17 @@ func _enter_level(scene: PackedScene) -> void:
 	_pause.settings = _settings
 	_pause.quit_to_title_requested.connect(_leave_level)
 	_pause.get_node(^"%SettingsPanel").changed.connect(_push_settings_to_player)
+	_inventory_panel = INVENTORY_SCENE.instantiate()
+	_item_card = ITEM_CARD_SCENE.instantiate()
 	_overlays.add_child(_hud)
 	_overlays.add_child(_death)
+	_overlays.add_child(_inventory_panel)
 	_overlays.add_child(_pause)
+	_item_card_layer.add_child(_item_card)
 	var player: Node = _find_player()
 	if player != null:
 		_hud.bind_player(player)
+		_inventory_panel.bind_player(player)
 	_hud.bind_level(_level)
 	_loading.visible = false
 	if _game != null:
@@ -126,12 +138,14 @@ func _enter_level(scene: PackedScene) -> void:
 
 
 func _leave_level() -> void:
-	for overlay: Node in [_hud, _death, _pause]:
+	for overlay: Node in [_hud, _death, _pause, _inventory_panel, _item_card]:
 		if overlay != null:
 			overlay.queue_free()
 	_hud = null
 	_death = null
 	_pause = null
+	_inventory_panel = null
+	_item_card = null
 	if _level != null:
 		_level.queue_free()
 		_level = null
@@ -151,31 +165,6 @@ func _push_settings_to_player() -> void:
 		return
 	rig.set(&"mouse_sensitivity", _settings.mouse_sensitivity)
 	rig.set(&"invert_y", _settings.invert_y)
-
-
-# --- headless probe --------------------------------------------------------------------------------------
-
-func _probe_step() -> void:
-	_probe_frames += 1
-	if _probe_phase == 0 and _probe_frames >= 2:
-		print("PROBE menu continue_enabled=%s state=%s" % [_menu.continue_enabled(), _state_name()])
-		_begin_level(LEVEL_PATH, false)
-		_probe_frames = 0
-		_probe_phase = 1
-	elif _probe_phase == 1 and _level != null and _probe_frames >= PROBE_SETTLE_FRAMES:
-		print("PROBE ingame level=%s hud=%s state=%s" % [
-			_level.is_inside_tree(), _hud != null and _hud.is_inside_tree(), _state_name(),
-		])
-		if _game != null:
-			_game.kill_player()
-		_probe_frames = 0
-		_probe_phase = 2
-	elif _probe_phase == 2 and _probe_frames >= PROBE_DEATH_FRAMES:
-		print("PROBE death veil=%s state=%s" % [_death != null and _death.is_veil_visible(), _state_name()])
-		if _save != null:
-			_save.delete()
-		_probe_phase = 3
-		get_tree().quit()
 
 
 func _state_name() -> String:
