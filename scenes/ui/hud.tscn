@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://uihud000w105"]
+[gd_scene load_steps=13 format=3 uid="uid://uihud000w105"]
 
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://uitheme0w105" path="res://scenes/ui/souls_theme.tres" id="2_theme"]
 [ext_resource type="Script" path="res://scripts/ui/item_toasts.gd" id="3_toasts"]
 [ext_resource type="PackedScene" uid="uid://uilorecard105" path="res://scenes/ui/lore_card.tscn" id="4_lore"]
+[ext_resource type="Script" path="res://scripts/ui/hud_gauges.gd" id="5_gauges"]
+[ext_resource type="Script" path="res://scripts/ui/hud_prompt.gd" id="6_prompt"]
 
 [sub_resource type="Shader" id="Shader_vignette"]
 code = "shader_type canvas_item;
@@ -231,3 +233,11 @@ vertical_alignment = 1
 
 [node name="LoreCard" parent="." instance=ExtResource("4_lore")]
 unique_name_in_owner = true
+
+[node name="Gauges" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_gauges")
+
+[node name="PromptLine" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_prompt")
