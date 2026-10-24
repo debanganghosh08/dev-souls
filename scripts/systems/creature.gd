@@ -62,11 +62,17 @@ func _ready() -> void:
 	_motes = get_node_or_null(^"Motes") as GPUParticles3D
 	var body: GeometryInstance3D = get_node_or_null(^"Body") as GeometryInstance3D
 	if body != null:
-		_fade_targets.append(body)
-		for child: Node in body.get_children():
-			if child is GeometryInstance3D:
-				_fade_targets.append(child)
+		_collect_fade_targets(body)
 	_begin_idle()
+
+
+# The real animal models nest their mesh under a Skeleton3D, so a direct-children scan misses the only
+# thing worth fading and the corpse would sink without dissolving. Walk the whole subtree.
+func _collect_fade_targets(node: Node) -> void:
+	if node is GeometryInstance3D:
+		_fade_targets.append(node)
+	for child: Node in node.get_children():
+		_collect_fade_targets(child)
 
 
 # No navigation mesh yet: the creature steers straight at its goal and lets move_and_slide handle walls.

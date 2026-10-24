@@ -189,7 +189,11 @@ func test_apply_hits_respects_arc_reach_and_death() -> void:
 	var dead: Damageable = _target(Vector3(0.2, 0, -1.0))
 	dead.health.kill()
 	_melee.try_attack(false)
-	var hits: int = _melee.apply_hits([ahead, behind, far, dead, Node.new()], Vector3.ZERO, Vector3.FORWARD)
+	# A plain Node stands in for "something on the hit layer that is not Damageable"; it must be freed or
+	# Godot reports a leaked ObjectDB instance at exit.
+	var not_damageable: Node = Node.new()
+	var hits: int = _melee.apply_hits([ahead, behind, far, dead, not_damageable], Vector3.ZERO, Vector3.FORWARD)
+	not_damageable.free()
 	assert_eq(hits, 1, "only the live target ahead within reach is hit")
 	assert_true(ahead.health.current < 100.0, "target ahead took damage")
 	assert_eq(behind.health.current, 100.0, "target behind untouched")
