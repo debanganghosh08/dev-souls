@@ -1,0 +1,58 @@
+﻿[gd_scene load_steps=7 format=3 uid="uid://treetest0w3b2"]
+
+[ext_resource type="Script" uid="uid://bwnsm5oyxwuro" path="res://scenes/levels/treetest.gd" id="1_level"]
+[ext_resource type="Script" uid="uid://eqmw3al4pe3q" path="res://scripts/systems/forest.gd" id="2_forest"]
+[ext_resource type="PackedScene" uid="uid://skyenv0w2010" path="res://scenes/environment/sky.tscn" id="3_sky"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_ground"]
+albedo_color = Color(0.18, 0.2, 0.15, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_ground"]
+material = SubResource("Mat_ground")
+size = Vector3(300, 1, 300)
+
+[sub_resource type="BoxShape3D" id="Shape_ground"]
+size = Vector3(300, 1, 300)
+
+[node name="TreeTestLevel" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("Shape_ground")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("Mesh_ground")
+
+[node name="Forest" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_forest")
+count = 200
+radius = 60.0
+clearing_radius = 8.0
+seed_value = 1
+lod1_distance = 45.0
+cull_distance = 140.0
+collider_count = 40
+
+[node name="Sky" parent="." instance=ExtResource("3_sky")]
+area = &"wood"
+start_hour = 9.0
+
+[node name="Camera" type="Camera3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 6, 4)
+current = true
+fov = 70.0
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="DebugLabel" type="Label" parent="HUD"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 900.0
+offset_bottom = 160.0
+text = "trees"
