@@ -1,9 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://propchest104"]
+[gd_scene load_steps=6 format=3 uid="uid://propchest104"]
 
 [ext_resource type="Script" uid="uid://cenpedyufuu78" path="res://scripts/systems/interactables/chest.gd" id="1_chest"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_body"]
-albedo_color = Color(0.5, 0.48, 0.46, 1)
+[ext_resource type="PackedScene" path="res://assets/models/props/treasure_chest/treasure_chest_1k.gltf" id="2_model"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_glow"]
 albedo_color = Color(0.35, 0.3, 0.25, 1)
@@ -14,16 +12,8 @@ emission_energy_multiplier = 0.0
 [sub_resource type="BoxShape3D" id="Shape_chest"]
 size = Vector3(1, 0.8, 0.6)
 
-[sub_resource type="BoxMesh" id="Mesh_body"]
-material = SubResource("Mat_body")
-size = Vector3(1, 0.5, 0.6)
-
-[sub_resource type="BoxMesh" id="Mesh_lid"]
-material = SubResource("Mat_body")
-size = Vector3(1, 0.3, 0.6)
-
 [sub_resource type="BoxMesh" id="Mesh_glow"]
-size = Vector3(0.2, 0.08, 0.06)
+size = Vector3(0.14, 0.05, 0.03)
 
 [node name="Chest" type="Area3D"]
 collision_layer = 4
@@ -35,20 +25,36 @@ prompt = "Open"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 shape = SubResource("Shape_chest")
 
-[node name="Body" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("Mesh_body")
+[node name="Body" parent="." instance=ExtResource("2_model")]
+transform = Transform3D(1.19, 0, 0, 0, 1.19, 0, 0, 0, 1.19, 0, 0, 0)
+
+[node name="treasure_chest_lid" parent="Body"]
+visible = false
 
 [node name="Lid" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.3)
 
-[node name="LidMesh" type="MeshInstance3D" parent="Lid"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0.3)
-mesh = SubResource("Mesh_lid")
+[node name="LidMesh" parent="Lid" instance=ExtResource("2_model")]
+transform = Transform3D(1.19, 0, 0, 0, 1.19, 0, 0, 0, 1.19, 0, -0.5004, 0.306)
+
+[node name="treasure_chest_bottom" parent="Lid/LidMesh"]
+visible = false
+
+[node name="treasure_chest_handle_left" parent="Lid/LidMesh"]
+visible = false
+
+[node name="treasure_chest_handle_right" parent="Lid/LidMesh"]
+visible = false
+
+[node name="treasure_chest_lock" parent="Lid/LidMesh"]
+visible = false
 
 [node name="Glow" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.32)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0.33)
 material_override = SubResource("Mat_glow")
 mesh = SubResource("Mesh_glow")
+
+[editable path="Body"]
+[editable path="Lid/LidMesh"]

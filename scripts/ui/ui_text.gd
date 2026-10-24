@@ -34,6 +34,7 @@ const DEFAULTS: Dictionary = {
 	"fps_unlimited": "Unlimited",
 	"reset_defaults": "Reset to defaults",
 	"back": "Back",
+	"unarmed": "Unarmed",
 }
 
 static var _table: Dictionary = {}

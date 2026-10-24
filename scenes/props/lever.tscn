@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://proplever104"]
+[gd_scene load_steps=9 format=3 uid="uid://proplever104"]
 
 [ext_resource type="Script" uid="uid://bjn4wjtrri8xn" path="res://scripts/systems/interactables/lever.gd" id="1_lever"]
+[ext_resource type="PackedScene" path="res://assets/models/rocks/rock_moss_set_02/rock_moss_set_02_1k.gltf" id="2_rocks"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_iron"]
-albedo_color = Color(0.4, 0.4, 0.42, 1)
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+roughness = 0.75
 
 [sub_resource type="StandardMaterial3D" id="Mat_glow"]
 albedo_color = Color(0.35, 0.3, 0.25, 1)
@@ -14,9 +16,9 @@ emission_energy_multiplier = 0.0
 [sub_resource type="BoxShape3D" id="Shape_lever"]
 size = Vector3(0.6, 1.2, 0.6)
 
-[sub_resource type="BoxMesh" id="Mesh_base"]
+[sub_resource type="BoxMesh" id="Mesh_socket"]
 material = SubResource("Mat_iron")
-size = Vector3(0.4, 0.5, 0.4)
+size = Vector3(0.16, 0.12, 0.16)
 
 [sub_resource type="CylinderMesh" id="Mesh_handle"]
 material = SubResource("Mat_iron")
@@ -37,9 +39,30 @@ prompt = "Pull"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("Shape_lever")
 
-[node name="Base" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("Mesh_base")
+[node name="Base" parent="." instance=ExtResource("2_rocks")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.134, 0, 0.676)
+
+[node name="rock_moss_set_02_rock08" parent="Base"]
+visible = false
+
+[node name="rock_moss_set_02_rock09" parent="Base"]
+visible = false
+
+[node name="rock_moss_set_02_rock13" parent="Base"]
+visible = false
+
+[node name="rock_moss_set_02_rock10" parent="Base"]
+visible = false
+
+[node name="rock_moss_set_02_rock11" parent="Base"]
+visible = false
+
+[node name="rock_moss_set_02_rock07" parent="Base"]
+visible = false
+
+[node name="Socket" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.46, 0)
+mesh = SubResource("Mesh_socket")
 
 [node name="Handle" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -54,3 +77,5 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 material_override = SubResource("Mat_glow")
 mesh = SubResource("Mesh_glow")
+
+[editable path="Base"]

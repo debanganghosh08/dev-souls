@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://envmatblock1"]
+
+[ext_resource type="Texture2D" path="res://assets/textures/shared/medieval_blocks_03/medieval_blocks_03_diff_2k.jpg" id="1_diff"]
+[ext_resource type="Texture2D" path="res://assets/textures/shared/medieval_blocks_03/medieval_blocks_03_nor_gl_2k.jpg" id="2_nor"]
+[ext_resource type="Texture2D" path="res://assets/textures/shared/medieval_blocks_03/medieval_blocks_03_rough_2k.jpg" id="3_rough"]
+[ext_resource type="Texture2D" path="res://assets/textures/shared/medieval_blocks_03/medieval_blocks_03_ao_2k.jpg" id="4_ao"]
+
+[resource]
+resource_name = "wall_medieval_blocks"
+albedo_texture = ExtResource("1_diff")
+roughness_texture = ExtResource("3_rough")
+roughness_texture_channel = 0
+normal_enabled = true
+normal_texture = ExtResource("2_nor")
+ao_enabled = true
+ao_texture = ExtResource("4_ao")
+ao_texture_channel = 0
+uv1_scale = Vector3(1.0, 1.0, 1.0)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 5
