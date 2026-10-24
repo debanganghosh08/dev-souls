@@ -1,0 +1,185 @@
+{
+	"_comment": "Set dressing for scenes/levels/vale.tscn, built by LevelDressing with a terrain height_sampler: `y` is an offset above the ground, and scatter points on water or on slopes over PROP_MAX_SLOPE are dropped by the level's placement_filter. Coordinates are world [x, z]; the Mirror Pond is at the origin, the village plateau at (-200, 140), Castle Morrow at (200, -160). Zones follow the valley floor between the three sites and thin out toward the ridge; keep_out fences the pond, both plateau cores and the spawn shore.",
+	"seed": 20261024,
+	"keep_out": [
+		{"name": "mirror pond and its shore", "min": [-80, -80], "max": [80, 80]},
+		{"name": "village plateau core", "min": [-258, 82], "max": [-142, 198]},
+		{"name": "castle plateau core", "min": [122, -238], "max": [278, -82]},
+		{"name": "spawn shore", "min": [30, 55], "max": [75, 100]}
+	],
+	"zones": "pond east x 80..170 z -60..120 | pond west x -170..-80 z -40..130 | pond south x -90..90 z 80..200 | pond north x -120..100 z -200..-80 | castle approach x 90..230 z -80..40 | village approach x -140..-60 z 120..220 | ridge foot west x -380..-270 z -160..160 (thin) | ridge foot east x 270..380 z -40..220 (thin) | ridge foot north x -200..120 z -380..-280 (thin)",
+	"sets": [
+		{
+			"name": "boulders_low", "model": "res://assets/models/rocks/namaqualand_boulder_02/namaqualand_boulder_02_1k.gltf", "mesh": "boulder_02",
+			"y": -0.1, "range_end": 160, "collide": true, "scale": [0.9, 1.4],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 3, "min_gap": 12.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 3, "min_gap": 12.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 14.0},
+				{"zone": {"min": [-380, -160], "max": [-270, 160]}, "count": 5, "min_gap": 16.0},
+				{"zone": {"min": [270, -40], "max": [380, 220]}, "count": 5, "min_gap": 16.0},
+				{"zone": {"min": [-200, -380], "max": [120, -280]}, "count": 4, "min_gap": 16.0}
+			]
+		},
+		{
+			"name": "boulders_tall", "model": "res://assets/models/rocks/namaqualand_boulder_03/namaqualand_boulder_03_1k.gltf", "mesh": "boulder_03_LOD0",
+			"y": -0.08, "range_end": 160, "collide": true, "scale": [0.9, 1.3],
+			"scatter": [
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 3, "min_gap": 14.0},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 2, "min_gap": 14.0},
+				{"zone": {"min": [-380, -160], "max": [-270, 160]}, "count": 4, "min_gap": 18.0},
+				{"zone": {"min": [270, -40], "max": [380, 220]}, "count": 4, "min_gap": 18.0}
+			]
+		},
+		{
+			"name": "mossy_rocks_large", "model": "res://assets/models/rocks/rock_moss_set_01/rock_moss_set_01_1k.gltf", "mesh": "rock_moss_set_01_rock02",
+			"y": 0.12, "range_end": 120, "collide": true, "scale": [0.7, 1.1],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 5, "min_gap": 7.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 5, "min_gap": 7.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 4, "min_gap": 7.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 7.0}
+			]
+		},
+		{
+			"name": "mossy_rocks_long", "model": "res://assets/models/rocks/rock_moss_set_01/rock_moss_set_01_1k.gltf", "mesh": "rock_moss_set_01_rock05",
+			"y": 0.18, "range_end": 120, "collide": true, "scale": [0.7, 1.1],
+			"scatter": [
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 4, "min_gap": 8.0},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 3, "min_gap": 8.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 3, "min_gap": 8.0}
+			]
+		},
+		{
+			"name": "small_rocks_a", "model": "res://assets/models/rocks/rock_moss_set_02/rock_moss_set_02_1k.gltf", "mesh": "rock_moss_set_02_rock08",
+			"y": -0.05, "range_end": 80, "scale": [0.7, 1.2],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 10, "min_gap": 3.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 10, "min_gap": 3.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 8, "min_gap": 3.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 8, "min_gap": 3.0},
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 8, "min_gap": 3.0},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 6, "min_gap": 3.0}
+			]
+		},
+		{
+			"name": "small_rocks_b", "model": "res://assets/models/rocks/rock_moss_set_02/rock_moss_set_02_1k.gltf", "mesh": "rock_moss_set_02_rock09",
+			"y": -0.05, "range_end": 80, "scale": [0.7, 1.2],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 8, "min_gap": 3.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 8, "min_gap": 3.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 6, "min_gap": 3.0},
+				{"zone": {"min": [-380, -160], "max": [-270, 160]}, "count": 6, "min_gap": 6.0},
+				{"zone": {"min": [270, -40], "max": [380, 220]}, "count": 6, "min_gap": 6.0}
+			]
+		},
+		{
+			"name": "small_rocks_c", "model": "res://assets/models/rocks/rock_moss_set_02/rock_moss_set_02_1k.gltf", "mesh": "rock_moss_set_02_rock12",
+			"y": -0.08, "range_end": 80, "scale": [0.6, 1.0],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 6, "min_gap": 4.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 6, "min_gap": 4.0},
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 6, "min_gap": 4.0},
+				{"zone": {"min": [-200, -380], "max": [120, -280]}, "count": 5, "min_gap": 6.0}
+			]
+		},
+		{
+			"name": "fallen_trunks", "model": "res://assets/models/logs/dead_tree_trunk_02/dead_tree_trunk_02_1k.gltf", "mesh": "dead_tree_trunk_02",
+			"y": 0.22, "range_end": 140, "collide": true, "scale": [0.9, 1.1],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 3, "min_gap": 15.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 3, "min_gap": 15.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 2, "min_gap": 15.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 3, "min_gap": 15.0},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 2, "min_gap": 15.0}
+			]
+		},
+		{
+			"name": "fallen_branches", "model": "res://assets/models/logs/dead_tree_trunk/dead_tree_trunk_1k.gltf", "mesh": "dead_tree_trunk",
+			"y": 0.0, "range_end": 90, "scale": [0.9, 1.1],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 4, "min_gap": 10.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 4, "min_gap": 10.0},
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 4, "min_gap": 10.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 3, "min_gap": 10.0}
+			]
+		},
+		{
+			"name": "stumps", "model": "res://assets/models/logs/tree_stump_01/tree_stump_01_1k.gltf", "mesh": "tree_stump_01",
+			"y": 0.12, "range_end": 110, "collide": true, "scale": [0.9, 1.2],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 4, "min_gap": 12.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 5, "min_gap": 12.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 12.0},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 4, "min_gap": 12.0},
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 3, "min_gap": 12.0}
+			]
+		},
+		{
+			"name": "ferns_a", "model": "res://assets/models/foliage/fern_02/fern_02_1k.gltf", "mesh": "fern_02_b",
+			"y": 0.0, "range_end": 55, "shadows": false, "scale": [0.8, 1.3],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 14, "min_gap": 2.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 14, "min_gap": 2.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 10, "min_gap": 2.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 10, "min_gap": 2.0},
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 8, "min_gap": 2.0},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 8, "min_gap": 2.0}
+			]
+		},
+		{
+			"name": "ferns_b", "model": "res://assets/models/foliage/fern_02/fern_02_1k.gltf", "mesh": "fern_02_c",
+			"y": 0.0, "range_end": 55, "shadows": false, "scale": [0.8, 1.3],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 10, "min_gap": 2.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 10, "min_gap": 2.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 8, "min_gap": 2.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 8, "min_gap": 2.0}
+			]
+		},
+		{
+			"name": "shrubs_a", "model": "res://assets/models/foliage/shrub_02/shrub_02_1k.gltf", "mesh": "shrub_02_a",
+			"y": 0.0, "range_end": 90, "shadows": false, "scale": [0.8, 1.2],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 6, "min_gap": 5.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 6, "min_gap": 5.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 5, "min_gap": 5.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 5, "min_gap": 5.0},
+				{"zone": {"min": [-380, -160], "max": [-270, 160]}, "count": 4, "min_gap": 8.0},
+				{"zone": {"min": [270, -40], "max": [380, 220]}, "count": 4, "min_gap": 8.0}
+			]
+		},
+		{
+			"name": "shrubs_b", "model": "res://assets/models/foliage/shrub_02/shrub_02_1k.gltf", "mesh": "shrub_02_b",
+			"y": 0.0, "range_end": 90, "shadows": false, "scale": [0.8, 1.2],
+			"scatter": [
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 5, "min_gap": 5.0},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 5, "min_gap": 5.0},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 4, "min_gap": 5.0},
+				{"zone": {"min": [-200, -380], "max": [120, -280]}, "count": 4, "min_gap": 8.0}
+			]
+		},
+		{
+			"name": "shrubs_c", "model": "res://assets/models/foliage/shrub_02/shrub_02_1k.gltf", "mesh": "shrub_02_c",
+			"y": 0.0, "range_end": 90, "shadows": false, "scale": [0.8, 1.2],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 4, "min_gap": 5.0},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 4, "min_gap": 5.0},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 5.0},
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 4, "min_gap": 5.0}
+			]
+		},
+		{
+			"name": "sprigs", "model": "res://assets/models/foliage/shrub_03/shrub_03_1k.gltf", "mesh": "shrub_03_a",
+			"y": 0.0, "range_end": 45, "shadows": false, "scale": [1.0, 1.6],
+			"scatter": [
+				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 12, "min_gap": 1.5},
+				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 12, "min_gap": 1.5},
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 10, "min_gap": 1.5},
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 10, "min_gap": 1.5},
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 8, "min_gap": 1.5},
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 8, "min_gap": 1.5}
+			]
+		}
+	]
+}

@@ -23,6 +23,13 @@ const PLACE_ATTEMPTS := 12
 @export var collider_count: int = 40
 ## Edge length of the square chunks that visibility ranges (LOD and culling) are evaluated per.
 @export var chunk_size: float = 40.0
+## Off when a level sets height_sampler / placement_filter first and calls rebuild() itself.
+@export var auto_build: bool = true
+
+## Optional world-space ground: (x, z) -> y. When valid, trees stand on it instead of this node's XZ plane.
+var height_sampler: Callable = Callable()
+## Optional (x, z) -> bool in world space; trees failing it are dropped, so tree_count() can be below count.
+var placement_filter: Callable = Callable()
 
 var _layout: Dictionary = {}
 var _stats: Dictionary = {}
@@ -30,14 +37,15 @@ var _built: Array[Node] = []
 
 
 func _ready() -> void:
-	rebuild()
+	if auto_build:
+		rebuild()
 
 
 func rebuild() -> void:
 	for node: Node in _built:
 		node.queue_free()
 	_built.clear()
-	_layout = plan_layout(count, radius, clearing_radius, seed_value, archetype_mix)
+	_layout = _grounded(plan_layout(count, radius, clearing_radius, seed_value, archetype_mix))
 	_stats = {"per_archetype": {}, "trunk_vertices": 0, "card_vertices": 0, "card_vertices_lod1": 0,
 		"multimeshes": 0, "colliders": 0}
 	var positions: PackedVector3Array = _layout["positions"]
@@ -131,6 +139,11 @@ static func plan_layout(tree_count: int, forest_radius: float, clearing: float, 
 		yaws.append(rng.randf_range(0.0, TAU))
 		scales.append(rng.randf_range(0.8, 1.25))
 	return {"positions": positions, "archetypes": archetypes, "yaws": yaws, "scales": scales, "clusters": centres}
+
+
+func _grounded(layout: Dictionary) -> Dictionary:
+	var origin: Vector3 = global_position if is_inside_tree() else position
+	return GroundPlacement.ground_layout(layout, origin, height_sampler, placement_filter)
 
 
 static func _too_close(cand: Vector2, placed: PackedVector3Array) -> bool:
