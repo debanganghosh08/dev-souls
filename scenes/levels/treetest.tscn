@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=7 format=3 uid="uid://treetest0w3b2"]
+[gd_scene load_steps=7 format=3 uid="uid://treetest0w3b2"]
 
 [ext_resource type="Script" uid="uid://bwnsm5oyxwuro" path="res://scenes/levels/treetest.gd" id="1_level"]
 [ext_resource type="Script" uid="uid://eqmw3al4pe3q" path="res://scripts/systems/forest.gd" id="2_forest"]

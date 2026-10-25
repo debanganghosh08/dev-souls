@@ -30,7 +30,11 @@ const SWORD := &"sword"
 @export var walk_clip_speed: float = 0.99
 @export var run_clip_speed: float = 1.67
 @export var min_time_scale: float = 0.5
-@export var max_time_scale: float = 3.0
+# Measured: the walk clip plants ~0.99 m/s and the run clip ~1.67 m/s at this model's scale, against a game
+# walk of 4.2 and sprint of 7.0 — so planting the feet exactly would need ~4.2x, which reads as frantic legs.
+# 3.5 halves the residual slide (30% -> ~17%) without that. The other lever is lowering walk_speed and
+# sprint_speed by ~15% on PlayerController, which would remove the slide entirely; that is a feel call.
+@export var max_time_scale: float = 3.5
 
 var _controller: PlayerController
 var _melee: Melee

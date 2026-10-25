@@ -1,4 +1,4 @@
-﻿[gd_scene load_steps=5 format=3 uid="uid://treetest0w3a1"]
+[gd_scene load_steps=5 format=3 uid="uid://treetest0w3a1"]
 
 [ext_resource type="Script" uid="uid://7r2n042xi4bh" path="res://scenes/environment/tree_test.gd" id="1_trees"]
 [ext_resource type="PackedScene" uid="uid://skyenv0w2010" path="res://scenes/environment/sky.tscn" id="2_sky"]
