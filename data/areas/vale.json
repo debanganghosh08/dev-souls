@@ -1,55 +1,112 @@
 {
-	"_comment": "Ashen Vale landform, read by Heightfield.from_dict. Metres, world XZ with the Mirror Pond at the origin. Layers compose in this order: noise hills -> valley-floor channel (calms the noise) -> pond basin -> boundary ridge -> plateaus. Slope targets: valley floor and routes <= 30 deg (player floor_max_angle is 45), ridge upper half > 45 so it reads as a wall.",
-	"size": 1024,
-	"seed": 20261024,
-	"noise": {
-		"octaves": 4,
-		"frequency": 0.0028,
-		"amplitude": 12.0,
-		"lacunarity": 2.0,
-		"gain": 0.45
-	},
-	"water_level": -5.0,
-	"pond": {
-		"centre": [0, 0],
-		"radius": 42,
-		"depth": 11.0,
-		"falloff": 150
-	},
-	"valley": {
-		"waypoints": [[-200, 140], [-90, 70], [0, 0], [105, -80], [200, -160]],
-		"width": 36,
-		"blend": 34,
-		"depth": 1.5,
-		"flatten": 0.65
-	},
-	"plateaus": [
-		{"name": "village", "centre": [-200, 140], "radius": 58, "height": 3.0, "blend": 46},
-		{"name": "castle", "centre": [200, -160], "radius": 78, "height": 16.0, "blend": 80}
-	],
-	"ridge": {
-		"inner_radius": 410,
-		"outer_radius": 520,
-		"height": 95.0,
-		"wobble": 30.0,
-		"wobble_frequency": 0.004
-	},
-	"spawn": {
-		"from": [0, 0],
-		"direction": [0.55, 0.85],
-		"min_distance": 48,
-		"max_distance": 140,
-		"step": 2.0,
-		"max_slope": 24.0,
-		"clearance": 1.0
-	},
-	"material": {
-		"grass_slope_deg": 20.0,
-		"rock_slope_deg": 36.0,
-		"gravel_slope_deg": 28.0,
-		"mud_height": 1.6,
-		"mud_blend": 1.8,
-		"uv_metres_per_tile": 2.0,
-		"normal_strength": 0.8
-	}
+  "_comment": "Ashen Vale landform, read by Heightfield.from_dict. Metres, world XZ with the Mirror Pond at the origin. Layers compose in this order: noise hills -> valley-floor channel (calms the noise) -> pond basin -> boundary ridge -> plateaus. Slope targets: valley floor and routes <= 30 deg (player floor_max_angle is 45), ridge upper half > 45 so it reads as a wall.",
+  "size": 1024,
+  "seed": 20261024,
+  "noise": {
+    "octaves": 4,
+    "frequency": 0.0028,
+    "amplitude": 12.0,
+    "lacunarity": 2.0,
+    "gain": 0.45
+  },
+  "water_level": -5.0,
+  "pond": {
+    "centre": [
+      0,
+      0
+    ],
+    "radius": 42,
+    "depth": 11.0,
+    "falloff": 150
+  },
+  "valley": {
+    "waypoints": [
+      [
+        -200,
+        140
+      ],
+      [
+        -90,
+        70
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        105,
+        -80
+      ],
+      [
+        200,
+        -160
+      ]
+    ],
+    "width": 36,
+    "blend": 34,
+    "depth": 1.5,
+    "flatten": 0.65
+  },
+  "plateaus": [
+    {
+      "name": "village",
+      "centre": [
+        -200,
+        140
+      ],
+      "radius": 58,
+      "height": 3.0,
+      "blend": 46
+    },
+    {
+      "name": "castle",
+      "centre": [
+        200,
+        -160
+      ],
+      "radius": 78,
+      "height": 16.0,
+      "blend": 80
+    }
+  ],
+  "ridge": {
+    "inner_radius": 410,
+    "outer_radius": 520,
+    "height": 95.0,
+    "wobble": 30.0,
+    "wobble_frequency": 0.004
+  },
+  "spawn": {
+    "from": [
+      0,
+      0
+    ],
+    "direction": [
+      0.55,
+      0.85
+    ],
+    "min_distance": 48,
+    "max_distance": 140,
+    "step": 2.0,
+    "max_slope": 24.0,
+    "clearance": 1.0
+  },
+  "material": {
+    "grass_slope_deg": 20.0,
+    "rock_slope_deg": 36.0,
+    "gravel_slope_deg": 28.0,
+    "mud_height": 1.6,
+    "mud_blend": 1.8,
+    "uv_metres_per_tile": 2.0,
+    "normal_strength": 0.8
+  },
+  "holes": [
+    [
+      207.5,
+      -182.5,
+      6.0,
+      9.0
+    ]
+  ],
+  "_comment_holes": "World XZ rects [x, z, w, h] where the terrain mesh AND collision are omitted so built structures can go underground. Here: the castle crypt stairwell and chamber. Whatever is built must enclose the opening itself."
 }

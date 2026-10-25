@@ -30,6 +30,7 @@ const NO_CHUNK := Vector2i(1 << 30, 1 << 30)
 @export var auto_build: bool = true
 
 var heightfield: Heightfield
+var _holes: Array[Rect2] = []
 
 var _chunks: Dictionary = {}
 var _queue: Array[Vector2i] = []
@@ -50,6 +51,7 @@ var _collision_chunks: int = 0
 func _ready() -> void:
 	var data: Dictionary = load_data(data_path)
 	heightfield = Heightfield.from_dict(data)
+	_holes = heightfield.holes()
 	_material = TerrainMaterial.get_material(data.get("material", {}), heightfield.water_level())
 	_per_side = maxi(1, roundi(heightfield.size() / maxf(1.0, chunk_size)))
 	_cells = maxi(1, roundi(chunk_size / maxf(0.1, lod0_spacing)))
@@ -144,7 +146,8 @@ func _build_chunk(key: Vector2i) -> void:
 		var step: int = 1 << level
 		if _cells / step < 1:
 			break
-		var mesh: ArrayMesh = TerrainMesh.build_lod(grid, _cells, step, lod0_spacing, skirt_depth, uv_origin, uv_scale)
+		var mesh: ArrayMesh = TerrainMesh.build_lod(grid, _cells, step, lod0_spacing, skirt_depth, uv_origin,
+				uv_scale, origin, _holes)
 		mesh.surface_set_material(0, _material)
 		var mi := MeshInstance3D.new()
 		mi.name = "LOD%d" % level
@@ -175,7 +178,8 @@ func _update_collision() -> void:
 func _add_collision(key: Vector2i) -> void:
 	var chunk: Dictionary = _chunks[key]
 	var shape := ConcavePolygonShape3D.new()
-	shape.set_faces(TerrainMesh.collision_faces(chunk["grid"], _cells, lod0_spacing))
+	shape.set_faces(TerrainMesh.collision_faces(chunk["grid"], _cells, lod0_spacing,
+			_chunk_origin(key), _holes))
 	var body := StaticBody3D.new()
 	body.name = "Collision"
 	body.collision_layer = WORLD_LAYER

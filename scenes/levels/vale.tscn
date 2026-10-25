@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://vale0w2030lvl"]
+[gd_scene load_steps=10 format=3 uid="uid://vale0w2030lvl"]
 
 [ext_resource type="Script" path="res://scenes/levels/vale.gd" id="1_level"]
 [ext_resource type="Script" path="res://scripts/systems/grass.gd" id="7_grass"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://eqmw3al4pe3q" path="res://scripts/systems/forest.gd" id="4_forest"]
 [ext_resource type="Script" path="res://scripts/systems/level_dressing.gd" id="5_dressing"]
 [ext_resource type="PackedScene" uid="uid://player0w1030" path="res://scenes/player/player.tscn" id="6_player"]
+[ext_resource type="PackedScene" uid="uid://castlemorrow01" path="res://scenes/structures/castle_morrow.tscn" id="8_castle"]
+[ext_resource type="PackedScene" uid="uid://village000001" path="res://scenes/structures/village.tscn" id="9_village"]
 
 [node name="Vale" type="Node3D"]
 script = ExtResource("1_level")
@@ -61,6 +63,12 @@ density = 1.0
 max_slope = 32.0
 fill_cells_per_frame = 3
 auto_build = false
+
+[node name="CastleMorrow" parent="." instance=ExtResource("8_castle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200.0, 16.0, -160.0)
+
+[node name="Village" parent="." instance=ExtResource("9_village")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.0, 3.0, 140.0)
 
 [node name="Player" parent="." instance=ExtResource("6_player")]
 unique_name_in_owner = true

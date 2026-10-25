@@ -35,6 +35,10 @@ var _valley_blend: float = 0.0
 var _valley_depth: float = 0.0
 var _valley_flatten: float = 0.0
 var _plateaus: Array[Dictionary] = []
+# World-space rectangles where the terrain is omitted entirely — mesh and collision — so built structures can
+# descend below the surface (the castle crypt, later the Wood's drowned shrine and the Barrens' caves).
+# Whatever is built there must enclose the opening itself; the terrain simply stops.
+var _holes: Array[Rect2] = []
 var _ridge_inner: float = 0.0
 var _ridge_outer: float = 0.0
 var _ridge_height: float = 0.0
@@ -56,6 +60,13 @@ static func from_dict(data: Dictionary) -> Heightfield:
 	hf._noise.fractal_lacunarity = float(noise.get("lacunarity", 2.0))
 	hf._noise.fractal_gain = float(noise.get("gain", 0.5))
 	hf._amplitude = float(noise.get("amplitude", 10.0)) if int(noise.get("octaves", 4)) > 0 else 0.0
+	for raw: Variant in data.get("holes", []):
+		if raw is Array and (raw as Array).size() == 4:
+			var r: Array = raw
+			var w: float = absf(float(r[2]))
+			var h: float = absf(float(r[3]))
+			if w > 0.0 and h > 0.0:
+				hf._holes.append(Rect2(float(r[0]), float(r[1]), w, h))
 	hf._water = float(data.get("water_level", 0.0))
 	var pond: Dictionary = data.get("pond", {})
 	hf._pond_centre = _vec2(pond.get("centre", [0, 0]))
@@ -212,3 +223,15 @@ func spawn_point() -> Vector3:
 	return find_walkable(_vec2(s.get("from", [0, 0])), _vec2(s.get("direction", [1, 0])),
 		float(s.get("min_distance", 0.0)), float(s.get("max_distance", 100.0)), float(s.get("step", 2.0)),
 		float(s.get("max_slope", 25.0)), float(s.get("clearance", 1.0)))
+
+
+func holes() -> Array[Rect2]:
+	return _holes.duplicate()
+
+
+## True when a world XZ point falls in a hole. Static so the mesh builder can use it without a Heightfield.
+static func point_in_holes(hole_list: Array[Rect2], x: float, z: float) -> bool:
+	for r: Rect2 in hole_list:
+		if r.has_point(Vector2(x, z)):
+			return true
+	return false

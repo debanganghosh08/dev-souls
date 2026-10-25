@@ -36,7 +36,8 @@ static func grid_normal(grid: PackedFloat32Array, cells: int, i: int, j: int, sp
 ## the LOD0 grid (1, 2, 4, ...); `uv_origin`/`uv_scale` map local XZ to the whole-area UV so the shader
 ## could use UVs, although it maps textures in world space anyway.
 static func build_lod(grid: PackedFloat32Array, cells: int, step: int, spacing: float, skirt_depth: float,
-		uv_origin: Vector2, uv_scale: float) -> ArrayMesh:
+		uv_origin: Vector2, uv_scale: float, origin: Vector2 = Vector2.ZERO,
+		holes: Array[Rect2] = [] as Array[Rect2]) -> ArrayMesh:
 	var stride: int = maxi(1, step)
 	var side: int = maxi(1, cells / stride)
 	var verts := PackedVector3Array()
@@ -52,6 +53,13 @@ static func build_lod(grid: PackedFloat32Array, cells: int, step: int, spacing: 
 			uvs.append((uv_origin + Vector2(float(gi), float(gj)) * spacing) * uv_scale)
 	for j: int in side:
 		for i: int in side:
+			# Quads whose centre falls in a hole are simply not emitted; their vertices stay in the array so
+			# the index arithmetic below is unaffected. Unreferenced vertices cost nothing visible.
+			if not holes.is_empty():
+				var cx: float = origin.x + (float(i) + 0.5) * float(stride) * spacing
+				var cz: float = origin.y + (float(j) + 0.5) * float(stride) * spacing
+				if Heightfield.point_in_holes(holes, cx, cz):
+					continue
 			var a: int = j * (side + 1) + i
 			var b: int = a + 1
 			var c: int = a + side + 1
@@ -96,12 +104,19 @@ static func _add_skirt(verts: PackedVector3Array, normals: PackedVector3Array, u
 
 
 ## Triangle soup of the LOD0 surface (no skirt) for a ConcavePolygonShape3D, in chunk-local space.
-static func collision_faces(grid: PackedFloat32Array, cells: int, spacing: float) -> PackedVector3Array:
+static func collision_faces(grid: PackedFloat32Array, cells: int, spacing: float,
+		origin: Vector2 = Vector2.ZERO, holes: Array[Rect2] = [] as Array[Rect2]) -> PackedVector3Array:
 	var faces := PackedVector3Array()
 	faces.resize(cells * cells * 6)
 	var k: int = 0
 	for j: int in cells:
 		for i: int in cells:
+			# Collision must agree with the visible mesh, or the player walks on air over a hole.
+			if not holes.is_empty():
+				var cx: float = origin.x + (float(i) + 0.5) * spacing
+				var cz: float = origin.y + (float(j) + 0.5) * spacing
+				if Heightfield.point_in_holes(holes, cx, cz):
+					continue
 			var a := Vector3(float(i) * spacing, grid_height(grid, cells, i, j), float(j) * spacing)
 			var b := Vector3(float(i + 1) * spacing, grid_height(grid, cells, i + 1, j), float(j) * spacing)
 			var c := Vector3(float(i) * spacing, grid_height(grid, cells, i, j + 1), float(j + 1) * spacing)
@@ -113,6 +128,7 @@ static func collision_faces(grid: PackedFloat32Array, cells: int, spacing: float
 			faces[k + 4] = d
 			faces[k + 5] = c
 			k += 6
+	faces.resize(k)  # holes leave the preallocated tail unused
 	return faces
 
 
