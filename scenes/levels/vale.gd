@@ -14,11 +14,14 @@ const TREE_SHORE_CLEARANCE := 0.8
 const PROP_MAX_SLOPE := 34.0
 const RIDGE_MARGIN := 15.0
 const WATER_COLOUR := Color(0.33, 0.37, 0.39, 0.62)
-const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %s\nchunks  %d / %d built   collision  %d   build  %d ms\ntrees  %d   dressing  %d\nfps  %d\n\nWASD move   Shift sprint   Space dodge   mouse look   F3 hide this readout"
+## Grass stops this far inside the ridge's inner radius; the ridge slopes would kill it anyway.
+const GRASS_RIDGE_MARGIN := 30.0
+const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %s\nchunks  %d / %d built   collision  %d   build  %d ms\ntrees  %d   dressing  %d\ngrass  %d cells   %d instances   %d pending\nfps  %d\n\nWASD move   Shift sprint   Space dodge   mouse look   F3 hide this readout"
 
 @onready var _terrain: Terrain = %Terrain
 @onready var _forest: Forest = %Forest
 @onready var _dressing: LevelDressing = %Dressing
+@onready var _grass: Grass = %Grass
 @onready var _player: PlayerController = %Player
 @onready var _label: Label = %DebugLabel
 @onready var _water: MeshInstance3D = %Water
@@ -42,7 +45,10 @@ func _ready() -> void:
 	_forest.rebuild()
 	_dressing.height_sampler = _terrain.height_at
 	_dressing.placement_filter = _prop_allowed
+	_dressing.normal_sampler = hf.normal_at
 	_dressing.build(LevelDressing.load_data(_dressing.data_path))
+	_grass.bind(_terrain, _grass_density, _forest.positions())
+	_grass.rebuild()
 	_player.global_position = _spawn
 	_player.velocity = Vector3.ZERO
 	if _game != null:
@@ -56,12 +62,14 @@ func _process(_delta: float) -> void:
 		return
 	var p: Vector3 = _player.global_position
 	var stats: Dictionary = _terrain.stats()
+	var grass: Dictionary = _grass.stats()
 	_label.text = READOUT % [
 		p.x, p.y, p.z,
 		_terrain.height_at(p.x, p.z), _terrain.heightfield.slope_at(p.x, p.z),
 		"underwater" if _terrain.heightfield.is_underwater(p.x, p.z) else "",
 		stats["built"], stats["chunks"], stats["collision_chunks"], stats["build_ms"],
 		_forest.tree_count(), _dressing.stats()["instances"],
+		grass["cells"], grass["instances"], grass["pending"],
 		Engine.get_frames_per_second(),
 	]
 
@@ -101,6 +109,14 @@ func _tree_allowed(x: float, z: float) -> bool:
 func _prop_allowed(x: float, z: float) -> bool:
 	var hf: Heightfield = _terrain.heightfield
 	return hf.height_at(x, z) >= hf.water_level() + TREE_SHORE_CLEARANCE * 0.5 and hf.slope_at(x, z) <= PROP_MAX_SLOPE
+
+
+# Density multiplier for Grass: nothing on the paved plateau tops (skirts fade in), nothing up the ridge.
+func _grass_density(x: float, z: float) -> float:
+	var hf: Heightfield = _terrain.heightfield
+	if Vector2(x, z).length() > hf.ridge_inner_radius() - GRASS_RIDGE_MARGIN:
+		return 0.0
+	return GrassLattice.site_factor(x, z, hf.plateaus())
 
 
 # --- headless probe --------------------------------------------------------------------------------------
@@ -147,6 +163,12 @@ func _print_probe() -> void:
 	print("PROBE forest trees=%d on_ground=%s" % [_forest.tree_count(), on_ground])
 	print("PROBE dressing instances=%d multimeshes=%d colliders=%d" % [
 		_dressing.stats()["instances"], _dressing.stats()["multimeshes"], _dressing.stats()["colliders"],
+	])
+	var grass: Dictionary = _grass.stats()
+	var audit: Dictionary = _grass.audit(hf)
+	print("PROBE grass cells=%d instances=%d blade_verts=%d underwater=%d steep=%d floating=%d pending=%d layers=%d pool=%d" % [
+		grass["cells"], grass["instances"], grass["blade_verts"], audit["underwater"], audit["steep"], audit["floating"],
+		grass["pending"], grass["layers"], grass["pool"],
 	])
 
 

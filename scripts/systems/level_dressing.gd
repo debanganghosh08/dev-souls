@@ -25,6 +25,12 @@ const SCATTER_TRIES := 30
 var height_sampler: Callable = Callable()
 ## Optional (x, z) -> bool: scatter points failing it (water, cliffs) are dropped; `place` entries are kept.
 var placement_filter: Callable = Callable()
+## Optional world ground normal (x, z) -> Vector3. When valid, scattered props tilt `align` of the way toward
+## it and sink `sink` metres (per set, else the file's align_default / sink_default), so nothing hangs off a
+## slope by one edge. Flat levels without it (greybox) place exactly as before.
+var normal_sampler: Callable = Callable()
+var _align_default: float = 0.5
+var _sink_default: float = 0.0
 
 var _instances: int = 0
 var _multimeshes: int = 0
@@ -94,6 +100,8 @@ static func scatter_points(zone: Dictionary, count: int, min_gap: float, keep_ou
 func build(data: Dictionary) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(data.get("seed", 1))
+	_align_default = float(data.get("align_default", 0.5))
+	_sink_default = float(data.get("sink_default", 0.0))
 	var keep_out: Array = data.get("keep_out", [])
 	for set: Variant in data.get("sets", []):
 		if set is Dictionary:
@@ -147,6 +155,9 @@ func _transforms_for(set: Dictionary, keep_out: Array, rng: RandomNumberGenerato
 		if placed is Dictionary:
 			var at: Array = placed.get("at", [0, 0])
 			out.append(_make_transform(GroundPlacement.ground(float(at[0]), float(at[1]), y, height_sampler), float(placed.get("yaw", 0.0)), float(placed.get("scale", 1.0))))
+	var grounded: bool = normal_sampler.is_valid()
+	var align: float = float(set.get("align", _align_default)) if grounded else 0.0
+	var sink: float = float(set.get("sink", _sink_default)) if grounded else 0.0
 	for zone: Variant in set.get("scatter", []):
 		if zone is Dictionary:
 			var points: Array[Vector3] = scatter_points(zone.get("zone", {}), int(zone.get("count", 0)), float(zone.get("min_gap", 0.0)), keep_out, rng)
@@ -154,13 +165,13 @@ func _transforms_for(set: Dictionary, keep_out: Array, rng: RandomNumberGenerato
 				var s: float = rng.randf_range(float(scale_range[0]), float(scale_range[1]))
 				if placement_filter.is_valid() and not bool(placement_filter.call(p.x, p.z)):
 					continue
-				out.append(_make_transform(GroundPlacement.ground(p.x, p.z, y, height_sampler), rng.randf_range(0.0, 360.0), s))
+				var n: Vector3 = normal_sampler.call(p.x, p.z) if grounded else Vector3.UP
+				out.append(_make_transform(GroundPlacement.ground(p.x, p.z, y - sink * s, height_sampler), rng.randf_range(0.0, 360.0), s, n, align))
 	return out
 
 
-static func _make_transform(at: Vector3, yaw_deg: float, scale: float) -> Transform3D:
-	var basis: Basis = Basis.from_euler(Vector3(0.0, deg_to_rad(yaw_deg), 0.0)).scaled(Vector3.ONE * scale)
-	return Transform3D(basis, at)
+static func _make_transform(at: Vector3, yaw_deg: float, scale: float, normal: Vector3 = Vector3.UP, align: float = 0.0) -> Transform3D:
+	return Transform3D(GroundPlacement.aligned_basis(normal, deg_to_rad(yaw_deg), align, scale), at)
 
 
 func _add_multimesh(node_name: String, mesh: Mesh, transforms: Array[Transform3D], range_end: float, shadows: bool) -> void:
