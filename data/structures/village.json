@@ -1,0 +1,627 @@
+{
+	"_comment": "Broken village layout for StructureBuilder. Local metres, y=0 ground, the lane runs along Z; place the scene at the village plateau centre in data/areas/vale.json (radius 58). Seven shacks (groups shack_*) each ruined differently plus a stone storage room. Props, the chest, the lore stone and NPC hooks are nodes in scenes/structures/village.tscn.",
+	"name": "village",
+	"plateau": "village",
+	"area_file": "res://data/areas/vale.json",
+	"pieces": [
+		{
+			"name": "shack_roofless_frame",
+			"group": "shack_roofless",
+			"kind": "timber_frame",
+			"at": [-9, 0, -14],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.8,
+				"d": 6,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_roofless_n",
+			"group": "shack_roofless",
+			"kind": "wall",
+			"at": [-9, 0, -17],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.7,
+				"t": 0.1,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_roofless_e",
+			"group": "shack_roofless",
+			"kind": "wall",
+			"at": [-6.5, 0, -14],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 2.7,
+				"t": 0.1,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_roofless_w",
+			"group": "shack_roofless",
+			"kind": "wall",
+			"at": [-11.5, 0, -14],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 2.7,
+				"t": 0.1,
+				"mat": "planks",
+				"opening": {
+					"width": 0.9,
+					"height": 1,
+					"sill": 1
+				}
+			}
+		},
+		{
+			"name": "shack_roofless_s",
+			"group": "shack_roofless",
+			"kind": "broken_wall",
+			"at": [-9, 0, -11],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.7,
+				"t": 0.1,
+				"mat": "planks",
+				"seed": 61,
+				"keep": 0.25
+			}
+		},
+		{
+			"name": "shack_roofless_rubble",
+			"group": "shack_roofless",
+			"kind": "rubble",
+			"at": [-9, 0, -13.5],
+			"yaw": 0,
+			"params": {
+				"radius": 1.5,
+				"count": 5,
+				"mat": "planks",
+				"seed": 62
+			}
+		},
+		{
+			"name": "shack_collapsed_n",
+			"group": "shack_collapsed",
+			"kind": "wall",
+			"at": [8, 0, -14.5],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.1,
+				"mat": "planks"
+			},
+			"tilt": 22
+		},
+		{
+			"name": "shack_collapsed_s",
+			"group": "shack_collapsed",
+			"kind": "wall",
+			"at": [8, 0, -9.5],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.1,
+				"mat": "planks"
+			},
+			"tilt": -18
+		},
+		{
+			"name": "shack_collapsed_e",
+			"group": "shack_collapsed",
+			"kind": "wall",
+			"at": [10.5, 0, -12],
+			"yaw": 90,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.15,
+				"mat": "plaster"
+			},
+			"tilt": -25
+		},
+		{
+			"name": "shack_collapsed_w",
+			"group": "shack_collapsed",
+			"kind": "wall",
+			"at": [5.5, 0, -12],
+			"yaw": 90,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.15,
+				"mat": "plaster",
+				"opening": {
+					"width": 1.1,
+					"height": 2.2
+				}
+			},
+			"tilt": 15
+		},
+		{
+			"name": "shack_collapsed_roof",
+			"group": "shack_collapsed",
+			"kind": "collapsed_roof",
+			"at": [8, 2, -12],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"d": 5,
+				"rise": 1.3,
+				"t": 0.12,
+				"mat": "roof",
+				"seed": 63
+			}
+		},
+		{
+			"name": "shack_hearth_chimney",
+			"group": "shack_hearth",
+			"kind": "block",
+			"at": [-12, 0, 0],
+			"yaw": 0,
+			"params": {
+				"w": 1,
+				"h": 4.6,
+				"d": 1,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "shack_hearth_hearth",
+			"group": "shack_hearth",
+			"kind": "block",
+			"at": [-11.1, 0, 0],
+			"yaw": 0,
+			"params": {
+				"w": 1.4,
+				"h": 0.3,
+				"d": 1.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "shack_hearth_floor",
+			"group": "shack_hearth",
+			"kind": "floor_slab",
+			"at": [-9.5, 0, 0],
+			"yaw": 0,
+			"params": {
+				"w": 4,
+				"d": 5,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_hearth_n",
+			"group": "shack_hearth",
+			"kind": "broken_wall",
+			"at": [-10, 0, -2.5],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 1.1,
+				"t": 0.15,
+				"mat": "plaster",
+				"seed": 64,
+				"keep": 0.2
+			}
+		},
+		{
+			"name": "shack_hearth_rubble",
+			"group": "shack_hearth",
+			"kind": "rubble",
+			"at": [-9.2, 0, 0.5],
+			"yaw": 0,
+			"params": {
+				"radius": 2,
+				"count": 8,
+				"mat": "planks",
+				"seed": 65
+			}
+		},
+		{
+			"name": "shack_half_roof_frame",
+			"group": "shack_half_roof",
+			"kind": "timber_frame",
+			"at": [9, 0, 0],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.8,
+				"d": 6,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_half_roof_n",
+			"group": "shack_half_roof",
+			"kind": "wall",
+			"at": [9, 0, -3],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.8,
+				"t": 0.15,
+				"mat": "plaster",
+				"opening": {
+					"width": 0.9,
+					"height": 1,
+					"sill": 1
+				}
+			}
+		},
+		{
+			"name": "shack_half_roof_s",
+			"group": "shack_half_roof",
+			"kind": "wall",
+			"at": [9, 0, 3],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.8,
+				"t": 0.15,
+				"mat": "plaster",
+				"opening": {
+					"width": 1.1,
+					"height": 2.2
+				}
+			}
+		},
+		{
+			"name": "shack_half_roof_e",
+			"group": "shack_half_roof",
+			"kind": "wall",
+			"at": [11.5, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 2.8,
+				"t": 0.15,
+				"mat": "plaster"
+			}
+		},
+		{
+			"name": "shack_half_roof_w",
+			"group": "shack_half_roof",
+			"kind": "wall",
+			"at": [6.5, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 2.8,
+				"t": 0.15,
+				"mat": "plaster"
+			}
+		},
+		{
+			"name": "shack_half_roof_roof",
+			"group": "shack_half_roof",
+			"kind": "collapsed_roof",
+			"at": [9, 2.8, 0],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"d": 6,
+				"rise": 1.5,
+				"t": 0.12,
+				"mat": "roof",
+				"seed": 66
+			}
+		},
+		{
+			"name": "shack_burnt_frame",
+			"group": "shack_burnt",
+			"kind": "timber_frame",
+			"at": [-8, 0, 13],
+			"yaw": 0,
+			"params": {
+				"w": 4,
+				"h": 2.6,
+				"d": 5,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_burnt_w",
+			"group": "shack_burnt",
+			"kind": "broken_wall",
+			"at": [-10, 0, 13],
+			"yaw": 90,
+			"params": {
+				"w": 5,
+				"h": 2.5,
+				"t": 0.1,
+				"mat": "planks",
+				"seed": 67,
+				"keep": 0.5
+			}
+		},
+		{
+			"name": "shack_burnt_rubble",
+			"group": "shack_burnt",
+			"kind": "rubble",
+			"at": [-8, 0, 13],
+			"yaw": 0,
+			"params": {
+				"radius": 1.8,
+				"count": 6,
+				"mat": "planks",
+				"seed": 68
+			}
+		},
+		{
+			"name": "shack_chest_frame",
+			"group": "shack_chest",
+			"kind": "timber_frame",
+			"at": [10, 0, 12],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.8,
+				"d": 6,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_chest_n",
+			"group": "shack_chest",
+			"kind": "wall",
+			"at": [10, 0, 9],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.8,
+				"t": 0.1,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_chest_w",
+			"group": "shack_chest",
+			"kind": "wall",
+			"at": [7.5, 0, 12],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 2.8,
+				"t": 0.1,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_chest_e",
+			"group": "shack_chest",
+			"kind": "broken_wall",
+			"at": [12.5, 0, 12],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 2.8,
+				"t": 0.1,
+				"mat": "planks",
+				"seed": 69,
+				"keep": 0.4
+			}
+		},
+		{
+			"name": "shack_chest_s",
+			"group": "shack_chest",
+			"kind": "wall",
+			"at": [10, 0, 15],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.8,
+				"t": 0.1,
+				"mat": "planks",
+				"opening": {
+					"width": 1.1,
+					"height": 2.2
+				}
+			}
+		},
+		{
+			"name": "shack_chest_roof",
+			"group": "shack_chest",
+			"kind": "pitched_roof",
+			"at": [10, 2.8, 12],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"d": 6,
+				"rise": 1.5,
+				"t": 0.12,
+				"mat": "roof",
+				"overhang": 0.35
+			}
+		},
+		{
+			"name": "shack_fallen_frame",
+			"group": "shack_fallen",
+			"kind": "timber_frame",
+			"at": [0, 0, 24],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2,
+				"d": 5,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_fallen_n",
+			"group": "shack_fallen",
+			"kind": "wall",
+			"at": [0, 0, 21.5],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.1,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_fallen_e",
+			"group": "shack_fallen",
+			"kind": "wall",
+			"at": [2.5, 0, 24],
+			"yaw": 90,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.1,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "shack_fallen_s",
+			"group": "shack_fallen",
+			"kind": "wall",
+			"at": [0, 0, 26.5],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.1,
+				"mat": "planks",
+				"opening": {
+					"width": 1.1,
+					"height": 2.2
+				}
+			}
+		},
+		{
+			"name": "shack_fallen_w_fallen",
+			"group": "shack_fallen",
+			"kind": "wall",
+			"at": [-2.6, 0.1, 24],
+			"yaw": 90,
+			"params": {
+				"w": 5,
+				"h": 2.6,
+				"t": 0.1,
+				"mat": "planks"
+			},
+			"tilt": -84
+		},
+		{
+			"name": "shack_fallen_roof",
+			"group": "shack_fallen",
+			"kind": "collapsed_roof",
+			"at": [0, 1.2, 24],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"d": 5,
+				"rise": 1.3,
+				"t": 0.12,
+				"mat": "roof",
+				"seed": 70
+			}
+		},
+		{
+			"name": "storage_n",
+			"group": "storage",
+			"kind": "wall",
+			"at": [0, 0, -29.5],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 3.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "storage_s",
+			"group": "storage",
+			"kind": "wall",
+			"at": [0, 0, -22.5],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 3.2,
+				"t": 0.5,
+				"mat": "stone",
+				"opening": {
+					"width": 1.4,
+					"height": 2.4
+				}
+			}
+		},
+		{
+			"name": "storage_w",
+			"group": "storage",
+			"kind": "wall",
+			"at": [-2.5, 0, -26],
+			"yaw": 90,
+			"params": {
+				"w": 7,
+				"h": 3.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "storage_e",
+			"group": "storage",
+			"kind": "broken_wall",
+			"at": [2.5, 0, -26],
+			"yaw": 90,
+			"params": {
+				"w": 7,
+				"h": 3.2,
+				"t": 0.5,
+				"mat": "stone",
+				"seed": 71,
+				"keep": 0.6
+			}
+		},
+		{
+			"name": "storage_roof",
+			"group": "storage",
+			"kind": "collapsed_roof",
+			"at": [0, 3.2, -26],
+			"yaw": 90,
+			"params": {
+				"w": 7,
+				"d": 5,
+				"rise": 1.8,
+				"t": 0.12,
+				"mat": "roof",
+				"seed": 72
+			}
+		},
+		{
+			"name": "lane_rubble",
+			"group": "lane",
+			"kind": "rubble",
+			"at": [1, 0, 6],
+			"yaw": 0,
+			"params": {
+				"radius": 2.5,
+				"count": 6,
+				"mat": "stone",
+				"seed": 73
+			}
+		}
+	]
+}

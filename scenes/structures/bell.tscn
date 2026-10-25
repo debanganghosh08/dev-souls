@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://structbell001"]
+
+[ext_resource type="Script" path="res://scripts/systems/interactables/bell.gd" id="1_bell"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_glow"]
+albedo_color = Color(0.45, 0.36, 0.22, 1)
+emission_enabled = true
+emission = Color(1, 0.78, 0.45, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="BoxShape3D" id="Shape_bell"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="SphereMesh" id="Mesh_glow"]
+radius = 0.05
+height = 0.1
+radial_segments = 12
+rings = 6
+
+[node name="Bell" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_bell")
+prompt = "Ring"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("Shape_bell")
+
+[node name="BellBody" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="BellMesh" type="MeshInstance3D" parent="BellBody"]
+unique_name_in_owner = true
+
+[node name="Glow" type="MeshInstance3D" parent="BellBody"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0.3)
+material_override = SubResource("Mat_glow")
+mesh = SubResource("Mesh_glow")

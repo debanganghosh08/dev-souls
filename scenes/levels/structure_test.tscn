@@ -1,0 +1,110 @@
+[gd_scene load_steps=14 format=3 uid="uid://structtest0001"]
+
+[ext_resource type="Script" path="res://scenes/levels/structure_test.gd" id="1_level"]
+[ext_resource type="PackedScene" uid="uid://castlemorrow01" path="res://scenes/structures/castle_morrow.tscn" id="2_castle"]
+[ext_resource type="PackedScene" uid="uid://village000001" path="res://scenes/structures/village.tscn" id="3_village"]
+[ext_resource type="Material" uid="uid://envmatgras01" path="res://scenes/environment/materials/ground_grass_rock.tres" id="4_grass"]
+
+[sub_resource type="Environment" id="Environment_structures"]
+background_mode = 1
+background_color = Color(0.5, 0.52, 0.56, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.6, 0.64, 1)
+ambient_light_energy = 0.7
+fog_enabled = true
+fog_light_color = Color(0.5, 0.52, 0.56, 1)
+fog_density = 0.006
+
+[sub_resource type="BoxShape3D" id="Shape_GroundWest"]
+size = Vector3(78.85, 0.2, 160)
+
+[sub_resource type="BoxMesh" id="Mesh_GroundWest"]
+material = ExtResource("4_grass")
+size = Vector3(78.85, 0.2, 160)
+
+[sub_resource type="BoxShape3D" id="Shape_GroundEast"]
+size = Vector3(147.85, 0.2, 160)
+
+[sub_resource type="BoxMesh" id="Mesh_GroundEast"]
+material = ExtResource("4_grass")
+size = Vector3(147.85, 0.2, 160)
+
+[sub_resource type="BoxShape3D" id="Shape_GroundNorth"]
+size = Vector3(3.3, 0.2, 58.45)
+
+[sub_resource type="BoxMesh" id="Mesh_GroundNorth"]
+material = ExtResource("4_grass")
+size = Vector3(3.3, 0.2, 58.45)
+
+[sub_resource type="BoxShape3D" id="Shape_GroundSouth"]
+size = Vector3(3.3, 0.2, 95)
+
+[sub_resource type="BoxMesh" id="Mesh_GroundSouth"]
+material = ExtResource("4_grass")
+size = Vector3(3.3, 0.2, 95)
+
+[node name="StructureTest" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_structures")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, 0, -0.5, -0.38302, 0.642788, -0.663414, 0.321394, 0.766044, 0.556670, 0, 30, 0)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+collision_mask = 0
+
+[node name="WestShape" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.575, -0.1, 0)
+shape = SubResource("Shape_GroundWest")
+
+[node name="WestMesh" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.575, -0.1, 0)
+mesh = SubResource("Mesh_GroundWest")
+
+[node name="EastShape" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.075, -0.1, 0)
+shape = SubResource("Shape_GroundEast")
+
+[node name="EastMesh" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.075, -0.1, 0)
+mesh = SubResource("Mesh_GroundEast")
+
+[node name="NorthShape" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -0.1, -50.775)
+shape = SubResource("Shape_GroundNorth")
+
+[node name="NorthMesh" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -0.1, -50.775)
+mesh = SubResource("Mesh_GroundNorth")
+
+[node name="SouthShape" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -0.1, 32.5)
+shape = SubResource("Shape_GroundSouth")
+
+[node name="SouthMesh" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -0.1, 32.5)
+mesh = SubResource("Mesh_GroundSouth")
+
+[node name="Castle" parent="." instance=ExtResource("2_castle")]
+
+[node name="Village" parent="." instance=ExtResource("3_village")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0, 0)
+
+[node name="Camera" type="Camera3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 14, 55)
+far = 600.0
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="DebugLabel" type="Label" parent="HUD"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 900.0
+offset_bottom = 200.0
+text = "structure test"
