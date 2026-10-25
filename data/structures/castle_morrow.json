@@ -1,0 +1,1229 @@
+{
+	"_comment": "Castle Morrow layout for StructureBuilder (scripts/systems/structures/structure_builder.gd). Local metres, y=0 is the plateau ground, +Z is the gate (south) side; place the scene at the castle plateau centre in data/areas/vale.json (radius 78: footprint must stay inside). Pieces: kind = StructureKit function, params = its arguments, at/yaw/tilt or repeat = [x,y,z,yaw(,tilt)] placements (identical pieces become one MultiMesh). Interactables (door, bells, chest, lore stones) are nodes in scenes/structures/castle_morrow.tscn and must match the frames here.",
+	"name": "castle_morrow",
+	"plateau": "castle",
+	"area_file": "res://data/areas/vale.json",
+	"pieces": [
+		{
+			"name": "gate_tower_w",
+			"group": "gatehouse",
+			"kind": "block",
+			"at": [-4, 0, 26],
+			"yaw": 0,
+			"params": {
+				"w": 4.5,
+				"h": 10,
+				"d": 5,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "gate_tower_e",
+			"group": "gatehouse",
+			"kind": "block",
+			"at": [4, 0, 26],
+			"yaw": 0,
+			"params": {
+				"w": 4.5,
+				"h": 7,
+				"d": 5,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "gate_tower_e_top",
+			"group": "gatehouse",
+			"kind": "broken_wall",
+			"at": [4, 7, 26],
+			"yaw": 180,
+			"params": {
+				"w": 4.5,
+				"h": 3.2,
+				"t": 5,
+				"mat": "castle_wall",
+				"seed": 10,
+				"keep": 0.15
+			}
+		},
+		{
+			"name": "gate_arch",
+			"group": "gatehouse",
+			"kind": "arch",
+			"at": [0, 0, 26],
+			"yaw": 0,
+			"params": {
+				"w": 3.5,
+				"h": 7.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"ow": 1.8,
+				"oh": 3
+			}
+		},
+		{
+			"name": "gate_merlons",
+			"group": "gatehouse",
+			"kind": "block",
+			"params": {
+				"w": 0.6,
+				"h": 0.8,
+				"d": 0.6,
+				"mat": "castle_wall"
+			},
+			"repeat": [
+				[-5.7, 10, 24.1],
+				[-4.6, 10, 24.1],
+				[-3.4, 10, 24.1],
+				[-2.3, 10, 24.1],
+				[-5.7, 10, 27.9],
+				[-4.6, 10, 27.9],
+				[-3.4, 10, 27.9],
+				[-2.3, 10, 27.9],
+				[-1.2, 7.5, 26],
+				[0, 7.5, 26],
+				[1.2, 7.5, 26]
+			]
+		},
+		{
+			"name": "south_wall_w",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [-16.125, 0, 26],
+			"yaw": 0,
+			"params": {
+				"w": 19.75,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "south_wall_e",
+			"group": "curtain",
+			"kind": "broken_wall",
+			"at": [16.125, 0, 26],
+			"yaw": 0,
+			"params": {
+				"w": 19.75,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"seed": 11,
+				"keep": 0.55
+			}
+		},
+		{
+			"name": "west_wall_s",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [-26, 0, 16],
+			"yaw": 90,
+			"params": {
+				"w": 20,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "west_wall_n",
+			"group": "curtain",
+			"kind": "broken_wall",
+			"at": [-26, 0, -12.5],
+			"yaw": 90,
+			"params": {
+				"w": 27,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"seed": 12,
+				"keep": 0.35
+			}
+		},
+		{
+			"name": "breach_rubble",
+			"group": "curtain",
+			"kind": "rubble",
+			"at": [-26, 0, 3.5],
+			"yaw": 0,
+			"params": {
+				"radius": 2.2,
+				"count": 10,
+				"mat": "castle_wall",
+				"seed": 15
+			}
+		},
+		{
+			"name": "breach_rubble_in",
+			"group": "curtain",
+			"kind": "rubble",
+			"at": [-22.5, 0, 4],
+			"yaw": 0,
+			"params": {
+				"radius": 2.5,
+				"count": 6,
+				"mat": "castle_wall",
+				"seed": 16
+			}
+		},
+		{
+			"name": "north_wall_w",
+			"group": "curtain",
+			"kind": "broken_wall",
+			"at": [-14, 0, -26],
+			"yaw": 0,
+			"params": {
+				"w": 24,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"seed": 13,
+				"keep": 0.3
+			}
+		},
+		{
+			"name": "north_wall_e1",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [5, 0, -26],
+			"yaw": 0,
+			"params": {
+				"w": 14,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.6,
+					"height": 1.6,
+					"sill": 3.5
+				}
+			}
+		},
+		{
+			"name": "north_wall_e2",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [19, 0, -26],
+			"yaw": 0,
+			"params": {
+				"w": 14,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.6,
+					"height": 1.6,
+					"sill": 3.5
+				}
+			}
+		},
+		{
+			"name": "east_wall_n",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [26, 0, -16],
+			"yaw": 90,
+			"params": {
+				"w": 20,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "east_wall_s",
+			"group": "curtain",
+			"kind": "broken_wall",
+			"at": [26, 0, 10],
+			"yaw": 90,
+			"params": {
+				"w": 32,
+				"h": 6.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"seed": 14,
+				"keep": 0.4
+			}
+		},
+		{
+			"name": "corner_towers",
+			"group": "curtain",
+			"kind": "pillar",
+			"params": {
+				"radius": 3,
+				"h": 9,
+				"mat": "castle_wall",
+				"sides": 12
+			},
+			"repeat": [
+				[-26, 0, -26],
+				[26, 0, -26],
+				[-26, 0, 26]
+			]
+		},
+		{
+			"name": "corner_tower_se_stump",
+			"group": "curtain",
+			"kind": "pillar",
+			"at": [26, 0, 26],
+			"yaw": 0,
+			"params": {
+				"radius": 3,
+				"h": 3.5,
+				"mat": "castle_wall",
+				"sides": 12
+			}
+		},
+		{
+			"name": "corner_tower_se_rubble",
+			"group": "curtain",
+			"kind": "rubble",
+			"at": [24.5, 0, 24.5],
+			"yaw": 0,
+			"params": {
+				"radius": 3.5,
+				"count": 12,
+				"mat": "castle_wall",
+				"seed": 17
+			}
+		},
+		{
+			"name": "wallwalk_stairs",
+			"group": "wallwalk",
+			"kind": "stairs",
+			"at": [-7.5, 0, 24.6],
+			"yaw": 90,
+			"params": {
+				"w": 1.4,
+				"rise": 4.5,
+				"mat": "blocks",
+				"riser": 0.25,
+				"tread": 0.35
+			}
+		},
+		{
+			"name": "wallwalk_landing",
+			"group": "wallwalk",
+			"kind": "floor_slab",
+			"at": [-17.8, 4.1, 24.1],
+			"yaw": 0,
+			"params": {
+				"w": 8,
+				"d": 2.4,
+				"t": 0.4,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "wallwalk_parapet",
+			"group": "wallwalk",
+			"kind": "wall",
+			"at": [-17.8, 4.5, 23],
+			"yaw": 0,
+			"params": {
+				"w": 8,
+				"h": 0.9,
+				"t": 0.25,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "chapel_west",
+			"group": "chapel",
+			"kind": "wall",
+			"at": [10.5, 0, -8],
+			"yaw": 90,
+			"params": {
+				"w": 16,
+				"h": 6,
+				"t": 0.7,
+				"mat": "blocks",
+				"opening": {
+					"width": 1.6,
+					"height": 2.6
+				}
+			}
+		},
+		{
+			"name": "chapel_east_n",
+			"group": "chapel",
+			"kind": "wall",
+			"at": [19.5, 0, -12],
+			"yaw": 90,
+			"params": {
+				"w": 8,
+				"h": 6,
+				"t": 0.7,
+				"mat": "blocks",
+				"opening": {
+					"width": 1,
+					"height": 2,
+					"sill": 1.6
+				}
+			}
+		},
+		{
+			"name": "chapel_east_s",
+			"group": "chapel",
+			"kind": "wall",
+			"at": [19.5, 0, -4],
+			"yaw": 90,
+			"params": {
+				"w": 8,
+				"h": 6,
+				"t": 0.7,
+				"mat": "blocks",
+				"opening": {
+					"width": 1,
+					"height": 2,
+					"sill": 1.6
+				}
+			}
+		},
+		{
+			"name": "chapel_north",
+			"group": "chapel",
+			"kind": "wall",
+			"at": [15, 0, -16],
+			"yaw": 0,
+			"params": {
+				"w": 9,
+				"h": 6,
+				"t": 0.7,
+				"mat": "blocks",
+				"opening": {
+					"width": 1.4,
+					"height": 2.4
+				}
+			}
+		},
+		{
+			"name": "chapel_south",
+			"group": "chapel",
+			"kind": "broken_wall",
+			"at": [15, 0, 0],
+			"yaw": 0,
+			"params": {
+				"w": 9,
+				"h": 6,
+				"t": 0.7,
+				"mat": "blocks",
+				"seed": 21,
+				"keep": 0.35
+			}
+		},
+		{
+			"name": "chapel_roof_n",
+			"group": "chapel",
+			"kind": "pitched_roof",
+			"at": [15, 6, -12],
+			"yaw": 90,
+			"params": {
+				"w": 8,
+				"d": 9,
+				"rise": 3,
+				"t": 0.15,
+				"mat": "roof",
+				"overhang": 0.4
+			}
+		},
+		{
+			"name": "chapel_roof_s",
+			"group": "chapel",
+			"kind": "collapsed_roof",
+			"at": [15, 6, -4],
+			"yaw": 90,
+			"params": {
+				"w": 8,
+				"d": 9,
+				"rise": 3,
+				"t": 0.15,
+				"mat": "roof",
+				"seed": 22
+			}
+		},
+		{
+			"name": "chapel_pews",
+			"group": "chapel",
+			"kind": "block",
+			"params": {
+				"w": 1.8,
+				"h": 0.45,
+				"d": 0.4,
+				"mat": "planks"
+			},
+			"repeat": [
+				[13.2, 0, -5],
+				[13.2, 0, -7.5],
+				[13.2, 0, -10],
+				[16.8, 0, -5],
+				[16.8, 0, -7.5],
+				[16.8, 0, -10]
+			]
+		},
+		{
+			"name": "chapel_altar",
+			"group": "chapel",
+			"kind": "block",
+			"at": [15, 0, -14.3],
+			"yaw": 0,
+			"params": {
+				"w": 1.6,
+				"h": 1,
+				"d": 0.8,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "tower_west",
+			"group": "tower",
+			"kind": "wall",
+			"at": [13, 0, -18],
+			"yaw": 90,
+			"params": {
+				"w": 4,
+				"h": 9.5,
+				"t": 0.6,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "tower_east",
+			"group": "tower",
+			"kind": "wall",
+			"at": [17, 0, -18],
+			"yaw": 90,
+			"params": {
+				"w": 4,
+				"h": 9.5,
+				"t": 0.6,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "tower_north",
+			"group": "tower",
+			"kind": "wall",
+			"at": [15, 0, -20],
+			"yaw": 0,
+			"params": {
+				"w": 4,
+				"h": 9.5,
+				"t": 0.6,
+				"mat": "blocks",
+				"opening": {
+					"width": 0.7,
+					"height": 1.8,
+					"sill": 5
+				}
+			}
+		},
+		{
+			"name": "belfry_frame",
+			"group": "tower",
+			"kind": "timber_frame",
+			"at": [15, 9.5, -18],
+			"yaw": 0,
+			"params": {
+				"w": 4,
+				"h": 3.5,
+				"d": 4,
+				"beam": 0.22,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "bell_bed",
+			"group": "tower",
+			"kind": "floor_slab",
+			"at": [15, 0, -18],
+			"yaw": 0,
+			"params": {
+				"w": 2,
+				"d": 2,
+				"t": 0.3,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "keep_west_n",
+			"group": "keep",
+			"kind": "wall",
+			"at": [-21, 0, -17.5],
+			"yaw": 90,
+			"params": {
+				"w": 7,
+				"h": 11,
+				"t": 1,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.6,
+					"height": 1.8,
+					"sill": 5
+				}
+			}
+		},
+		{
+			"name": "keep_west_s",
+			"group": "keep",
+			"kind": "wall",
+			"at": [-21, 0, -10.5],
+			"yaw": 90,
+			"params": {
+				"w": 7,
+				"h": 11,
+				"t": 1,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.6,
+					"height": 1.8,
+					"sill": 5
+				}
+			}
+		},
+		{
+			"name": "keep_north",
+			"group": "keep",
+			"kind": "broken_wall",
+			"at": [-14, 0, -21],
+			"yaw": 0,
+			"params": {
+				"w": 14,
+				"h": 11,
+				"t": 1,
+				"mat": "castle_wall",
+				"seed": 31,
+				"keep": 0.55
+			}
+		},
+		{
+			"name": "keep_east",
+			"group": "keep",
+			"kind": "broken_wall",
+			"at": [-7, 0, -14],
+			"yaw": -90,
+			"params": {
+				"w": 14,
+				"h": 11,
+				"t": 1,
+				"mat": "castle_wall",
+				"seed": 32,
+				"keep": 0.25
+			}
+		},
+		{
+			"name": "keep_south_w",
+			"group": "keep",
+			"kind": "broken_wall",
+			"at": [-18, 0, -7],
+			"yaw": 0,
+			"params": {
+				"w": 6,
+				"h": 11,
+				"t": 1,
+				"mat": "castle_wall",
+				"seed": 33,
+				"keep": 0.4
+			}
+		},
+		{
+			"name": "keep_south_e",
+			"group": "keep",
+			"kind": "broken_wall",
+			"at": [-9, 0, -7],
+			"yaw": 180,
+			"params": {
+				"w": 4,
+				"h": 11,
+				"t": 1,
+				"mat": "castle_wall",
+				"seed": 36,
+				"keep": 0.3
+			}
+		},
+		{
+			"name": "keep_floor_fragment",
+			"group": "keep",
+			"kind": "floor_slab",
+			"at": [-17.8, 4.6, -18],
+			"yaw": 0,
+			"params": {
+				"w": 5.4,
+				"d": 6,
+				"t": 0.4,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "keep_stairs",
+			"group": "keep",
+			"kind": "stairs",
+			"at": [-15.8, 0, -8],
+			"yaw": 0,
+			"params": {
+				"w": 1.4,
+				"rise": 5,
+				"mat": "blocks",
+				"riser": 0.25,
+				"tread": 0.35
+			}
+		},
+		{
+			"name": "keep_rubble_a",
+			"group": "keep",
+			"kind": "rubble",
+			"at": [-11, 0, -12],
+			"yaw": 0,
+			"params": {
+				"radius": 2.5,
+				"count": 10,
+				"mat": "castle_wall",
+				"seed": 34
+			}
+		},
+		{
+			"name": "keep_rubble_b",
+			"group": "keep",
+			"kind": "rubble",
+			"at": [-17, 0, -9.5],
+			"yaw": 0,
+			"params": {
+				"radius": 2,
+				"count": 8,
+				"mat": "castle_wall",
+				"seed": 35
+			}
+		},
+		{
+			"name": "keep_buttresses",
+			"group": "keep",
+			"kind": "buttress",
+			"params": {
+				"w": 1.2,
+				"h": 7,
+				"depth": 1.6,
+				"mat": "castle_wall"
+			},
+			"repeat": [
+				[-21.5, 0, -18, -90],
+				[-21.5, 0, -14, -90],
+				[-21.5, 0, -10, -90]
+			]
+		},
+		{
+			"name": "watch_bell_frame",
+			"group": "keep",
+			"kind": "timber_frame",
+			"at": [-12, 0, -18],
+			"yaw": 0,
+			"params": {
+				"w": 1.6,
+				"h": 2.6,
+				"d": 1.2,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "grave_kerb_s_w",
+			"group": "graveyard",
+			"kind": "wall",
+			"at": [-1.5, 0, -14],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 0.6,
+				"t": 0.3,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "grave_kerb_s_e",
+			"group": "graveyard",
+			"kind": "wall",
+			"at": [5.5, 0, -14],
+			"yaw": 0,
+			"params": {
+				"w": 5,
+				"h": 0.6,
+				"t": 0.3,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "grave_kerb_n",
+			"group": "graveyard",
+			"kind": "wall",
+			"at": [2, 0, -24.5],
+			"yaw": 0,
+			"params": {
+				"w": 12,
+				"h": 0.6,
+				"t": 0.3,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "grave_kerb_w",
+			"group": "graveyard",
+			"kind": "wall",
+			"at": [-4, 0, -19.25],
+			"yaw": 90,
+			"params": {
+				"w": 10.5,
+				"h": 0.6,
+				"t": 0.3,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "grave_kerb_e",
+			"group": "graveyard",
+			"kind": "wall",
+			"at": [8, 0, -19.25],
+			"yaw": 90,
+			"params": {
+				"w": 10.5,
+				"h": 0.6,
+				"t": 0.3,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "headstones",
+			"group": "graveyard",
+			"kind": "headstone",
+			"params": {
+				"w": 0.5,
+				"h": 0.85,
+				"t": 0.14,
+				"mat": "stone"
+			},
+			"repeat": [
+				[-2.5, 0, -17, -7],
+				[-2.5, 0, -21.5, 3],
+				[-1, 0, -17, 0],
+				[-1, 0, -21.5, -3],
+				[0.5, 0, -17, 7],
+				[0.5, 0, -21.5, 3],
+				[2, 0, -17, -7],
+				[2, 0, -21.5, -3],
+				[3.5, 0, -17, 0],
+				[3.5, 0, -21.5, 3],
+				[5, 0, -17, 7],
+				[5, 0, -21.5, -3]
+			]
+		},
+		{
+			"name": "crypt_house_w",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [9, 0, -17.25],
+			"yaw": 90,
+			"params": {
+				"w": 6.5,
+				"h": 3,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_house_e",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [12, 0, -17.25],
+			"yaw": 90,
+			"params": {
+				"w": 6.5,
+				"h": 3,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_house_n",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [10.5, 0, -20.5],
+			"yaw": 0,
+			"params": {
+				"w": 3,
+				"h": 3,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_house_s",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [10.5, 0, -14],
+			"yaw": 0,
+			"params": {
+				"w": 3,
+				"h": 3,
+				"t": 0.5,
+				"mat": "stone",
+				"opening": {
+					"width": 1.4,
+					"height": 2.4
+				}
+			}
+		},
+		{
+			"name": "crypt_house_roof",
+			"group": "crypt",
+			"kind": "pitched_roof",
+			"at": [10.5, 3, -17.25],
+			"yaw": 90,
+			"params": {
+				"w": 6.5,
+				"d": 3,
+				"rise": 1,
+				"t": 0.12,
+				"mat": "roof",
+				"overhang": 0.3
+			}
+		},
+		{
+			"name": "crypt_stairs",
+			"group": "crypt",
+			"kind": "stairs",
+			"at": [10.5, -4.5, -21.3],
+			"yaw": 180,
+			"params": {
+				"w": 1.6,
+				"rise": 4.5,
+				"mat": "stone",
+				"riser": 0.25,
+				"tread": 0.35
+			}
+		},
+		{
+			"name": "crypt_shaft_w",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [9.05, -4.6, -18.15],
+			"yaw": 90,
+			"params": {
+				"w": 6.8,
+				"h": 4.6,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_shaft_e",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [11.95, -4.6, -18.15],
+			"yaw": 90,
+			"params": {
+				"w": 6.8,
+				"h": 4.6,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_floor",
+			"group": "crypt",
+			"kind": "floor_slab",
+			"at": [10.5, -4.9, -26.05],
+			"yaw": 0,
+			"params": {
+				"w": 10,
+				"d": 9.5,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_wall_w",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [5.5, -4.5, -26.8],
+			"yaw": 90,
+			"params": {
+				"w": 8,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_wall_e",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [15.5, -4.5, -26.8],
+			"yaw": 90,
+			"params": {
+				"w": 8,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_wall_n",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [10.5, -4.5, -30.8],
+			"yaw": 0,
+			"params": {
+				"w": 10,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_wall_s_w",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [7.25, -4.5, -22.8],
+			"yaw": 0,
+			"params": {
+				"w": 3.5,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_wall_s_e",
+			"group": "crypt",
+			"kind": "wall",
+			"at": [13.75, -4.5, -22.8],
+			"yaw": 0,
+			"params": {
+				"w": 3.5,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_ceiling",
+			"group": "crypt",
+			"kind": "floor_slab",
+			"at": [10.5, -0.3, -26],
+			"yaw": 0,
+			"params": {
+				"w": 11,
+				"d": 11.5,
+				"t": 0.3,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_pillars",
+			"group": "crypt",
+			"kind": "pillar",
+			"params": {
+				"radius": 0.35,
+				"h": 4.2,
+				"mat": "blocks",
+				"sides": 10
+			},
+			"repeat": [
+				[8, -4.5, -25],
+				[13, -4.5, -25],
+				[8, -4.5, -29],
+				[13, -4.5, -29]
+			]
+		},
+		{
+			"name": "crypt_coffins",
+			"group": "crypt",
+			"kind": "block",
+			"params": {
+				"w": 0.8,
+				"h": 0.75,
+				"d": 2.2,
+				"mat": "stone"
+			},
+			"repeat": [
+				[6.6, -4.5, -25],
+				[6.6, -4.5, -28.5],
+				[14.4, -4.5, -25],
+				[14.4, -4.5, -28.5],
+				[10.5, -4.5, -28.8]
+			]
+		},
+		{
+			"name": "sluice_west",
+			"group": "sluice",
+			"kind": "wall",
+			"at": [16, 0, 17],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 4,
+				"t": 0.6,
+				"mat": "stone",
+				"opening": {
+					"width": 1.4,
+					"height": 2.4
+				}
+			}
+		},
+		{
+			"name": "sluice_east",
+			"group": "sluice",
+			"kind": "wall",
+			"at": [22, 0, 17],
+			"yaw": 90,
+			"params": {
+				"w": 6,
+				"h": 4,
+				"t": 0.6,
+				"mat": "stone",
+				"opening": {
+					"width": 1.2,
+					"height": 1
+				}
+			}
+		},
+		{
+			"name": "sluice_north",
+			"group": "sluice",
+			"kind": "wall",
+			"at": [19, 0, 14],
+			"yaw": 0,
+			"params": {
+				"w": 6,
+				"h": 4,
+				"t": 0.6,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "sluice_south",
+			"group": "sluice",
+			"kind": "broken_wall",
+			"at": [19, 0, 20],
+			"yaw": 0,
+			"params": {
+				"w": 6,
+				"h": 4,
+				"t": 0.6,
+				"mat": "stone",
+				"seed": 41,
+				"keep": 0.5
+			}
+		},
+		{
+			"name": "sluice_roof",
+			"group": "sluice",
+			"kind": "collapsed_roof",
+			"at": [19, 4, 17],
+			"yaw": 0,
+			"params": {
+				"w": 6,
+				"d": 6,
+				"rise": 2,
+				"t": 0.12,
+				"mat": "roof",
+				"seed": 42
+			}
+		},
+		{
+			"name": "sluice_channel_floor",
+			"group": "sluice",
+			"kind": "floor_slab",
+			"at": [21.15, 0, 17],
+			"yaw": 0,
+			"params": {
+				"w": 8.3,
+				"d": 0.9,
+				"t": 0.1,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "sluice_channel_kerbs",
+			"group": "sluice",
+			"kind": "wall",
+			"params": {
+				"w": 8.3,
+				"h": 0.5,
+				"t": 0.3,
+				"mat": "blocks"
+			},
+			"repeat": [
+				[21.15, 0, 16.4],
+				[21.15, 0, 17.6]
+			]
+		},
+		{
+			"name": "sluice_socket_uprights",
+			"group": "sluice",
+			"kind": "block",
+			"params": {
+				"w": 0.3,
+				"h": 1.5,
+				"d": 0.3,
+				"mat": "planks"
+			},
+			"repeat": [
+				[18, 0, 16.1],
+				[18, 0, 17.9]
+			]
+		},
+		{
+			"name": "sluice_bell_frame",
+			"group": "sluice",
+			"kind": "timber_frame",
+			"at": [14, 0, 15],
+			"yaw": 0,
+			"params": {
+				"w": 1.6,
+				"h": 2.6,
+				"d": 1.2,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "gate_bell_frame",
+			"group": "courtyard",
+			"kind": "timber_frame",
+			"at": [-7.5, 0, 21],
+			"yaw": 0,
+			"params": {
+				"w": 1.6,
+				"h": 2.6,
+				"d": 1.2,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "courtyard_rubble_a",
+			"group": "courtyard",
+			"kind": "rubble",
+			"at": [3, 0, 10],
+			"yaw": 0,
+			"params": {
+				"radius": 2,
+				"count": 7,
+				"mat": "castle_wall",
+				"seed": 51
+			}
+		},
+		{
+			"name": "courtyard_rubble_b",
+			"group": "courtyard",
+			"kind": "rubble",
+			"at": [-5, 0, 5],
+			"yaw": 0,
+			"params": {
+				"radius": 1.5,
+				"count": 5,
+				"mat": "castle_wall",
+				"seed": 52
+			}
+		}
+	]
+}

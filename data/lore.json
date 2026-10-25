@@ -26,5 +26,21 @@
 	"crypt_verse": {
 		"title": "Crypt Verse",
 		"body": "The living let the Name go one letter at a time, and the dead picked them up. Lie still beside them a while and you will hear a coffin lid repeating the first."
+	},
+	"grave_sluice_keeper": {
+		"title": "Headstone, Moss-Eaten",
+		"body": "OSWIN, who kept the sluice and rang the sluice bell when the water rose. Laid down in the third year of the Quiet, the first of us to stop tending. He said the pond would keep. It has."
+	},
+	"grave_gatekeeper": {
+		"title": "Headstone, Leaning",
+		"body": "ALDRIC, who kept the gate and rang the gate bell at dusk. Laid down in the seventh year of the Quiet, after Oswin and before Maud. The lord took his key and shut the gate from the inside."
+	},
+	"grave_watch": {
+		"title": "Headstone, Newest",
+		"body": "MAUD of the watch, who rang the keep's bell while there was still someone to warn. Laid down in the eleventh year of the Quiet, the last of us. Nobody tends the fire now, and nobody rings."
+	},
+	"village_lane_stone": {
+		"title": "Lane Stone",
+		"body": "The lane ran from the pond up to the castle, and the ash came down it the other way. Seven houses and a store. The thatch went first, then the people, and the dogs stopped waiting at the doors."
 	}
 }

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://chapelbell001"]
+
+[ext_resource type="Script" path="res://scripts/systems/structures/chapel_bell.gd" id="1_chapel_bell"]
+
+[node name="ChapelBell" type="Node3D"]
+script = ExtResource("1_chapel_bell")
+
+[node name="BellBody" type="Node3D" parent="."]
+unique_name_in_owner = true

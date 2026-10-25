@@ -1,0 +1,117 @@
+[gd_scene load_steps=9 format=3 uid="uid://castlemorrow01"]
+
+[ext_resource type="Script" path="res://scripts/systems/structures/structure_builder.gd" id="1_builder"]
+[ext_resource type="Script" path="res://scripts/systems/structures/bell_puzzle.gd" id="2_puzzle"]
+[ext_resource type="PackedScene" uid="uid://propdoor0104" path="res://scenes/props/door.tscn" id="3_door"]
+[ext_resource type="PackedScene" uid="uid://structbell001" path="res://scenes/structures/bell.tscn" id="4_bell"]
+[ext_resource type="PackedScene" uid="uid://chapelbell001" path="res://scenes/structures/chapel_bell.tscn" id="5_chapel_bell"]
+[ext_resource type="PackedScene" uid="uid://propchest104" path="res://scenes/props/chest.tscn" id="6_chest"]
+[ext_resource type="PackedScene" uid="uid://proplore0104" path="res://scenes/props/lore_stone.tscn" id="7_lore"]
+[ext_resource type="PackedScene" uid="uid://proppickup14" path="res://scenes/props/pickup.tscn" id="8_pickup"]
+
+[node name="CastleMorrow" type="Node3D"]
+
+[node name="Builder" type="Node3D" parent="."]
+script = ExtResource("1_builder")
+layout_path = "res://data/structures/castle_morrow.json"
+
+[node name="GateDoor" parent="." instance=ExtResource("3_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26)
+id = &"castle_gate"
+prompt = "Open the gate"
+required_item = &"castle_key"
+
+[node name="Bells" type="Node3D" parent="."]
+
+[node name="GateBell" parent="Bells" instance=ExtResource("4_bell")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2.42, 21)
+index = 0
+id = &"bell_gate"
+prompt = "Ring the gate bell"
+
+[node name="WatchBell" parent="Bells" instance=ExtResource("4_bell")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.42, -18)
+index = 1
+id = &"bell_watch"
+prompt = "Ring the watch bell"
+
+[node name="SluiceBell" parent="Bells" instance=ExtResource("4_bell")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 2.42, 15)
+index = 2
+id = &"bell_sluice"
+prompt = "Ring the sluice bell"
+
+[node name="ChapelBell" parent="." instance=ExtResource("5_chapel_bell")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 15, 12.7, -18)
+landing = Vector3(0.6, -11.85, 0)
+
+[node name="BellBedChest" parent="." instance=ExtResource("6_chest")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.3, -18)
+visible = false
+monitorable = false
+id = &"chapel_bell_kindling"
+prompt = "Take the Kindling"
+contents = {
+"kindling_grey": 1
+}
+
+[node name="Lore" type="Node3D" parent="."]
+
+[node name="ChapelLintel" parent="Lore" instance=ExtResource("7_lore")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 9.6, 0, -6.6)
+id = &"chapel_lintel"
+lore_key = "chapel_inscription"
+
+[node name="GraveSluiceKeeper" parent="Lore" instance=ExtResource("7_lore")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.5, 0, -17)
+id = &"grave_sluice_keeper"
+lore_key = "grave_sluice_keeper"
+
+[node name="GraveGatekeeper" parent="Lore" instance=ExtResource("7_lore")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.5, 0, -19.5)
+id = &"grave_gatekeeper"
+lore_key = "grave_gatekeeper"
+
+[node name="GraveWatch" parent="Lore" instance=ExtResource("7_lore")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.5, 0, -22)
+id = &"grave_watch"
+lore_key = "grave_watch"
+
+[node name="SluiceNotice" parent="Lore" instance=ExtResource("7_lore")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 15.3, 0, 18.5)
+id = &"sluice_notice_stone"
+lore_key = "sluice_notice"
+
+[node name="CryptVerse" parent="Lore" instance=ExtResource("7_lore")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, -4.5, -30)
+id = &"crypt_verse_stone"
+lore_key = "crypt_verse"
+
+[node name="CryptFragment" parent="." instance=ExtResource("8_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -3.75, -28.8)
+id = &"crypt_name_fragment"
+prompt = "Take the fragment"
+item = &"name_fragment_crypt"
+
+[node name="SluiceWheelSocket" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.2, 17)
+
+[node name="BellPuzzle" type="Node" parent="."]
+script = ExtResource("2_puzzle")
+bells_root = NodePath("../Bells")
+chapel_bell = NodePath("../ChapelBell")
+reward = NodePath("../BellBedChest")
+
+[node name="Landmarks" type="Node3D" parent="."]
+
+[node name="Gatehouse" type="Marker3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 31)
+
+[node name="Chapel" type="Marker3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1.7, -3)
+
+[node name="Crypt" type="Marker3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -2.8, -24)
+
+[node name="Keep" type="Marker3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.7, -4)

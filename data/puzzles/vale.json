@@ -1,0 +1,8 @@
+{
+	"_comment": "Ashen Vale puzzles, read by BellPuzzle.load_config(path, key). bells.required_order lists Bell.index values (0 gate bell, 1 watch bell in the keep, 2 sluice bell) in the order the keepers were laid down: the graveyard headstones (lore keys grave_sluice_keeper, grave_gatekeeper, grave_watch) give the years 3, 7 and 11 of the Quiet, and the chapel lintel (chapel_inscription) says to ring in that order. Change the order here and the headstone text together.",
+	"bells": {
+		"required_order": [2, 0, 1],
+		"bell_names": ["gate", "watch", "sluice"],
+		"solved_flag": "vale_bells_rung"
+	}
+}
