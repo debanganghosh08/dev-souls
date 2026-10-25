@@ -1,5 +1,14 @@
 # Tool paths and commands (Windows, this machine)
 
+## Just playing it (owner)
+- **Double-click `play.bat`** in the project root — finds Godot and runs the game. Nothing else needed.
+- To tune values live, double-click **`project.godot`** to open the editor, then press **▶ Play** (F5).
+- Controls: WASD move · mouse look · Shift sprint · Space dodge · E interact · LMB/RMB light/heavy attack ·
+  Tab inventory · Esc pause · F3 debug readout. Title screen → **New Journey**.
+- **If models are missing** (errors about `res://assets/...` not found), the git-ignored art is absent or
+  incomplete: run `node tools/fetch-assets.mjs` to restore it from the tracked manifest (~267 MB), then
+  `--headless --import` once.
+
 Godot **4.7.2 stable** (standard build) installed 2026-10-23 with `winget install GodotEngine.GodotEngine`.
 It is NOT on PATH for non-interactive shells, so always use the full path. Use the **console** build for
 anything headless (the plain `.exe` writes nothing to stdout).

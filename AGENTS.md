@@ -44,6 +44,13 @@ page, and mark anything else `UNVERIFIED`.
   Never leave the game running in the background. Editor + game + browser together only for short tests.
 - No secrets, keys, emails or personal data in the repo.
 - Never rename/move files outside your task (Godot breaks references); if needed, do it in the editor and say so.
+- **Never create a symlink or directory junction from a worktree into the main checkout.** `assets/` is
+  git-ignored, so a fresh worktree has none — the correct fix is to run `node tools/fetch-assets.mjs` *inside*
+  the worktree (it re-verifies every licence and costs a few minutes), never to link back to the real folder.
+  **Why:** an agent linked `assets` to the main checkout's folder; `git worktree remove --force` later followed
+  that link and deleted 264 MB of real art. It was fully recoverable only because `tools/assets-manifest.json`
+  is tracked. Lead rule to match: before removing any worktree, check it for links
+  (`cmd //c dir /AL /S <worktree>`) and delete them first.
 
 ## Code conventions
 - GDScript with **static typing everywhere** (`var hp: int = 3`, typed function signatures). Godot 4 style guide.
