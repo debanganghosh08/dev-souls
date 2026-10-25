@@ -1,6 +1,18 @@
 {
-  "generated": "2026-10-23T20:16:45.079Z",
+  "generated": "2026-10-24T17:02:12.412Z",
   "files": [
+    {
+      "id": "T6Cs7tmMHJ",
+      "source": "polypizza",
+      "name": "Deer",
+      "author": "Quaternius",
+      "source_url": "https://poly.pizza/m/T6Cs7tmMHJ",
+      "licence": "CC0 1.0",
+      "file_url": "https://static.poly.pizza/4b6c2a41-43c7-404c-ae37-e8c4645ff93b.glb",
+      "bytes": 1007564,
+      "sha256": "fabf360b22eaccccd056ee99d698a9562d15aa245821f96e4fbad6db3751604e",
+      "dest": "assets/models/animals/deer.glb"
+    },
     {
       "id": "2kUk0QqpCg",
       "source": "polypizza",
@@ -48,6 +60,18 @@
       "bytes": 986712,
       "sha256": "16ac96339d06f7def9af20d5d9b27622d61e53580dab43970c9edb1bffbe8f84",
       "dest": "assets/models/animals/wolf.glb"
+    },
+    {
+      "id": "y9KWOVG21R",
+      "source": "polypizza",
+      "name": "Hooded Adventurer",
+      "author": "Quaternius",
+      "source_url": "https://poly.pizza/m/y9KWOVG21R",
+      "licence": "CC0 1.0",
+      "file_url": "https://static.poly.pizza/3186b8e9-afd5-4d48-846c-b2b530cd23e2.glb",
+      "bytes": 1598564,
+      "sha256": "703d20f529f7bc46763c4abc59db7df636d1a018e74e348c53341b4a1083608b",
+      "dest": "assets/models/characters/wick.glb"
     },
     {
       "id": "fern_02",

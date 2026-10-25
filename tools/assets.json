@@ -515,6 +515,24 @@
       "dest": "assets/models/animals/frog.glb"
     },
     {
+      "id": "T6Cs7tmMHJ",
+      "name": "deer",
+      "source": "polypizza",
+      "type": "model",
+      "category": "animals",
+      "area": "shared",
+      "dest": "assets/models/animals/deer.glb"
+    },
+    {
+      "id": "y9KWOVG21R",
+      "name": "wick_hooded_adventurer",
+      "source": "polypizza",
+      "type": "model",
+      "category": "characters",
+      "area": "shared",
+      "dest": "assets/models/characters/wick.glb"
+    },
+    {
       "id": "fir_tree_01",
       "source": "polyhaven",
       "type": "maps",

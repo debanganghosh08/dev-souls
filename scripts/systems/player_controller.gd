@@ -47,14 +47,12 @@ var is_dodging: bool = false
 
 var _stamina: Stamina = Stamina.new()
 var _health: Health = Health.new()
+var _fall: PlayerFallTracker = PlayerFallTracker.new()
+var _dodge: PlayerDodge = PlayerDodge.new()
 var _game: Node
 var _inventory: Node
 var _state_playing: int = -1
 var _sprinting: bool = false
-var _dodge_time_left: float = 0.0
-var _dodge_dir: Vector3 = Vector3.FORWARD
-var _airborne: bool = false
-var _peak_y: float = 0.0
 var _wish_dir: Vector3 = Vector3.ZERO
 
 
@@ -166,8 +164,8 @@ func _sync_stamina_tuning() -> void:
 func _update_locomotion(delta: float) -> void:
 	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_forward", &"move_back")
 	var yaw: float = _rig.get_yaw() if _rig != null else 0.0
-	var wish_dir: Vector3 = Vector3(input.x, 0.0, input.y).rotated(Vector3.UP, yaw)
-	var has_input: bool = wish_dir.length_squared() > 0.0001
+	var wish_dir: Vector3 = PlayerMotion.wish_direction(input, yaw)
+	var has_input: bool = PlayerMotion.has_input(wish_dir)
 	if Input.is_action_just_pressed(&"dodge") and is_on_floor() and _stamina.spend(dodge_cost):
 		_start_dodge(wish_dir.normalized() if has_input else -global_basis.z)
 		return
@@ -175,17 +173,13 @@ func _update_locomotion(delta: float) -> void:
 	_wish_dir = wish_dir
 	var target_speed: float = sprint_speed if _sprinting else walk_speed
 	var horizontal: Vector3 = Vector3(velocity.x, 0.0, velocity.z)
-	var target: Vector3 = wish_dir * target_speed if has_input else Vector3.ZERO
-	var speeding_up: bool = has_input and target.length_squared() >= horizontal.length_squared()
-	var rate: float = acceleration if speeding_up else friction
-	horizontal = horizontal.move_toward(target, rate * delta)
+	horizontal = PlayerMotion.steer(horizontal, wish_dir, target_speed, acceleration, friction, delta)
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
 
 
 func _start_dodge(direction: Vector3) -> void:
-	_dodge_dir = Vector3(direction.x, 0.0, direction.z).normalized()
-	_dodge_time_left = dodge_duration
+	_dodge.start(direction, dodge_duration)
 	is_dodging = true
 	is_invulnerable = true
 	_sprinting = false
@@ -193,58 +187,26 @@ func _start_dodge(direction: Vector3) -> void:
 
 
 func _update_dodge(delta: float) -> void:
-	_wish_dir = _dodge_dir
-	_dodge_time_left -= delta
-	var elapsed_fraction: float = 1.0 - _dodge_time_left / maxf(dodge_duration, 0.001)
-	is_invulnerable = elapsed_fraction < dodge_invulnerable_fraction
-	velocity.x = _dodge_dir.x * dodge_speed
-	velocity.z = _dodge_dir.z * dodge_speed
-	if _dodge_time_left <= 0.0:
+	_wish_dir = _dodge.direction
+	is_invulnerable = _dodge.tick(delta, dodge_duration, dodge_invulnerable_fraction)
+	velocity.x = _dodge.direction.x * dodge_speed
+	velocity.z = _dodge.direction.z * dodge_speed
+	if not _dodge.active():
 		is_dodging = false
 		is_invulnerable = false
 
 
-# CharacterBody3D cannot climb steps: a 0.25 m stair tread reads as a wall, so the player sticks. When the
-# way ahead is blocked at foot level but clear one step higher, lift the body onto the step and settle it.
-# Teleporting is safe here only because test_move proved the raised volume is free.
 func _try_step_up() -> void:
-	if not is_on_floor() or not is_on_wall():
-		return
-	var flat: Vector3 = Vector3(_wish_dir.x, 0.0, _wish_dir.z)
-	if flat.length_squared() < 0.0001:
-		return
-	var ahead: Vector3 = flat.normalized() * step_probe_distance
-	if not test_move(global_transform, ahead):
-		return
-	var lifted: Transform3D = global_transform.translated(Vector3.UP * max_step_height)
-	if test_move(lifted, ahead):
-		return
-	global_transform = lifted.translated(ahead)
-	move_and_collide(Vector3.DOWN * (max_step_height + 0.05))
+	PlayerStepUp.try_step_up(self, _wish_dir, max_step_height, step_probe_distance)
 
 
 func _face_velocity(delta: float) -> void:
-	var horizontal: Vector3 = Vector3(velocity.x, 0.0, velocity.z)
-	if horizontal.length_squared() < 0.01:
-		return
-	var target_yaw: float = atan2(-horizontal.x, -horizontal.z)
-	rotation.y = lerp_angle(rotation.y, target_yaw, minf(rotation_speed * delta, 1.0))
+	rotation.y = PlayerMotion.turn_toward(rotation.y, Vector3(velocity.x, 0.0, velocity.z), rotation_speed, delta)
 
 
-# Tracks the highest point of an airborne arc; on landing the drop decides fall damage / death.
 func _update_fall_tracking(on_floor: bool, y: float) -> void:
-	if not on_floor:
-		if not _airborne:
-			_airborne = true
-			_peak_y = y
-		elif y > _peak_y:
-			_peak_y = y
-		return
-	if not _airborne:
-		return
-	_airborne = false
-	var drop: float = _peak_y - y
-	if drop <= fall_damage_height:
+	var drop: float = _fall.update(on_floor, y)
+	if drop <= PlayerFallTracker.NO_LANDING or drop <= fall_damage_height:
 		return
 	took_fall_damage.emit(drop)
 	if drop > killing_fall_height:
@@ -254,25 +216,22 @@ func _update_fall_tracking(on_floor: bool, y: float) -> void:
 	take_damage(fall_damage_for(drop), null)
 
 
-# Damage grows linearly with every metre past fall_damage_height; the hard kill above killing_fall_height
-# stays in _update_fall_tracking so a lethal drop never depends on these numbers.
 func fall_damage_for(drop: float) -> float:
-	return maxf(drop - fall_damage_height, 0.0) * fall_damage_per_metre
+	return PlayerFallTracker.damage_for(drop, fall_damage_height, fall_damage_per_metre)
 
 
 func _on_item_added(_id: StringName, _amount: int) -> void:
 	_auto_equip()
 
 
-# Best weapon held wins: sword > hammer > torch. Nothing held leaves the hands empty (Melee's unarmed entry).
 func _auto_equip() -> void:
 	if _melee == null or _inventory == null:
 		return
-	for id: StringName in [&"sword", &"hammer", &"torch"]:
-		if _inventory.has(id):
-			_melee.equip(id)
-			return
-	_melee.unequip()
+	var best: StringName = PlayerLoadout.best_weapon(_inventory)
+	if best == WeaponTable.UNARMED:
+		_melee.unequip()
+	else:
+		_melee.equip(best)
 
 
 func _on_respawned() -> void:
@@ -282,7 +241,7 @@ func _on_respawned() -> void:
 	is_dodging = false
 	is_invulnerable = false
 	_sprinting = false
-	_airborne = false
+	_fall.reset()
 	_stamina.reset()
 	_health.reset()
 	health_changed.emit(_health.fraction())
