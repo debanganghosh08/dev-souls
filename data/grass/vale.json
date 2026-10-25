@@ -1,0 +1,37 @@
+{
+	"_comment": "Ground cover for scenes/levels/vale.tscn, read by Grass.rebuild(). Lattice radius/cell size live on the Grass node; this file holds the wind and the layers. density is instances per square metre on ideal ground (before Grass.density_at and the multipliers below); max_per_cell caps a cell's MultiMesh; scale is uniform, height the blade height in metres (clump only); patch_min/patch_frequency is low-frequency noise that leaves bare patches (1.0 = none); hollow boosts density in cells below their surroundings (negative on knolls); cluster thickens within radius of the Forest's trees and falls to `outside` beyond radius+falloff; fade is [start, end] metres over which the shader sinks the piece into the ground; far_fraction is the share still drawn at the lattice edge; align tilts toward the ground normal (0 upright, 1 flat). Ashen, cold-morning palette: grey-green roots, straw tips, no saturated green.",
+	"seed": 20261024,
+	"wind": {"strength": 0.26, "direction_deg": 35.0, "speed": 1.1, "ripple_scale": 0.09},
+	"layers": [
+		{
+			"name": "grass", "kind": "clump", "density": 1.15, "max_per_cell": 170, "max_slope": 32.0,
+			"blades": 4, "segments": 3, "blade_width": 0.05, "height": [0.28, 0.62], "scale": [0.75, 1.3],
+			"root_color": "#262a20", "tip_color": "#8a876a", "dry_tint": "#b3a27a",
+			"patch_frequency": 0.035, "patch_min": 0.3, "hollow": 0.6, "align": 0.6, "sink": 0.03,
+			"far_fraction": 0.25, "fade": [52.0, 70.0]
+		},
+		{
+			"name": "pebbles", "kind": "pebble", "density": 0.22, "max_per_cell": 36, "max_slope": 42.0,
+			"scale": [0.06, 0.16], "color": "#4a4845", "patch_frequency": 0.05, "patch_min": 0.1, "hollow": 1.4,
+			"align": 0.9, "sink": 0.25, "far_fraction": 0.15, "fade": [24.0, 38.0]
+		},
+		{
+			"name": "leaf_drifts", "kind": "patch", "texture": "res://assets/textures/wood/dry_decay_leaves/dry_decay_leaves_diff_2k.jpg",
+			"density": 0.14, "max_per_cell": 22, "max_slope": 36.0, "scale": [1.1, 2.4], "uv_tiles": 0.6,
+			"cluster": {"radius": 5.0, "falloff": 4.0, "outside": 0.04}, "patch_frequency": 0.04, "patch_min": 0.35, "hollow": 0.8,
+			"align": 1.0, "far_fraction": 0.3, "fade": [30.0, 46.0]
+		},
+		{
+			"name": "ferns", "kind": "model", "model": "res://assets/models/foliage/fern_02/fern_02_1k.gltf", "mesh": "fern_02_b",
+			"density": 0.035, "max_per_cell": 8, "max_slope": 30.0, "scale": [0.3, 0.55],
+			"cluster": {"radius": 7.0, "falloff": 5.0, "outside": 0.06}, "patch_frequency": 0.06, "patch_min": 0.2,
+			"align": 0.5, "sink": 0.02, "far_fraction": 0.5, "fade": [34.0, 48.0]
+		},
+		{
+			"name": "sprigs", "kind": "model", "model": "res://assets/models/foliage/shrub_03/shrub_03_1k.gltf", "mesh": "shrub_03_a",
+			"density": 0.05, "max_per_cell": 9, "max_slope": 32.0, "scale": [0.35, 0.7],
+			"patch_frequency": 0.07, "patch_min": 0.0, "hollow": 0.4,
+			"align": 0.5, "sink": 0.02, "far_fraction": 0.5, "fade": [34.0, 48.0]
+		}
+	]
+}

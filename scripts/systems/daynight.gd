@@ -21,6 +21,15 @@ const APPLY_THRESHOLD_HOURS := 0.01
 @export var environment_path: NodePath
 @export var sun_path: NodePath
 @export var moon_path: NodePath
+## A sky-only DirectionalLight3D (sky_mode SKY_ONLY) that draws the sun disc. The real Sun is LIGHT_ONLY:
+## the disc the sky shows is LIGHT_COLOR * LIGHT_ENERGY, and a sun weak enough for this valley (0.7) paints
+## a flat grey blob, while a disc bright enough to bloom would over-light the ground. Splitting them lets
+## the disc run HDR-bright and small while the scene light stays weak.
+@export var sun_disc_path: NodePath
+## Fog widens the sun's halo (glow_deg * (1 + fog_density * haze_widen)) and dims the disc
+## (disc_energy / (1 + fog_density * haze_dim)): a hazy morning sun is a smear, a clear noon one a point.
+@export var haze_widen: float = 12.0
+@export var haze_dim: float = 8.0
 ## Yaw of the sun's arc so noon shadows are not perfectly axis-aligned. 0 = rises on +Z, sets on -Z.
 @export var sun_yaw_deg: float = 25.0
 ## Peak moon light energy, scaled by the profile's star_alpha so a dusk moon is dimmer than a midnight one.
@@ -34,6 +43,7 @@ var _env: Environment
 var _sky_mat: ProceduralSkyMaterial
 var _sun: DirectionalLight3D
 var _moon: DirectionalLight3D
+var _sun_disc: DirectionalLight3D
 var _current: Dictionary = {}
 var _last_hour: float = -1000.0
 
@@ -116,6 +126,7 @@ func _bind_nodes() -> void:
 			_sky_mat = _env.sky.sky_material as ProceduralSkyMaterial
 	_sun = get_node_or_null(sun_path) as DirectionalLight3D
 	_moon = get_node_or_null(moon_path) as DirectionalLight3D
+	_sun_disc = get_node_or_null(sun_disc_path) as DirectionalLight3D
 
 
 func _profile_for(id: StringName) -> SkyProfile:
@@ -153,11 +164,20 @@ func _apply(hours: float) -> void:
 		_moon.light_energy = moon_energy * float(_current["star_alpha"]) if not sun_up else 0.0
 		_moon.visible = not sun_up
 		_moon.shadow_enabled = not sun_up
+	var fog: float = maxf(0.0, float(_current["fog_density"]))
+	if _sun_disc != null:
+		_sun_disc.rotation_degrees = Vector3(-elevation, sun_yaw_deg, 0.0)
+		_sun_disc.light_color = _current["sun_color"]
+		_sun_disc.light_energy = float(_current["sun_disc_energy"]) / (1.0 + fog * haze_dim) if sun_up else 0.0
+		_sun_disc.visible = sun_up
 	if _sky_mat != null:
 		_sky_mat.sky_top_color = _current["sky_top"]
 		_sky_mat.sky_horizon_color = _current["sky_horizon"]
 		_sky_mat.ground_horizon_color = _current["fog_color"]
 		_sky_mat.ground_bottom_color = _current["ground_color"]
+		_sky_mat.sky_curve = maxf(0.01, float(_current["sky_curve"]))
+		_sky_mat.sun_angle_max = clampf(float(_current["sun_glow_deg"]) * (1.0 + fog * haze_widen), 1.0, 90.0)
+		_sky_mat.sun_curve = maxf(0.01, float(_current["sun_glow_curve"]))
 	if _env != null:
 		_env.fog_light_color = _current["fog_color"]
 		_env.fog_density = _current["fog_density"]

@@ -8,8 +8,8 @@ sky_horizon_color = Color(0.59, 0.61, 0.63, 1)
 sky_curve = 0.15
 ground_bottom_color = Color(0.17, 0.18, 0.19, 1)
 ground_horizon_color = Color(0.53, 0.55, 0.57, 1)
-sun_angle_max = 20.0
-sun_curve = 0.15
+sun_angle_max = 10.0
+sun_curve = 0.35
 
 [sub_resource type="Sky" id="Sky"]
 sky_material = SubResource("SkyMat")
@@ -39,6 +39,7 @@ script = ExtResource("1_cycle")
 environment_path = NodePath("WorldEnvironment")
 sun_path = NodePath("Sun")
 moon_path = NodePath("Moon")
+sun_disc_path = NodePath("SunDisc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Env")
@@ -50,6 +51,15 @@ light_energy = 0.8
 shadow_enabled = true
 shadow_blur = 1.5
 directional_shadow_max_distance = 120.0
+sky_mode = 1
+
+[node name="SunDisc" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0)
+light_color = Color(0.83, 0.82, 0.78, 1)
+light_energy = 2.4
+light_angular_distance = 0.8
+shadow_enabled = false
+sky_mode = 2
 
 [node name="Moon" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0)

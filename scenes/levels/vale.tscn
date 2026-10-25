@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://vale0w2030lvl"]
+[gd_scene load_steps=8 format=3 uid="uid://vale0w2030lvl"]
 
 [ext_resource type="Script" path="res://scenes/levels/vale.gd" id="1_level"]
+[ext_resource type="Script" path="res://scripts/systems/grass.gd" id="7_grass"]
 [ext_resource type="Script" path="res://scripts/systems/terrain.gd" id="2_terrain"]
 [ext_resource type="PackedScene" uid="uid://skyenv0w2010" path="res://scenes/environment/sky.tscn" id="3_sky"]
 [ext_resource type="Script" uid="uid://eqmw3al4pe3q" path="res://scripts/systems/forest.gd" id="4_forest"]
@@ -48,6 +49,17 @@ auto_build = false
 unique_name_in_owner = true
 script = ExtResource("5_dressing")
 data_path = "res://data/dressing/vale.json"
+auto_build = false
+
+[node name="Grass" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_grass")
+data_path = "res://data/grass/vale.json"
+radius = 70.0
+cell_size = 12.0
+density = 1.0
+max_slope = 32.0
+fill_cells_per_frame = 3
 auto_build = false
 
 [node name="Player" parent="." instance=ExtResource("6_player")]

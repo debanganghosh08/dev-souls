@@ -5,7 +5,10 @@ extends RefCounted
 
 const HOURS_PER_DAY := 24.0
 const COLOR_KEYS: Array[String] = ["sun_color", "sky_top", "sky_horizon", "ground_color", "fog_color"]
-const FLOAT_KEYS: Array[String] = ["fog_density", "sun_energy", "ambient_energy", "star_alpha"]
+## sun_disc_energy brightens the sky-only sun disc (HDR, so it blooms); sun_glow_deg / sun_glow_curve are
+## the ProceduralSkyMaterial halo around it; sky_curve is how tightly the horizon band hugs the horizon.
+const FLOAT_KEYS: Array[String] = ["fog_density", "sun_energy", "ambient_energy", "star_alpha",
+	"sun_disc_energy", "sun_glow_deg", "sun_glow_curve", "sky_curve"]
 ## Flat grey dusk used when a file is missing or a keyframe omits a key: never pretty, never a crash.
 const DEFAULTS: Dictionary = {
 	"sun_color": Color(0.8, 0.78, 0.74),
@@ -17,6 +20,10 @@ const DEFAULTS: Dictionary = {
 	"sun_energy": 0.6,
 	"ambient_energy": 0.4,
 	"star_alpha": 0.0,
+	"sun_disc_energy": 2.4,
+	"sun_glow_deg": 10.0,
+	"sun_glow_curve": 0.35,
+	"sky_curve": 0.15,
 }
 
 var _keyframes: Array[Dictionary] = []

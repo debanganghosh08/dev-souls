@@ -5,6 +5,21 @@ extends RefCounted
 ## untouched, which keeps the flat test levels (greybox, treetest) exactly as they were.
 
 
+## Basis for a prop standing on ground with `normal`, yawed by `yaw_rad` and uniformly scaled. `align` is
+## how far the prop tilts from upright toward the normal: 0 stays vertical, 1 lies flat on the slope.
+## Partial on purpose: a fully normal-aligned stump or shrub on a 30 degree bank looks pushed over (real
+## plants grow toward the sky), while a fully upright log floats off a slope on one edge. Halfway reads
+## as settled. Used by LevelDressing (with a normal sampler) and Grass; without a normal it is upright.
+static func aligned_basis(normal: Vector3, yaw_rad: float, align: float, scale: float) -> Basis:
+	var basis: Basis = Basis.from_euler(Vector3(0.0, yaw_rad, 0.0))
+	var n: Vector3 = normal.normalized() if normal.length_squared() > 0.0001 else Vector3.UP
+	var up: Vector3 = Vector3.UP.slerp(n, clampf(align, 0.0, 1.0))
+	var axis: Vector3 = Vector3.UP.cross(up)
+	if axis.length_squared() > 0.000001:
+		basis = Basis(axis.normalized(), Vector3.UP.angle_to(up)) * basis
+	return basis.scaled(Vector3.ONE * scale)
+
+
 ## World ground under (x, z) plus `offset`, or `offset` alone when there is no sampler.
 static func ground(x: float, z: float, offset: float, sampler: Callable) -> Vector3:
 	return Vector3(x, offset + (float(sampler.call(x, z)) if sampler.is_valid() else 0.0), z)
