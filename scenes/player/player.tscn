@@ -1,28 +1,50 @@
-[gd_scene load_steps=10 format=3 uid="uid://player0w1030"]
+[gd_scene load_steps=16 format=3 uid="uid://player0w1030"]
 
 [ext_resource type="Script" uid="uid://nk1m6f1hqajs" path="res://scripts/systems/player_controller.gd" id="1_controller"]
 [ext_resource type="Script" uid="uid://cee5fmslkt2jn" path="res://scripts/systems/camera_rig.gd" id="2_rig"]
 [ext_resource type="Script" uid="uid://jewgwjqb2ivf" path="res://scripts/systems/interaction_detector.gd" id="3_detector"]
 [ext_resource type="Script" path="res://scripts/systems/melee.gd" id="4_melee"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/wick.glb" id="5_model"]
+[ext_resource type="Script" path="res://scripts/systems/player_animator.gd" id="6_animator"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
 height = 1.75
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
-albedo_color = Color(0.62, 0.62, 0.64, 1)
+[sub_resource type="StandardMaterial3D" id="Mat_Ash"]
+albedo_color = Color(0.11, 0.105, 0.1, 1)
+roughness = 1.0
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
-material = SubResource("StandardMaterial3D_body")
-radius = 0.35
-height = 1.75
+[sub_resource type="StandardMaterial3D" id="Mat_Leather"]
+albedo_color = Color(0.21, 0.165, 0.125, 1)
+roughness = 0.9
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nose"]
-albedo_color = Color(0.85, 0.35, 0.2, 1)
+[sub_resource type="StandardMaterial3D" id="Mat_LeatherDark"]
+albedo_color = Color(0.13, 0.1, 0.08, 1)
+roughness = 0.9
 
-[sub_resource type="BoxMesh" id="BoxMesh_nose"]
-material = SubResource("StandardMaterial3D_nose")
-size = Vector3(0.2, 0.2, 0.3)
+[sub_resource type="StandardMaterial3D" id="Mat_Wax"]
+albedo_color = Color(0.8, 0.76, 0.68, 1)
+roughness = 0.55
+
+[sub_resource type="StandardMaterial3D" id="Mat_Bone"]
+albedo_color = Color(0.78, 0.76, 0.7, 1)
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_Brass"]
+albedo_color = Color(0.33, 0.28, 0.18, 1)
+metallic = 0.35
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="Mat_Iron"]
+albedo_color = Color(0.33, 0.33, 0.35, 1)
+metallic = 0.7
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_IronDark"]
+albedo_color = Color(0.2, 0.2, 0.21, 1)
+metallic = 0.7
+roughness = 0.65
 
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_layer = 2
@@ -35,13 +57,42 @@ script = ExtResource("1_controller")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource("CapsuleShape3D_body")
 
-[node name="Body" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
-mesh = SubResource("CapsuleMesh_body")
+[node name="Body" type="Node3D" parent="."]
+transform = Transform3D(-0.932, 0, 0, 0, 0.932, 0, 0, 0, -0.932, 0, 0, 0)
 
-[node name="Nose" type="MeshInstance3D" parent="Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -0.4)
-mesh = SubResource("BoxMesh_nose")
+[node name="Model" parent="Body" instance=ExtResource("5_model")]
+
+[node name="Medieval_Body" parent="Body/Model/RootNode/CharacterArmature/Skeleton3D"]
+surface_material_override/0 = SubResource("Mat_Ash")
+surface_material_override/1 = SubResource("Mat_Leather")
+surface_material_override/2 = SubResource("Mat_LeatherDark")
+surface_material_override/3 = SubResource("Mat_Wax")
+surface_material_override/4 = SubResource("Mat_Brass")
+surface_material_override/5 = SubResource("Mat_Iron")
+
+[node name="Medieval_Feet" parent="Body/Model/RootNode/CharacterArmature/Skeleton3D"]
+surface_material_override/0 = SubResource("Mat_Leather")
+surface_material_override/1 = SubResource("Mat_LeatherDark")
+
+[node name="Medieval_Head" parent="Body/Model/RootNode/CharacterArmature/Skeleton3D"]
+surface_material_override/0 = SubResource("Mat_Ash")
+surface_material_override/1 = SubResource("Mat_LeatherDark")
+surface_material_override/2 = SubResource("Mat_Wax")
+surface_material_override/3 = SubResource("Mat_Bone")
+surface_material_override/4 = SubResource("Mat_LeatherDark")
+
+[node name="Medieval_Legs" parent="Body/Model/RootNode/CharacterArmature/Skeleton3D"]
+surface_material_override/0 = SubResource("Mat_Ash")
+
+[node name="Sword" parent="Body/Model/RootNode/CharacterArmature/Skeleton3D/Middle1_R"]
+visible = false
+surface_material_override/0 = SubResource("Mat_Iron")
+surface_material_override/1 = SubResource("Mat_LeatherDark")
+surface_material_override/2 = SubResource("Mat_IronDark")
+
+[node name="Animator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_animator")
 
 [node name="CameraRig" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -72,3 +123,5 @@ camera_path = NodePath("%Camera")
 [node name="Melee" type="Node3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_melee")
+
+[editable path="Body/Model"]

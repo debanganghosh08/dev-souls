@@ -54,7 +54,9 @@ Generated from `tools/assets-manifest.json` by `node tools/fetch-assets.mjs --cr
 
 | Asset | Author | Source | Licence | Files |
 |---|---|---|---|---|
+| Deer (`T6Cs7tmMHJ`) | Quaternius | https://poly.pizza/m/T6Cs7tmMHJ | CC0 1.0 | 1 (983.9 KB) |
 | Dog (`2kUk0QqpCg`) | Quaternius | https://poly.pizza/m/2kUk0QqpCg | CC0 1.0 | 1 (289.9 KB) |
 | Frog (`37wofOCOzG`) | Quaternius | https://poly.pizza/m/37wofOCOzG | CC0 1.0 | 1 (371.0 KB) |
+| Hooded Adventurer (`y9KWOVG21R`) | Quaternius | https://poly.pizza/m/y9KWOVG21R | CC0 1.0 | 1 (1.5 MB) |
 | Horse (`qvTrSG9pZF`) | Quaternius | https://poly.pizza/m/qvTrSG9pZF | CC0 1.0 | 1 (1.1 MB) |
 | Wolf (`P1gU3Qkr9r`) | Quaternius | https://poly.pizza/m/P1gU3Qkr9r | CC0 1.0 | 1 (963.6 KB) |
