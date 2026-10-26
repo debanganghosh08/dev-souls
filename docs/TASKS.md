@@ -49,22 +49,21 @@ So: there is a world and a character, and no game in them yet. The next mileston
 | W5-02 | Animation rig, foot planting | Fable. Lead fixed scene BOMs that broke a cold import |
 | W5-03 | Terrain holes so structures can go underground | Lead |
 | W6-01 | Seal the crypt mouth; enable SSAO | Lead. The owner fell through this; negative control in the test |
+| W6-02 | Castle surfaces: per-material tiling, UV offset, plinths | Fable. Everything had tiled once per metre regardless of the texture |
+| W6-03 | Weapons visible in the hand; torch light | Fable. Corrected my spec: follows `Melee.equipped()`, not `best_weapon()` |
+| W7-01a | The endgame rule: `Hearth.ending_for` | Lead. Two endings, four outcomes, derived from item kind |
+| W7-01b.1 | The sluice socket and draining the pond | Lead. The socket had been an empty marker since W3-05 |
 
-## IN FLIGHT (this session)
-**W6-02 · Castle surfaces and silhouette.** Fable, in a worktree. Per-material texture tiling moved into
-`data/structures/materials.json`, per-piece UV offset so identical walls stop lining up, opt-in plinth and
-string course on the big walls. Cause: every surface in the game tiles once per metre regardless of what
-the texture depicts, which is why the owner saw "a rough square kind of texture".
-**W6-03 · Weapons in the hand.** Fable, in a worktree. The player's hands are empty whatever they hold.
-Reveals the character model's own sword; builds a hammer and a torch from primitives; the torch carries the
-light for the crypt.
+## IN FLIGHT
+**W6-04 · Measure the grass and terrain frame cost.** Fable, in a worktree. The two numbers under "open
+engineering questions" below are guesses; this instruments both and acts only on what the numbers show.
 
 ## READY — next, in the order that matters
 **W7-01a · The endgame rule.** `DONE` (lead). `scripts/systems/hearth.gd` + `data/hearth.json`: who may
 rekindle the Hearth and which of the two endings they get, derived from item *kind* in `data/items.json` so
 the inventory panel and the Hearth can never disagree about what the quest needs. Pure logic, no nodes, every
 branch pinned by `tests/test_hearth.gd`. Draft endgame wording added to `data/ui_text.json` pending O-3.
-**W7-01b · Stage the endgame.** `READY`. The rule exists; nothing stages it yet. Four pieces: the sluice
+**W7-01b · Stage the endgame.** `IN PROGRESS` (lead). The rule exists. Done: the sluice
 socket in the castle becomes an interactable that consumes the `sluice_wheel` and sets `pond_drained`
 (`SluiceWheelSocket` is already a `Marker3D` at castle-local `(18, 1.2, 17)`, and `Interactable` already
 supports required-item/consumes/sets-flag, so this is nearly free); draining lowers the pond's water disc,
@@ -99,7 +98,7 @@ fix, but that is a feel decision, not a bug).
 is still the October draft, and W7-01 and W9-01 both need it.
 
 ## Open engineering questions
-- **Grass frame cost is still unmeasured.** It may hitch when sprinting. The knobs are `fill_cells_per_frame`
+- **Grass frame cost — being measured now (W6-04).** Previously unmeasured; It may hitch when sprinting. The knobs are `fill_cells_per_frame`
   and `density`. Nobody has put a number on it (W6-04).
 - **Terrain build time is 5150 ms** on the owner's machine — the valley is silent for five seconds on load.
 - **D-013 undecided:** the photoscan props are 50–68k vertices each and will be instanced in the hundreds.
