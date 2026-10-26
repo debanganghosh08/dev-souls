@@ -77,8 +77,10 @@ func test_holes_apply_at_every_lod_step() -> void:
 		assert_true(cut < whole, "LOD step %d drops quads over the hole (%d < %d)" % [step, cut, whole])
 
 
-func test_the_real_vale_hole_sits_inside_the_castle_plateau() -> void:
-	# A hole outside the castle footprint would open a pit in open ground the player could fall into.
+func test_every_real_vale_hole_sits_under_a_structure_that_floors_it() -> void:
+	# A hole in open ground would be a pit the player could fall into. The only two sites with something
+	# built over them are the castle plateau (the crypt, tests/test_crypt_mouth.gd) and the Mirror Pond
+	# basin (the Hearth's stairwell, tests/test_hearth_mouth.gd); every hole must lie wholly in one of them.
 	var text: String = FileAccess.get_file_as_string("res://data/areas/vale.json")
 	var data: Variant = JSON.parse_string(text)
 	assert_true(data is Dictionary, "vale.json parses")
@@ -86,20 +88,25 @@ func test_the_real_vale_hole_sits_inside_the_castle_plateau() -> void:
 		return
 	var vale: Heightfield = HeightfieldScript.from_dict(data)
 	var holes: Array[Rect2] = vale.holes()
-	assert_true(holes.size() >= 1, "the vale defines at least the crypt hole")
-	var castle: Dictionary = {}
+	assert_eq(holes.size(), 2, "the vale defines the crypt hole and the pond hole")
+	var sites: Array[Dictionary] = []
 	for raw: Variant in (data as Dictionary).get("plateaus", []):
 		if raw is Dictionary and str((raw as Dictionary).get("name", "")) == "castle":
-			castle = raw
-	assert_false(castle.is_empty(), "the vale has a castle plateau")
-	if castle.is_empty():
-		return
-	var centre := Vector2(float(castle["centre"][0]), float(castle["centre"][1]))
-	var radius: float = float(castle["radius"])
+			sites.append({"name": "castle", "centre": Vector2(float(raw["centre"][0]), float(raw["centre"][1])),
+					"radius": float(raw["radius"])})
+	var pond: Dictionary = (data as Dictionary).get("pond", {})
+	if not pond.is_empty():
+		sites.append({"name": "pond", "centre": Vector2(float(pond["centre"][0]), float(pond["centre"][1])),
+				"radius": float(pond["radius"])})
+	assert_eq(sites.size(), 2, "the vale has a castle plateau and a Mirror Pond")
 	for r: Rect2 in holes:
-		for corner: Vector2 in [r.position, r.end, Vector2(r.position.x, r.end.y), Vector2(r.end.x, r.position.y)]:
-			assert_true(corner.distance_to(centre) < radius,
-					"hole corner %s is inside the castle plateau (r=%.0f)" % [corner, radius])
+		var housed: bool = false
+		for site: Dictionary in sites:
+			var inside: bool = true
+			for corner: Vector2 in [r.position, r.end, Vector2(r.position.x, r.end.y), Vector2(r.end.x, r.position.y)]:
+				inside = inside and corner.distance_to(site["centre"]) < float(site["radius"])
+			housed = housed or inside
+		assert_true(housed, "hole %s lies wholly inside the castle plateau or the pond basin" % r)
 
 
 func _indices(holes: Array[Rect2], step: int = 1) -> int:
