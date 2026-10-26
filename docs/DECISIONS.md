@@ -106,3 +106,33 @@ is ever drained** — the castle graveyard bug (D-014) in a new place. So the He
 removable stone slab with collision, gated on `pond_drained`, which is the real seal on the endgame. The
 heightfield's water level is deliberately NOT changed by draining: it decides where grass and trees may grow,
 and a basin that has just stopped being a pond must stay bare mud.
+
+**D-018 (2026-10-26) The terrain's load time is frame-bound, not CPU-bound — so the obvious fix is the wrong
+one.** Measured, three runs, headless: the wall clock for a full vale build is 2082–2182 ms unthrottled and
+**4058 ms at 60 fps**, but the CPU actually spent inside `_build_chunk` is only **1.86–1.93 s** — height
+sampling ~1.05 s (55 %), LOD mesh building ~0.8 s (43 %), collision faces ~43 ms (**2 %**), the rest node
+creation. One chunk costs **~7.4 ms** against `build_budget_ms = 6.0`, and the loop builds one chunk
+unconditionally and then only continues while under the deadline, so **it builds exactly one chunk per frame
+for ~234 frames.** The owner's 5150 ms fits ~234 frames on a slower frame rate; it was not reproduced here.
+So the build is waiting for frames, not for work, and raising the budget does not make it cheaper — a budget
+of 8 ms would build two chunks and cost 14.8 ms, buying load time by paying for it in hitches while the
+player walks. And the budget cannot help in the other direction either: `_process` builds one chunk
+**unconditionally** and only then checks the deadline, so **~7.4 ms a frame is the floor whatever the budget
+is set to**. The consequence worth knowing is not the load screen — `begin_build` primes the chunks around
+the spawn synchronously, so the window appears before this starts — it is that the **first ~234 frames of
+play carry a 7.4 ms tax**, about 44 % of a 60 fps frame for roughly four seconds, with the grass's 2 ms on
+top. That is where the owner should look for a stutter just after spawning, and it is the real argument for
+threading rather than tuning. **Open, deliberately not done:** move `TerrainMesh.sample_grid` (55 %, pure and read-only over
+the Heightfield) onto a `WorkerThreadPool` task so the main thread only builds meshes (~3.2 ms a chunk). That
+turns on whether `FastNoiseLite` tolerates concurrent reads, which is UNVERIFIED and must be proven before
+anyone relies on it. Collision generation at 2 % needs nothing.
+
+**D-019 (2026-10-26) Grass fills on a time budget, not a cell count.** Measured: at a fixed three cells a
+frame a working frame averaged 3.5–4.0 ms and the worst was 5.4 ms (one 10.3 ms outlier), about 1.2 ms a
+cell. Sprinting does not make a frame dearer — the cap is per frame either way — it makes working frames more
+frequent, so the worst sprint frame is simply the worst three-cell frame, and that was over the 4 ms line a
+single system should not cross. Now `fill_budget_ms = 2.0` with the old count kept as a hard cap: worst frame
+3.6–4.4 ms, mean 2.6–2.8. The world it builds is provably identical — same cells, instances, blade verts and
+audit counts in the probe — only reached on a different schedule. **Caveat: these are CPU numbers from a null
+renderer.** The GPU cost of 8240 MultiMesh instances and 219k blade vertices is unmeasured, so "does it
+hitch?" is only half answered; the other half needs the owner's eyes on a real frame.
