@@ -88,3 +88,21 @@ radius 1.2 m, intensity 2.5, power 1.8, light_affect 0.15. Property names checke
 property list first, because Godot silently ignores an unknown property in a `.tscn` and the change would have
 looked applied while doing nothing. No settings toggle yet: the owner's RTX 3070 Ti absorbs it, but a graphics
 quality option belongs in `GameSettings` before release.
+
+**D-016 (2026-10-26) `String.hash()` is stable across processes, so per-piece UV offsets are safe.** W6-02
+derives each castle piece's texture offset from `name.hash()` so two identical walls standing side by side do
+not line up pixel-for-pixel. The agent flagged cross-process stability as UNVERIFIED. Checked: two separate
+headless runs returned byte-identical values for every piece name, and `"".hash()` is 5381 — the DJB2 seed,
+i.e. a plain unseeded hash of the characters. So a wall looks the same on the owner's machine and a player's.
+Were it ever otherwise the cost would be cosmetic only, but it is not something to leave assumed.
+
+**D-017 (2026-10-26) The Mirror Pond's water has no collision, so the pond is already walkable.** `vale.gd`
+builds the water as a bare `MeshInstance3D` with a `PlaneMesh` — no body, no `Area3D`. The player can
+therefore walk down the basin's very gentle slope (measured: floor at y = **−11.375**, 0.1° at the centre,
+under 1° out to the 42 m rim) and stand on the bottom under 6.4 m of water, whether or not the pond has been
+drained. There is no swimming and no drowning. Two consequences: draining is a visual and narrative change,
+not an access one; and **a terrain hole under the pond would be a pit the player falls into before the pond
+is ever drained** — the castle graveyard bug (D-014) in a new place. So the Hearth's stairwell is capped by a
+removable stone slab with collision, gated on `pond_drained`, which is the real seal on the endgame. The
+heightfield's water level is deliberately NOT changed by draining: it decides where grass and trees may grow,
+and a basin that has just stopped being a pond must stay bare mud.
