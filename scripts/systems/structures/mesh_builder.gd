@@ -2,12 +2,16 @@ class_name StructureMeshBuilder
 extends RefCounted
 ## Accumulates boxes, wedges and lathes into one ArrayMesh with flat per-face normals, and records a matching
 ## collision shape for every solid added. UVs are the face's model-space position in metres divided by
-## METRES_PER_TILE: a 4 m wall shows four 1 m stone tiles instead of one image stretched across it, and two
-## boxes butted together continue the same tiling without a seam. Normals are faceted on purpose (cut stone).
-
-const METRES_PER_TILE := 1.0
+## metres_per_tile: a 4 m wall of a 1 m texture shows four stone tiles instead of one image stretched across
+## it, and two boxes butted together continue the same tiling without a seam. The scale belongs to the
+## texture (data/structures/materials.json), so the kit passes it in; 1.0 is kept as the default so a
+## caller that passes nothing gets the old one-tile-per-metre result. uv_offset shifts every UV by a
+## fraction of a tile so identical pieces side by side do not repeat the image pixel for pixel. Normals
+## are faceted on purpose (cut stone).
 
 var shapes: Array[Dictionary] = []
+var metres_per_tile: float = 1.0
+var uv_offset: Vector2 = Vector2.ZERO
 
 var _verts := PackedVector3Array()
 var _normals := PackedVector3Array()
@@ -15,8 +19,23 @@ var _uvs := PackedVector2Array()
 var _indices := PackedInt32Array()
 
 
+func _init(tile_metres: float = 1.0, offset: Vector2 = Vector2.ZERO) -> void:
+	metres_per_tile = tile_metres if tile_metres > 0.001 else 1.0
+	uv_offset = offset
+
+
 func vertex_count() -> int:
 	return _verts.size()
+
+
+## A fixed fraction of a tile for a piece name, so a given wall looks the same every run and in every save
+## (String.hash() is a pure function of the characters, never seeded). Empty names get no shift, which keeps
+## direct kit calls bit-identical to the old builder.
+static func uv_offset_for(name: String) -> Vector2:
+	if name.is_empty():
+		return Vector2.ZERO
+	var h: int = name.hash()
+	return Vector2(float(h & 0xFF) / 256.0, float((h >> 8) & 0xFF) / 256.0)
 
 
 ## A quad whose corners run counter-clockwise seen from the outside (Godot's front face).
@@ -143,6 +162,6 @@ func _cap(xform: Transform3D, ring: Vector2, sides: int, up: bool) -> void:
 # negated so a texture's top edge is the wall's top edge.
 func _uv_for(p: Vector3, n: Vector3) -> Vector2:
 	if absf(n.y) > 0.9:
-		return Vector2(p.x, p.z) / METRES_PER_TILE
+		return Vector2(p.x, p.z) / metres_per_tile + uv_offset
 	var along: Vector3 = n.cross(Vector3.UP).normalized()
-	return Vector2(p.dot(along), -p.y) / METRES_PER_TILE
+	return Vector2(p.dot(along), -p.y) / metres_per_tile + uv_offset

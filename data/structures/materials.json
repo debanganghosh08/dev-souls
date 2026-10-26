@@ -1,0 +1,9 @@
+{
+	"_comment": "Surface tuning for StructureMaterials (scripts/systems/structures/materials.gd), one entry per material kind used in data/structures/*.json. metres_per_tile: how many metres of wall one copy of the texture image covers -- a 2k Poly Haven wall that depicts ~2 m of masonry wants 2.0, and the old global 1.0 made every image repeat every metre (the 'rough square texture' the owner saw). normal_scale and ao_light_affect map straight onto StandardMaterial3D; roughness multiplies the roughness map. Missing fields keep the built-in defaults; a broken file reports an error and uses them all. THESE NUMBERS ARE AN ESTIMATE, NOT MEASURED (UNVERIFIED against the actual textures) -- they are the owner's to tune by eye in a real run; nothing headless can judge them.",
+	"castle_wall": {"metres_per_tile": 2.0, "normal_scale": 1.0, "roughness": 1.0, "ao_light_affect": 0.3},
+	"blocks": {"metres_per_tile": 1.5, "normal_scale": 1.0, "roughness": 1.0, "ao_light_affect": 0.3},
+	"stone": {"metres_per_tile": 1.5, "normal_scale": 1.0, "roughness": 1.0, "ao_light_affect": 0.3},
+	"roof": {"metres_per_tile": 1.0, "normal_scale": 0.8, "roughness": 1.0, "ao_light_affect": 0.3},
+	"planks": {"metres_per_tile": 1.0, "normal_scale": 0.8, "roughness": 1.0, "ao_light_affect": 0.3},
+	"plaster": {"metres_per_tile": 2.5, "normal_scale": 0.6, "roughness": 1.0, "ao_light_affect": 0.3}
+}
