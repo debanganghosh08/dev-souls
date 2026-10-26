@@ -85,6 +85,19 @@ func step() -> void:
 				print("PROBE equip ok=%s weapon=%s state=%s" % [
 					ok, melee.weapon_name() if melee != null else "", _main._state_name(),
 				])
+				_next()
+		9:
+			if _frames >= STEP_FRAMES:
+				# The last screen of a run. end_journey only fires from PLAYING, which phase 8 just
+				# confirmed the overlays had all released. The card is deliberately NOT dismissed: doing so
+				# leaves for the title, and this run is about proving the card comes up and holds the screen.
+				var card: EndingCard = _main._ending_card
+				game.end_journey(Hearth.Ending.REKINDLE)
+				print("PROBE ending shown=%s which=%d locked=%s title=%s state=%s over=%s" % [
+					card != null and card.is_shown(), card.shown_ending() if card != null else -1,
+					card != null and not card.accepts_input(),
+					card != null and card.title_text() != "", _main._state_name(), game.journey_is_over(),
+				])
 				if _main._save != null:
 					_main._save.delete()
 				_next()

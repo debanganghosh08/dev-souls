@@ -7,6 +7,10 @@ signal state_changed(old: State, new: State)
 signal player_died()
 signal respawned()
 signal time_changed(hours: float)
+## The journey is over: the Hearth was reached and one of the two endings happened. The value is a
+## Hearth.Ending. EndingCard listens for this the way DeathScreen listens for player_died, so the Hearth
+## never has to reach into the interface.
+signal journey_ended(ending: int)
 
 const HOURS_PER_DAY := 24.0
 const NIGHT_START := 20.0
@@ -18,6 +22,10 @@ var state: State = State.BOOT:
 			return
 		var old: State = state
 		state = value
+		# Returning to the title is the end of a run, and this autoload outlives the level, so the next run
+		# must be allowed to reach its own ending.
+		if value == State.MENU:
+			_ended = false
 		state_changed.emit(old, value)
 var respawn_area: StringName = &"vale"
 var respawn_point: Vector3 = Vector3.ZERO
@@ -27,6 +35,7 @@ var time_of_day: float = 8.0:
 		time_of_day = fposmod(value, HOURS_PER_DAY)
 var playtime_seconds: float = 0.0
 
+var _ended: bool = false
 var _save: Node
 
 
@@ -49,6 +58,21 @@ func kill_player() -> void:
 		return
 	state = State.DEAD
 	player_died.emit()
+
+
+## Ends the run. Deliberately does not touch `state`: EndingCard takes the screen the way the pause menu
+## does (PLAYING -> PAUSED, mouse freed) and Main leaves for the title when the card is dismissed, so no new
+## state has to be threaded through every `match state` in the game. Fires at most once per run: two endings
+## cannot happen, and a second Hearth use must not replay the card.
+func end_journey(ending: int) -> void:
+	if _ended or state != State.PLAYING:
+		return
+	_ended = true
+	journey_ended.emit(ending)
+
+
+func journey_is_over() -> bool:
+	return _ended
 
 
 func respawn() -> void:

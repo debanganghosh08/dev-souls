@@ -15,6 +15,7 @@ const DEATH_SCENE := preload("res://scenes/ui/death_screen.tscn")
 const PAUSE_SCENE := preload("res://scenes/ui/pause_menu.tscn")
 const INVENTORY_SCENE := preload("res://scenes/ui/inventory_panel.tscn")
 const ITEM_CARD_SCENE := preload("res://scenes/ui/item_card.tscn")
+const ENDING_SCENE := preload("res://scenes/ui/ending_card.tscn")
 
 @onready var _menu: MainMenu = %MainMenu
 @onready var _loading: CanvasLayer = %Loading
@@ -32,6 +33,7 @@ var _death: DeathScreen
 var _pause: PauseMenu
 var _inventory_panel: InventoryPanel
 var _item_card: ItemCard
+var _ending_card: EndingCard
 var _loading_path: String = ""
 var _continue_after_load: bool = false
 var _probe: MainProbe
@@ -115,10 +117,15 @@ func _enter_level(scene: PackedScene) -> void:
 	_pause.get_node(^"%SettingsPanel").changed.connect(_push_settings_to_player)
 	_inventory_panel = INVENTORY_SCENE.instantiate()
 	_item_card = ITEM_CARD_SCENE.instantiate()
+	# The journey's last screen never hands the game back, so it leaves for the title like the pause menu's
+	# "Save and Quit" does. It listens to Game.journey_ended itself; Main only owns the way out.
+	_ending_card = ENDING_SCENE.instantiate()
+	_ending_card.finished.connect(_leave_level)
 	_overlays.add_child(_hud)
 	_overlays.add_child(_death)
 	_overlays.add_child(_inventory_panel)
 	_overlays.add_child(_pause)
+	_overlays.add_child(_ending_card)
 	_item_card_layer.add_child(_item_card)
 	var player: Node = _find_player()
 	if player != null:
@@ -138,7 +145,7 @@ func _enter_level(scene: PackedScene) -> void:
 
 
 func _leave_level() -> void:
-	for overlay: Node in [_hud, _death, _pause, _inventory_panel, _item_card]:
+	for overlay: Node in [_hud, _death, _pause, _inventory_panel, _item_card, _ending_card]:
 		if overlay != null:
 			overlay.queue_free()
 	_hud = null
@@ -146,6 +153,7 @@ func _leave_level() -> void:
 	_pause = null
 	_inventory_panel = null
 	_item_card = null
+	_ending_card = null
 	if _level != null:
 		_level.queue_free()
 		_level = null

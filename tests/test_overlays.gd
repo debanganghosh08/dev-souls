@@ -6,7 +6,7 @@ extends "res://tests/test_case.gd"
 const MAIN := "res://scenes/main/main.tscn"
 const PROBE_FRAME_CAP := "1200"
 const ORIGINAL_PROBES: Array[String] = ["PROBE menu", "PROBE ingame", "PROBE death"]
-const NEW_PROBES: Array[String] = ["PROBE inventory", "PROBE itemcard", "PROBE equip"]
+const NEW_PROBES: Array[String] = ["PROBE inventory", "PROBE itemcard", "PROBE equip", "PROBE ending"]
 
 
 func test_main_scene_carries_the_item_card_layer_between_hud_and_pause() -> void:
@@ -88,6 +88,15 @@ func test_headless_probe_opens_inventory_shows_the_card_and_equips() -> void:
 		assert_eq(equip["ok"], "true", "equipping the torch through the real Melee succeeded")
 		assert_eq(equip["weapon"], "Torch", "Melee reports the torch (auto-equip had chosen the hammer)")
 		assert_eq(equip["state"], "PLAYING", "every overlay released the state by the end")
+	var ending: Dictionary = _probe_line(text, "PROBE ending")
+	if not ending.is_empty():
+		assert_eq(ending["shown"], "true", "Game.end_journey raised the ending card")
+		assert_eq(ending["which"], str(Hearth.Ending.REKINDLE), "it is the ending that was reached")
+		assert_eq(ending["title"], "true", "the card resolved real words, not a bare key")
+		assert_eq(ending["state"], "PAUSED", "the card holds the screen while it is up")
+		assert_eq(ending["over"], "true", "the run is recorded as over")
+		# The lockout is the point: the key still held from using the Hearth must not skip the last beat.
+		assert_eq(ending["locked"], "true", "the card refuses input the instant it appears")
 	assert_false(FileAccess.file_exists("user://probe_ui_slot.json"), "the probe removed its throwaway slot")
 
 

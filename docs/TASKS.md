@@ -63,14 +63,15 @@ engineering questions" below are guesses; this instruments both and acts only on
 rekindle the Hearth and which of the two endings they get, derived from item *kind* in `data/items.json` so
 the inventory panel and the Hearth can never disagree about what the quest needs. Pure logic, no nodes, every
 branch pinned by `tests/test_hearth.gd`. Draft endgame wording added to `data/ui_text.json` pending O-3.
-**W7-01b · Stage the endgame.** `IN PROGRESS` (lead). The rule exists. Done: the sluice
-socket in the castle becomes an interactable that consumes the `sluice_wheel` and sets `pond_drained`
-(`SluiceWheelSocket` is already a `Marker3D` at castle-local `(18, 1.2, 17)`, and `Interactable` already
-supports required-item/consumes/sets-flag, so this is nearly free); draining lowers the pond's water disc,
-built in `scenes/levels/vale.gd._place_water`; a descent opens in the drained basin into the Hearth's chamber
-— **this needs a second terrain hole, so D-014 applies and the test for it must too**; and the Hearth itself,
-an interactable that asks `Hearth.ending_for` and shows an ending card. Three Kindlings exist as items but
-only one area exists to hide them in, so until W8 lands, place all three in the Vale and move two later.
+**W7-01b · Stage the endgame.** `IN PROGRESS` (lead).
+*Done:* the sluice socket consumes the `sluice_wheel` and sets `pond_drained`; draining sinks the pond's
+water disc and stops drawing it, leaving a basin with a walkable floor.
+*Left:* a descent in the drained basin into the Hearth's chamber — **this needs a second terrain hole, so
+D-014 applies and so does a test like `test_crypt_mouth.gd`** — and the Hearth itself, an interactable that
+asks `Hearth.ending_for()` and shows one of the two ending cards.
+*Blocked by content, not code:* the Sluice Wheel is in the Barrens and two of the three Kindlings are in the
+Wood and the Barrens, so the chain cannot be walked end to end until W8. The socket refusing is correct
+behaviour, not an omission.
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
 **W8-01 · Area 2, the Wood.** `READY`. Dense forest, little sky, a drowned shrine. Reuses the heightfield,
@@ -98,7 +99,7 @@ fix, but that is a feel decision, not a bug).
 is still the October draft, and W7-01 and W9-01 both need it.
 
 ## Open engineering questions
-- **Grass frame cost — being measured now (W6-04).** Previously unmeasured; It may hitch when sprinting. The knobs are `fill_cells_per_frame`
+- **Grass frame cost — being measured now (W6-04).** Previously unmeasured, and it may hitch when sprinting. The knobs are `fill_cells_per_frame`
   and `density`. Nobody has put a number on it (W6-04).
 - **Terrain build time is 5150 ms** on the owner's machine — the valley is silent for five seconds on load.
 - **D-013 undecided:** the photoscan props are 50–68k vertices each and will be instanced in the hundreds.
