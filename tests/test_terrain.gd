@@ -62,6 +62,24 @@ func test_terrain_builds_every_chunk_and_collides_near_the_player() -> void:
 	assert_eq(line["winding_up"], "true", "chunk triangles face upward")
 
 
+func test_terrain_build_cost_is_split_by_phase() -> void:
+	# CPU side only. build_ms is wall-clock across the budgeted frames, so the phases must fit inside it,
+	# and sampling plus meshing inside the chunk total; collision is per near chunk and so small but not zero.
+	var line: Dictionary = _probe_line(_text, "PROBE cost ")
+	assert_true(not line.is_empty(), "probe printed the cost line")
+	if line.is_empty():
+		return
+	var cpu: float = float(line["terrain_cpu_ms"])
+	var sample: float = float(line["terrain_sample_ms"])
+	var mesh: float = float(line["terrain_mesh_ms"])
+	var collision: float = float(line["terrain_collision_ms"])
+	assert_true(int(line["terrain_build_frames"]) >= 1, "the build spent at least the synchronous frame")
+	assert_true(sample > 0.0 and mesh > 0.0 and collision > 0.0, "every phase cost time (%s / %s / %s ms)" % [sample, mesh, collision])
+	assert_true(sample + mesh <= cpu + 0.1, "sampling and meshing fit inside the chunk total (%s + %s <= %s)" % [sample, mesh, cpu])
+	assert_true(cpu <= float(line["terrain_build_ms"]) + 1.0, "CPU time fits inside the wall-clock build (%s <= %s)" % [cpu, line["terrain_build_ms"]])
+	assert_true(collision < sample and collision < mesh, "collision is the small phase")
+
+
 func test_heightfield_in_the_live_scene() -> void:
 	var line: Dictionary = _probe_line(_text, "PROBE heightfield ")
 	assert_true(not line.is_empty(), "probe printed the heightfield line")

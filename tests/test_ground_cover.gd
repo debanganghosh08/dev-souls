@@ -51,6 +51,21 @@ func test_grass_grows_near_the_spawn_and_never_under_water_or_on_cliffs() -> voi
 	assert_true(int(line["cells"]) <= int(line["pool"]), "no more cells than pooled slots")
 
 
+func test_grass_fill_cost_is_measured_in_the_live_scene() -> void:
+	# CPU side only (headless, null renderer). The figures themselves are machine-bound, so this checks the
+	# bookkeeping -- every cell timed once, the cap respected -- not a millisecond budget that would flap.
+	var grass: Dictionary = _probe_line(_text, "PROBE grass ")
+	var cost: Dictionary = _probe_line(_text, "PROBE cost ")
+	assert_true(not cost.is_empty(), "probe printed the cost line")
+	if cost.is_empty() or grass.is_empty():
+		return
+	assert_eq(int(cost["grass_fill_cells"]), int(grass["cells"]), "every held cell was filled and timed once")
+	assert_true(int(cost["grass_fill_frames"]) > 0, "frames that filled were counted")
+	assert_true(int(cost["grass_fill_frames"]) * 3 >= int(cost["grass_fill_cells"]), "never more than the cap of three cells a frame")
+	assert_true(float(cost["grass_fill_mean_ms"]) > 0.0, "a working frame cost measurable time (%s ms)" % cost["grass_fill_mean_ms"])
+	assert_true(float(cost["grass_fill_worst_ms"]) >= float(cost["grass_fill_mean_ms"]), "the worst frame is at least the mean")
+
+
 func test_sky_splits_scene_sun_from_sky_disc_and_fog_hazes_the_halo() -> void:
 	var sky: DayNightCycle = (load(SKY) as PackedScene).instantiate() as DayNightCycle
 	var sun: DirectionalLight3D = sky.get_node(sky.sun_path) as DirectionalLight3D

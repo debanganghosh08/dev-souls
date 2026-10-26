@@ -82,7 +82,7 @@ finding.
 `main.gd._begin_level()` is the single entry point.
 **W9-01 · NPCs and hints.** `BLOCKED` on O-3. Ten to fifteen of them, each giving a fragment and no map
 marker. Needs the story settled first or the lines get written twice.
-**W10-01 · Windows export.** `READY`. No export templates and no `export_presets.cfg` exist yet. This is
+**W10-01 · Windows export.** `DONE` (lead, 2026-10-26). 526 MB standalone build, exported and probe-verified; see D-020 and `docs/TOOLS.md`. This was
 what turns the project into the thing the owner markets, and it has never once been tried — so try it early
 rather than discovering its problems in the last week.
 **W10-02 · Audio.** `BLOCKED` on O-2 (D-010). Everything about sound is waiting on one free API key.
@@ -96,7 +96,14 @@ heavy? camera too close? does the roll feel good to spam? Known and unjudged: th
 fix, but that is a feel decision, not a bug).
 **O-2 · A free Freesound API key.** All audio is blocked on it. See D-010.
 **O-3 · Sign off `docs/GAME_DESIGN.md`** — the title, the names, the story, and the draft lore wording. It
-is still the October draft, and W7-01 and W9-01 both need it.
+is still the October draft, and W7-01 and W9-01 both need it. **Also settle one contradiction:** the lore on
+`sluice_wheel`, `torch` and `bell_rope` in `data/items.json` all say the water has *already* left Hollowmere,
+while the design doc says the pond must be drained before it can be entered. Both cannot be true.
+**O-4 · The game has no icon.** `project.godot` sets no `config/icon` and the export preset no
+`application/icon`, so the window and the `.exe` currently carry Godot's default robot. For something you
+intend to market that is the first thing anyone sees, and it is a branding decision, not an engineering one.
+A 256×256 `.ico` (and an `icon.svg` for the project) is all it takes; say what you want on it and I will
+build it, or drop a file in and I will wire it up.
 
 ## Open engineering questions
 - **Grass frame cost — being measured now (W6-04).** Previously unmeasured, and it may hitch when sprinting. The knobs are `fill_cells_per_frame`

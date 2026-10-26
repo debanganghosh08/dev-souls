@@ -88,3 +88,64 @@ radius 1.2 m, intensity 2.5, power 1.8, light_affect 0.15. Property names checke
 property list first, because Godot silently ignores an unknown property in a `.tscn` and the change would have
 looked applied while doing nothing. No settings toggle yet: the owner's RTX 3070 Ti absorbs it, but a graphics
 quality option belongs in `GameSettings` before release.
+
+**D-016 (2026-10-26) `String.hash()` is stable across processes, so per-piece UV offsets are safe.** W6-02
+derives each castle piece's texture offset from `name.hash()` so two identical walls standing side by side do
+not line up pixel-for-pixel. The agent flagged cross-process stability as UNVERIFIED. Checked: two separate
+headless runs returned byte-identical values for every piece name, and `"".hash()` is 5381 — the DJB2 seed,
+i.e. a plain unseeded hash of the characters. So a wall looks the same on the owner's machine and a player's.
+Were it ever otherwise the cost would be cosmetic only, but it is not something to leave assumed.
+
+**D-017 (2026-10-26) The Mirror Pond's water has no collision, so the pond is already walkable.** `vale.gd`
+builds the water as a bare `MeshInstance3D` with a `PlaneMesh` — no body, no `Area3D`. The player can
+therefore walk down the basin's very gentle slope (measured: floor at y = **−11.375**, 0.1° at the centre,
+under 1° out to the 42 m rim) and stand on the bottom under 6.4 m of water, whether or not the pond has been
+drained. There is no swimming and no drowning. Two consequences: draining is a visual and narrative change,
+not an access one; and **a terrain hole under the pond would be a pit the player falls into before the pond
+is ever drained** — the castle graveyard bug (D-014) in a new place. So the Hearth's stairwell is capped by a
+removable stone slab with collision, gated on `pond_drained`, which is the real seal on the endgame. The
+heightfield's water level is deliberately NOT changed by draining: it decides where grass and trees may grow,
+and a basin that has just stopped being a pond must stay bare mud.
+
+**D-018 (2026-10-26) The terrain's load time is frame-bound, not CPU-bound — so the obvious fix is the wrong
+one.** Measured, three runs, headless: the wall clock for a full vale build is 2082–2182 ms unthrottled and
+**4058 ms at 60 fps**, but the CPU actually spent inside `_build_chunk` is only **1.86–1.93 s** — height
+sampling ~1.05 s (55 %), LOD mesh building ~0.8 s (43 %), collision faces ~43 ms (**2 %**), the rest node
+creation. One chunk costs **~7.4 ms** against `build_budget_ms = 6.0`, and the loop builds one chunk
+unconditionally and then only continues while under the deadline, so **it builds exactly one chunk per frame
+for ~234 frames.** The owner's 5150 ms fits ~234 frames on a slower frame rate; it was not reproduced here.
+So the build is waiting for frames, not for work, and raising the budget does not make it cheaper — a budget
+of 8 ms would build two chunks and cost 14.8 ms, buying load time by paying for it in hitches while the
+player walks. And the budget cannot help in the other direction either: `_process` builds one chunk
+**unconditionally** and only then checks the deadline, so **~7.4 ms a frame is the floor whatever the budget
+is set to**. The consequence worth knowing is not the load screen — `begin_build` primes the chunks around
+the spawn synchronously, so the window appears before this starts — it is that the **first ~234 frames of
+play carry a 7.4 ms tax**, about 44 % of a 60 fps frame for roughly four seconds, with the grass's 2 ms on
+top. That is where the owner should look for a stutter just after spawning, and it is the real argument for
+threading rather than tuning. **Open, deliberately not done:** move `TerrainMesh.sample_grid` (55 %, pure and read-only over
+the Heightfield) onto a `WorkerThreadPool` task so the main thread only builds meshes (~3.2 ms a chunk). That
+turns on whether `FastNoiseLite` tolerates concurrent reads, which is UNVERIFIED and must be proven before
+anyone relies on it. Collision generation at 2 % needs nothing.
+
+**D-019 (2026-10-26) Grass fills on a time budget, not a cell count.** Measured: at a fixed three cells a
+frame a working frame averaged 3.5–4.0 ms and the worst was 5.4 ms (one 10.3 ms outlier), about 1.2 ms a
+cell. Sprinting does not make a frame dearer — the cap is per frame either way — it makes working frames more
+frequent, so the worst sprint frame is simply the worst three-cell frame, and that was over the 4 ms line a
+single system should not cross. Now `fill_budget_ms = 2.0` with the old count kept as a hard cap: worst frame
+3.6–4.4 ms, mean 2.6–2.8. The world it builds is provably identical — same cells, instances, blade verts and
+audit counts in the probe — only reached on a different schedule. **Caveat: these are CPU numbers from a null
+renderer.** The GPU cost of 8240 MultiMesh instances and 219k blade vertices is unmeasured, so "does it
+hitch?" is only half answered; the other half needs the owner's eyes on a real frame.
+
+**D-020 (2026-10-26) The game exports to a standalone Windows build, and it works.** Until today nobody had
+ever tried, which made the project's entire purpose — "people can download it for PC" — the largest
+unverified assumption in it. Done now: `export_presets.cfg` (committed; it is config, not a binary) produces
+`DevSouls.exe` 104 MB + `DevSouls.pck` 422 MB, **526 MB**, into the git-ignored `builds/`. Verified by
+running the exported build's own `--probe` headlessly: menu → vale → death → respawn → inventory → item card
+→ equip → ending card, seven PROBE lines, **zero errors, exit 0**. That is the strong result, because a
+missing resource would have failed loading `player.tscn` immediately: the 268 MB of CC0 art is git-ignored
+but lives under `res://`, and an export does not consult `.gitignore`, so it is all in the pack.
+The templates (1.19 GB archive, 212 MB kept, Windows x86_64 only) live in `%APPDATA%`, not the repo.
+**Still unverified and not claimable:** how the build looks, how fast it runs, and whether it works on any
+machine other than this one — a headless probe renders nothing. It needs one real run here and one on a PC
+that has never had Godot installed.
