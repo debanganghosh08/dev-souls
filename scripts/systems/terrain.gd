@@ -46,6 +46,15 @@ var _collision_centre: Vector3 = Vector3.ZERO
 var _last_player_chunk: Vector2i = NO_CHUNK
 var _material: ShaderMaterial
 var _collision_chunks: int = 0
+# Where the build's CPU time goes, in microseconds: height sampling, LOD mesh building and collision face
+# generation per chunk, the whole of _build_chunk, and the frames that built anything. build_ms is the
+# wall-clock across frames and so includes the idle time the budget leaves; these do not. Collision keeps
+# counting after the build because _update_collision adds shapes as the player moves. Read through stats().
+var _sample_usec: int = 0
+var _mesh_usec: int = 0
+var _collision_usec: int = 0
+var _chunk_usec: int = 0
+var _build_frames: int = 0
 
 
 func _ready() -> void:
@@ -84,6 +93,7 @@ func begin_build(centre: Vector3) -> void:
 		return _chunk_centre(a).distance_squared_to(centre) < _chunk_centre(b).distance_squared_to(centre))
 	while not _queue.is_empty() and _chunk_centre(_queue[0]).distance_to(centre) <= collision_radius + chunk_size:
 		_build_chunk(_queue.pop_front())
+	_build_frames += 1
 	_check_finished()
 
 
@@ -93,6 +103,7 @@ func _process(delta: float) -> void:
 		_build_chunk(_queue.pop_front())
 		while not _queue.is_empty() and Time.get_ticks_usec() < deadline:
 			_build_chunk(_queue.pop_front())
+		_build_frames += 1
 		_check_finished()
 	_refresh_timer -= delta
 	if _refresh_timer > 0.0:
@@ -133,8 +144,11 @@ func _chunk_key(world: Vector3) -> Vector2i:
 
 
 func _build_chunk(key: Vector2i) -> void:
+	var t0: int = Time.get_ticks_usec()
 	var origin: Vector2 = _chunk_origin(key)
 	var grid: PackedFloat32Array = TerrainMesh.sample_grid(heightfield, origin, _cells, lod0_spacing)
+	var t1: int = Time.get_ticks_usec()
+	_sample_usec += t1 - t0
 	var root := Node3D.new()
 	root.name = "Chunk_%d_%d" % [key.x, key.y]
 	root.position = Vector3(origin.x, 0.0, origin.y)
@@ -158,9 +172,11 @@ func _build_chunk(key: Vector2i) -> void:
 		mi.visibility_range_end_margin = 0.0 if level == levels - 1 else lod_fade_margin
 		mi.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
 		root.add_child(mi)
+	_mesh_usec += Time.get_ticks_usec() - t1
 	_chunks[key] = {"root": root, "grid": grid, "body": null}
 	if _chunk_centre(key).distance_to(_collision_centre) <= collision_radius + chunk_size * 0.5:
 		_add_collision(key)
+	_chunk_usec += Time.get_ticks_usec() - t0
 
 
 func _update_collision() -> void:
@@ -176,6 +192,7 @@ func _update_collision() -> void:
 
 
 func _add_collision(key: Vector2i) -> void:
+	var t0: int = Time.get_ticks_usec()
 	var chunk: Dictionary = _chunks[key]
 	var shape := ConcavePolygonShape3D.new()
 	shape.set_faces(TerrainMesh.collision_faces(chunk["grid"], _cells, lod0_spacing,
@@ -190,6 +207,7 @@ func _add_collision(key: Vector2i) -> void:
 	(chunk["root"] as Node3D).add_child(body)
 	chunk["body"] = body
 	_collision_chunks += 1
+	_collision_usec += Time.get_ticks_usec() - t0
 
 
 # --- queries ---------------------------------------------------------------------------------------------
@@ -230,4 +248,6 @@ func first_face_normal() -> Vector3:
 func stats() -> Dictionary:
 	return {"chunks": chunk_count(), "built": _chunks.size(), "finished": _finished, "build_ms": _build_ms,
 		"collision_chunks": _collision_chunks, "lod_levels": lod_levels(), "chunk_size": chunk_size,
-		"lod0_vertices": (_cells + 1) * (_cells + 1) * _chunks.size()}
+		"lod0_vertices": (_cells + 1) * (_cells + 1) * _chunks.size(),
+		"build_frames": _build_frames, "build_cpu_ms": float(_chunk_usec) / 1000.0, "sample_ms": float(_sample_usec) / 1000.0,
+		"mesh_ms": float(_mesh_usec) / 1000.0, "collision_ms": float(_collision_usec) / 1000.0}

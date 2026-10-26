@@ -235,6 +235,12 @@ func _print_probe() -> void:
 		grass["cells"], grass["instances"], grass["blade_verts"], audit["underwater"], audit["steep"], audit["floating"],
 		grass["pending"], grass["layers"], grass["pool"],
 	])
+	# CPU time only: headless has no renderer, so this says nothing about draw cost. terrain_build_ms is the
+	# wall-clock of the budgeted build across frames; the other _ms figures are what the CPU actually spent.
+	print("PROBE cost grass_fill_frames=%d grass_fill_cells=%d grass_fill_mean_ms=%.3f grass_fill_worst_ms=%.3f terrain_build_ms=%d terrain_build_frames=%d terrain_cpu_ms=%.1f terrain_sample_ms=%.1f terrain_mesh_ms=%.1f terrain_collision_ms=%.1f" % [
+		grass["fill_frames"], grass["fill_cells"], grass["fill_mean_ms"], grass["fill_worst_ms"],
+		stats["build_ms"], stats["build_frames"], stats["build_cpu_ms"], stats["sample_ms"], stats["mesh_ms"], stats["collision_ms"],
+	])
 
 
 func _plateau_flat(hf: Heightfield, index: int) -> bool:
