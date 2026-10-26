@@ -886,13 +886,67 @@
 			}
 		},
 		{
+			"_comment": "CRYPT MOUTH. The terrain hole in data/areas/vale.json is cut per terrain cell, so it snaps outwards to a 2 m grid (local x 8..14, z -22..-14) and is far larger than the stairwell. Everything inside it that is not the stair opening must be floored or the player walks off the graveyard into a 4.6 m shaft -- which is exactly what happened. These four slabs seal the ring; tests/test_crypt_mouth.gd fails if they ever stop covering it. Their tops sit at local y = -0.05, a hair under the plateau, so the overhang past the hole edge cannot z-fight with the terrain it is buried in.",
+			"name": "crypt_mouth_apron_w",
+			"group": "crypt",
+			"kind": "floor_slab",
+			"at": [8.375, -0.55, -18.0],
+			"yaw": 0,
+			"params": {
+				"w": 1.75,
+				"d": 9.0,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_mouth_apron_e",
+			"group": "crypt",
+			"kind": "floor_slab",
+			"at": [13.125, -0.55, -18.0],
+			"yaw": 0,
+			"params": {
+				"w": 2.75,
+				"d": 9.0,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_mouth_apron_n",
+			"group": "crypt",
+			"kind": "floor_slab",
+			"at": [10.5, -0.55, -21.375],
+			"yaw": 0,
+			"params": {
+				"w": 2.5,
+				"d": 2.25,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "crypt_mouth_landing",
+			"group": "crypt",
+			"kind": "floor_slab",
+			"at": [10.5, -0.55, -14.25],
+			"yaw": 0,
+			"params": {
+				"w": 2.5,
+				"d": 1.5,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"_comment": "2.5 m wide, not 1.6: at 1.6 a 0.45 m slot was left open down each side of the flight, between the tread edge and the shaft wall, dropping 4.6 m. Filling the shaft wall to wall removes the slot instead of patching it.",
 			"name": "crypt_stairs",
 			"group": "crypt",
 			"kind": "stairs",
 			"at": [10.5, -4.5, -21.3],
 			"yaw": 180,
 			"params": {
-				"w": 1.6,
+				"w": 2.5,
 				"rise": 4.5,
 				"mat": "stone",
 				"riser": 0.25,
