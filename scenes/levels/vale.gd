@@ -14,6 +14,11 @@ const TREE_SHORE_CLEARANCE := 0.8
 const PROP_MAX_SLOPE := 34.0
 const RIDGE_MARGIN := 15.0
 const WATER_COLOUR := Color(0.33, 0.37, 0.39, 0.62)
+## Fitting the Sluice Wheel in the castle sets this; the pond then empties and the basin can be walked into,
+## which is the only way down to the Hearth (docs/GAME_DESIGN.md). The wheel itself is found in the Barrens,
+## so until that area exists the socket refuses and this never fires in play -- `--probe-drained` sets it.
+const DRAINED_FLAG := &"pond_drained"
+const WATER_FALL_SEC := 7.0
 ## Grass stops this far inside the ridge's inner radius; the ridge slopes would kill it anyway.
 const GRASS_RIDGE_MARGIN := 30.0
 const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %s\nchunks  %d / %d built   collision  %d   build  %d ms\ntrees  %d   dressing  %d\ngrass  %d cells   %d instances   %d pending\nfps  %d\n\nWASD move   Shift sprint   Space dodge   mouse look   F3 hide this readout"
@@ -27,6 +32,9 @@ const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %
 @onready var _water: MeshInstance3D = %Water
 
 var _game: Node
+var _flags: Node
+var _water_material: StandardMaterial3D
+var _drained: bool = false
 var _spawn: Vector3 = Vector3.ZERO
 var _probe: bool = false
 var _probe_frames: int = 0
@@ -40,6 +48,7 @@ func _ready() -> void:
 	_spawn = hf.spawn_point() + Vector3.UP * SPAWN_LIFT
 	_terrain.begin_build(_spawn)
 	_place_water(hf)
+	_bind_pond(hf)
 	_forest.height_sampler = _terrain.height_at
 	_forest.placement_filter = _tree_allowed
 	_forest.rebuild()
@@ -89,9 +98,52 @@ func _place_water(hf: Heightfield) -> void:
 	material.roughness = 0.08
 	material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	plane.material = material
+	_water_material = material
 	_water.mesh = plane
 	var c: Vector2 = hf.pond_centre()
 	_water.global_position = Vector3(c.x, hf.water_level(), c.y)
+
+
+# The pond is state, not scenery: it is full until the Sluice Wheel is fitted and empty forever after, and
+# a loaded save must come back already empty rather than re-draining in front of the player.
+func _bind_pond(hf: Heightfield) -> void:
+	_flags = get_node_or_null(^"/root/Flags")
+	if OS.get_cmdline_user_args().has("--probe-drained") and _flags != null:
+		_flags.set_flag(DRAINED_FLAG)
+	_drained = _flags != null and _flags.has(DRAINED_FLAG)
+	_apply_pond_state(hf, true)
+	if _flags != null and not _flags.flag_set.is_connected(_on_flag_set):
+		_flags.flag_set.connect(_on_flag_set)
+
+
+func _on_flag_set(id: StringName) -> void:
+	if id != DRAINED_FLAG or _drained:
+		return
+	_drained = true
+	_apply_pond_state(_terrain.heightfield, false)
+
+
+## Drained, the disc sinks to the basin floor and fades out, then stops being drawn at all. `instant` is the
+## load path: the water left before this session began, so there is nothing to watch.
+func _apply_pond_state(hf: Heightfield, instant: bool) -> void:
+	if not _drained:
+		_water.visible = true
+		return
+	if instant or not is_inside_tree():
+		_water.visible = false
+		return
+	var c: Vector2 = hf.pond_centre()
+	var floor_y: float = hf.height_at(c.x, c.y)
+	var tween: Tween = create_tween().set_parallel(true)
+	tween.tween_property(_water, ^"global_position", Vector3(c.x, floor_y, c.y), WATER_FALL_SEC) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	if _water_material != null:
+		tween.tween_property(_water_material, ^"albedo_color:a", 0.0, WATER_FALL_SEC)
+	tween.chain().tween_callback(func() -> void: _water.visible = false)
+
+
+func pond_drained() -> bool:
+	return _drained
 
 
 func _tree_allowed(x: float, z: float) -> bool:
@@ -149,6 +201,19 @@ func _print_probe() -> void:
 		hf.water_level() - hf.height_at(pond.x, pond.y),
 		hf.height_at(hf.size() * 0.5, 0.0) - hf.height_at(hf.ridge_inner_radius() * 0.5, 0.0),
 		_plateau_flat(hf, 0), _plateau_flat(hf, 1), deterministic,
+	])
+	# With --probe-drained the flag is set before the first _apply_pond_state, so this reports the LOADED
+	# drained state (water gone at once). The seven-second fall animation is not probe-covered: it needs the
+	# flag to arrive mid-session, which only the castle socket does.
+	# Slope, deliberately not sample_walkable: that also rejects anything under the heightfield's water
+	# level, and draining does NOT move that level. The static level still drives where grass and trees may
+	# grow, and a basin that has just stopped being a pond must stay bare mud. "Drained" is the flag plus the
+	# disc being gone; the ground underneath was always solid and always had collision.
+	var pond_floor: float = hf.height_at(pond.x, pond.y)
+	var basin_slope: float = hf.slope_at(pond.x, pond.y)
+	print("PROBE pond drained=%s water_visible=%s water_y=%.2f basin_floor=%.2f basin_slope=%.1f slope_ok=%s" % [
+		_drained, _water.visible, _water.global_position.y, pond_floor, basin_slope,
+		basin_slope <= _player.floor_max_angle * 180.0 / PI,
 	])
 	var p: Vector3 = _player.global_position
 	var ground: float = _terrain.height_at(p.x, p.z)

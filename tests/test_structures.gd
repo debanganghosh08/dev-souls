@@ -167,7 +167,22 @@ func test_scenes_have_unique_ids_three_bells_and_a_wired_puzzle() -> void:
 	assert_not_null(door, "the gatehouse has the castle door")
 	if door != null:
 		assert_eq(door.required_item, &"castle_key", "the gate needs the castle key")
-	assert_not_null(castle.get_node_or_null(^"SluiceWheelSocket"), "the sluice house leaves an empty socket marker")
+	# The sluice socket is the pond's only gate, and the Sluice Wheel that opens it is in the Barrens, an
+	# area that does not exist yet (docs/GAME_DESIGN.md). So it is deliberately a lock the player meets long
+	# before its key: it must refuse, and refuse by naming what is missing, rather than be absent or free.
+	var socket: WheelSocket = castle.get_node_or_null(^"SluiceWheelSocket") as WheelSocket
+	assert_not_null(socket, "the sluice house has a wheel socket")
+	if socket != null:
+		assert_eq(socket.required_item, &"sluice_wheel", "the socket wants the Sluice Wheel")
+		assert_true(socket.consumes_item, "fitting the wheel spends it")
+		assert_eq(socket.sets_flag, &"pond_drained", "fitting it drains the pond")
+		assert_false(socket.can_interact(), "with no wheel carried, the socket refuses")
+		# Interactable fills need_item_text with the item's in-world name, so without a placeholder the
+		# player would be refused without being told what for. (No inventory exists in this runner, so the
+		# refusal here falls back to refusal_text; the %s is what makes the named version possible.)
+		assert_true("%s" in socket.need_item_text, "the refusal has somewhere to name the missing wheel")
+		assert_ne(socket.refusal_reason(), "", "a refusal always says something")
+		assert_false(socket.is_fitted(), "the axle starts bare")
 	var village: Node = _nodes[_nodes.size() - 1]
 	assert_true(village.get_node(^"NPCHooks").get_child_count() >= 3, "the village leaves NPC hook markers")
 

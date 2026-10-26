@@ -51,6 +51,12 @@ page, and mark anything else `UNVERIFIED`.
   that link and deleted 264 MB of real art. It was fully recoverable only because `tools/assets-manifest.json`
   is tracked. Lead rule to match: before removing any worktree, check it for links
   (`cmd //c dir /AL /S <worktree>`) and delete them first.
+- **Your worktree may have been created behind `main`. Check, and merge before you edit shared files.**
+  Run `git log --oneline -1 main` against your own `HEAD` as your first git command. If `main` is ahead,
+  `git merge main` before touching anything, and take your "before" measurements *after* the merge or they
+  will not be comparable to your "after". **Why:** two agents were started minutes apart around a lead commit
+  and both began one commit behind it, one of them on the very file the commit changed. Treat a test you did
+  not write failing after a merge as you having broken something, not as a test to adjust.
 
 ## Code conventions
 - GDScript with **static typing everywhere** (`var hp: int = 3`, typed function signatures). Godot 4 style guide.

@@ -9,16 +9,34 @@ const PROBE_FRAME_CAP := "1800"
 
 var _text: String = ""
 var _code: int = -1
+var _drained_text: String = ""
+var _drained_code: int = -1
 
 
 func setup() -> void:
+	_code = _run(false)
+	_text = _last_text
+	# A second child run with the pond already drained. This costs another terrain build, and it is worth it:
+	# draining is the single gate on the whole endgame, and the branch that hides the water is only reachable
+	# this way. "It is only three lines" is how the crypt floor came to have a hole in it.
+	_drained_code = _run(true)
+	_drained_text = _last_text
+
+
+var _last_text: String = ""
+
+
+func _run(drained: bool) -> int:
 	var output: Array = []
 	var args: PackedStringArray = [
 		"--headless", "--path", ProjectSettings.globalize_path("res://"),
 		VALE_SCENE, "--quit-after", PROBE_FRAME_CAP, "--", "--probe",
 	]
-	_code = OS.execute(OS.get_executable_path(), args, output, true)
-	_text = "\n".join(PackedStringArray(output))
+	if drained:
+		args.append("--probe-drained")
+	var code: int = OS.execute(OS.get_executable_path(), args, output, true)
+	_last_text = "\n".join(PackedStringArray(output))
+	return code
 
 
 func test_child_run_is_clean() -> void:
@@ -76,6 +94,29 @@ func test_forest_and_dressing_sit_on_the_ground() -> void:
 	assert_true(not dressing.is_empty(), "probe printed the dressing line")
 	if not dressing.is_empty():
 		assert_true(int(dressing["instances"]) > 0, "dressing placed props")
+
+
+func test_the_pond_holds_its_water_until_the_sluice_is_opened() -> void:
+	var line: Dictionary = _probe_line(_text, "PROBE pond ")
+	assert_eq(line.get("drained", ""), "false", "an untouched vale still has its pond")
+	assert_eq(line.get("water_visible", ""), "true", "the water disc is drawn")
+	var water_y: float = float(line.get("water_y", "0"))
+	var basin: float = float(line.get("basin_floor", "0"))
+	assert_true(water_y > basin, "the water sits above the basin floor (%.2f > %.2f)" % [water_y, basin])
+	assert_true(water_y - basin > 5.0, "the basin is deep enough to hide a way down (%.2f m)" % [water_y - basin])
+
+
+func test_a_drained_pond_loads_empty_and_can_be_walked_into() -> void:
+	# The endgame depends on this: with the Sluice Wheel fitted the basin must be dry, gone from the screen,
+	# and gentle enough to walk down. A basin the player cannot enter is a dead end at the last door.
+	assert_eq(_drained_code, 0, "the drained child run exits cleanly")
+	assert_false("SCRIPT ERROR" in _drained_text, "draining the pond printed no script errors")
+	var line: Dictionary = _probe_line(_drained_text, "PROBE pond ")
+	assert_eq(line.get("drained", ""), "true", "the flag drained the pond")
+	assert_eq(line.get("water_visible", ""), "false", "a pond drained before the session began is not drawn")
+	# Slope, not sample_walkable: see the comment on the probe line. The heightfield still calls the basin
+	# underwater on purpose, so asking it whether the floor is "walkable" would always answer no.
+	assert_eq(line.get("slope_ok", ""), "true", "the basin floor is gentle enough to walk down into")
 
 
 func _probe_line(text: String, prefix: String) -> Dictionary:

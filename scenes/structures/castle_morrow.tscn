@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://castlemorrow01"]
+[gd_scene load_steps=10 format=3 uid="uid://castlemorrow01"]
 
 [ext_resource type="Script" path="res://scripts/systems/structures/structure_builder.gd" id="1_builder"]
 [ext_resource type="Script" path="res://scripts/systems/structures/bell_puzzle.gd" id="2_puzzle"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://propchest104" path="res://scenes/props/chest.tscn" id="6_chest"]
 [ext_resource type="PackedScene" uid="uid://proplore0104" path="res://scenes/props/lore_stone.tscn" id="7_lore"]
 [ext_resource type="PackedScene" uid="uid://proppickup14" path="res://scenes/props/pickup.tscn" id="8_pickup"]
+[ext_resource type="PackedScene" uid="uid://propwsock2610" path="res://scenes/props/wheel_socket.tscn" id="9_socket"]
 
 [node name="CastleMorrow" type="Node3D"]
 
@@ -93,8 +94,13 @@ id = &"crypt_name_fragment"
 prompt = "Take the fragment"
 item = &"name_fragment_crypt"
 
-[node name="SluiceWheelSocket" type="Marker3D" parent="."]
+[node name="SluiceWheelSocket" parent="." instance=ExtResource("9_socket")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.2, 17)
+id = &"sluice_wheel_socket"
+required_item = &"sluice_wheel"
+consumes_item = true
+sets_flag = &"pond_drained"
+once_flag = &"pond_drained"
 
 [node name="BellPuzzle" type="Node" parent="."]
 script = ExtResource("2_puzzle")
