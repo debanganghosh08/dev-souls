@@ -63,7 +63,7 @@ engineering questions" below are guesses; this instruments both and acts only on
 rekindle the Hearth and which of the two endings they get, derived from item *kind* in `data/items.json` so
 the inventory panel and the Hearth can never disagree about what the quest needs. Pure logic, no nodes, every
 branch pinned by `tests/test_hearth.gd`. Draft endgame wording added to `data/ui_text.json` pending O-3.
-**W7-01b · Stage the endgame.** `IN PROGRESS` (lead).
+**W7-01b/c · Stage the endgame.** `DONE` (lead + Fable).
 *Done:* the sluice socket consumes the `sluice_wheel` and sets `pond_drained`; draining sinks the pond's
 water disc and stops drawing it, leaving a basin with a walkable floor.
 *Left:* a descent in the drained basin into the Hearth's chamber — **this needs a second terrain hole, so

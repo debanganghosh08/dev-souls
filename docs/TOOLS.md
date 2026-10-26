@@ -36,6 +36,11 @@ Notes
   about how the game looks or its frame rate — only the owner's eyes on a real run can do that. Never claim
   visual or performance results from a headless run.
 - A headless run exits non-zero on an uncaught script error, so CI-style checks work.
+- **Always check the suite output for `SCRIPT ERROR` too, not just `PASS n / FAIL 0`.** A GDScript runtime
+  error aborts the function it happens in and raises nothing the runner can catch, so a test that dies
+  part-way still reports as passed. `run_tests.gd` now fails any test that reached no assertion, which
+  catches an error before the first one; grepping the output for `SCRIPT ERROR` (expected: 0 in a checkout
+  that has `assets/`) catches the rest.
 - First `--import` on a project with assets is CPU-heavy: check load < 50 % and run nothing else alongside it.
 
 ## Shipping a Windows build

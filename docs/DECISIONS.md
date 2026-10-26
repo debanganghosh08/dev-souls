@@ -149,3 +149,19 @@ The templates (1.19 GB archive, 212 MB kept, Windows x86_64 only) live in `%APPD
 **Still unverified and not claimable:** how the build looks, how fast it runs, and whether it works on any
 machine other than this one — a headless probe renders nothing. It needs one real run here and one on a PC
 that has never had Godot installed.
+
+**D-021 (2026-10-26) A green suite was not proof that every test ran.** Found by the W7-01c agent, honestly
+reported against its own work: its first draft had a typed-array bug that aborted a coverage test part-way,
+and the test still counted as **passed**. A GDScript runtime error ends the function it happens in and raises
+nothing the runner can catch, so `run_tests.gd` saw a test that recorded no assertion failure — because it
+had recorded nothing at all. That is exactly how a test that proves nothing hides inside `PASS 335 / FAIL 0`,
+and the crypt-mouth and hearth-mouth coverage tests are the ones where it would matter most.
+Two guards now, because neither is sufficient alone:
+1. `TestCase` counts assertions reached and `run_tests.gd` **fails any test that reached none**, which catches
+   an error before the first assertion (and also catches a test that genuinely asserts nothing). Proven by
+   negative control: a deliberately empty test reports `1 passed, 1 failed`, and today no real test trips it.
+2. The suite's output is checked for `SCRIPT ERROR` lines, which catches an error *after* the first
+   assertion. Expected count in a checkout that has `assets/`: **0**, verified. An agent worktree has no
+   `assets/`, so lines there are the missing-model failures and must be diffed before/after, never ignored.
+The general lesson is the one this project keeps relearning: a test is only evidence once it has been seen to
+fail. Negative controls are not optional (D-014).

@@ -38,6 +38,10 @@ func _run_file(path: String) -> Vector2i:
 		var before: int = case.failures.size()
 		case._begin(name)
 		case.call(name)
+		# A test that reached no assertion did not test anything. Usually that means a GDScript runtime
+		# error aborted it part-way, which raises nothing this runner can catch and used to count as a pass.
+		if case.assertions == 0:
+			case._fail("reached no assertion — it errored, or it asserts nothing")
 		if case.failures.size() == before:
 			passed += 1
 		else:
