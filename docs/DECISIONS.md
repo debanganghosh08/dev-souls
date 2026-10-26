@@ -68,3 +68,23 @@ heavy and these will be instanced in the hundreds. **Open:** decide between Godo
 aggressive distance culling, or adding a decimation step to the pipeline (which would mean a pinned
 `@gltf-transform`/`meshoptimizer` dev dependency). Not urgent while the world is empty; decide in W3-02 before
 placing anything in bulk.
+
+**D-014 (2026-10-26) A terrain hole is bigger than you authored it, and the structure must floor the whole
+thing.** The owner fell through the castle graveyard. The hole in `data/areas/vale.json` was correct; what
+was wrong was assuming it was the size it says. `TerrainMesh` drops a cell when the cell's **centre** lies
+in the rect, so a 6 x 9 m rect becomes a 6 x 8 m gap snapped outwards onto the 2 m collision grid, extending
+roughly a metre past the crypt house on three sides. Nothing was built over that margin, so a 4.6 m shaft sat
+under walkable ground. **Rule: whatever is built over a hole must floor the hole's snapped footprint, not its
+authored footprint, and the only part left open must be a surface the player can stand on** (here, the stair
+flight, widened 1.6 → 2.5 m to fill the shaft wall to wall rather than leaving a 0.45 m slot down each side).
+`tests/test_crypt_mouth.gd` re-derives the snapped footprint from the data and walks a 0.2 m grid over it, so
+moving the hole, the house or the stairs fails the build. Proven by negative control, not assumed: reverting
+the width and deleting one slab reports 515 open samples.
+
+**D-015 (2026-10-26) Ambient occlusion is not optional for cut stone.** The owner's words for Castle Morrow
+were "some cardboard kind of thing". The shared `WorldEnvironment` had **no** SSAO, so a flat 0.45-energy sky
+ambient filled every corner, recess and crevice evenly and the masonry lost all contact shading. Enabled with
+radius 1.2 m, intensity 2.5, power 1.8, light_affect 0.15. Property names checked against `Environment`'s real
+property list first, because Godot silently ignores an unknown property in a `.tscn` and the change would have
+looked applied while doing nothing. No settings toggle yet: the owner's RTX 3070 Ti absorbs it, but a graphics
+quality option belongs in `GameSettings` before release.

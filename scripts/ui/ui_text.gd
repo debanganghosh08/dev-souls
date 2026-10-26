@@ -51,6 +51,16 @@ const DEFAULTS: Dictionary = {
 	"equipped": "Equipped",
 	"inventory_hint": "[%s]  close    [%s]  equip",
 	"item_card_hint": "[%s]  continue",
+	# The endgame (scripts/systems/hearth.gd). DRAFT WORDING pending O-3: the owner's voice, not an agent's.
+	"hearth_prompt": "Kindle",
+	"hearth_sealed": "The water has not left this place yet.",
+	"hearth_needs": "It will not take you yet. Still wanting: %s",
+	"hearth_spent": "There is nothing here left to light.",
+	"ending_rekindle_title": "THE HEARTH REMEMBERS",
+	"ending_rekindle_body": "You spoke the name into the fire, and the fire took it back. Dawn finds Hollowmere warm, and finds you a stub of wax, content.",
+	"ending_become_title": "YOU ARE THE FLAME",
+	"ending_become_body": "Nameless, it could only feed. The valley is warm again. Warm is all you are now.",
+	"ending_dismiss": "[%s]  rest",
 }
 
 static var _table: Dictionary = {}

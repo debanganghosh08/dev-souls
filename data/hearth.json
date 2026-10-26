@@ -1,0 +1,8 @@
+{
+	"_comment": "The endgame, read by scripts/systems/hearth.gd. What the Hearth requires is NOT listed here on purpose: it is every item of kindling_kind and of name_kind in data/items.json, so adding a fourth Kindling there is the only edit needed and the inventory panel's 'Kindling n of m' can never disagree with what the Hearth asks for. requires_flag gates reaching the Hearth at all (the Mirror Pond covers the way down until the Sluice Wheel is fitted). The two ending flags persist through Flags into the save, so a finished journey stays finished. Unknown keys are ignored, so this comment is safe.",
+	"kindling_kind": "kindling",
+	"name_kind": "fragment",
+	"requires_flag": "pond_drained",
+	"rekindled_flag": "hearth_rekindled",
+	"consumed_flag": "wick_consumed"
+}
