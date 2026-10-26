@@ -136,3 +136,16 @@ single system should not cross. Now `fill_budget_ms = 2.0` with the old count ke
 audit counts in the probe — only reached on a different schedule. **Caveat: these are CPU numbers from a null
 renderer.** The GPU cost of 8240 MultiMesh instances and 219k blade vertices is unmeasured, so "does it
 hitch?" is only half answered; the other half needs the owner's eyes on a real frame.
+
+**D-020 (2026-10-26) The game exports to a standalone Windows build, and it works.** Until today nobody had
+ever tried, which made the project's entire purpose — "people can download it for PC" — the largest
+unverified assumption in it. Done now: `export_presets.cfg` (committed; it is config, not a binary) produces
+`DevSouls.exe` 104 MB + `DevSouls.pck` 422 MB, **526 MB**, into the git-ignored `builds/`. Verified by
+running the exported build's own `--probe` headlessly: menu → vale → death → respawn → inventory → item card
+→ equip → ending card, seven PROBE lines, **zero errors, exit 0**. That is the strong result, because a
+missing resource would have failed loading `player.tscn` immediately: the 268 MB of CC0 art is git-ignored
+but lives under `res://`, and an export does not consult `.gitignore`, so it is all in the pack.
+The templates (1.19 GB archive, 212 MB kept, Windows x86_64 only) live in `%APPDATA%`, not the repo.
+**Still unverified and not claimable:** how the build looks, how fast it runs, and whether it works on any
+machine other than this one — a headless probe renders nothing. It needs one real run here and one on a PC
+that has never had Godot installed.
