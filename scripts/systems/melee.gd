@@ -6,6 +6,8 @@ class_name Melee
 signal swing_started(heavy: bool)
 signal hit_landed(target: Node, amount: float)
 signal swing_finished()
+## The held weapon changed (PlayerWeapons shows it); UNARMED when the hands empty.
+signal weapon_changed(item_id: StringName)
 
 enum State { IDLE, WINDUP, ACTIVE, RECOVERY }
 
@@ -126,18 +128,18 @@ func step(delta: float) -> void:
 
 func equip(item_id: StringName) -> bool:
 	if item_id == UNARMED:
-		_equipped = UNARMED
+		unequip()
 		return true
 	if not _weapons.has(item_id):
 		return false
 	if _inventory == null or not _inventory.has(item_id):
 		return false
-	_equipped = item_id
+	_set_equipped(item_id)
 	return true
 
 
 func unequip() -> void:
-	_equipped = UNARMED
+	_set_equipped(UNARMED)
 
 
 func equipped() -> StringName:
@@ -216,6 +218,13 @@ static func in_arc(attacker_pos: Vector3, facing_dir: Vector3, target_pos: Vecto
 	var cos_half: float = cos(deg_to_rad(clampf(arc, 0.0, 360.0) * 0.5))
 	var alignment: float = facing_dir.normalized().dot(to_target / distance)
 	return alignment >= cos_half - EPSILON
+
+
+func _set_equipped(item_id: StringName) -> void:
+	if item_id == _equipped:
+		return
+	_equipped = item_id
+	weapon_changed.emit(item_id)
 
 
 func _enter(state: State) -> void:

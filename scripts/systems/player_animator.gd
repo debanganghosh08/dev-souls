@@ -8,11 +8,9 @@ enum State { LOCOMOTION, HIT, ATTACK_LIGHT, ATTACK_HEAVY, ROLL, DEATH }
 
 const WALK_BLEND := PlayerAnimRig.WALK_BLEND
 const RUN_BLEND := PlayerAnimRig.RUN_BLEND
-const SWORD := &"sword"
 
 @export var controller_path: NodePath = ^".."
 @export var model_path: NodePath = ^"../Body/Model"
-@export var sword_mesh_path: NodePath = ^"../Body/Model/RootNode/CharacterArmature/Skeleton3D/Middle1_R/Sword"
 @export_group("Clips")
 @export var idle_clip: StringName = &"CharacterArmature|Idle"
 @export var walk_clip: StringName = &"CharacterArmature|Walk"
@@ -41,7 +39,6 @@ var _melee: Melee
 var _game: Node
 var _rig: PlayerAnimRig
 var _anim: AnimationPlayer
-var _sword: GeometryInstance3D
 var _missing: Array[StringName] = []
 var _dead: bool = false
 var _heavy: bool = false
@@ -54,7 +51,6 @@ func _ready() -> void:
 	_controller = get_node_or_null(controller_path) as PlayerController
 	var model: Node = get_node_or_null(model_path)
 	_anim = _find_player(model)
-	_sword = get_node_or_null(sword_mesh_path) as GeometryInstance3D
 	var available: PackedStringArray = _anim.get_animation_list() if _anim != null else PackedStringArray()
 	_missing = PlayerAnimRig.missing_clips(available, required_clips())
 	if _anim != null and _missing.is_empty():
@@ -92,10 +88,6 @@ func _physics_process(_delta: float) -> void:
 	_blend = locomotion_blend(_speed, _controller.walk_speed, _controller.sprint_speed)
 	_time_scale = PlayerAnimRig.playback_scale(_speed, _blend, walk_clip_speed, run_clip_speed, min_time_scale, max_time_scale)
 	_rig.set_locomotion(_blend, _time_scale)
-	if _sword != null:
-		var armed: bool = _melee != null and _melee.equipped() == SWORD
-		if _sword.visible != armed:
-			_sword.visible = armed
 
 
 func current_state() -> State:
