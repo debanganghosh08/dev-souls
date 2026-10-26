@@ -106,7 +106,13 @@
       -182.5,
       6.0,
       9.0
+    ],
+    [
+      -4.0,
+      -5.0,
+      8.0,
+      10.0
     ]
   ],
-  "_comment_holes": "World XZ rects [x, z, w, h] where the terrain mesh AND collision are omitted so built structures can go underground. Here: the castle crypt stairwell and chamber. Whatever is built must enclose the opening itself."
+  "_comment_holes": "World XZ rects [x, z, w, h] where the terrain mesh AND collision are omitted so built structures can go underground. First: the castle crypt stairwell (tests/test_crypt_mouth.gd). Second: the stairwell down to the Hearth's chamber under the Mirror Pond, snapping to x -4..4, z -6..6 (tests/test_hearth_mouth.gd). Whatever is built must floor the SNAPPED hole, not the authored rect (D-014)."
 }

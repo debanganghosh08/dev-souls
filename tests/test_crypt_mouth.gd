@@ -27,6 +27,7 @@ const MOUTH_PIECES: Array[String] = [
 var _area: Dictionary = {}
 var _layout: Dictionary = {}
 var _centre := Vector2.ZERO
+var _plateau_radius: float = 0.0
 var _entries: Dictionary = {}
 
 
@@ -37,6 +38,7 @@ func setup() -> void:
 		if raw is Dictionary and str((raw as Dictionary).get("name", "")) == "castle":
 			var c: Array = (raw as Dictionary).get("centre", [0, 0])
 			_centre = Vector2(float(c[0]), float(c[1]))
+			_plateau_radius = float((raw as Dictionary).get("radius", 0.0))
 	for raw: Variant in _layout.get("pieces", []):
 		if raw is Dictionary:
 			_entries[str((raw as Dictionary).get("name", ""))] = raw
@@ -66,7 +68,9 @@ static func _last_edge(v: float, half: float, spacing: float) -> float:
 	return -half + float(floori((v - spacing * 0.5 + half) / spacing) + 1) * spacing
 
 
-## Every authored hole, snapped and moved into the castle's local frame.
+## Every authored hole on the castle plateau, snapped and moved into the castle's local frame. The vale has
+## a second hole under the Mirror Pond (tests/test_hearth_mouth.gd owns that one), so holes are picked by
+## site rather than assumed to all be the castle's.
 func _local_gaps() -> Array[Rect2]:
 	var out: Array[Rect2] = []
 	var size: float = float(_area.get("size", 1024.0))
@@ -75,6 +79,8 @@ func _local_gaps() -> Array[Rect2]:
 			continue
 		var r: Array = raw
 		var world := Rect2(float(r[0]), float(r[1]), float(r[2]), float(r[3])).abs()
+		if world.get_center().distance_to(_centre) > _plateau_radius:
+			continue
 		var snapped: Rect2 = snap_to_cells(world, size, LOD0_SPACING)
 		out.append(Rect2(snapped.position - _centre, snapped.size))
 	return out
@@ -142,7 +148,7 @@ static func _covered(cover: Array[Rect2], x: float, z: float) -> bool:
 func test_the_data_still_describes_one_hole_under_the_castle() -> void:
 	assert_ne(_centre, Vector2.ZERO, "the vale defines a castle plateau to measure against")
 	var gaps: Array[Rect2] = _local_gaps()
-	assert_eq(gaps.size(), 1, "exactly one terrain hole, the crypt")
+	assert_eq(gaps.size(), 1, "exactly one terrain hole on the castle plateau, the crypt")
 	for name: String in MOUTH_PIECES:
 		assert_true(_entries.has(name), "the castle layout still has piece '%s'" % name)
 

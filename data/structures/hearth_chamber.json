@@ -1,0 +1,370 @@
+{
+	"_comment": "The Hearth's chamber beneath the Mirror Pond, for StructureBuilder. Local metres; y=0 is the pond BASIN FLOOR (world -11.375, measured: tests/test_hearth_mouth.gd fails if the heightfield moves it), +Z is the shore side the Wick walks in from. The scene is placed at the pond centre in scenes/levels/vale.tscn; the whole footprint stays inside the pond's 42 m radius and under the basin floor except the pieces listed as deliberately proud (shaft lips, kerb, gate posts, the seal). The Hearth itself is a node in scenes/structures/hearth_chamber.tscn and must match the plinth and bowl here.",
+	"_comment_mouth": "THE POND MOUTH. The terrain hole in data/areas/vale.json is cut per 2 m cell, so [-4,-5,8,10] snaps outwards to local x -4..4, z -6..6 (D-014). The water has no collision, so until the pond drains this hole is a pit the player can walk into from the basin floor. Everything inside it that is not the stair opening is floored by the four apron slabs (tops at -0.05, a hair under the basin floor so their overhang cannot z-fight the terrain, and inside the 0.4 m step-up); the stair opening itself (x -1.5..1.5, z -3.5..3.5) is capped by pond_seal, which scenes/structures/hearth_chamber.gd removes once pond_drained is set. tests/test_hearth_mouth.gd walks a 0.2 m grid over the snapped hole and fails if apron + seal ever stop covering it.",
+	"name": "hearth_chamber",
+	"site": "pond",
+	"area_file": "res://data/areas/vale.json",
+	"pieces": [
+		{
+			"name": "pond_apron_w",
+			"group": "mouth",
+			"kind": "floor_slab",
+			"at": [-3.0, -0.55, 0.0],
+			"yaw": 0,
+			"params": {
+				"w": 3.0,
+				"d": 13.0,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "pond_apron_e",
+			"group": "mouth",
+			"kind": "floor_slab",
+			"at": [3.0, -0.55, 0.0],
+			"yaw": 0,
+			"params": {
+				"w": 3.0,
+				"d": 13.0,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "pond_apron_n",
+			"group": "mouth",
+			"kind": "floor_slab",
+			"at": [0.0, -0.55, -5.0],
+			"yaw": 0,
+			"params": {
+				"w": 3.0,
+				"d": 3.0,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "pond_landing",
+			"group": "mouth",
+			"kind": "floor_slab",
+			"at": [0.0, -0.55, 5.0],
+			"yaw": 0,
+			"params": {
+				"w": 3.0,
+				"d": 3.0,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"_comment": "The pond seal: a stone lid over the stair opening, 0.25 m proud of the basin so it reads as a slab and is still inside the step-up. Removed by the chamber script when pond_drained is set; present until then, and absent from the first frame of a drained save.",
+			"name": "pond_seal",
+			"group": "seal",
+			"kind": "floor_slab",
+			"at": [0.0, -0.1, 0.0],
+			"yaw": 0,
+			"params": {
+				"w": 3.0,
+				"d": 7.0,
+				"t": 0.35,
+				"mat": "stone"
+			}
+		},
+		{
+			"_comment": "Rise 4.95, not 5: the flight tops out at -0.05, flush with the apron and landing, so the lid can sit on it. Twenty 0.2475 m risers over a 7 m run; 3 m wide so it fills the shaft wall to wall (D-014: no slot down either side).",
+			"name": "hearth_stairs",
+			"group": "mouth",
+			"kind": "stairs",
+			"at": [0.0, -5.0, -3.5],
+			"yaw": 180,
+			"params": {
+				"w": 3.0,
+				"rise": 4.95,
+				"mat": "stone",
+				"riser": 0.25,
+				"tread": 0.35
+			}
+		},
+		{
+			"_comment": "Shaft walls run from the chamber floor to 0.4 above the basin: the part above the apron is the lip either side of the open stairwell.",
+			"name": "shaft_w",
+			"group": "mouth",
+			"kind": "wall",
+			"at": [-1.7, -5.0, 0.0],
+			"yaw": 90,
+			"params": {
+				"w": 7.0,
+				"h": 5.4,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "shaft_e",
+			"group": "mouth",
+			"kind": "wall",
+			"at": [1.7, -5.0, 0.0],
+			"yaw": 90,
+			"params": {
+				"w": 7.0,
+				"h": 5.4,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "stair_kerb_n",
+			"group": "mouth",
+			"kind": "wall",
+			"at": [0.0, -0.05, -3.7],
+			"yaw": 0,
+			"params": {
+				"w": 3.8,
+				"h": 0.45,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "gate_posts",
+			"group": "mouth",
+			"kind": "pillar",
+			"params": {
+				"radius": 0.4,
+				"h": 2.2,
+				"mat": "blocks",
+				"sides": 12
+			},
+			"repeat": [
+				[-2.4, -0.05, 4.5],
+				[2.4, -0.05, 4.5]
+			]
+		},
+		{
+			"name": "chamber_floor",
+			"group": "chamber",
+			"kind": "floor_slab",
+			"at": [0.0, -5.4, -12.0],
+			"yaw": 0,
+			"params": {
+				"w": 17.5,
+				"d": 17.0,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"_comment": "The doorway is the full shaft width and 4 m tall: the stair foot lands against this wall's outer face and walks straight through.",
+			"name": "chamber_wall_s",
+			"group": "chamber",
+			"kind": "wall",
+			"at": [0.0, -5.0, -3.75],
+			"yaw": 0,
+			"params": {
+				"w": 17.5,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone",
+				"opening": {
+					"width": 3.0,
+					"height": 4.0
+				}
+			}
+		},
+		{
+			"name": "chamber_wall_n",
+			"group": "chamber",
+			"kind": "wall",
+			"at": [0.0, -5.0, -20.25],
+			"yaw": 0,
+			"params": {
+				"w": 17.5,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "chamber_wall_w",
+			"group": "chamber",
+			"kind": "wall",
+			"at": [-8.25, -5.0, -12.0],
+			"yaw": 90,
+			"params": {
+				"w": 17.0,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "chamber_wall_e",
+			"group": "chamber",
+			"kind": "wall",
+			"at": [8.25, -5.0, -12.0],
+			"yaw": 90,
+			"params": {
+				"w": 17.0,
+				"h": 4.2,
+				"t": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"_comment": "Top at -0.5: the terrain over the chamber was sampled at local -0.073..+0.007, so the ceiling never breaks the basin floor and the player never looks up into the underside of the terrain.",
+			"name": "chamber_ceiling",
+			"group": "chamber",
+			"kind": "floor_slab",
+			"at": [0.0, -0.8, -12.0],
+			"yaw": 0,
+			"params": {
+				"w": 17.5,
+				"d": 17.5,
+				"t": 0.3,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "chamber_pillars",
+			"group": "chamber",
+			"kind": "pillar",
+			"params": {
+				"radius": 0.45,
+				"h": 4.2,
+				"mat": "blocks",
+				"sides": 12
+			},
+			"repeat": [
+				[-5.5, -5.0, -7.5],
+				[5.5, -5.0, -7.5],
+				[-5.5, -5.0, -12.0],
+				[5.5, -5.0, -12.0],
+				[-5.5, -5.0, -16.5],
+				[5.5, -5.0, -16.5]
+			]
+		},
+		{
+			"name": "chamber_buttresses",
+			"group": "chamber",
+			"kind": "buttress",
+			"params": {
+				"w": 1.2,
+				"h": 3.2,
+				"depth": 0.9,
+				"mat": "stone"
+			},
+			"repeat": [
+				[-8.0, -5.0, -8.0, 90],
+				[-8.0, -5.0, -16.0, 90],
+				[8.0, -5.0, -8.0, -90],
+				[8.0, -5.0, -16.0, -90],
+				[-4.0, -5.0, -20.0, 0],
+				[4.0, -5.0, -20.0, 0]
+			]
+		},
+		{
+			"_comment": "Two 0.3 m tiers, each inside the step-up, so the plinth is climbed without stairs.",
+			"name": "hearth_plinth_lower",
+			"group": "hearth",
+			"kind": "block",
+			"at": [0.0, -5.0, -12.0],
+			"yaw": 0,
+			"params": {
+				"w": 7.0,
+				"h": 0.3,
+				"d": 7.0,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "hearth_plinth_upper",
+			"group": "hearth",
+			"kind": "block",
+			"at": [0.0, -4.7, -12.0],
+			"yaw": 0,
+			"params": {
+				"w": 5.0,
+				"h": 0.3,
+				"d": 5.0,
+				"mat": "blocks"
+			}
+		},
+		{
+			"_comment": "The fire bowl: a flared drum, rim at -3.6. The Hearth node in the scene sits on this rim.",
+			"name": "hearth_bowl",
+			"group": "hearth",
+			"kind": "pillar",
+			"at": [0.0, -4.4, -12.0],
+			"yaw": 0,
+			"params": {
+				"radius": 1.0,
+				"h": 0.8,
+				"mat": "castle_wall",
+				"sides": 16
+			}
+		},
+		{
+			"name": "hearth_cairns",
+			"group": "hearth",
+			"kind": "block",
+			"params": {
+				"w": 0.6,
+				"h": 0.5,
+				"d": 0.6,
+				"mat": "stone"
+			},
+			"repeat": [
+				[-2.0, -4.4, -10.0],
+				[2.0, -4.4, -10.0],
+				[-2.0, -4.4, -14.0],
+				[2.0, -4.4, -14.0]
+			]
+		},
+		{
+			"name": "chamber_benches",
+			"group": "hearth",
+			"kind": "block",
+			"params": {
+				"w": 2.4,
+				"h": 0.45,
+				"d": 0.55,
+				"mat": "blocks"
+			},
+			"repeat": [
+				[-7.2, -5.0, -10.0, 90],
+				[-7.2, -5.0, -14.0, 90],
+				[7.2, -5.0, -10.0, 90],
+				[7.2, -5.0, -14.0, 90],
+				[-3.0, -5.0, -19.2, 0],
+				[3.0, -5.0, -19.2, 0]
+			]
+		},
+		{
+			"name": "ash_heap_nw",
+			"group": "hearth",
+			"kind": "rubble",
+			"at": [-6.0, -5.0, -18.3],
+			"yaw": 0,
+			"params": {
+				"radius": 1.6,
+				"count": 7,
+				"mat": "stone",
+				"seed": 61
+			}
+		},
+		{
+			"name": "ash_heap_se",
+			"group": "hearth",
+			"kind": "rubble",
+			"at": [6.2, -5.0, -5.6],
+			"yaw": 0,
+			"params": {
+				"radius": 1.4,
+				"count": 6,
+				"mat": "stone",
+				"seed": 62
+			}
+		}
+	]
+}
