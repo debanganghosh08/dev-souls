@@ -50,8 +50,10 @@ func test_wall_mesh_has_normals_and_world_scaled_uvs() -> void:
 		u_max = maxf(u_max, uvs[i].x)
 		v_min = minf(v_min, uvs[i].y)
 		v_max = maxf(v_max, uvs[i].y)
-	assert_true(is_equal_approx(u_max - u_min, 4.0), "a 4 m wall spans 4 texture tiles along its length (got %.2f)" % (u_max - u_min))
-	assert_true(is_equal_approx(v_max - v_min, 3.0), "a 3 m wall spans 3 tiles up (got %.2f)" % (v_max - v_min))
+	# World-scaled: the span is metres over the material's metres_per_tile (data/structures/materials.json).
+	var tile: float = StructureMaterials.metres_per_tile("castle_wall")
+	assert_true(is_equal_approx(u_max - u_min, 4.0 / tile), "a 4 m wall spans 4/%.2f texture tiles along its length (got %.2f)" % [tile, u_max - u_min])
+	assert_true(is_equal_approx(v_max - v_min, 3.0 / tile), "a 3 m wall spans 3/%.2f tiles up (got %.2f)" % [tile, v_max - v_min])
 	assert_eq((piece["shapes"] as Array).size(), 1, "a plain wall has one collision box")
 
 

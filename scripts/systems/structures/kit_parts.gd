@@ -9,8 +9,8 @@ const RUBBLE_SINK := 0.3
 
 
 ## Two sloped slabs meeting on a ridge along X at y = rise; origin on the eave line's centre.
-static func pitched_roof(w: float, d: float, rise: float, t: float, mat: String, overhang: float) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func pitched_roof(w: float, d: float, rise: float, t: float, mat: String, overhang: float, name: String = "") -> Dictionary:
+	var b := StructureKit.builder(mat, name)
 	var full_w: float = w + 2.0 * overhang
 	_slope(b, 0.0, full_w, d, rise, t, overhang, 1.0, 0.0)
 	_slope(b, 0.0, full_w, d, rise, t, overhang, -1.0, 0.0)
@@ -20,8 +20,8 @@ static func pitched_roof(w: float, d: float, rise: float, t: float, mat: String,
 
 ## One slope intact; the other in three bays: one sagging from the ridge, one fallen inside, one down to
 ## bare rafters. The seed only sets how the fallen bay lies.
-static func collapsed_roof(w: float, d: float, rise: float, t: float, mat: String, seed: int) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func collapsed_roof(w: float, d: float, rise: float, t: float, mat: String, seed: int, name: String = "") -> Dictionary:
+	var b := StructureKit.builder(mat, name)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
 	var overhang: float = 0.3
@@ -45,8 +45,8 @@ static func collapsed_roof(w: float, d: float, rise: float, t: float, mat: Strin
 
 
 ## Fallen blocks partly sunk into the ground. Each stays under ~0.4 m proud so the player's step-up clears it.
-static func rubble(radius: float, count: int, mat: String, seed: int) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func rubble(radius: float, count: int, mat: String, seed: int, name: String = "") -> Dictionary:
+	var b := StructureKit.builder(mat, name)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
 	for i: int in range(count):
@@ -60,8 +60,8 @@ static func rubble(radius: float, count: int, mat: String, seed: int) -> Diction
 
 
 ## A closed bell profile (the mouth is capped: an open shell would be back-face culled from below).
-static func bell(radius: float, h: float, mat: String) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func bell(radius: float, h: float, mat: String, name: String = "") -> Dictionary:
+	var b := StructureKit.builder(mat, name)
 	var profile := PackedVector2Array([
 		Vector2(radius, 0.0), Vector2(radius * 0.96, h * 0.07), Vector2(radius * 0.78, h * 0.22),
 		Vector2(radius * 0.62, h * 0.45), Vector2(radius * 0.52, h * 0.7), Vector2(radius * 0.42, h * 0.88),
@@ -74,8 +74,8 @@ static func bell(radius: float, h: float, mat: String) -> Dictionary:
 	return {"kind": "bell", "mesh": b.commit(StructureMaterials.get_material(mat)), "shapes": b.shapes, "verts": b.vertex_count()}
 
 
-static func headstone(w: float, h: float, t: float, mat: String) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func headstone(w: float, h: float, t: float, mat: String, name: String = "") -> Dictionary:
+	var b := StructureKit.builder(mat, name)
 	var cap: float = w * 0.45
 	b.add_box(Transform3D(Basis.IDENTITY, Vector3(0.0, (h - cap) * 0.5, 0.0)), Vector3(w, h - cap, t))
 	b.add_box(Transform3D(Basis.IDENTITY, Vector3(0.0, h - cap * 0.5, 0.0)), Vector3(w * 0.7, cap, t), false)

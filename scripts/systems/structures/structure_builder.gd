@@ -106,47 +106,48 @@ static func placements_of(entry: Dictionary) -> Array[Transform3D]:
 
 
 ## Kit dispatch by kind name. Unknown kinds return an empty dictionary and are skipped with a warning.
-static func make_piece(kind: String, p: Dictionary) -> Dictionary:
+## `name` is the entry's name; it only seeds the texture offset, so pieces built without one still work.
+static func make_piece(kind: String, p: Dictionary, name: String = "") -> Dictionary:
 	var mat: String = str(p.get("mat", "stone"))
 	match kind:
 		"wall":
-			return StructureKit.wall(_f(p, "w", 4.0), _f(p, "h", 3.0), _f(p, "t", 0.5), mat, p.get("opening", {}))
+			return StructureKit.wall(_f(p, "w", 4.0), _f(p, "h", 3.0), _f(p, "t", 0.5), mat, _d(p, "opening"), _d(p, "plinth"), _d(p, "course"), name)
 		"broken_wall":
-			return StructureKit.broken_wall(_f(p, "w", 4.0), _f(p, "h", 3.0), _f(p, "t", 0.5), mat, int(p.get("seed", 1)), _f(p, "keep", 0.4))
+			return StructureKit.broken_wall(_f(p, "w", 4.0), _f(p, "h", 3.0), _f(p, "t", 0.5), mat, int(p.get("seed", 1)), _f(p, "keep", 0.4), name)
 		"pillar":
-			return StructureKit.pillar(_f(p, "radius", 0.4), _f(p, "h", 3.0), mat, int(p.get("sides", 10)))
+			return StructureKit.pillar(_f(p, "radius", 0.4), _f(p, "h", 3.0), mat, int(p.get("sides", 10)), name)
 		"arch":
-			return StructureKit.arch(_f(p, "w", 4.0), _f(p, "h", 4.0), _f(p, "t", 0.6), mat, _f(p, "ow", 1.6), _f(p, "oh", 2.6))
+			return StructureKit.arch(_f(p, "w", 4.0), _f(p, "h", 4.0), _f(p, "t", 0.6), mat, _f(p, "ow", 1.6), _f(p, "oh", 2.6), name)
 		"stairs":
-			return StructureKit.stairs(_f(p, "w", 1.4), _f(p, "rise", 2.0), mat, _f(p, "riser", StructureKit.DEFAULT_RISER), _f(p, "tread", StructureKit.DEFAULT_TREAD))
+			return StructureKit.stairs(_f(p, "w", 1.4), _f(p, "rise", 2.0), mat, _f(p, "riser", StructureKit.DEFAULT_RISER), _f(p, "tread", StructureKit.DEFAULT_TREAD), name)
 		"floor_slab":
-			return StructureKit.floor_slab(_f(p, "w", 4.0), _f(p, "d", 4.0), _f(p, "t", 0.3), mat)
+			return StructureKit.floor_slab(_f(p, "w", 4.0), _f(p, "d", 4.0), _f(p, "t", 0.3), mat, name)
 		"block":
-			return StructureKit.block(Vector3(_f(p, "w", 1.0), _f(p, "h", 1.0), _f(p, "d", 1.0)), mat)
+			return StructureKit.block(Vector3(_f(p, "w", 1.0), _f(p, "h", 1.0), _f(p, "d", 1.0)), mat, "block", _d(p, "plinth"), _d(p, "course"), name)
 		"timber_frame":
-			return StructureKit.timber_frame(_f(p, "w", 4.0), _f(p, "h", 2.8), _f(p, "d", 4.0), _f(p, "beam", 0.18), mat)
+			return StructureKit.timber_frame(_f(p, "w", 4.0), _f(p, "h", 2.8), _f(p, "d", 4.0), _f(p, "beam", 0.18), mat, name)
 		"buttress":
-			return StructureKit.buttress(_f(p, "w", 1.0), _f(p, "h", 4.0), _f(p, "depth", 1.2), mat)
+			return StructureKit.buttress(_f(p, "w", 1.0), _f(p, "h", 4.0), _f(p, "depth", 1.2), mat, name)
 		"pitched_roof":
-			return StructureKit.pitched_roof(_f(p, "w", 4.0), _f(p, "d", 4.0), _f(p, "rise", 1.6), _f(p, "t", 0.12), mat, _f(p, "overhang", 0.3))
+			return StructureKit.pitched_roof(_f(p, "w", 4.0), _f(p, "d", 4.0), _f(p, "rise", 1.6), _f(p, "t", 0.12), mat, _f(p, "overhang", 0.3), name)
 		"collapsed_roof":
-			return StructureKit.collapsed_roof(_f(p, "w", 4.0), _f(p, "d", 4.0), _f(p, "rise", 1.6), _f(p, "t", 0.12), mat, int(p.get("seed", 1)))
+			return StructureKit.collapsed_roof(_f(p, "w", 4.0), _f(p, "d", 4.0), _f(p, "rise", 1.6), _f(p, "t", 0.12), mat, int(p.get("seed", 1)), name)
 		"rubble":
-			return StructureKit.rubble(_f(p, "radius", 1.5), int(p.get("count", 8)), mat, int(p.get("seed", 1)))
+			return StructureKit.rubble(_f(p, "radius", 1.5), int(p.get("count", 8)), mat, int(p.get("seed", 1)), name)
 		"bell":
-			return StructureKit.bell(_f(p, "radius", 0.35), _f(p, "h", 0.5), mat)
+			return StructureKit.bell(_f(p, "radius", 0.35), _f(p, "h", 0.5), mat, name)
 		"headstone":
-			return StructureKit.headstone(_f(p, "w", 0.5), _f(p, "h", 0.8), _f(p, "t", 0.12), mat)
+			return StructureKit.headstone(_f(p, "w", 0.5), _f(p, "h", 0.8), _f(p, "t", 0.12), mat, name)
 	push_warning("StructureBuilder: unknown piece kind '%s'" % kind)
 	return {}
 
 
 func _spawn(entry: Dictionary, index: int) -> void:
 	var kind: String = str(entry.get("kind", ""))
-	var piece: Dictionary = make_piece(kind, entry.get("params", {}))
+	var name: String = str(entry.get("name", "%s_%d" % [kind, index]))
+	var piece: Dictionary = make_piece(kind, entry.get("params", {}), name)
 	if piece.is_empty():
 		return
-	var name: String = str(entry.get("name", "%s_%d" % [kind, index]))
 	var transforms: Array[Transform3D] = placements_of(entry)
 	var node: Node3D
 	if transforms.size() == 1:
@@ -170,3 +171,9 @@ func _spawn(entry: Dictionary, index: int) -> void:
 static func _f(d: Dictionary, key: String, fallback: float) -> float:
 	var v: Variant = d.get(key, fallback)
 	return float(v) if v is float or v is int else fallback
+
+
+## A sub-table such as opening/plinth/course; anything that is not an object counts as absent.
+static func _d(d: Dictionary, key: String) -> Dictionary:
+	var v: Variant = d.get(key, {})
+	return v if v is Dictionary else {}

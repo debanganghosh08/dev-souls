@@ -4,7 +4,9 @@ extends RefCounted
 ## verts} built from honest primitives wearing the real PBR textures (D-001: no toy kits). Pieces are placed
 ## with make_node (one) or make_multi (many identical, one MultiMesh + one body). Conventions: origin at the
 ## base centre, width along X, thickness/depth along Z, height up; stairs climb toward -Z from the foot.
-## Roofs, rubble, bells and headstones live in StructureKitParts to keep this file under 250 lines.
+## Roofs, rubble, bells and headstones live in StructureKitParts, the opt-in plinth and string course in
+## StructureKitTrim, to keep this file under 250 lines. Every function takes the piece entry's `name` last:
+## it only seeds the UV offset (see StructureMeshBuilder.uv_offset_for), so leaving it empty is harmless.
 
 ## PlayerController.max_step_height is 0.4 m; a riser is clamped to 0.3 so the capsule still clears a tread
 ## while sliding along a wall. The greybox staircase the player provably climbs uses 0.25.
@@ -16,32 +18,36 @@ const ARCH_STRIPS := 10
 const BROKEN_SEGMENT := 0.8
 
 
-static func wall(w: float, h: float, t: float, mat: String, opening: Dictionary = {}) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+## plinth {h, out} and course {y, h, out} are off unless given (a plain wall stays one box, which
+## tests/test_structures.gd pins); both break around the opening and carry their own collision.
+static func wall(w: float, h: float, t: float, mat: String, opening: Dictionary = {}, plinth: Dictionary = {},
+		course: Dictionary = {}, name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	if opening.is_empty():
 		b.add_box(_at(0.0, h * 0.5, 0.0), Vector3(w, h, t))
-		return _piece(b, mat, "wall")
-	var ow: float = float(opening.get("width", 1.4))
-	var oh: float = float(opening.get("height", 2.4))
-	var sill: float = float(opening.get("sill", 0.0))
-	var ox: float = float(opening.get("offset", 0.0))
-	var left_w: float = (ox - ow * 0.5) + w * 0.5
-	var right_w: float = w * 0.5 - (ox + ow * 0.5)
-	if left_w > 0.01:
-		b.add_box(_at(-w * 0.5 + left_w * 0.5, h * 0.5, 0.0), Vector3(left_w, h, t))
-	if right_w > 0.01:
-		b.add_box(_at(w * 0.5 - right_w * 0.5, h * 0.5, 0.0), Vector3(right_w, h, t))
-	var top: float = sill + oh
-	if top < h - 0.01:
-		b.add_box(_at(ox, (h + top) * 0.5, 0.0), Vector3(ow, h - top, t))
-	if sill > 0.01:
-		b.add_box(_at(ox, sill * 0.5, 0.0), Vector3(ow, sill, t))
+	else:
+		var ow: float = float(opening.get("width", 1.4))
+		var oh: float = float(opening.get("height", 2.4))
+		var sill: float = float(opening.get("sill", 0.0))
+		var ox: float = float(opening.get("offset", 0.0))
+		var left_w: float = (ox - ow * 0.5) + w * 0.5
+		var right_w: float = w * 0.5 - (ox + ow * 0.5)
+		if left_w > 0.01:
+			b.add_box(_at(-w * 0.5 + left_w * 0.5, h * 0.5, 0.0), Vector3(left_w, h, t))
+		if right_w > 0.01:
+			b.add_box(_at(w * 0.5 - right_w * 0.5, h * 0.5, 0.0), Vector3(right_w, h, t))
+		var top: float = sill + oh
+		if top < h - 0.01:
+			b.add_box(_at(ox, (h + top) * 0.5, 0.0), Vector3(ow, h - top, t))
+		if sill > 0.01:
+			b.add_box(_at(ox, sill * 0.5, 0.0), Vector3(ow, sill, t))
+	StructureKitTrim.wall_bands(b, w, h, t, opening, plinth, course)
 	return _piece(b, mat, "wall")
 
 
 ## Jagged top falling from full height at -X to h*keep at +X: the silhouette of a wall that lost its far end.
-static func broken_wall(w: float, h: float, t: float, mat: String, seed: int, keep: float = 0.4) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func broken_wall(w: float, h: float, t: float, mat: String, seed: int, keep: float = 0.4, name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
 	var n: int = maxi(2, roundi(w / BROKEN_SEGMENT))
@@ -54,8 +60,8 @@ static func broken_wall(w: float, h: float, t: float, mat: String, seed: int, ke
 	return _piece(b, mat, "broken_wall")
 
 
-static func pillar(radius: float, h: float, mat: String, sides: int = 10) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func pillar(radius: float, h: float, mat: String, sides: int = 10, name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	var flare: float = radius * 1.18
 	var band: float = minf(0.35, h * 0.1)
 	var profile := PackedVector2Array([
@@ -70,8 +76,8 @@ static func pillar(radius: float, h: float, mat: String, sides: int = 10) -> Dic
 
 
 ## A wall with an arched opening: two piers and vertical strips above the arc so the opening reads curved.
-static func arch(w: float, h: float, t: float, mat: String, ow: float, oh: float) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func arch(w: float, h: float, t: float, mat: String, ow: float, oh: float, name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	var pier: float = (w - ow) * 0.5
 	b.add_box(_at(-w * 0.5 + pier * 0.5, h * 0.5, 0.0), Vector3(pier, h, t))
 	b.add_box(_at(w * 0.5 - pier * 0.5, h * 0.5, 0.0), Vector3(pier, h, t))
@@ -87,8 +93,9 @@ static func arch(w: float, h: float, t: float, mat: String, ow: float, oh: float
 
 
 ## Solid flight climbing toward -Z. Every step is its own box so the step-up probe finds a real tread.
-static func stairs(w: float, rise: float, mat: String, riser: float = DEFAULT_RISER, tread: float = DEFAULT_TREAD) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func stairs(w: float, rise: float, mat: String, riser: float = DEFAULT_RISER, tread: float = DEFAULT_TREAD,
+		name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	var capped: float = minf(riser, MAX_RISER)
 	var steps: int = maxi(1, ceili(rise / capped - 0.001))
 	var actual: float = rise / float(steps)
@@ -102,19 +109,22 @@ static func stairs(w: float, rise: float, mat: String, riser: float = DEFAULT_RI
 	return piece
 
 
-static func floor_slab(w: float, d: float, t: float, mat: String) -> Dictionary:
-	return block(Vector3(w, t, d), mat, "floor_slab")
+static func floor_slab(w: float, d: float, t: float, mat: String, name: String = "") -> Dictionary:
+	return block(Vector3(w, t, d), mat, "floor_slab", {}, {}, name)
 
 
-static func block(size: Vector3, mat: String, kind: String = "block") -> Dictionary:
-	var b := StructureMeshBuilder.new()
+## A block is free-standing (a tower, a pew), so its plinth and course wrap all four sides.
+static func block(size: Vector3, mat: String, kind: String = "block", plinth: Dictionary = {}, course: Dictionary = {},
+		name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	b.add_box(_at(0.0, size.y * 0.5, 0.0), size)
+	StructureKitTrim.block_bands(b, size, plinth, course)
 	return _piece(b, mat, kind)
 
 
 ## Four posts and four top plates; plank or plaster walls are separate pieces so each can be ruined alone.
-static func timber_frame(w: float, h: float, d: float, beam: float, mat: String) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func timber_frame(w: float, h: float, d: float, beam: float, mat: String, name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	var hx: float = w * 0.5 - beam * 0.5
 	var hz: float = d * 0.5 - beam * 0.5
 	for sx: float in [-1.0, 1.0]:
@@ -126,32 +136,37 @@ static func timber_frame(w: float, h: float, d: float, beam: float, mat: String)
 
 
 ## Stands against a wall face at z=0 and leans out to +Z: a block with a sloping wedge cap.
-static func buttress(w: float, h: float, depth: float, mat: String) -> Dictionary:
-	var b := StructureMeshBuilder.new()
+static func buttress(w: float, h: float, depth: float, mat: String, name: String = "") -> Dictionary:
+	var b := builder(mat, name)
 	var base_h: float = h * 0.55
 	b.add_box(_at(0.0, base_h * 0.5, depth * 0.5), Vector3(w, base_h, depth))
 	b.add_wedge(_at(0.0, base_h, 0.0), w, h - base_h, depth)
 	return _piece(b, mat, "buttress")
 
 
-static func pitched_roof(w: float, d: float, rise: float, t: float, mat: String, overhang: float = 0.3) -> Dictionary:
-	return StructureKitParts.pitched_roof(w, d, rise, t, mat, overhang)
+static func pitched_roof(w: float, d: float, rise: float, t: float, mat: String, overhang: float = 0.3, name: String = "") -> Dictionary:
+	return StructureKitParts.pitched_roof(w, d, rise, t, mat, overhang, name)
 
 
-static func collapsed_roof(w: float, d: float, rise: float, t: float, mat: String, seed: int) -> Dictionary:
-	return StructureKitParts.collapsed_roof(w, d, rise, t, mat, seed)
+static func collapsed_roof(w: float, d: float, rise: float, t: float, mat: String, seed: int, name: String = "") -> Dictionary:
+	return StructureKitParts.collapsed_roof(w, d, rise, t, mat, seed, name)
 
 
-static func rubble(radius: float, count: int, mat: String, seed: int) -> Dictionary:
-	return StructureKitParts.rubble(radius, count, mat, seed)
+static func rubble(radius: float, count: int, mat: String, seed: int, name: String = "") -> Dictionary:
+	return StructureKitParts.rubble(radius, count, mat, seed, name)
 
 
-static func bell(radius: float, h: float, mat: String) -> Dictionary:
-	return StructureKitParts.bell(radius, h, mat)
+static func bell(radius: float, h: float, mat: String, name: String = "") -> Dictionary:
+	return StructureKitParts.bell(radius, h, mat, name)
 
 
-static func headstone(w: float, h: float, t: float, mat: String) -> Dictionary:
-	return StructureKitParts.headstone(w, h, t, mat)
+static func headstone(w: float, h: float, t: float, mat: String, name: String = "") -> Dictionary:
+	return StructureKitParts.headstone(w, h, t, mat, name)
+
+
+## A builder tiling at the material's metres_per_tile, its UVs shifted by the piece name's fixed offset.
+static func builder(mat: String, name: String = "") -> StructureMeshBuilder:
+	return StructureMeshBuilder.new(StructureMaterials.metres_per_tile(mat), StructureMeshBuilder.uv_offset_for(name))
 
 
 ## One MeshInstance3D plus a StaticBody3D on the world layer carrying every recorded shape.
