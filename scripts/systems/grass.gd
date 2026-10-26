@@ -27,6 +27,11 @@ const THIN_MOVE := 2.0
 @export var seed_value: int = 20261024
 ## Fraction of radius inside which every placed instance is shown; density thins from there to the edge.
 @export var near_fraction: float = 0.45
+## A frame fills cells until this much CPU time has gone to them: always the first, then another only
+## while the budget lasts, the way Terrain spends build_budget_ms. W6-04 measured a cell at about 1.2 ms
+## and a fixed three cells at 5.4 ms worst on the lead's machine; 2 ms makes that one or two cells, so the
+## worst frame stays near 4 ms whether the player walks or sprints. fill_cells_per_frame caps it regardless.
+@export var fill_budget_ms: float = 2.0
 @export var fill_cells_per_frame: int = 3
 @export var auto_build: bool = false
 
@@ -52,6 +57,12 @@ var _density_filter: Callable = Callable()
 var _water: float = -INF
 var _cluster_reach: float = 0.0
 var _built: bool = false
+# CPU cost of _fill_pending in microseconds over every frame that filled at least one cell: two clock reads
+# and three integer adds on a working frame, nothing per cell or per blade. Read through stats().
+var _fill_usec: int = 0
+var _fill_worst_usec: int = 0
+var _fill_frames: int = 0
+var _fill_cells: int = 0
 
 
 func _ready() -> void:
@@ -61,7 +72,11 @@ func _ready() -> void:
 
 ## Grows on `terrain`'s heightfield; `filter` is an optional (x, z) -> float density multiplier.
 func bind(terrain: Terrain, filter: Callable = Callable(), clusters: PackedVector3Array = PackedVector3Array()) -> void:
-	var hf: Heightfield = terrain.heightfield
+	bind_heightfield(terrain.heightfield, filter, clusters)
+
+
+## The same on a bare Heightfield, so tests can grow without a Terrain node or a scene tree.
+func bind_heightfield(hf: Heightfield, filter: Callable = Callable(), clusters: PackedVector3Array = PackedVector3Array()) -> void:
 	_height_sampler = hf.height_at
 	_exact_slope = hf.slope_at
 	_water = hf.water_level()
@@ -69,7 +84,8 @@ func bind(terrain: Terrain, filter: Callable = Callable(), clusters: PackedVecto
 	cluster_points = clusters
 
 
-func rebuild() -> void:
+## Builds the layers and the slot pool from `data`, or from data_path when it is empty (the normal case).
+func rebuild(data: Dictionary = {}) -> void:
 	for slot: Array in _slots:
 		for mmi: MultiMeshInstance3D in slot:
 			mmi.queue_free()
@@ -79,7 +95,8 @@ func rebuild() -> void:
 	_cells.clear()
 	_pending.clear()
 	_layers.clear()
-	var data: Dictionary = Terrain.load_data(data_path)
+	if data.is_empty():
+		data = Terrain.load_data(data_path)
 	var wind: Dictionary = data.get("wind", {})
 	wind_strength = float(wind.get("strength", wind_strength))
 	wind_direction_deg = float(wind.get("direction_deg", wind_direction_deg))
@@ -120,6 +137,10 @@ func rebuild() -> void:
 	_free_count = pool
 	_centre = NO_CELL
 	_last_thin = Vector3(INF, INF, INF)
+	_fill_usec = 0
+	_fill_worst_usec = 0
+	_fill_frames = 0
+	_fill_cells = 0
 	_built = true
 
 
@@ -130,11 +151,16 @@ func apply_wind() -> void:
 
 
 func _process(_delta: float) -> void:
-	if not _built or not _height_sampler.is_valid():
-		return
 	if _tracked == null:
 		_tracked = get_tree().get_first_node_in_group(&"player") as Node3D
-	var p: Vector3 = _tracked.global_position if _tracked != null else global_position
+	step(_tracked.global_position if _tracked != null else global_position)
+
+
+## One frame of lattice work for a player at `p`: recycle on a cell crossing, fill a few pending cells,
+## re-thin once the player has moved. Public so tests can drive frames without a scene tree.
+func step(p: Vector3) -> void:
+	if not _built or not _height_sampler.is_valid():
+		return
 	var centre: Vector2i = GrassLattice.cell_of(p.x, p.z, cell_size)
 	if centre != _centre:
 		_relayout(centre)
@@ -173,6 +199,10 @@ func _release(key: Vector2i) -> void:
 
 
 func _fill_pending() -> void:
+	if _pending.is_empty():
+		return
+	var t0: int = Time.get_ticks_usec()
+	var deadline: int = t0 + int(maxf(0.0, fill_budget_ms) * 1000.0)
 	var budget: int = maxi(1, fill_cells_per_frame)
 	while budget > 0 and not _pending.is_empty():
 		var key: Vector2i = _pending.pop_front()
@@ -187,7 +217,15 @@ func _fill_pending() -> void:
 		for l: int in _layers.size():
 			var i: int = slot * _layers.size() + l
 			_slot_counts[i] = _layers[l].fill(key, l, seed_value, _cell, _slots[slot][l], _slot_positions[i], _density_filter, _exact_slope)
-	if budget < maxi(1, fill_cells_per_frame):
+		if Time.get_ticks_usec() >= deadline:
+			break
+	var filled: int = maxi(1, fill_cells_per_frame) - budget
+	if filled > 0:
+		var dt: int = Time.get_ticks_usec() - t0
+		_fill_usec += dt
+		_fill_worst_usec = maxi(_fill_worst_usec, dt)
+		_fill_frames += 1
+		_fill_cells += filled
 		_last_thin = Vector3(INF, INF, INF)
 
 
@@ -223,7 +261,19 @@ func stats() -> Dictionary:
 		if _layers[l].kind == "clump":
 			blade_verts += n * _layers[l].vertex_count
 	return {"cells": _cells.size(), "pool": _slots.size(), "pending": _pending.size(), "instances": instance_count(),
-		"blade_verts": blade_verts, "layers": _layers.size(), "per_layer": per_layer}
+		"blade_verts": blade_verts, "layers": _layers.size(), "per_layer": per_layer,
+		"fill_frames": _fill_frames, "fill_cells": _fill_cells, "fill_total_ms": float(_fill_usec) / 1000.0,
+		"fill_mean_ms": float(_fill_usec) / 1000.0 / float(maxi(1, _fill_frames)), "fill_worst_ms": float(_fill_worst_usec) / 1000.0}
+
+
+## Probe-time copy of every placed instance's world origin, so a test can compare two lattices exactly.
+func positions() -> PackedVector3Array:
+	var out := PackedVector3Array()
+	for slot: int in _slots.size():
+		for l: int in _layers.size():
+			var i: int = slot * _layers.size() + l
+			out.append_array(_slot_positions[i].slice(0, _slot_counts[i]))
+	return out
 
 
 ## Probe-time count of placed instances under water, above their layer's slope limit, or off the ground.
