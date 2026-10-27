@@ -1,0 +1,10 @@
+{
+	"_comment": "A fire somebody did not walk away from (W9-F): a hearth still burning, a grave dug beside it, a cairn, and the half-burnt cloth, bones and pot the hearth_remains piece scatters around itself. The lore says the Vale emptied slowly; this is what slowly looks like.",
+	"name": "lost_hearth",
+	"pieces": [
+		{"name": "fire", "kind": "hearth_remains", "at": [0, 0, 0], "yaw": 0, "params": {"radius": 0.9, "seed": 231, "sink": 1.0}},
+		{"name": "grave", "kind": "grave_mound", "at": [-2.7, 0, 0.5], "yaw": 100, "params": {"w": 0.9, "d": 2.0, "mat": "stone", "wood": "planks"}},
+		{"name": "marker", "kind": "cairn", "at": [2.0, 0, -1.6], "yaw": 0, "params": {"radius": 0.45, "h": 0.8, "count": 5, "seed": 232, "mat": "stone"}}
+	],
+	"keep_out": [[-1.2, -1.2, 2.4, 2.4], [-3.8, -0.5, 2.2, 1.0], [1.4, -2.2, 1.2, 1.2]]
+}

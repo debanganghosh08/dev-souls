@@ -1298,6 +1298,176 @@
 				"mat": "castle_wall",
 				"seed": 52
 			}
+		},
+		{
+			"name": "gate_braziers",
+			"group": "gatehouse",
+			"kind": "brazier",
+			"repeat": [[-3.2, 0, 21.5, 0], [3.2, 0, 21.5, 0]],
+			"params": {
+				"h": 1.2,
+				"radius": 0.5,
+				"seed": 23,
+				"energy": 3.0,
+				"range": 13.0
+			}
+		},
+		{
+			"name": "gate_torches_in",
+			"group": "gatehouse",
+			"kind": "wall_torch",
+			"repeat": [[-2.6, 2.8, 23.4, 180], [2.6, 2.8, 23.4, 180]],
+			"params": {
+				"out": 0.42,
+				"flame": 0.44,
+				"energy": 2.6,
+				"range": 11.0
+			}
+		},
+		{
+			"name": "gate_torches_out",
+			"group": "gatehouse",
+			"kind": "wall_torch",
+			"repeat": [[-2.6, 2.8, 28.6, 0], [2.6, 2.8, 28.6, 0]],
+			"params": {
+				"out": 0.42,
+				"flame": 0.44,
+				"energy": 2.6,
+				"range": 11.0
+			}
+		},
+		{
+			"name": "courtyard_pyre",
+			"group": "courtyard",
+			"kind": "pyre",
+			"at": [-1.5, 0, 15.5],
+			"yaw": 0,
+			"params": {
+				"h": 1.6,
+				"radius": 1.1,
+				"seed": 29
+			}
+		},
+		{
+			"name": "wallwalk_brazier",
+			"group": "walls",
+			"kind": "brazier",
+			"at": [-20.5, 4.5, 24.1],
+			"yaw": 0,
+			"params": {
+				"h": 1.0,
+				"radius": 0.42,
+				"seed": 47,
+				"sink": 0,
+				"range": 14.0
+			}
+		},
+		{
+			"name": "chapel_torches",
+			"group": "chapel",
+			"kind": "wall_torch",
+			"repeat": [[10.95, 2.6, -6, 90], [10.95, 2.6, -10, 90], [19.05, 2.6, -8, -90]],
+			"params": {
+				"out": 0.38,
+				"flame": 0.36,
+				"energy": 2.1,
+				"range": 9.5,
+				"day": 0.8
+			}
+		},
+		{
+			"name": "altar_torch",
+			"group": "chapel",
+			"kind": "wall_torch",
+			"at": [15, 2.2, -15.65],
+			"yaw": 0,
+			"params": {
+				"out": 0.34,
+				"flame": 0.32,
+				"energy": 1.9,
+				"range": 8.5,
+				"day": 0.85
+			}
+		},
+		{
+			"name": "chapel_brazier",
+			"group": "chapel",
+			"kind": "brazier",
+			"at": [15, 0, -12.2],
+			"yaw": 0,
+			"params": {
+				"h": 1.05,
+				"radius": 0.45,
+				"seed": 31,
+				"sink": 0,
+				"range": 12.0
+			}
+		},
+		{
+			"name": "grave_lamps",
+			"group": "graveyard",
+			"kind": "lamp_stone",
+			"repeat": [[7.0, 0, -19.25, 0], [-3.1, 0, -19.25, 0]],
+			"params": {
+				"radius": 0.5,
+				"energy": 1.5,
+				"range": 7.0
+			}
+		},
+		{
+			"name": "crypt_mouth_torches",
+			"group": "crypt",
+			"kind": "wall_torch",
+			"repeat": [[9.35, -1.8, -18.15, 90], [11.65, -1.8, -18.15, -90]],
+			"params": {
+				"out": 0.36,
+				"flame": 0.34,
+				"energy": 2.2,
+				"range": 9.0,
+				"day": 1.0
+			}
+		},
+		{
+			"name": "crypt_torches",
+			"group": "crypt",
+			"kind": "wall_torch",
+			"repeat": [[5.85, -2.8, -26.8, 90], [15.15, -2.8, -26.8, -90]],
+			"params": {
+				"out": 0.36,
+				"flame": 0.32,
+				"energy": 2.0,
+				"range": 9.0,
+				"day": 1.0
+			}
+		},
+		{
+			"name": "crypt_brazier",
+			"group": "crypt",
+			"kind": "brazier",
+			"at": [10.5, -4.5, -26.5],
+			"yaw": 0,
+			"params": {
+				"h": 0.95,
+				"radius": 0.45,
+				"seed": 37,
+				"sink": 0,
+				"energy": 2.8,
+				"range": 13.0,
+				"day": 1.0
+			}
+		},
+		{
+			"name": "keep_brazier",
+			"group": "keep",
+			"kind": "brazier",
+			"at": [-15.0, 0, -16.0],
+			"yaw": 0,
+			"params": {
+				"h": 1.1,
+				"radius": 0.45,
+				"seed": 43,
+				"range": 13.0
+			}
 		}
 	]
 }

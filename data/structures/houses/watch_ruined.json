@@ -172,6 +172,41 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "roof_beacon",
+			"kind": "beacon",
+			"at": [-0.85, 3.12, -0.85],
+			"yaw": 0,
+			"params": {
+				"h": 0.9,
+				"radius": 0.5,
+				"sink": 0,
+				"energy": 4.4,
+				"range": 26.0,
+				"flame": 1.1
+			}
+		},
+		{
+			"name": "yard_hearth",
+			"kind": "hearth_remains",
+			"at": [-2.7, 0, 1.8],
+			"yaw": -20,
+			"params": {
+				"radius": 0.9,
+				"seed": 97,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "step_lamp",
+			"kind": "lamp_stone",
+			"at": [2.6, 0, 3.2],
+			"yaw": 0,
+			"params": {
+				"radius": 0.5,
+				"sink": 1.2
+			}
 		}
 	]
 }

@@ -174,6 +174,27 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "yard_hearth",
+			"kind": "hearth_remains",
+			"at": [-2.3, 0, 4.9],
+			"yaw": 35,
+			"params": {
+				"radius": 0.95,
+				"seed": 33,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "step_lamp",
+			"kind": "lamp_stone",
+			"at": [2.4, 0, 3.9],
+			"yaw": 0,
+			"params": {
+				"radius": 0.5,
+				"sink": 1.2
+			}
 		}
 	]
 }

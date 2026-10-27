@@ -149,6 +149,8 @@ static func make_piece(kind: String, p: Dictionary, name: String = "") -> Dictio
 	# once without both sides editing this match.
 	var extra: Dictionary = StructureKitHouse.make(kind, p, name)
 	if extra.is_empty():
+		extra = StructureKitFire.make(kind, p, name)
+	if extra.is_empty():
 		extra = StructureKitProps.make(kind, p, name)
 	if not extra.is_empty():
 		return extra

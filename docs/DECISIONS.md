@@ -206,3 +206,34 @@ blades (proven for steps 1–72 and whole), and stopped re-thinning the whole la
 of a sprinting player. The agent's ≤ 6 ms worst-frame target is met in its runs, **not in the lead's**.
 **Open:** the whole-lattice re-thin, now run every 2 m of movement, itself costs up to **10.2 ms** (`grass_thin_worst_ms`)
 and sits outside the fill timer; make it incremental the way the fill now is. All CPU-side; GPU unmeasured.
+
+**D-025 (2026-10-27) Fire is the map's only signpost, and it is data on a piece, not a light in a scene.** The
+owner, after playing at night: "there are no guided things: no fire, nothing… it becomes very hard for me and
+any player who would play to see through the castle or see anywhere on the map." Elden Ring's rule is the one
+the design already follows — no quest markers — so the direction has to come from the world itself, and the
+thing a player walks towards in the dark is a fire. Three choices worth recording:
+1. **A fire is a kit piece that declares its own light.** `StructureKitFire` returns the usual
+   `{kind, mesh, shapes, verts}` plus a `lights` list, and `StructureKit.make_node/make_multi` turns each
+   entry into a `FireLight` once per placement. So a layout lights itself by naming a piece: no level code,
+   no scene, no per-site wiring, and twenty instanced wall torches stay one MultiMesh draw.
+2. **How far a flame is SEEN is not how far its light REACHES.** The flame is a billboarded quad (additive,
+   unshaded, on a teardrop texture painted in code — D-005 keeps binaries out of git) drawn out to a
+   per-kind sight distance (lamp 70 m, hearth 95 m, pyre 170 m, beacon 240 m), while the light itself is
+   faded out just past its own range. A watchfire is therefore visible from across the valley for the price
+   of two triangles. No fire casts a shadow, ever: that is what makes a hundred of them affordable.
+3. **Fires dim by day, they do not switch off.** `day_share` keeps 50 % of the energy at noon (85–100 %
+   indoors and in the crypt), on the same sunrise-at-06:00 arc DayNightCycle paints the sky by. A fire that
+   vanished at dawn would be a lamp, not a world.
+
+**Measured, 103 fires placed** (26 hearths, 20 lamp stones, 17 braziers, 17 wall torches, 13 torch posts,
+8 beacons, 2 pyres) across 51 sites: all 13 house layouts, 21 new wayside sites along the old road, the eight
+camps whose rings were cold, 21 in Castle Morrow and 8 in the broken village. **The darkest point of the
+walkable road is 24.8 m from a fire** (sampled every 8 m outside the pond basin, which is water;
+`tests/test_firelight.gd` holds it under 40 m). **The negative control taught something:** with
+`vale_lights.json` held back the worst stretch is **57.7 m**, on the climb to the castle — so the first limit
+written, 60 m, was no guard at all and the test passed without the lights it exists to check. The limit is
+40 m, which only the wayside lights reach (D-021)). Live, from the spawn: `PROBE fires total=103
+drawing=9 worst_crowd_60m=26 cull=90 nearest_to_spawn=21.7` — nine flames drawing at once of a hundred and
+three, and at most twenty-six can ever fall inside one cull sphere, which is the number to watch if more are
+added. **Unverified:** every colour, size and energy here is a first guess against a null renderer. Nobody
+has seen a single flame.

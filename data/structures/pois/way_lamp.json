@@ -1,0 +1,9 @@
+{
+	"_comment": "A wayside lamp (W9-F): a lantern cage set on a boulder beside the old road, with a marker cairn behind it. Small and cheap on purpose -- a dozen of these are what turn the road from a strip of dirt into something a player can follow after dark. The block is a kit ground kind; the rest is in keep_out.",
+	"name": "way_lamp",
+	"pieces": [
+		{"name": "lamp", "kind": "lamp_stone", "at": [0, 0, 0], "yaw": 0, "params": {"radius": 0.55, "sink": 1.0}},
+		{"name": "marker", "kind": "cairn", "at": [1.4, 0, -0.9], "yaw": 0, "params": {"radius": 0.4, "h": 0.7, "count": 4, "seed": 211, "mat": "stone"}}
+	],
+	"keep_out": [[-0.8, -0.8, 1.6, 1.6], [0.9, -1.4, 1.0, 1.0]]
+}

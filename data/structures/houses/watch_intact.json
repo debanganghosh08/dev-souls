@@ -192,6 +192,43 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "roof_beacon",
+			"kind": "beacon",
+			"at": [0.85, 3.12, -0.85],
+			"yaw": 0,
+			"params": {
+				"h": 1.0,
+				"radius": 0.5,
+				"sink": 0,
+				"energy": 4.8,
+				"range": 28.0,
+				"flame": 1.2
+			}
+		},
+		{
+			"name": "yard_hearth",
+			"kind": "hearth_remains",
+			"at": [-2.6, 0, 1.6],
+			"yaw": 30,
+			"params": {
+				"radius": 0.85,
+				"seed": 91,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "gate_brazier",
+			"kind": "brazier",
+			"at": [-2.4, 0, -1.4],
+			"yaw": 0,
+			"params": {
+				"h": 1.0,
+				"radius": 0.4,
+				"seed": 19,
+				"sink": 1.2
+			}
 		}
 	]
 }

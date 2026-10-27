@@ -220,6 +220,27 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "door_torch",
+			"kind": "torch_post",
+			"at": [-2.9, 0, 3.3],
+			"yaw": 0,
+			"params": {
+				"h": 2.0,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "yard_hearth",
+			"kind": "hearth_remains",
+			"at": [2.1, 0, 5.0],
+			"yaw": -15,
+			"params": {
+				"radius": 0.9,
+				"seed": 21,
+				"sink": 1.2
+			}
 		}
 	]
 }

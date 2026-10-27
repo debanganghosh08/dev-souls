@@ -198,6 +198,41 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "yard_brazier",
+			"kind": "brazier",
+			"at": [3.2, 0, 7.4],
+			"yaw": 0,
+			"params": {
+				"h": 1.1,
+				"radius": 0.45,
+				"seed": 13,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "door_torch",
+			"kind": "torch_post",
+			"at": [-3.2, 0, 7.0],
+			"yaw": 0,
+			"params": {
+				"h": 2.2,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "loft_torch",
+			"kind": "wall_torch",
+			"at": [3.75, 2.9, 0],
+			"yaw": -90,
+			"params": {
+				"out": 0.4,
+				"flame": 0.34,
+				"energy": 2.0,
+				"range": 9.0,
+				"day": 0.8
+			}
 		}
 	]
 }

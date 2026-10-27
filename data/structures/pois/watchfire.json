@@ -1,0 +1,10 @@
+{
+	"_comment": "A watchfire (W9-F): an iron basket on a mast, a weapon rack and a stretch of palisade. The longest-reaching light in the kit, so these stand where the player needs to see a long way -- the climb to the castle, the far rim, the fork of the road.",
+	"name": "watchfire",
+	"pieces": [
+		{"name": "fire", "kind": "beacon", "at": [0, 0, 0], "yaw": 0, "params": {"h": 2.3, "radius": 0.55, "sink": 1.0, "energy": 5.0, "range": 32.0, "flame": 1.25}},
+		{"name": "rack", "kind": "weapon_rack", "at": [-2.1, 0, 0.9], "yaw": 20, "params": {"w": 1.6, "h": 1.5, "spears": 3, "mat": "planks"}},
+		{"name": "palisade", "kind": "fence", "at": [0.6, 0, -2.6], "yaw": 10, "params": {"length": 5.0, "h": 1.3, "spacing": 1.7, "rails": 3, "broken": true, "seed": 241, "mat": "planks"}}
+	],
+	"keep_out": [[-0.7, -0.7, 1.4, 1.4], [-2.9, 0.4, 1.6, 1.0], [-1.9, -2.75, 5.0, 0.3]]
+}

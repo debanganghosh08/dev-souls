@@ -115,6 +115,26 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "door_torch",
+			"kind": "torch_post",
+			"at": [-1.5, 0, 2.9],
+			"yaw": 0,
+			"params": {
+				"h": 2.0,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "path_lamp",
+			"kind": "lamp_stone",
+			"at": [1.7, 0, 4.3],
+			"yaw": 0,
+			"params": {
+				"radius": 0.45,
+				"sink": 1.2
+			}
 		}
 	]
 }

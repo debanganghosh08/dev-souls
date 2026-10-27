@@ -622,6 +622,78 @@
 				"mat": "stone",
 				"seed": 73
 			}
+		},
+		{
+			"name": "edge_beacon",
+			"group": "beacon",
+			"kind": "beacon",
+			"at": [-4.5, 0, 21.0],
+			"yaw": 0,
+			"params": {
+				"h": 2.2,
+				"radius": 0.55,
+				"energy": 5.0,
+				"range": 32.0,
+				"flame": 1.25
+			}
+		},
+		{
+			"name": "hearth_fire",
+			"group": "shack_hearth",
+			"kind": "hearth_remains",
+			"at": [-10.2, 0, 3.4],
+			"yaw": 15,
+			"params": {
+				"radius": 0.85,
+				"seed": 101,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "lane_pyre",
+			"group": "lane",
+			"kind": "pyre",
+			"at": [2.5, 0, 3.0],
+			"yaw": 0,
+			"params": {
+				"h": 1.4,
+				"radius": 1.0,
+				"seed": 103
+			}
+		},
+		{
+			"name": "chest_torch",
+			"group": "shack_chest",
+			"kind": "torch_post",
+			"at": [7.0, 0, 16.5],
+			"yaw": 0,
+			"params": {
+				"h": 2.0,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "storage_brazier",
+			"group": "storage",
+			"kind": "brazier",
+			"at": [3.4, 0, -22.0],
+			"yaw": 0,
+			"params": {
+				"h": 1.05,
+				"radius": 0.45,
+				"seed": 107,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "lane_lamps",
+			"group": "lane",
+			"kind": "lamp_stone",
+			"repeat": [[-3.5, 0, 9.0, 0], [4.5, 0, 18.0, 0], [-5.0, 0, -6.0, 0]],
+			"params": {
+				"radius": 0.5,
+				"sink": 1.2
+			}
 		}
 	]
 }

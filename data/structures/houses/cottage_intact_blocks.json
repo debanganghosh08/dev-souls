@@ -220,6 +220,32 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "yard_brazier",
+			"kind": "brazier",
+			"at": [2.2, 0, 4.4],
+			"yaw": 0,
+			"params": {
+				"h": 1.1,
+				"radius": 0.45,
+				"seed": 7,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "hearth_fire",
+			"kind": "wall_torch",
+			"at": [-1.2, 1.7, -2.75],
+			"yaw": 0,
+			"params": {
+				"out": 0.3,
+				"flame": 0.3,
+				"energy": 1.8,
+				"range": 7.0,
+				"day": 0.85,
+				"flicker": 0.4
+			}
 		}
 	]
 }

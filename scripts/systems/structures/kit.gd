@@ -181,6 +181,7 @@ static func make_node(piece: Dictionary, name: String) -> Node3D:
 	var shapes: Array = piece["shapes"]
 	if not shapes.is_empty():
 		root.add_child(_body(shapes, [Transform3D.IDENTITY]))
+	_add_lights(root, piece, [Transform3D.IDENTITY])
 	return root
 
 
@@ -203,7 +204,21 @@ static func make_multi(piece: Dictionary, transforms: Array[Transform3D], name: 
 	var shapes: Array = piece["shapes"]
 	if not shapes.is_empty():
 		root.add_child(_body(shapes, transforms))
+	_add_lights(root, piece, transforms)
 	return root
+
+
+## A lit piece (StructureKitFire) carries a `lights` list: one FireLight per spec per placement, so twenty
+## instanced wall torches are one MultiMesh draw and twenty small lights. A piece with no list gets none,
+## which is every other kind in the kit.
+static func _add_lights(root: Node3D, piece: Dictionary, placements: Array) -> void:
+	var lights: Variant = piece.get("lights", [])
+	if not lights is Array or (lights as Array).is_empty():
+		return
+	for placement: Transform3D in placements:
+		for spec: Variant in lights:
+			if spec is Dictionary:
+				FireLight.attach(root, spec, placement)
 
 
 static func _body(shapes: Array, placements: Array) -> StaticBody3D:

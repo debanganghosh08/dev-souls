@@ -332,6 +332,35 @@ func _print_probe() -> void:
 		fixed, built["sites"], built["props"], built["pieces"],
 		_keep_out.cell_count() if _keep_out != null else -1, _keep_out.obb_count() if _keep_out != null else -1,
 	])
+	_print_fires()
+
+
+## The lit kit (W9-F). `drawing` is how many fires passed their distance cull on the last frame, which is
+## what the GPU is actually paying for; `worst_crowd` is the most that could ever be lit at once anywhere
+## in the valley, which is the number to watch when more fires are added.
+func _print_fires() -> void:
+	var fires: Array[Node] = get_tree().get_nodes_in_group(FireLight.GROUP)
+	var at: Array[Vector3] = []
+	for node: Node in fires:
+		if node is Node3D:
+			at.append((node as Node3D).global_position)
+	var worst: int = 0
+	var cull: float = 0.0
+	for i: int in range(at.size()):
+		var near: int = 1
+		for j: int in range(at.size()):
+			if i != j and at[i].distance_squared_to(at[j]) < 3600.0:
+				near += 1
+		worst = maxi(worst, near)
+	if not fires.is_empty() and fires[0] is FireLight:
+		cull = (fires[0] as FireLight).cull_distance
+	var nearest: float = INF
+	if _player != null:
+		for p: Vector3 in at:
+			nearest = minf(nearest, _player.global_position.distance_to(p))
+	print("PROBE fires total=%d drawing=%d worst_crowd_60m=%d cull=%.0f nearest_to_spawn=%.1f" % [
+		fires.size(), FireLight.lit_count, worst, cull, nearest if nearest < INF else -1.0,
+	])
 
 
 # Grass stops stepping itself so that each simulated frame below is exactly one fill budget, whatever the

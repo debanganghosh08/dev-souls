@@ -85,6 +85,17 @@ and is now the largest single spike in the grass; split it across frames like th
 two key puzzles, and homes for the castle key, sword and hammer (none had a source in the shipped level).
 **W8-P · Points of interest.** `DONE` (Fable + lead). 46 placements of 15 layouts; eleven of them added by the
 lead to close the rim gaps. Something built within 80 m of 99.9 % of walkable ground (D-023).
+**W9-F · Firelight.** `DONE` (lead, 2026-10-27). The owner: at night "there are no guided things: no fire,
+nothing… it becomes very hard for me and any player to see". Seven lit kit pieces (brazier, torch post, wall
+torch, hearth remains, lamp stone, pyre, beacon), a `FireLight` node that flickers, culls itself and dims by
+day, and **103 fires** placed: outside and inside all thirteen house layouts, 21 wayside sites along the old
+road, the eight camps whose rings were cold, 21 through Castle Morrow (gate, courtyard, chapel, graveyard,
+crypt, keep) and 8 in the broken village. The darkest stretch of the road is now 25 m from a fire (D-025).
+**W9-F2 · Night without a fire in sight.** `READY`. The fires only help where somebody built something. The
+open meadows and the rim are still pitch dark away from them, and the moon is `moon_energy` 0.12. Either the
+night palette comes up a little (`data/daynight.json`, one number) or the player needs a light they carry —
+the torch exists and is a weapon slot, so lighting the way currently costs the sword.
+
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
 **W8-01 · Area 2, the Wood.** `READY`. Dense forest, little sky, a drowned shrine. Reuses the heightfield,

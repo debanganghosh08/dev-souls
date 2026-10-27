@@ -138,6 +138,10 @@ static func set_coerced(node: Object, key: String, value: Variant) -> void:
 
 
 func _limit_draw(node: Node) -> void:
+	# A fire (W9-F) culls itself, and far shorter than a house does: its flame and its light stop at
+	# FireLight.cull_distance, so a 320 m draw range must not be written over them.
+	if node is FireLight:
+		return
 	if node is GeometryInstance3D:
 		var g: GeometryInstance3D = node
 		g.visibility_range_end = draw_distance

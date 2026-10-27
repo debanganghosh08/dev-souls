@@ -34,6 +34,14 @@ const FALLBACKS: Dictionary = {
 	"plaster": Color(0.72, 0.68, 0.60),
 	"bronze": Color(0.36, 0.28, 0.16),
 	"timber": Color(0.30, 0.22, 0.15),
+	# The lit kit (W9-F). No texture exists for any of them, so they are honest flat colours: dark iron for
+	# braziers and brackets, charcoal for burnt wood, dull rag, dry bone, and `ember` which is the only
+	# material in the kit that gives off light of its own (see _build).
+	"iron": Color(0.17, 0.16, 0.16),
+	"char": Color(0.09, 0.085, 0.08),
+	"cloth": Color(0.40, 0.36, 0.31),
+	"bone": Color(0.78, 0.75, 0.67),
+	"ember": Color(0.95, 0.33, 0.09),
 }
 
 ## What a kind gets when neither DEFAULTS nor the file names it: the pre-W6-02 behaviour (one tile per
@@ -127,6 +135,20 @@ static func _build(kind: String) -> StandardMaterial3D:
 		m.metallic = 0.85
 		m.roughness = 0.45
 		m.metallic_specular = 0.6
+		return m
+	if kind == "iron":
+		m.metallic = 0.7
+		m.roughness = 0.55
+		m.metallic_specular = 0.4
+		return m
+	# Coals in a brazier, in a hearth, in a lantern cage. Emission over the glow threshold in
+	# scenes/environment/sky.tscn (1.2) so the bed of a fire blooms a little at night; it gives off no real
+	# light, which is FireLight's job, so a coal bed costs nothing but its own pixels.
+	if kind == "ember":
+		m.emission_enabled = true
+		m.emission = Color(1.0, 0.42, 0.1)
+		m.emission_energy_multiplier = 2.6
+		m.roughness = 0.85
 		return m
 	if not FOLDERS.has(kind):
 		return m

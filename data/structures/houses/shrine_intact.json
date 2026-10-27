@@ -145,6 +145,43 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "altar_candle",
+			"kind": "wall_torch",
+			"at": [0, 1.55, -1.75],
+			"yaw": 0,
+			"params": {
+				"out": 0.28,
+				"flame": 0.26,
+				"energy": 1.6,
+				"range": 7.5,
+				"day": 0.85,
+				"flicker": 0.45
+			}
+		},
+		{
+			"name": "porch_brazier",
+			"kind": "brazier",
+			"at": [-2.2, 0, 2.6],
+			"yaw": 0,
+			"params": {
+				"h": 1.0,
+				"radius": 0.4,
+				"seed": 11,
+				"sink": 1.2
+			}
+		},
+		{
+			"name": "yard_hearth",
+			"kind": "hearth_remains",
+			"at": [2.2, 0, 3.6],
+			"yaw": -30,
+			"params": {
+				"radius": 0.9,
+				"seed": 63,
+				"sink": 1.2
+			}
 		}
 	]
 }
