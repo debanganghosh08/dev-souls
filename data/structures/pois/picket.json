@@ -1,0 +1,12 @@
+{
+	"_comment": "A siege picket by the road: two tent frames, a weapon rack, a fire and a line of broken fence (W8-P). keep_out: layout-local [x, z, w, d].",
+	"name": "picket",
+	"pieces": [
+		{"name": "tent_covered", "kind": "tent_frame", "at": [-1.8, 0, 0], "yaw": 90, "params": {"w": 2.4, "d": 2.2, "h": 1.7, "covered": true, "mat": "planks"}},
+		{"name": "tent_bare", "kind": "tent_frame", "at": [1.8, 0, 0.6], "yaw": 90, "params": {"w": 2.4, "d": 2.2, "h": 1.7, "covered": false, "mat": "planks"}},
+		{"name": "rack", "kind": "weapon_rack", "at": [0, 0, -3.0], "yaw": 0, "params": {"w": 1.6, "h": 1.5, "spears": 3, "mat": "planks"}},
+		{"name": "fire", "kind": "campfire", "at": [0, 0, 2.8], "yaw": 0, "params": {"radius": 0.7, "stones": 7, "seed": 14, "mat": "stone", "wood": "timber"}},
+		{"name": "fence", "kind": "fence", "at": [0, 0, -4.6], "yaw": 0, "params": {"length": 6.0, "h": 1.1, "spacing": 2.0, "rails": 2, "broken": true, "seed": 15, "mat": "planks"}}
+	],
+	"keep_out": [[-3.3, -1.5, 3.0, 3.0], [0.3, -0.9, 3.0, 3.0], [-0.9, -3.3, 1.8, 0.6], [-0.9, 1.9, 1.8, 1.8], [-3.0, -4.75, 6.0, 0.3]]
+}

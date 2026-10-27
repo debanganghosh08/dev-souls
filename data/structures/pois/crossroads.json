@@ -1,0 +1,11 @@
+{
+	"_comment": "The signpost at the fork of the old road, with an overturned cart, a traveller's cold fire and a cairn behind it (W8-P). The signpost stands at the origin so the site can be put nearest the road; the rest lies toward +Z, away from it. keep_out: layout-local [x, z, w, d].",
+	"name": "crossroads",
+	"pieces": [
+		{"name": "signpost", "kind": "signpost", "at": [0, 0, 0], "yaw": 0, "params": {"h": 2.4, "yaws": [0, 95, -120], "mat": "planks"}},
+		{"name": "cart_tipped", "kind": "cart", "at": [3.2, 0.35, 1.4], "yaw": 20, "tilt": 75, "params": {"w": 2.6, "d": 1.4, "wheel": 0.55, "mat": "planks"}},
+		{"name": "cairn", "kind": "cairn", "at": [-2.2, 0, 1.6], "yaw": 0, "params": {"radius": 0.5, "h": 1.0, "count": 6, "seed": 7, "mat": "stone"}},
+		{"name": "fire", "kind": "campfire", "at": [-1.0, 0, 3.8], "yaw": 0, "params": {"radius": 0.7, "stones": 8, "seed": 2, "mat": "stone", "wood": "timber"}}
+	],
+	"keep_out": [[-0.5, -0.5, 1.0, 1.0], [1.6, -0.3, 3.2, 3.2], [-2.8, 1.0, 1.2, 1.2], [-1.9, 2.9, 1.8, 1.8]]
+}

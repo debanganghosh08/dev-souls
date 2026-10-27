@@ -1,0 +1,8 @@
+{
+	"_comment": "One tall waymarker cairn (W8-P). keep_out: layout-local [x, z, w, d].",
+	"name": "cairn_lone",
+	"pieces": [
+		{"name": "cairn", "kind": "cairn", "at": [0, 0, 0], "yaw": 0, "params": {"radius": 0.65, "h": 1.6, "count": 9, "seed": 4, "mat": "stone"}}
+	],
+	"keep_out": [[-0.8, -0.8, 1.6, 1.6]]
+}

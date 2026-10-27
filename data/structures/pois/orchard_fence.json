@@ -1,0 +1,11 @@
+{
+	"_comment": "The dead orchard's edge: a long fence falling down, a scarecrow nobody took in, a small haystack and a cart (W8-P). keep_out: layout-local [x, z, w, d].",
+	"name": "orchard_fence",
+	"pieces": [
+		{"name": "fence", "kind": "fence", "at": [0, 0, 0], "yaw": 0, "params": {"length": 12.0, "h": 1.1, "spacing": 2.0, "rails": 2, "broken": true, "seed": 7, "mat": "planks"}},
+		{"name": "scarecrow", "kind": "scarecrow", "at": [1.5, 0, -2.6], "yaw": 15, "params": {"h": 2.2, "mat": "planks"}},
+		{"name": "haystack", "kind": "haystack", "at": [-3.5, 0, -2.2], "yaw": 0, "params": {"radius": 1.0, "h": 1.5, "mat": "plaster"}},
+		{"name": "cart", "kind": "cart", "at": [4.5, 0, -2.8], "yaw": -80, "params": {"w": 2.6, "d": 1.4, "wheel": 0.55, "mat": "planks"}}
+	],
+	"keep_out": [[-6.0, -0.15, 12.0, 0.3], [1.0, -3.1, 1.0, 1.0], [-4.5, -3.2, 2.0, 2.0], [3.3, -4.4, 2.4, 3.2]]
+}

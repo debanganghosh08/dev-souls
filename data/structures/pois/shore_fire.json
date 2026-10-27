@@ -1,0 +1,10 @@
+{
+	"_comment": "A fisher's fire above the pond shore: a ring, a seat stone and a small cairn (W8-P). Kept to ~4 m across because the basin's slope is steep. The block is a kit ground kind; the others are in keep_out.",
+	"name": "shore_fire",
+	"pieces": [
+		{"name": "fire", "kind": "campfire", "at": [0, 0, 0], "yaw": 0, "params": {"radius": 0.7, "stones": 8, "seed": 5, "mat": "stone", "wood": "timber"}},
+		{"name": "seat", "kind": "block", "at": [-1.4, 0, 0.6], "yaw": 30, "params": {"w": 1.0, "h": 0.45, "d": 0.5, "mat": "stone"}},
+		{"name": "cairn", "kind": "cairn", "at": [1.6, 0, -0.8], "yaw": 0, "params": {"radius": 0.5, "h": 0.8, "count": 5, "seed": 6, "mat": "stone"}}
+	],
+	"keep_out": [[-0.9, -0.9, 1.8, 1.8], [1.0, -1.4, 1.2, 1.2]]
+}

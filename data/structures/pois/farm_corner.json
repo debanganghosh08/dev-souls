@@ -1,0 +1,12 @@
+{
+	"_comment": "A farm corner: two fence runs meeting at a right angle (one falling down), a haystack, a scarecrow and a cairn (W8-P). keep_out: the ground each piece covers, layout-local [x, z, w, d].",
+	"name": "farm_corner",
+	"pieces": [
+		{"name": "fence_n", "kind": "fence", "at": [0, 0, -4], "yaw": 0, "params": {"length": 10.0, "h": 1.1, "spacing": 2.0, "rails": 2, "mat": "planks"}},
+		{"name": "fence_w", "kind": "fence", "at": [-5, 0, 0], "yaw": 90, "params": {"length": 8.0, "h": 1.1, "spacing": 2.0, "rails": 2, "broken": true, "seed": 4, "mat": "planks"}},
+		{"name": "haystack", "kind": "haystack", "at": [-2.2, 0, -1.6], "yaw": 0, "params": {"radius": 1.4, "h": 2.1, "mat": "plaster"}},
+		{"name": "scarecrow", "kind": "scarecrow", "at": [2.0, 0, 0.5], "yaw": -20, "params": {"h": 2.2, "mat": "planks"}},
+		{"name": "cairn", "kind": "cairn", "at": [4.0, 0, -3.0], "yaw": 0, "params": {"radius": 0.5, "h": 0.9, "count": 6, "seed": 2, "mat": "stone"}}
+	],
+	"keep_out": [[-5.0, -4.15, 10.0, 0.3], [-5.15, -4.0, 0.3, 8.0], [-3.6, -3.0, 2.8, 2.8], [1.5, 0.0, 1.0, 1.0], [3.4, -3.6, 1.2, 1.2]]
+}

@@ -1,0 +1,9 @@
+{
+	"_comment": "A ring of seven standing stones on a hilltop, one fallen, round a flat altar slab (W8-P). Blocks and slabs are kit ground kinds, so no keep_out is needed.",
+	"name": "stone_ring",
+	"pieces": [
+		{"name": "stones", "kind": "block", "repeat": [[4.0, 0, 0, 90], [2.49, 0, 3.13, 141.4], [-0.89, 0, 3.9, 192.9], [-3.6, 0, -1.73, 295.7], [-0.89, 0, -3.9, 347.1], [2.49, 0, -3.13, 38.6]], "params": {"w": 0.7, "h": 1.7, "d": 0.45, "mat": "stone"}},
+		{"name": "stone_fallen", "kind": "block", "at": [-3.6, 0.1, 1.73], "yaw": 244.3, "tilt": 80, "params": {"w": 0.7, "h": 1.7, "d": 0.45, "mat": "stone"}},
+		{"name": "altar", "kind": "floor_slab", "at": [0, 0, 0], "yaw": 20, "params": {"w": 1.6, "d": 1.0, "t": 0.3, "mat": "stone"}}
+	]
+}
