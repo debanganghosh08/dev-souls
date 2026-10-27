@@ -41,6 +41,10 @@ Notes
   part-way still reports as passed. `run_tests.gd` now fails any test that reached no assertion, which
   catches an error before the first one; grepping the output for `SCRIPT ERROR` (expected: 0 in a checkout
   that has `assets/`) catches the rest.
+- **On this machine, write stdout and stderr to separate files** (`> out.txt 2> err.txt`) and grep both.
+  With `> f 2>&1`, stderr has been seen overwriting stdout bytes, so per-file result lines went missing (W8-H:
+  per-file sums of 364 under a total of 381). Check that the per-file `passed` counts add up to the `PASS` total
+  and that every `tests/test_*.gd` reported a line; if they do not, the log is damaged, not the suite.
 - First `--import` on a project with assets is CPU-heavy: check load < 50 % and run nothing else alongside it.
 
 ## Shipping a Windows build

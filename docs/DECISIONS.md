@@ -181,3 +181,14 @@ corner ever floats. Repeated layouts share meshes and collision shapes (`Structu
 `tests/test_site_placement.gd` holds the rules every site must obey whoever places it — dry, inside the ridge,
 on ground a 2 m foundation can cover, off the old road, clear of the spawn, never crowding another site — so two
 agents can fill the map at once and only ever have to satisfy the tests, not each other.
+
+**D-023 (2026-10-27) "Too empty" is measured as distance to the nearest built thing.** The owner: "the game
+feels too empty… do not make the player feel bored that there is nothing." WORLD_PLAN's rule was that something
+built should be within ~60–80 m of anywhere walkable. Measured over every walkable 10 m cell (inside the ridge,
+out of the water, under 35°; 3,852 points), as the distance to the nearest point of any built footprint:
+after the twenty houses (W8-H) and 35 points of interest (W8-P), **90.3 % within 80 m, median 37 m, emptiest
+spot 137 m** — the gaps all at the valley's outer rim, where nobody had a reason to build. Eleven more sites,
+**every one reusing an existing layout** (no new geometry; exactly the reuse the owner asked for), placed at the
+flattest legal spot near each gap: **99.9 % within 80 m, 94.1 % within 60 m, median 31 m, emptiest 83 m.**
+`tests/test_world_reach.gd` holds it at ≥ 99 % within 80 m and no spot further than 95 m, and was seen to fail
+against the map without the fillers before it was trusted to pass (D-021).

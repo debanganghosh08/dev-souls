@@ -63,15 +63,26 @@ engineering questions" below are guesses; this instruments both and acts only on
 rekindle the Hearth and which of the two endings they get, derived from item *kind* in `data/items.json` so
 the inventory panel and the Hearth can never disagree about what the quest needs. Pure logic, no nodes, every
 branch pinned by `tests/test_hearth.gd`. Draft endgame wording added to `data/ui_text.json` pending O-3.
-**W7-01b/c · Stage the endgame.** `DONE` (lead + Fable).
-*Done:* the sluice socket consumes the `sluice_wheel` and sets `pond_drained`; draining sinks the pond's
-water disc and stops drawing it, leaving a basin with a walkable floor.
-*Left:* a descent in the drained basin into the Hearth's chamber — **this needs a second terrain hole, so
-D-014 applies and so does a test like `test_crypt_mouth.gd`** — and the Hearth itself, an interactable that
-asks `Hearth.ending_for()` and shows one of the two ending cards.
+**W7-01b/c · Stage the endgame.** `DONE` (lead + Fable). The sluice socket, the pond draining, the stone seal
+over the stairwell, the Hearth's chamber beneath the pond (`tests/test_hearth_mouth.gd` guards its hole, D-014),
+the Hearth interactable and both ending cards.
 *Blocked by content, not code:* the Sluice Wheel is in the Barrens and two of the three Kindlings are in the
-Wood and the Barrens, so the chain cannot be walked end to end until W8. The socket refusing is correct
-behaviour, not an omission.
+Wood and the Barrens, so the chain cannot be walked end to end until those areas exist. The socket and the
+Hearth refusing is correct behaviour, not an omission.
+
+## W8 — filling the Ashen Vale (2026-10-27) — see `docs/WORLD_PLAN.md`
+**W8-F · The site layer.** `DONE` (lead). Built ground as data (`data/sites/`), a keep-out mask that grass, trees
+and props consult instead of avoiding whole plateaus, and a spawner for houses and props (D-022).
+**W8-J · Jump on F.** `DONE` (Fable). ~1.16 m apex, stamina, coyote time and buffer; no jump clip exists in the
+model, so the airborne pose is a measured frame of the run cycle.
+**W8-G · Grass everywhere.** `DONE` (Fable). Zones of density and colour, tall grass, wildflowers, a worn road;
+93.6 % of open ground at least half-meadow, the castle hill at 1.38x, no unfilled cell near a sprinting player.
+**W8-G2 · Grass frame spikes.** `IN PROGRESS` (Fable). Worst fill frame measured 17–20 ms on an idle machine;
+the budget is checked only between whole layer-cells, so one unit can blow it. Target ≤ 6 ms worst.
+**W8-H · Twenty houses.** `DONE` (Fable). Five archetypes, thirteen layouts, twenty placements, twenty new items,
+two key puzzles, and homes for the castle key, sword and hammer (none had a source in the shipped level).
+**W8-P · Points of interest.** `DONE` (Fable + lead). 46 placements of 15 layouts; eleven of them added by the
+lead to close the rim gaps. Something built within 80 m of 99.9 % of walkable ground (D-023).
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
 **W8-01 · Area 2, the Wood.** `READY`. Dense forest, little sky, a drowned shrine. Reuses the heightfield,
@@ -82,9 +93,8 @@ finding.
 `main.gd._begin_level()` is the single entry point.
 **W9-01 · NPCs and hints.** `BLOCKED` on O-3. Ten to fifteen of them, each giving a fragment and no map
 marker. Needs the story settled first or the lines get written twice.
-**W10-01 · Windows export.** `DONE` (lead, 2026-10-26). 526 MB standalone build, exported and probe-verified; see D-020 and `docs/TOOLS.md`. This was
-what turns the project into the thing the owner markets, and it has never once been tried — so try it early
-rather than discovering its problems in the last week.
+**W10-01 · Windows export.** `DONE` (lead, 2026-10-26). A standalone build, exported and verified by running its
+own probe; see D-020 and `docs/TOOLS.md`. Re-export after every merge that adds content.
 **W10-02 · Audio.** `BLOCKED` on O-2 (D-010). Everything about sound is waiting on one free API key.
 
 ## OWNER — only you can do these
