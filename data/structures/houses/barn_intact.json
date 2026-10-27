@@ -1,0 +1,203 @@
+{
+	"_comment": "Barn (W8-H): ~8 x 12 m timber frame with plank walls, a 2.6 m wide door in the front gable end (+Z), a hayloft over the back 4 m reached by stairs along the east wall, roof ridge along Z. Stone foundation 2 m down and a wide doorstep descending 1.6 m from the threshold (buried on flat ground). keep_out masks the doorstep's ground. Intact.",
+	"name": "barn_intact",
+	"archetype": "barn",
+	"variant": "intact",
+	"door": {
+		"at": [0, 6.06],
+		"width": 2.6,
+		"height": 3.2,
+		"stair": "doorstep"
+	},
+	"lofts": [
+		{
+			"stairs": "loft_stairs",
+			"slab": "loft"
+		}
+	],
+	"keep_out": [[-1.4, 6.06, 2.8, 2.1]],
+	"pieces": [
+		{
+			"name": "floor",
+			"kind": "floor_slab",
+			"at": [0, 0, 0],
+			"params": {
+				"w": 8.12,
+				"d": 12.12,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [0, -2, 0],
+			"params": {
+				"w": 8.32,
+				"h": 2,
+				"d": 12.32,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "frame",
+			"kind": "timber_frame",
+			"at": [0, 0, 0],
+			"params": {
+				"w": 8.24,
+				"h": 4,
+				"d": 12.24,
+				"beam": 0.24,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "front",
+			"kind": "wall",
+			"at": [0, 0, 6],
+			"params": {
+				"w": 8.12,
+				"h": 4,
+				"t": 0.12,
+				"mat": "planks",
+				"opening": {
+					"width": 2.6,
+					"height": 3.2
+				}
+			}
+		},
+		{
+			"name": "east",
+			"kind": "wall",
+			"at": [4, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 12.12,
+				"h": 4,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "gable_front",
+			"kind": "gable",
+			"at": [0, 4, 6],
+			"params": {
+				"w": 8.12,
+				"rise": 2.4,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "loft",
+			"kind": "floor_slab",
+			"at": [0, 2.6, -4],
+			"params": {
+				"w": 7.6,
+				"d": 4,
+				"t": 0.1,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "loft_beam",
+			"kind": "block",
+			"at": [0, 2.4, -2],
+			"params": {
+				"w": 7.6,
+				"h": 0.2,
+				"d": 0.2,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "loft_posts",
+			"kind": "block",
+			"repeat": [[-1.5, 0, -2.1], [1.5, 0, -2.1]],
+			"params": {
+				"w": 0.24,
+				"h": 2.6,
+				"d": 0.24,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "loft_stairs",
+			"kind": "stairs",
+			"at": [2.8, 0.12, 1.15],
+			"params": {
+				"w": 1,
+				"rise": 2.58,
+				"riser": 0.3,
+				"tread": 0.35,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "back",
+			"kind": "wall",
+			"at": [0, 0, -6],
+			"params": {
+				"w": 8.12,
+				"h": 4,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "west",
+			"kind": "wall",
+			"at": [-4, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 12.12,
+				"h": 4,
+				"t": 0.12,
+				"mat": "planks",
+				"opening": {
+					"width": 1,
+					"height": 0.8,
+					"sill": 2
+				}
+			}
+		},
+		{
+			"name": "gable_back",
+			"kind": "gable",
+			"at": [0, 4, -6],
+			"params": {
+				"w": 8.12,
+				"rise": 2.4,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "roof",
+			"kind": "pitched_roof",
+			"at": [0, 4, 0],
+			"yaw": 90,
+			"params": {
+				"w": 12,
+				"d": 8,
+				"rise": 2.4,
+				"t": 0.12,
+				"overhang": 0.4,
+				"mat": "roof"
+			}
+		},
+		{
+			"name": "doorstep",
+			"kind": "stairs",
+			"at": [0, -1.6, 8.16],
+			"params": {
+				"w": 2.8,
+				"rise": 1.72,
+				"riser": 0.3,
+				"tread": 0.35,
+				"mat": "stone"
+			}
+		}
+	]
+}

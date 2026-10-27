@@ -1,0 +1,150 @@
+{
+	"_comment": "Wayside shrine (W8-H): ~3 x 4 m stone, an arched open front (+Z), an altar against the back wall with candles on it, roof ridge along Z with gables front and back. Stone foundation 2 m down and a doorstep descending 1.6 m from the threshold (buried on flat ground). keep_out masks the doorstep's ground. Intact.",
+	"name": "shrine_intact",
+	"archetype": "shrine",
+	"variant": "intact",
+	"door": {
+		"at": [0, 2.2],
+		"width": 1.6,
+		"height": 2.6,
+		"stair": "doorstep"
+	},
+	"lofts": [],
+	"keep_out": [[-0.8, 2.2, 1.6, 2.1]],
+	"pieces": [
+		{
+			"name": "floor",
+			"kind": "floor_slab",
+			"at": [0, 0, 0],
+			"params": {
+				"w": 3.4,
+				"d": 4.4,
+				"t": 0.12,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [0, -2, 0],
+			"params": {
+				"w": 3.6,
+				"h": 2,
+				"d": 4.6,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "arch",
+			"kind": "arch",
+			"at": [0, 0, 2],
+			"params": {
+				"w": 3.4,
+				"h": 3,
+				"t": 0.4,
+				"ow": 1.6,
+				"oh": 2.6,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "back",
+			"kind": "wall",
+			"at": [0, 0, -2],
+			"params": {
+				"w": 3.4,
+				"h": 3,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "east",
+			"kind": "wall",
+			"at": [1.5, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 4.4,
+				"h": 3,
+				"t": 0.4,
+				"mat": "stone",
+				"opening": {
+					"width": 0.6,
+					"height": 0.9,
+					"sill": 1.4
+				}
+			}
+		},
+		{
+			"name": "altar",
+			"kind": "block",
+			"at": [0, 0.12, -1.3],
+			"params": {
+				"w": 1.2,
+				"h": 0.9,
+				"d": 0.6,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "west",
+			"kind": "wall",
+			"at": [-1.5, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 4.4,
+				"h": 3,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "gables",
+			"kind": "gable",
+			"repeat": [[0, 3, 2], [0, 3, -2]],
+			"params": {
+				"w": 3.4,
+				"rise": 1.2,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "roof",
+			"kind": "pitched_roof",
+			"at": [0, 3, 0],
+			"yaw": 90,
+			"params": {
+				"w": 4,
+				"d": 3,
+				"rise": 1.2,
+				"t": 0.1,
+				"overhang": 0.35,
+				"mat": "roof"
+			}
+		},
+		{
+			"name": "candles",
+			"kind": "block",
+			"repeat": [[-0.4, 1.02, -1.3], [0.4, 1.02, -1.3], [0, 1.02, -1.45]],
+			"params": {
+				"w": 0.08,
+				"h": 0.25,
+				"d": 0.08,
+				"mat": "plaster"
+			}
+		},
+		{
+			"name": "doorstep",
+			"kind": "stairs",
+			"at": [0, -1.6, 4.3],
+			"params": {
+				"w": 1.6,
+				"rise": 1.72,
+				"riser": 0.3,
+				"tread": 0.35,
+				"mat": "stone"
+			}
+		}
+	]
+}

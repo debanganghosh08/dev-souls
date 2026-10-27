@@ -1,0 +1,197 @@
+{
+	"_comment": "Watch hut (W8-H): ~3 x 3 m stone base with a door at +Z, a plank lookout floor at 3 m under a timber frame, parapet and pitched roof, reached by an outside stone stair up the east side that lands at a gap in the east parapet. Stone foundation 2 m down (one under the stair too) and a doorstep descending 1.6 m from the threshold (buried on flat ground). keep_out masks the doorstep's ground. Intact.",
+	"name": "watch_intact",
+	"archetype": "watch",
+	"variant": "intact",
+	"door": {
+		"at": [0, 1.7],
+		"width": 1.2,
+		"height": 2.4,
+		"stair": "doorstep"
+	},
+	"lofts": [
+		{
+			"stairs": "lookout_stairs",
+			"slab": "lookout_floor"
+		}
+	],
+	"keep_out": [[-0.7, 1.7, 1.4, 2.1]],
+	"pieces": [
+		{
+			"name": "floor",
+			"kind": "floor_slab",
+			"at": [0, 0, 0],
+			"params": {
+				"w": 3.4,
+				"d": 3.4,
+				"t": 0.12,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [0, -2, 0],
+			"params": {
+				"w": 3.6,
+				"h": 2,
+				"d": 3.6,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "front",
+			"kind": "wall",
+			"at": [0, 0, 1.5],
+			"params": {
+				"w": 3.4,
+				"h": 3,
+				"t": 0.4,
+				"mat": "stone",
+				"opening": {
+					"width": 1.2,
+					"height": 2.4
+				}
+			}
+		},
+		{
+			"name": "east",
+			"kind": "wall",
+			"at": [1.5, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 3.4,
+				"h": 3,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "lookout_floor",
+			"kind": "floor_slab",
+			"at": [0, 3, 0],
+			"params": {
+				"w": 3.4,
+				"d": 3.4,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "lookout_frame",
+			"kind": "timber_frame",
+			"at": [0, 3.12, 0],
+			"params": {
+				"w": 3.4,
+				"h": 2.2,
+				"d": 3.4,
+				"beam": 0.18,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "lookout_stairs",
+			"kind": "stairs",
+			"at": [2.2, 0, 2.15],
+			"params": {
+				"w": 1,
+				"rise": 3.12,
+				"riser": 0.3,
+				"tread": 0.35,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "stair_base",
+			"kind": "block",
+			"at": [2.2, -2, 0.225],
+			"params": {
+				"w": 1,
+				"h": 2,
+				"d": 3.85,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "back",
+			"kind": "wall",
+			"at": [0, 0, -1.5],
+			"params": {
+				"w": 3.4,
+				"h": 3,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "west",
+			"kind": "wall",
+			"at": [-1.5, 0, 0],
+			"yaw": 90,
+			"params": {
+				"w": 3.4,
+				"h": 3,
+				"t": 0.4,
+				"mat": "stone",
+				"opening": {
+					"width": 0.4,
+					"height": 0.8,
+					"sill": 1.5
+				}
+			}
+		},
+		{
+			"name": "parapet",
+			"kind": "wall",
+			"repeat": [[0, 3.12, -1.7, 0], [0, 3.12, 1.7, 0], [-1.7, 3.12, 0, 90]],
+			"params": {
+				"w": 3.4,
+				"h": 0.9,
+				"t": 0.08,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "parapet_gap",
+			"kind": "wall",
+			"at": [1.7, 3.12, 0],
+			"yaw": 90,
+			"params": {
+				"w": 3.4,
+				"h": 0.9,
+				"t": 0.08,
+				"mat": "planks",
+				"opening": {
+					"width": 1.6,
+					"height": 0.9,
+					"offset": 0.65
+				}
+			}
+		},
+		{
+			"name": "roof",
+			"kind": "pitched_roof",
+			"at": [0, 5.32, 0],
+			"params": {
+				"w": 3.4,
+				"d": 3.4,
+				"rise": 0.9,
+				"t": 0.1,
+				"overhang": 0.35,
+				"mat": "roof"
+			}
+		},
+		{
+			"name": "doorstep",
+			"kind": "stairs",
+			"at": [0, -1.6, 3.8],
+			"params": {
+				"w": 1.4,
+				"rise": 1.72,
+				"riser": 0.3,
+				"tread": 0.35,
+				"mat": "stone"
+			}
+		}
+	]
+}

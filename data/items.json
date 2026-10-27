@@ -1,4 +1,5 @@
 {
+	"_comment": "DRAFT (O-3): every entry from cottage_key down was written for W8-H (docs/WORLD_PLAN.md section 2) and is pending the owner's sign-off on voice and facts. Each has exactly one source in the Vale (tests/test_houses.gd audits it). kinds: kindling, fragment, key, tool (weapons carry slot 'weapon'), lore (written things), keepsake (objects that tell a life). The pond shrine's verse hides a syllable in its capitals; which syllable is the owner's call and should match the crypt's.",
 	"kindling_grey": {
 		"name": "Grey Kindling",
 		"kind": "kindling",
@@ -89,5 +90,145 @@
 		"lore": "Notched and honest. Whoever carried it before you did not come back for it.",
 		"slot": "weapon",
 		"order": 1
+	},
+	"cottage_key": {
+		"name": "Cottage Key",
+		"kind": "key",
+		"lore": "Iron, small, on a loop of frayed blue thread. Somebody locked a door on the west road and carried the key as far as the farms before they stopped carrying anything.",
+		"slot": "",
+		"order": 2
+	},
+	"watch_key": {
+		"name": "Watch Key",
+		"kind": "key",
+		"lore": "Stamped with the castle's mark and left on an altar, as if the toll-man had asked a shrine to keep his chest shut for him. It did.",
+		"slot": "",
+		"order": 3
+	},
+	"unsent_letter": {
+		"name": "Letter Never Sent",
+		"kind": "lore",
+		"lore": "'Tam, Bram, come home before the fire goes. There is still bread.' The ink ran before the words did. It was folded and never left the house.",
+		"slot": "",
+		"order": 1
+	},
+	"bell_ringers_hymnal": {
+		"name": "Bell-Ringer's Hymnal",
+		"kind": "lore",
+		"lore": "The order of the bells is written here and it is wrong: three strokes crossed out and the right ones never added. He hummed it that way to the end.",
+		"slot": "",
+		"order": 2
+	},
+	"toll_ledger": {
+		"name": "Toll Ledger",
+		"kind": "lore",
+		"lore": "The last line, in a hurrying hand: three carts east, toward where the sun scars the ground. One iron wheel, sluice-sized, under sacking. No toll taken.",
+		"slot": "",
+		"order": 3
+	},
+	"siege_tally": {
+		"name": "Siege Tally Stick",
+		"kind": "lore",
+		"lore": "Forty-one notches, then one deep cut across them all. The siege ended when there was nobody left inside to besiege.",
+		"slot": "",
+		"order": 4
+	},
+	"maren_spade": {
+		"name": "Gravekeeper's Spade",
+		"kind": "keepsake",
+		"lore": "Worn to a shine where her hands went. Every grave by the pond is the same depth; she measured them against herself.",
+		"slot": "",
+		"order": 1
+	},
+	"hearth_ash": {
+		"name": "Cold Hearth Ash",
+		"kind": "keepsake",
+		"lore": "Grey and fine, and faintly warm if you hold it long enough. Every hearth in the Vale was lit from the one under the pond, and every one is going out.",
+		"slot": "",
+		"order": 2
+	},
+	"pell_fish": {
+		"name": "Carved Fish",
+		"kind": "keepsake",
+		"lore": "A child's knife made this. Its mouth is open, as if to say that something warm lives under the water.",
+		"slot": "",
+		"order": 3
+	},
+	"candle_stub": {
+		"name": "Candle Stub",
+		"kind": "keepsake",
+		"lore": "Pressed with a thumbprint too small to be a grown hand. Somebody still lights the shrine candles, and nobody told her what for.",
+		"slot": "",
+		"order": 4
+	},
+	"cracked_mirror": {
+		"name": "Cracked Hand-Mirror",
+		"kind": "keepsake",
+		"lore": "It shows the room behind you a little greyer than it is. The pond does the same, and nobody looks into it for long.",
+		"slot": "",
+		"order": 5
+	},
+	"dog_collar": {
+		"name": "Stray Dog's Collar",
+		"kind": "keepsake",
+		"lore": "A name scratched off and another scratched on. The dogs stopped waiting at the doors; this one stopped first.",
+		"slot": "",
+		"order": 6
+	},
+	"rust_sickle": {
+		"name": "Rusted Sickle",
+		"kind": "keepsake",
+		"lore": "The last harvest was cut with this and left lying in the field. Nobody came to carry it in.",
+		"slot": "",
+		"order": 7
+	},
+	"orchard_apple": {
+		"name": "Orchard Apple",
+		"kind": "keepsake",
+		"lore": "Picked the last autumn the trees bore. It has not rotted. Nothing in Hollowmere finishes.",
+		"slot": "",
+		"order": 8
+	},
+	"pruning_hook": {
+		"name": "Pruning Hook",
+		"kind": "keepsake",
+		"lore": "Kept sharp for trees that stopped growing. Cutting dead wood from dead wood is a habit, not a hope.",
+		"slot": "",
+		"order": 9
+	},
+	"shepherd_crook": {
+		"name": "Shepherd's Crook",
+		"kind": "keepsake",
+		"lore": "The flock went strange and walked up into the hills. He followed them up and did not follow them down.",
+		"slot": "",
+		"order": 10
+	},
+	"watchmans_horn": {
+		"name": "Watchman's Horn",
+		"kind": "keepsake",
+		"lore": "Cracked along its length. It was blown on the last day, and the sound went down the valley and found nobody.",
+		"slot": "",
+		"order": 11
+	},
+	"oath_ribbon": {
+		"name": "Oath Ribbon",
+		"kind": "keepsake",
+		"lore": "Blue, once. A knight ties it to his helm the day he swears and cuts it the day he fails. This one was cut, and kept.",
+		"slot": "",
+		"order": 12
+	},
+	"woodcutter_wedge": {
+		"name": "Woodcutter's Wedge",
+		"kind": "keepsake",
+		"lore": "Iron, for splitting. The trees in the east wood stopped falling cleanly; they lean away from the axe now.",
+		"slot": "",
+		"order": 13
+	},
+	"pilgrim_token": {
+		"name": "Pilgrim's Token",
+		"kind": "keepsake",
+		"lore": "A wax seal stamped with a wick. The Pilgrim leaves one wherever he sleeps, so that somebody will know he passed.",
+		"slot": "",
+		"order": 14
 	}
 }

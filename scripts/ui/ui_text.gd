@@ -47,6 +47,7 @@ const DEFAULTS: Dictionary = {
 	"kind_key": "Keys",
 	"kind_tool": "Tools",
 	"kind_lore": "Writings",
+	"kind_keepsake": "Keepsakes",
 	"equip": "Equip",
 	"equipped": "Equipped",
 	"inventory_hint": "[%s]  close    [%s]  equip",
