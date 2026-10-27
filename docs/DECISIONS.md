@@ -168,8 +168,9 @@ fail. Negative controls are not optional (D-014).
 
 **D-022 (2026-10-27) Built ground is a data layer, and scattering asks it instead of avoiding plateaus.** The
 owner: the hill up to the castle is "only plain ground… there is literally no grass". The cause was a blunt
-rule — grass was zero on every plateau *and* across the first half of its slope skirt, which for the castle is
-everything within **118 m** of its centre; trees and props avoided plateaus the same way. That was a stand-in for
+rule — grass was zero on every plateau and only ramped back to full across the first half of its slope skirt:
+for the castle, bare to **78 m** from its centre and thinned out to **118 m** (W8-G measured the 78–158 m hill
+ring at 0.78× on average, bare at the rim); trees and props avoided plateaus the same way. That was a stand-in for
 "don't grow through floors". Replaced by the thing it stood in for: `data/sites/` lists every built place;
 `Footprint` gives each layout's ground pieces as oriented rectangles; `KeepOutMask` rasterises them to 0.5 m
 cells once, so the per-blade question is one lookup. **Terrain holes are masked whole**, because there is no

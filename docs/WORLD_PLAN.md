@@ -16,7 +16,8 @@ Built first so three agents can fill the map in parallel without inventing three
   rectangles, so a house turned 37° is masked as itself, not as a box); `KeepOutMask` — those footprints
   rasterised to 0.5 m cells, one lookup per question.
 - **Grass, trees and scattered props now keep off built ground instead of off whole plateaus.** That one change
-  is what lets grass grow up the castle hill, round the village and in the castle courtyard.
+  is what lets grass grow up the castle hill, round the village and in the castle courtyard. (Before: bare on
+  the castle plateau to 78 m, thinned out to 118 m.)
 - `Settlements` — builds every non-fixed site from data, at the **highest** ground under its footprint (no
   corner ever floats), with its loot. Repeated layouts **share one set of meshes and collision shapes**.
 - Two extension kits, `kit_house.gd` and `kit_props.gd`, so new piece types never collide in one file.
