@@ -7,7 +7,8 @@
 		{"name": "prop yard and gate", "min": [-12, -17], "max": [8, -1]},
 		{"name": "ledge and 15 degree ramp", "min": [-16, 0], "max": [-4, 18]},
 		{"name": "corner walls", "min": [5, 1], "max": [19, 15]},
-		{"name": "35 degree ramp and tower", "min": [-25, -21], "max": [-15, 4]}
+		{"name": "35 degree ramp and tower", "min": [-25, -21], "max": [-15, 4]},
+		{"name": "jump blocks and their run-up lanes", "min": [-17, -7], "max": [-9, 3]}
 	],
 	"zones": "north strip x -14..18 z -30..-19 | north-west corner x -31..-25 z -30..-22 | west strip x -31..-25 z -20..5 | east mid x 9..16 z -18..-8 | south strip x -4..18 z 17..30 | centre-east x 9..16 z -7..0 | meadow x -30..-5 z 8..30 (ferns and sprigs only, no colliders)",
 	"sets": [

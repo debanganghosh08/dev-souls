@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://greybox0w103"]
+[gd_scene load_steps=68 format=3 uid="uid://greybox0w103"]
 
 [ext_resource type="Script" uid="uid://cntx7xmq1l8r7" path="res://scenes/levels/greybox.gd" id="1_level"]
 [ext_resource type="PackedScene" uid="uid://player0w1030" path="res://scenes/player/player.tscn" id="2_player"]
@@ -169,6 +169,27 @@ size = Vector3(6, 10, 6)
 [sub_resource type="BoxMesh" id="Mesh_Tower"]
 material = ExtResource("19_plaster")
 size = Vector3(6, 10, 6)
+
+[sub_resource type="BoxShape3D" id="Shape_JumpBlockLow"]
+size = Vector3(2, 0.6, 2)
+
+[sub_resource type="BoxMesh" id="Mesh_JumpBlockLow"]
+material = ExtResource("17_blocks")
+size = Vector3(2, 0.6, 2)
+
+[sub_resource type="BoxShape3D" id="Shape_JumpBlockHigh"]
+size = Vector3(2, 0.9, 2)
+
+[sub_resource type="BoxMesh" id="Mesh_JumpBlockHigh"]
+material = ExtResource("17_blocks")
+size = Vector3(2, 0.9, 2)
+
+[sub_resource type="BoxShape3D" id="Shape_JumpLedgeTall"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="Mesh_JumpLedgeTall"]
+material = ExtResource("17_blocks")
+size = Vector3(2, 2, 2)
 
 [sub_resource type="BoxShape3D" id="Shape_GateWall"]
 size = Vector3(4, 3, 0.4)
@@ -385,6 +406,33 @@ shape = SubResource("Shape_GateWall")
 
 [node name="Mesh" type="MeshInstance3D" parent="World/GateWallEast"]
 mesh = SubResource("Mesh_GateWall")
+
+[node name="JumpBlockLow" type="StaticBody3D" parent="World"]
+position = Vector3(-13, 0.3, -5)
+
+[node name="Shape" type="CollisionShape3D" parent="World/JumpBlockLow"]
+shape = SubResource("Shape_JumpBlockLow")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/JumpBlockLow"]
+mesh = SubResource("Mesh_JumpBlockLow")
+
+[node name="JumpBlockHigh" type="StaticBody3D" parent="World"]
+position = Vector3(-16, 0.45, -5)
+
+[node name="Shape" type="CollisionShape3D" parent="World/JumpBlockHigh"]
+shape = SubResource("Shape_JumpBlockHigh")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/JumpBlockHigh"]
+mesh = SubResource("Mesh_JumpBlockHigh")
+
+[node name="JumpLedgeTall" type="StaticBody3D" parent="World"]
+position = Vector3(-10, 1, -5)
+
+[node name="Shape" type="CollisionShape3D" parent="World/JumpLedgeTall"]
+shape = SubResource("Shape_JumpLedgeTall")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/JumpLedgeTall"]
+mesh = SubResource("Mesh_JumpLedgeTall")
 
 [node name="Dressing" type="Node3D" parent="."]
 script = ExtResource("11_dressing")

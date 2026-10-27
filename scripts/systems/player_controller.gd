@@ -1,10 +1,12 @@
 extends CharacterBody3D
 class_name PlayerController
-## Souls-like locomotion: camera-relative walk/sprint, dodge roll, gravity, fall tracking, plus the player's
+## Souls-like locomotion: camera-relative walk/sprint, dodge roll, jump, gravity, fall tracking, plus the player's
 ## Health and the Melee child. Hard landings deal scaled damage; a lethal one or empty health asks Game to kill.
 ## The player does not extend Damageable (no multiple inheritance) but offers the same take_damage shape.
 
 signal took_fall_damage(drop: float)
+signal landed(drop: float)
+signal jumped()
 signal dodged()
 signal health_changed(fraction: float)
 signal damaged(amount: float, from: Node)
@@ -23,6 +25,17 @@ signal damaged(amount: float, from: Node)
 @export var dodge_duration: float = 0.45
 @export var dodge_cost: float = 25.0
 @export var dodge_invulnerable_fraction: float = 0.6
+@export_group("Jump")
+## Apex above the take-off point. The launch speed is derived from it and `gravity` (v = sqrt(2 g h)), so
+## retuning gravity keeps the height. 1.1 m hops onto a 0.9 m block at walk speed and never onto a 2 m ledge.
+@export var jump_height: float = 1.1
+@export var jump_cost: float = 12.0
+## Grace after walking off an edge in which a press still jumps.
+@export var coyote_time: float = 0.12
+## How long a press made just before landing waits for the floor.
+@export var jump_buffer_time: float = 0.12
+## Fraction of the ground acceleration and friction that applies in the air: enough to adjust a hop, not steer it.
+@export var air_control: float = 0.3
 @export_group("Stamina")
 @export var stamina_max: float = 100.0
 @export var stamina_regen_per_sec: float = 30.0
@@ -49,6 +62,7 @@ var _stamina: Stamina = Stamina.new()
 var _health: Health = Health.new()
 var _fall: PlayerFallTracker = PlayerFallTracker.new()
 var _dodge: PlayerDodge = PlayerDodge.new()
+var _jump: PlayerJump = PlayerJump.new()
 var _game: Node
 var _inventory: Node
 var _state_playing: int = -1
@@ -83,19 +97,24 @@ func _inject(game: Node, inventory: Node = null) -> void:
 
 func _physics_process(delta: float) -> void:
 	var playing: bool = _is_playing()
+	var launch: bool = false
 	if playing:
 		_sync_stamina_tuning()
 		_stamina.tick(delta)
 		if is_dodging:
 			_update_dodge(delta)
 		else:
-			_update_locomotion(delta)
+			launch = _update_locomotion(delta)
 	else:
 		velocity.x = 0.0
 		velocity.z = 0.0
 		_sprinting = false
 		_wish_dir = Vector3.ZERO
-	if is_on_floor():
+	# The launch replaces the floor's zeroing for one frame; move_and_slide skips its floor snap for a body
+	# moving up, so the take-off is not pulled back down.
+	if launch:
+		velocity.y = jump_velocity()
+	elif is_on_floor():
 		velocity.y = 0.0
 	else:
 		velocity.y = maxf(velocity.y - gravity * delta, -terminal_velocity)
@@ -147,6 +166,10 @@ func is_sprinting() -> bool:
 	return _sprinting
 
 
+func jump_velocity() -> float:
+	return PlayerJump.launch_speed(gravity, jump_height)
+
+
 func get_camera_rig() -> Node3D:
 	return _rig
 
@@ -161,25 +184,40 @@ func _sync_stamina_tuning() -> void:
 	_stamina.regen_delay_sec = stamina_regen_delay_sec
 
 
-func _update_locomotion(delta: float) -> void:
+# Returns true on the frame a jump launches; _physics_process applies the vertical speed.
+func _update_locomotion(delta: float) -> bool:
 	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_forward", &"move_back")
 	var yaw: float = _rig.get_yaw() if _rig != null else 0.0
 	var wish_dir: Vector3 = PlayerMotion.wish_direction(input, yaw)
 	var has_input: bool = PlayerMotion.has_input(wish_dir)
-	if Input.is_action_just_pressed(&"dodge") and is_on_floor() and _stamina.spend(dodge_cost):
+	var grounded: bool = is_on_floor()
+	if Input.is_action_just_pressed(&"dodge") and grounded and _stamina.spend(dodge_cost):
 		_start_dodge(wish_dir.normalized() if has_input else -global_basis.z)
-		return
+		return false
+	# A jump needs a floor (or its coyote grace), no swing in progress (a press mid-swing is dropped, as Melee
+	# drops presses outside IDLE) and the stamina, paid up front and refused outright when short, like a dodge.
+	_jump.update(grounded, Input.is_action_just_pressed(&"jump"), delta, coyote_time, jump_buffer_time)
+	var launch: bool = _jump.take() and _swing_idle() and _stamina.spend(jump_cost)
 	_sprinting = has_input and Input.is_action_pressed(&"sprint") and _stamina.drain(sprint_drain_per_sec, delta)
 	_wish_dir = wish_dir
 	var target_speed: float = sprint_speed if _sprinting else walk_speed
+	var control: float = 1.0 if grounded else air_control
 	var horizontal: Vector3 = Vector3(velocity.x, 0.0, velocity.z)
-	horizontal = PlayerMotion.steer(horizontal, wish_dir, target_speed, acceleration, friction, delta)
+	horizontal = PlayerMotion.steer(horizontal, wish_dir, target_speed, acceleration * control, friction * control, delta)
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
+	if launch:
+		jumped.emit()
+	return launch
+
+
+func _swing_idle() -> bool:
+	return _melee == null or _melee.state_name() == "IDLE"
 
 
 func _start_dodge(direction: Vector3) -> void:
 	_dodge.start(direction, dodge_duration)
+	_jump.reset()
 	is_dodging = true
 	is_invulnerable = true
 	_sprinting = false
@@ -204,9 +242,14 @@ func _face_velocity(delta: float) -> void:
 	rotation.y = PlayerMotion.turn_toward(rotation.y, Vector3(velocity.x, 0.0, velocity.z), rotation_speed, delta)
 
 
+# The tracker measures from the arc's highest point, so a jump on the flat lands as a drop of its own apex
+# (far under fall_damage_height) and a jump off a ledge as the ledge plus the apex.
 func _update_fall_tracking(on_floor: bool, y: float) -> void:
 	var drop: float = _fall.update(on_floor, y)
-	if drop <= PlayerFallTracker.NO_LANDING or drop <= fall_damage_height:
+	if drop <= PlayerFallTracker.NO_LANDING:
+		return
+	landed.emit(drop)
+	if drop <= fall_damage_height:
 		return
 	took_fall_damage.emit(drop)
 	if drop > killing_fall_height:
@@ -242,6 +285,7 @@ func _on_respawned() -> void:
 	is_invulnerable = false
 	_sprinting = false
 	_fall.reset()
+	_jump.reset()
 	_stamina.reset()
 	_health.reset()
 	health_changed.emit(_health.fraction())

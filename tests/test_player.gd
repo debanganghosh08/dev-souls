@@ -132,6 +132,66 @@ func test_headless_run_lands_and_pit_kills() -> void:
 		assert_true(float(pit["drop"]) > 16.0, "reported drop exceeds the killing height (drop=%s)" % pit["drop"])
 
 
+# Real physics for the jump (W8-J): greybox.tscn with --probe-jump hands the level to GreyboxJumpProbe, which
+# drives the controller through its input actions and prints one line per scenario. The numbers asserted here
+# are the controller's exports (1.1 m apex, 12 stamina, 0.12 s coyote and buffer) and the greybox's blocks.
+func test_headless_jump_probe_hops_blocks_and_never_hurts() -> void:
+	var output: Array = []
+	var args: PackedStringArray = [
+		"--headless", "--path", ProjectSettings.globalize_path("res://"),
+		GREYBOX, "--quit-after", "2400", "--", "--probe-jump",
+	]
+	var code: int = OS.execute(OS.get_executable_path(), args, output, true)
+	var text: String = "\n".join(PackedStringArray(output))
+	assert_eq(code, 0, "child headless jump probe exits cleanly")
+	assert_false("SCRIPT ERROR" in text, "jump probe printed no script errors")
+	var flat: Dictionary = _probe_line(text, "PROBE jump_flat")
+	assert_true(not flat.is_empty(), "probe printed the flat jump line")
+	if not flat.is_empty():
+		assert_eq(flat["jumped"], "true", "F on the flat jumps")
+		assert_true(absf(float(flat["peak"]) - float(flat["target"])) <= 0.1, "apex within 0.1 m of jump_height (peak=%s target=%s)" % [flat["peak"], flat["target"]])
+		assert_true(absf(float(flat["land_y"])) < 0.05, "landed back on the floor (y=%s)" % flat["land_y"])
+		assert_eq(flat["falls"], "0", "a flat jump registers no fall damage")
+		assert_true(is_equal_approx(float(flat["health"]), 100.0), "a flat jump costs no health (health=%s)" % flat["health"])
+		assert_true(is_equal_approx(float(flat["stamina_before"]) - float(flat["stamina_after"]), float(flat["cost"])), "stamina drops by jump_cost (%s -> %s)" % [flat["stamina_before"], flat["stamina_after"]])
+	var refused: Dictionary = _probe_line(text, "PROBE jump_refused")
+	assert_true(not refused.is_empty(), "probe printed the refused line")
+	if not refused.is_empty():
+		assert_eq(refused["jumped"], "false", "short stamina refuses the jump")
+		assert_true(absf(float(refused["peak"])) < 0.05, "and the body never left the floor (peak=%s)" % refused["peak"])
+	var double: Dictionary = _probe_line(text, "PROBE jump_double")
+	assert_true(not double.is_empty(), "probe printed the double-jump line")
+	if not double.is_empty():
+		assert_eq(double["rising"], "true", "the second press came while still rising")
+		assert_eq(double["jumps"], "1", "no second jump in the air")
+		assert_true(float(double["peak"]) < 1.3, "the apex stayed a single jump's (peak=%s)" % double["peak"])
+	var buffer: Dictionary = _probe_line(text, "PROBE jump_buffer")
+	assert_true(not buffer.is_empty(), "probe printed the buffer line")
+	if not buffer.is_empty():
+		assert_eq(buffer["jumps"], "2", "a press just before landing jumps again on landing (press_y=%s)" % buffer["press_y"])
+	var apex: Dictionary = _probe_line(text, "PROBE jump_apex_press")
+	assert_true(not apex.is_empty(), "probe printed the apex-press line")
+	if not apex.is_empty():
+		assert_eq(apex["jumps"], "1", "a press at the apex has expired by the landing (press_y=%s)" % apex["press_y"])
+	var coyote: Dictionary = _probe_line(text, "PROBE jump_coyote")
+	assert_true(not coyote.is_empty(), "probe printed the coyote line")
+	if not coyote.is_empty():
+		assert_eq(coyote["jumped"], "true", "3 frames after walking off the 2 m ledge still jumps")
+		assert_true(float(coyote["peak"]) > 2.5, "the coyote jump rose above the ledge top (peak=%s)" % coyote["peak"])
+		assert_true(absf(float(coyote["drop"]) - float(coyote["peak"])) < 0.1, "the drop reported is apex to floor: ledge plus apex (drop=%s)" % coyote["drop"])
+		assert_eq(coyote["falls"], "0", "ledge plus apex is still under the damage height")
+	var late: Dictionary = _probe_line(text, "PROBE jump_late_press")
+	assert_true(not late.is_empty(), "probe printed the late-press line")
+	if not late.is_empty():
+		assert_eq(late["jumped"], "false", "10 frames after walking off is past the coyote grace")
+		assert_true(float(late["peak"]) < 2.1, "and the body only fell (peak=%s)" % late["peak"])
+	for lane: Array in [["jump_block_low", "true"], ["jump_block_high", "true"], ["jump_ledge_tall", "false"], ["jump_walk_low", "false"]]:
+		var line: Dictionary = _probe_line(text, "PROBE %s " % lane[0])
+		assert_true(not line.is_empty(), "probe printed the %s line" % lane[0])
+		if not line.is_empty():
+			assert_eq(line["reached"], lane[1], "%s (%s m): reached=%s expected %s (land_y=%s peak=%s z=%s)" % [lane[0], line["height"], line["reached"], lane[1], line["land_y"], line["peak"], line["z"]])
+
+
 func _probe_line(text: String, prefix: String) -> Dictionary:
 	var out: Dictionary = {}
 	for line: String in text.split("\n"):

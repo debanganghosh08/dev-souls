@@ -3,6 +3,7 @@ extends Node3D
 ## `debug_toggle` (F3). Pause, death and prompts are the UI layer's job (scenes/ui, composed by main.gd).
 ## With the user arg `--probe` (used by tests/test_player.gd and tests/test_interaction.gd) it prints
 ## machine-readable lines and quits -- only when it is the root scene, so main.tscn's own probe can load it.
+## `--probe-jump` hands the level to a GreyboxJumpProbe child instead (tests/test_player.gd).
 
 const PROBE_LAND_FRAMES := 120
 const PROBE_STAIR_FRAMES := 90
@@ -16,7 +17,7 @@ const CHEST_APPROACH_POINT := Vector3(2.0, 0.6, -2.0)
 const COMBAT_STAND_OFFSET := Vector3(0.0, 0.0, 1.6)
 const COMBAT_DEER_OFFSET := Vector3(3.0, 0.0, 0.0)
 const STAIR_TOP_Y := 1.0
-const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%   health  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nweapon  %s   attack  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\ntime  %02d:%02d  %s\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   mouse look\nLMB light   RMB heavy   E interact   Esc pause   F3 hide this readout\nT +2 hours   Y hold to race the clock"
+const READOUT := "speed  %5.2f m/s %s\nstamina  %3d %%   health  %3d %%\ngrounded %s   dodging %s   i-frames %s\nstate  %s\nweapon  %s   attack  %s\nlast fall  %.1f m\npos  (%.1f, %.1f, %.1f)\ntime  %02d:%02d  %s\n\nfocus  %s\n%s\n%s\n\nWASD move   Shift sprint   Space dodge   F jump   mouse look\nLMB light   RMB heavy   E interact   Esc pause   F3 hide this readout\nT +2 hours   Y hold to race the clock"
 
 @onready var _player: PlayerController = %Player
 @onready var _label: Label = %DebugLabel
@@ -53,6 +54,10 @@ func _ready() -> void:
 		_game.state = _game.State.PLAYING
 	_probe_bite = OS.get_cmdline_user_args().has("--probe-bite") and get_tree().current_scene == self
 	_probe = OS.get_cmdline_user_args().has("--probe") and get_tree().current_scene == self
+	if OS.get_cmdline_user_args().has("--probe-jump") and get_tree().current_scene == self:
+		var jump_probe: GreyboxJumpProbe = GreyboxJumpProbe.new()
+		jump_probe.player = _player
+		add_child(jump_probe)
 	if _probe or _probe_bite:
 		# Interacting autosaves. Redirect to a throwaway slot BEFORE anything writes, so a probe run can
 		# neither overwrite nor delete the player's real save.
