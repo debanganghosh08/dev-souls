@@ -47,6 +47,9 @@ func test_grass_grows_near_the_spawn_and_never_under_water_or_on_cliffs() -> voi
 	assert_eq(int(line["steep"]), 0, "nothing grows above its layer's slope limit")
 	assert_eq(int(line["floating"]), 0, "every instance sits on the heightfield")
 	assert_eq(int(line["pending"]), 0, "the whole lattice was filled before the probe printed")
+	# Since W8-G2 the probe waits for the lattice to settle and says how long it took (physics ticks, 60 a
+	# second): on first_fill_budget_ms it settles in about 250-330 idle here; the bound is a busy machine's.
+	assert_true(int(line["settle_frames"]) > 0 and int(line["settle_frames"]) <= 900, "the spawn fill settled within fifteen simulated seconds (%s ticks)" % line["settle_frames"])
 	assert_true(int(line["layers"]) >= 4, "grass, pebbles, leaves and foliage layers all built (%s)" % line["layers"])
 	assert_true(int(line["cells"]) <= int(line["pool"]), "no more cells than pooled slots")
 

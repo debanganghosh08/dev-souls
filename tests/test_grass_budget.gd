@@ -27,12 +27,16 @@ func setup() -> void:
 	_at = _hf.spawn_point()
 
 
-func _grass(budget_ms: float, cap: int) -> Grass:
+## `step` is candidates per unit of work (0: a whole layer); -1 keeps the Grass default (W8-G2).
+func _grass(budget_ms: float, cap: int, step: int = -1) -> Grass:
 	var g := Grass.new()
 	g.radius = RADIUS
 	g.cell_size = CELL
 	g.fill_budget_ms = budget_ms
+	g.first_fill_budget_ms = budget_ms
 	g.fill_cells_per_frame = cap
+	if step >= 0:
+		g.fill_step_candidates = step
 	g.bind_heightfield(_hf)
 	g.rebuild(DATA)
 	return g
@@ -56,9 +60,12 @@ func _sorted(p: PackedVector3Array) -> Array:
 func test_cost_counters_start_at_zero_and_only_grow() -> void:
 	var g: Grass = _grass(1000.0, 3)
 	var s: Dictionary = g.stats()
-	for key: String in ["fill_frames", "fill_cells", "fill_total_ms", "fill_mean_ms", "fill_worst_ms"]:
+	for key: String in ["fill_frames", "fill_cells", "fill_total_ms", "fill_mean_ms", "fill_worst_ms", "fill_p95_ms",
+			"fill_over_4ms", "fill_over_8ms", "fill_over_16ms", "fill_steps", "fill_worst_unit_ms", "fill_prepare_ms",
+			"thin_count", "thin_total_ms", "thin_worst_ms"]:
 		assert_true(s.has(key), "stats() reports %s" % key)
 		assert_true(is_zero_approx(float(s.get(key, 1.0))), "%s starts at zero (got %s)" % [key, s.get(key)])
+	assert_eq(s["fill_worst_unit_layer"], "prepare", "no unit has run yet, so none is the dearest")
 	var t: Terrain = Terrain.new()
 	var ts: Dictionary = t.stats()
 	for key: String in ["build_frames", "build_cpu_ms", "sample_ms", "mesh_ms", "collision_ms"]:
@@ -80,6 +87,19 @@ func test_cost_counters_start_at_zero_and_only_grow() -> void:
 	assert_true(float(last["fill_total_ms"]) > 0.0, "filling cost measurable time")
 	assert_true(float(last["fill_worst_ms"]) >= float(last["fill_mean_ms"]), "the worst frame is at least the mean")
 	assert_true(float(last["fill_mean_ms"]) * float(last["fill_frames"]) <= float(last["fill_total_ms"]) + 0.001, "mean x frames is the total")
+	# The percentile comes from a 0.1 ms histogram and reports a bucket's upper edge, so it can sit up to
+	# 0.1 ms above the worst frame but never below the mean's bucket.
+	var p95: float = float(last["fill_p95_ms"])
+	assert_true(p95 > 0.0 and p95 <= float(last["fill_worst_ms"]) + 0.1, "p95 is positive and no more than a bucket above the worst (%s vs %s)" % [p95, last["fill_worst_ms"]])
+	assert_true(g.fill_percentile_ms(0.5) <= p95 and p95 <= g.fill_percentile_ms(1.0), "percentiles are monotonic")
+	assert_true(g.fill_percentile_ms(1.0) >= float(last["fill_worst_ms"]), "the 100th percentile covers the worst frame")
+	var over_4: int = int(last["fill_over_4ms"])
+	assert_true(int(last["fill_over_16ms"]) <= int(last["fill_over_8ms"]) and int(last["fill_over_8ms"]) <= over_4 and over_4 <= int(last["fill_frames"]), "the over-threshold counts nest")
+	assert_true(int(last["fill_steps"]) >= int(last["fill_cells"]) * int(last["layers"]), "every layer of every cell took at least one step")
+	assert_true(float(last["fill_worst_unit_ms"]) > 0.0 and float(last["fill_worst_unit_ms"]) <= float(last["fill_worst_ms"]), "the dearest unit fits inside the worst frame")
+	assert_true(last["fill_worst_unit_layer"] in ["prepare", "grass", "pebbles"], "the dearest unit names a layer or the prepare (%s)" % last["fill_worst_unit_layer"])
+	assert_true(float(last["fill_prepare_ms"]) > 0.0 and float(last["fill_prepare_ms"]) < float(last["fill_total_ms"]), "preparing cells took a measurable part of the total")
+	assert_true(int(last["thin_count"]) >= 1 and float(last["thin_worst_ms"]) >= 0.0, "the lattice was thinned at least once (%s)" % last["thin_count"])
 	# Idle frames (nothing pending) must not touch the counters: that is the "cheap when idle" promise.
 	g.step(_at)
 	g.step(_at)
@@ -103,23 +123,57 @@ func test_a_time_budget_ends_in_the_same_lattice_as_a_fixed_count() -> void:
 	assert_true(int(a["instances"]) > 0, "something grew at the spawn (%d)" % int(a["instances"]))
 	assert_eq(_sorted(budgeted.positions()), _sorted(fixed.positions()), "every instance stands in the same place")
 	assert_true(int(b["fill_frames"]) > int(a["fill_frames"]), "the budget spread the fill over more frames (%d vs %d)" % [int(b["fill_frames"]), int(a["fill_frames"])])
-	# Since W8-G the unit of work is a layer: a zero budget fills one layer a frame, two frames per cell here.
-	assert_eq(int(b["fill_frames"]), int(b["fill_cells"]) * int(b["layers"]), "a zero budget fills exactly one layer a frame")
+	# Since W8-G2 the unit of work is a step of a layer, and a cell's prepare is a unit of its own: a zero
+	# budget does exactly one unit a frame, so the frames are the steps plus one prepare per cell.
+	assert_eq(int(b["fill_frames"]), int(b["fill_steps"]) + int(b["fill_cells"]), "a zero budget does exactly one unit a frame")
+	assert_true(int(b["fill_steps"]) > int(b["fill_cells"]) * int(b["layers"]), "the default step splits the grass layer (%d steps for %d layers of %d cells)" % [int(b["fill_steps"]), int(b["layers"]), int(b["fill_cells"])])
 	assert_true(int(a["fill_frames"]) * 3 >= int(a["fill_cells"]), "the fixed count never passed three cells a frame")
 	fixed.free()
 	budgeted.free()
 
 
+func test_any_step_size_ends_in_the_same_lattice_as_whole_layers() -> void:
+	# The step bounds how long a unit of work runs, never what it places: one candidate a frame, seven, the
+	# default and a whole layer at once all stand the same blades in the same places (W8-G2).
+	var whole: Grass = _grass(1000000.0, 3, 0)
+	assert_true(_settle(whole, _at) < FRAME_CAP, "whole layers settle")
+	var reference: Array = _sorted(whole.positions())
+	var reference_stats: Dictionary = whole.stats()
+	assert_true(int(reference_stats["instances"]) > 0, "something grew (%d)" % int(reference_stats["instances"]))
+	var grass_candidates: int = ceili(0.5 * CELL * CELL)
+	for step: int in [1, 7, -1, grass_candidates - 1, grass_candidates, 100000]:
+		var split: Grass = _grass(0.0, 3, step)
+		var frames: int = _settle(split, _at)
+		assert_true(frames < FRAME_CAP or step == 1, "a step of %d settles inside the frame cap (%d frames)" % [step, frames])
+		if frames == FRAME_CAP:
+			# One candidate a frame is more units than the cap: finish it on a wide budget, then compare.
+			# The lattice has never settled, so it is still the first fill and that budget is the one spent.
+			split.fill_budget_ms = 1000000.0
+			split.first_fill_budget_ms = 1000000.0
+			assert_true(_settle(split, _at) < FRAME_CAP, "a step of %d finishes once the budget opens" % step)
+		var s: Dictionary = split.stats()
+		assert_eq(s["cells"], reference_stats["cells"], "step %d: same cells" % step)
+		assert_eq(s["per_layer"], reference_stats["per_layer"], "step %d: same count per layer" % step)
+		assert_eq(_sorted(split.positions()), reference, "step %d: every instance stands in the same place" % step)
+		if step > 0:
+			var units_per_cell: int = 1 + ceili(float(grass_candidates) / float(step)) + ceili(ceili(0.1 * CELL * CELL) / float(step))
+			assert_true(int(s["fill_steps"]) + int(s["fill_cells"]) <= units_per_cell * int(s["fill_cells"]), "step %d: no more units than the layers' candidates need (%d of %d)" % [step, int(s["fill_steps"]) + int(s["fill_cells"]), units_per_cell * int(s["fill_cells"])])
+		split.free()
+	whole.free()
+
+
 func test_the_budget_is_respected_and_the_cap_backstops_it() -> void:
-	# With no budget at all one layer still goes in each frame, so the lattice always finishes (a cell of
-	# the two layers here completes every second frame); with a budget too generous to matter the cap decides.
-	var starved: Grass = _grass(0.0, 3)
-	for frame: int in 4:
+	# With no budget at all one unit still goes in each frame, so the lattice always finishes (with whole
+	# layers as units a cell of the two layers here is prepare, grass, pebbles: it completes every third
+	# frame); with a budget too generous to matter the cap decides.
+	var starved: Grass = _grass(0.0, 3, 0)
+	for frame: int in 6:
 		var before: int = int(starved.stats()["fill_cells"])
 		starved.step(_at)
 		assert_eq(int(starved.stats()["fill_frames"]), frame + 1, "a zero budget still works every frame (frame %d)" % frame)
-		assert_eq(int(starved.stats()["fill_cells"]) - before, 1 if frame % 2 == 1 else 0, "a zero budget completes a two-layer cell every second frame (frame %d)" % frame)
+		assert_eq(int(starved.stats()["fill_cells"]) - before, 1 if frame % 3 == 2 else 0, "a zero budget completes a two-layer cell every third frame (frame %d)" % frame)
 	assert_true(float(starved.stats()["fill_worst_ms"]) > 0.0, "the starved frames were timed")
+	assert_eq(int(starved.stats()["fill_steps"]), 4, "six starved frames were two prepares and four layer steps")
 	var capped: Grass = _grass(1000000.0, 2)
 	for frame: int in 3:
 		var before: int = int(capped.stats()["fill_cells"])
@@ -128,14 +182,15 @@ func test_the_budget_is_respected_and_the_cap_backstops_it() -> void:
 	var single: Grass = _grass(1000000.0, 1)
 	single.step(_at)
 	assert_eq(int(single.stats()["fill_cells"]), 1, "a cap of one is one")
-	# A frame may overrun the budget only by the cell that crossed it, never by a whole cap of cells:
-	# with a zero budget the worst frame is one cell, with the cap it is up to three.
+	# A frame may overrun the budget only by the unit that crossed it, never by a whole cap of cells:
+	# with a zero budget the worst frame is one unit, with the cap it is up to three cells.
 	var worst_one: float = float(starved.stats()["fill_worst_ms"])
 	var three: Grass = _grass(1000000.0, 3)
 	three.step(_at)
 	three.step(_at)
 	assert_true(float(three.stats()["fill_worst_ms"]) > 0.0, "three-cell frames were timed")
-	assert_true(worst_one > 0.0, "one-cell frames were timed")
+	assert_true(worst_one > 0.0, "one-unit frames were timed")
+	assert_true(float(three.stats()["fill_worst_unit_ms"]) <= float(three.stats()["fill_worst_ms"]), "no unit outlasted its frame")
 	starved.free()
 	capped.free()
 	single.free()
