@@ -103,20 +103,22 @@ func test_a_time_budget_ends_in_the_same_lattice_as_a_fixed_count() -> void:
 	assert_true(int(a["instances"]) > 0, "something grew at the spawn (%d)" % int(a["instances"]))
 	assert_eq(_sorted(budgeted.positions()), _sorted(fixed.positions()), "every instance stands in the same place")
 	assert_true(int(b["fill_frames"]) > int(a["fill_frames"]), "the budget spread the fill over more frames (%d vs %d)" % [int(b["fill_frames"]), int(a["fill_frames"])])
-	assert_eq(int(b["fill_frames"]), int(b["fill_cells"]), "a zero budget fills exactly one cell a frame")
+	# Since W8-G the unit of work is a layer: a zero budget fills one layer a frame, two frames per cell here.
+	assert_eq(int(b["fill_frames"]), int(b["fill_cells"]) * int(b["layers"]), "a zero budget fills exactly one layer a frame")
 	assert_true(int(a["fill_frames"]) * 3 >= int(a["fill_cells"]), "the fixed count never passed three cells a frame")
 	fixed.free()
 	budgeted.free()
 
 
 func test_the_budget_is_respected_and_the_cap_backstops_it() -> void:
-	# With no budget at all one cell still goes in each frame, so the lattice always finishes; with a
-	# budget too generous to matter the cap decides.
+	# With no budget at all one layer still goes in each frame, so the lattice always finishes (a cell of
+	# the two layers here completes every second frame); with a budget too generous to matter the cap decides.
 	var starved: Grass = _grass(0.0, 3)
 	for frame: int in 4:
 		var before: int = int(starved.stats()["fill_cells"])
 		starved.step(_at)
-		assert_eq(int(starved.stats()["fill_cells"]) - before, 1, "a zero budget still fills one cell on frame %d" % frame)
+		assert_eq(int(starved.stats()["fill_frames"]), frame + 1, "a zero budget still works every frame (frame %d)" % frame)
+		assert_eq(int(starved.stats()["fill_cells"]) - before, 1 if frame % 2 == 1 else 0, "a zero budget completes a two-layer cell every second frame (frame %d)" % frame)
 	assert_true(float(starved.stats()["fill_worst_ms"]) > 0.0, "the starved frames were timed")
 	var capped: Grass = _grass(1000000.0, 2)
 	for frame: int in 3:

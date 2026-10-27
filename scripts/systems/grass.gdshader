@@ -1,11 +1,16 @@
 shader_type spatial;
-// Blade clumps and pebbles for Grass. No texture samples: colour is the mesh's vertex gradient (dark root,
-// dry pale tip) tinted per instance from INSTANCE_CUSTOM. cull_disabled because a blade is a single strip
-// seen from both sides. Lambert, no specular: ashen grass in fog is a matte mass, not a shiny lawn.
-// world_vertex_coords so wind and the distance fade work in metres and the instance origin is just the
-// model matrix translation. The engine flips NORMAL on back faces before this code runs, so NORMAL is
-// rebuilt in fragment() from the varying: a blade is lit like the ground it grows from (mostly up) from
-// either side, instead of half the field going dark depending on which way the strips happen to face.
+// Blade clumps, wildflowers and pebbles for Grass. No texture samples: colour is per instance (W8-G).
+// COLOR.rgb is the instance's tip colour (the MultiMesh instance colour times the mesh's vertex colour,
+// which is white for a blade and the stone's own colour for a pebble) and COLOR.a the per-blade shade
+// jitter the mesh bakes in (GrassMesh.SHADE_MIN/SHADE_RANGE). INSTANCE_CUSTOM.rgb is the root colour as
+// a fraction of the tip and INSTANCE_CUSTOM.a the wind phase. UV2.y runs 0 at the root to 1 at the tip
+// for the colour ramp; UV.y is the bend mask, kept separate so a flower head takes the petal colour
+// without taking the whole lean. cull_disabled because a blade is a single strip seen from both sides.
+// Lambert, no specular: grass in fog is a matte mass, not a shiny lawn. world_vertex_coords so wind and
+// the distance fade work in metres and the instance origin is just the model matrix translation. The
+// engine flips NORMAL on back faces before this code runs, so NORMAL is rebuilt in fragment() from the
+// varying: a blade is lit like the ground it grows from (mostly up) from either side, instead of half
+// the field going dark depending on which way the strips happen to face.
 render_mode cull_disabled, diffuse_lambert, specular_disabled, depth_draw_opaque, world_vertex_coords;
 
 uniform float wind_strength : hint_range(0.0, 2.0) = 0.28;
@@ -15,8 +20,10 @@ uniform float wind_speed : hint_range(0.0, 5.0) = 1.1;
 uniform float ripple_scale : hint_range(0.0, 1.0) = 0.09;
 uniform float fade_start = 52.0;
 uniform float fade_end = 70.0;
-uniform vec3 dry_tint : source_color = vec3(0.70, 0.64, 0.48);
 uniform float normal_up_blend : hint_range(0.0, 1.0) = 0.8;
+// Must match GrassMesh.SHADE_MIN and SHADE_RANGE: vertex alpha decodes to shade_min + shade_range * a.
+uniform float shade_min = 0.85;
+uniform float shade_range = 0.3;
 
 varying vec3 v_color;
 varying vec3 v_normal;
@@ -27,7 +34,7 @@ void vertex() {
 	float mask = UV.y * UV.y;
 	// Phase from the clump's world position along the wind plus a per-clump jitter: neighbouring clumps are
 	// out of step, so gusts travel across the field as bands instead of every blade nodding in unison.
-	float phase = dot(root.xz, wind_dir) * ripple_scale + INSTANCE_CUSTOM.b * 6.2831853;
+	float phase = dot(root.xz, wind_dir) * ripple_scale + INSTANCE_CUSTOM.a * 6.2831853;
 	float t = TIME * wind_speed;
 	float gust = 0.6 + 0.4 * (0.7 * sin(t - phase) + 0.3 * sin(2.17 * t - 1.9 * phase + 1.3));
 	float bend = wind_strength * gust * mask;
@@ -40,7 +47,8 @@ void vertex() {
 	v.y = root.y + (v.y - root.y) * fade;
 	VERTEX = v;
 	v_normal = normalize(mix(NORMAL, vec3(0.0, 1.0, 0.0), normal_up_blend));
-	v_color = COLOR.rgb * mix(vec3(1.0), dry_tint, INSTANCE_CUSTOM.g) * (0.85 + 0.3 * INSTANCE_CUSTOM.r);
+	float shade = shade_min + shade_range * COLOR.a;
+	v_color = COLOR.rgb * mix(INSTANCE_CUSTOM.rgb, vec3(1.0), UV2.y) * shade;
 }
 
 void fragment() {

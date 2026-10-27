@@ -1,13 +1,17 @@
 class_name GrassLayer
 extends RefCounted
-## One kind of ground cover in a Grass lattice (blade clumps, pebbles, leaf patches or a small foliage
-## model), parsed from data/grass/<area>.json. Owns the shared mesh and material and fills one cell's
-## MultiMesh at a time from a GrassCell context. Density per candidate is the land (Grass.density_at)
-## times patch noise, the cell's hollow factor, closeness to cluster points (trees) and the level's
-## density filter. A cell's RNG is seeded from the cell key and the layer index, never from frame order,
-## so a cell refilled after the player walks away and back grows exactly what it grew before.
+## One kind of ground cover in a Grass lattice (blade clumps, wildflowers, pebbles, leaf patches or a
+## small foliage model), parsed from data/grass/<area>.json. Owns the shared mesh and material and fills
+## one cell's MultiMesh at a time from a GrassCell context. Density per candidate is the land
+## (GrassLattice.density_at) times patch noise, the cell's hollow factor, closeness to cluster points
+## (trees), the level's density filter and, for a layer with a `zone` channel, the area's GrassZones:
+## "grass" scales by the zone density, "tall" and "flowers" by those 0..1 weights, so tall grass and
+## flowers appear only where the zone asks. Zoned blades also take the zone's palette and height. A
+## cell's RNG is seeded from the cell key and the layer index, never from frame order, so a cell refilled
+## after the player walks away and back grows exactly what it grew before.
 
 const EXACT_SLOPE_MARGIN := 12.0
+const TINTED_KINDS: Array[String] = ["clump", "flower", "pebble"]
 
 var name: String = ""
 var kind: String = "clump"
@@ -30,6 +34,22 @@ var align: float = 0.5
 var sink: float = 0.0
 var shadows: bool = false
 var vertex_count: int = 0
+## Palette when the layer is not zoned (or the area has no zones): root at the ground, tip at the top.
+var root_color: Color = GrassZones.DEFAULT_ROOT
+var tip_color: Color = GrassZones.DEFAULT_TIP
+## A blade drifts toward dry_tint by up to dry_amount of the way, per instance, so a field is never one colour.
+var dry_tint: Color = Color.WHITE
+var dry_amount: float = 0.0
+## "" (the land only), "grass", "tall" or "flowers": which GrassZones channel scales this layer.
+var zone_channel: String = ""
+## Candidates per cell are sized for the densest zone; a zone's density then accepts its share of them.
+var zone_max: float = 1.0
+## Flower heads pick one of these per instance (kind "flower").
+var colors: PackedColorArray = PackedColorArray()
+## The instance colour and custom data of the last instance placed, kept CPU-side because the headless
+## renderer discards what a MultiMesh is given; tests read these, the way they read positions.
+var last_tint: Color = Color.BLACK
+var last_custom: Color = Color.BLACK
 
 var _patch: FastNoiseLite
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -43,7 +63,7 @@ static func from_dict(d: Dictionary, seed_v: int, index: int) -> GrassLayer:
 	layer.max_per_cell = maxi(0, int(d.get("max_per_cell", 100)))
 	layer.max_slope = float(d.get("max_slope", 32.0))
 	layer.scale_range = _range(d.get("scale"), Vector2(0.8, 1.2))
-	layer.height_range = _range(d.get("height"), Vector2(1.0, 1.0)) if layer.kind == "clump" else layer.scale_range
+	layer.height_range = _range(d.get("height"), Vector2(1.0, 1.0)) if layer.kind in ["clump", "flower"] else layer.scale_range
 	layer.patch_min = clampf(float(d.get("patch_min", 1.0)), 0.0, 1.0)
 	layer.hollow = float(d.get("hollow", 0.0))
 	var cluster: Dictionary = d.get("cluster", {})
@@ -55,6 +75,17 @@ static func from_dict(d: Dictionary, seed_v: int, index: int) -> GrassLayer:
 	layer.align = clampf(float(d.get("align", 1.0 if layer.kind == "patch" else 0.5)), 0.0, 1.0)
 	layer.sink = float(d.get("sink", 0.0))
 	layer.shadows = bool(d.get("shadows", false))
+	layer.root_color = _color(d.get("root_color"), GrassZones.DEFAULT_ROOT)
+	layer.tip_color = _color(d.get("tip_color"), GrassZones.DEFAULT_TIP)
+	layer.dry_tint = _color(d.get("dry_tint"), Color(0.70, 0.64, 0.48) if layer.kind == "clump" else Color.WHITE)
+	layer.dry_amount = clampf(float(d.get("dry_amount", 0.5 if layer.kind == "clump" else 0.0)), 0.0, 1.0)
+	layer.zone_channel = str(d.get("zone", ""))
+	if not layer.zone_channel in ["", "grass", "tall", "flowers"]:
+		push_error("GrassLayer %s: unknown zone channel '%s'" % [layer.name, layer.zone_channel])
+		layer.zone_channel = ""
+	for v: Variant in d.get("colors", []):
+		if v is String and Color.html_is_valid(v):
+			layer.colors.append(Color.html(v))
 	if layer.patch_min < 1.0:
 		layer._patch = FastNoiseLite.new()
 		layer._patch.seed = seed_v + index * 7919
@@ -70,12 +101,16 @@ func _build(d: Dictionary, seed_v: int, index: int) -> void:
 	rng.seed = seed_v ^ (index + 1) * 104729
 	match kind:
 		"clump":
-			mesh = GrassMesh.clump(int(d.get("blades", 4)), int(d.get("segments", 3)), float(d.get("blade_width", 0.045)),
-				_color(d.get("root_color"), Color(0.16, 0.18, 0.13)), _color(d.get("tip_color"), Color(0.55, 0.54, 0.42)), rng)
-			material = GrassMesh.grass_material(fade, _color(d.get("dry_tint"), Color(0.70, 0.64, 0.48)))
+			mesh = GrassMesh.clump(int(d.get("blades", 4)), int(d.get("segments", 3)), float(d.get("blade_width", 0.045)), rng)
+			material = GrassMesh.grass_material(fade)
+		"flower":
+			mesh = GrassMesh.flower(rng)
+			material = GrassMesh.grass_material(fade)
+			if colors.is_empty():
+				colors.append(tip_color)
 		"pebble":
 			mesh = GrassMesh.pebble(_color(d.get("color"), Color(0.30, 0.29, 0.28)), rng)
-			material = GrassMesh.grass_material(fade, Color.WHITE)
+			material = GrassMesh.grass_material(fade)
 		"patch":
 			mesh = GrassMesh.patch_quad()
 			material = GrassMesh.patch_material(str(d.get("texture", "")), fade, float(d.get("uv_tiles", 0.7)))
@@ -93,10 +128,17 @@ func usable() -> bool:
 	return mesh != null and max_per_cell > 0 and density > 0.0
 
 
-## A pooled MultiMeshInstance3D with every instance slot preallocated: fills only write transforms.
+## Blades and flowers: the kinds whose vertices the probe counts as blade geometry.
+func is_blade() -> bool:
+	return kind == "clump" or kind == "flower"
+
+
+## A pooled MultiMeshInstance3D with every instance slot preallocated: fills only write transforms. The
+## grass-shader kinds carry a per-instance colour (tip) as well as custom data (root fraction, wind phase).
 func make_instance(slot: int) -> MultiMeshInstance3D:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = kind in TINTED_KINDS
 	mm.use_custom_data = true
 	mm.mesh = mesh
 	mm.instance_count = max_per_cell
@@ -126,7 +168,12 @@ func set_wind(strength: float, direction: Vector2, speed: float, ripple: float) 
 func fill(key: Vector2i, index: int, seed_v: int, cell: GrassCell, mmi: MultiMeshInstance3D, out: PackedVector3Array, filter: Callable, exact_slope: Callable) -> int:
 	_rng.seed = hash(Vector3i(key.x, key.y, index)) ^ seed_v
 	var mm: MultiMesh = mmi.multimesh
-	var candidates: int = mini(max_per_cell, ceili(density * cell.size * cell.size))
+	var zoned: bool = zone_channel != "" and cell.zones != null
+	var tinted: bool = kind in TINTED_KINDS
+	# A tall or flower layer draws nothing in a cell whose channel is zero everywhere: no candidates, no cost.
+	var skip: bool = zoned and ((zone_channel == "tall" and cell.zone_tall_max <= 0.0) or (zone_channel == "flowers" and cell.zone_flowers_max <= 0.0))
+	var pool: float = density * (zone_max if zoned and zone_channel == "grass" else 1.0) * cell.size * cell.size
+	var candidates: int = 0 if skip else mini(max_per_cell, ceili(pool))
 	var placed: int = 0
 	for _c: int in candidates:
 		# Every draw happens before any early-out so the RNG stream stays aligned whatever is rejected.
@@ -136,7 +183,9 @@ func fill(key: Vector2i, index: int, seed_v: int, cell: GrassCell, mmi: MultiMes
 		var yaw: float = _rng.randf() * TAU
 		var s: float = _rng.randf_range(scale_range.x, scale_range.y)
 		var h: float = _rng.randf_range(height_range.x, height_range.y)
-		var custom := Color(_rng.randf(), _rng.randf(), _rng.randf(), 1.0)
+		var bright: float = _rng.randf()
+		var dry: float = _rng.randf()
+		var phase: float = _rng.randf()
 		var n: Vector3 = cell.normal(x, z)
 		var slope: float = GrassCell.slope_deg(n)
 		var d: float = GrassLattice.density_at(slope, cell.height(x, z), cell.water_level, max_slope)
@@ -149,21 +198,61 @@ func fill(key: Vector2i, index: int, seed_v: int, cell: GrassCell, mmi: MultiMes
 			d *= lerpf(1.0, cluster_outside, smoothstep(cluster_radius, cluster_radius + cluster_falloff, cell.nearest_cluster(x, z)))
 		if filter.is_valid():
 			d *= float(filter.call(x, z))
+		if zoned:
+			cell.zone_at(x, z)
+			match zone_channel:
+				"grass":
+					d *= cell.zone_density
+				"tall":
+					d *= cell.zone_tall
+				"flowers":
+					d *= cell.zone_flowers
 		if roll >= d:
 			continue
 		# The grid slope is a 3 m average; near the limit ask the heightfield exactly so the probe's
 		# "nothing above max_slope" holds to the degree.
 		if slope > max_slope - EXACT_SLOPE_MARGIN and exact_slope.is_valid() and float(exact_slope.call(x, z)) > max_slope:
 			continue
+		if zoned:
+			h *= cell.zone_height
 		var y: float = float(cell.height_sampler.call(x, z)) - sink * s
 		var basis: Basis = GroundPlacement.aligned_basis(n, yaw, align, 1.0) * Basis.from_scale(Vector3(s, h, s))
 		mm.set_instance_transform(placed, Transform3D(basis, Vector3(x, y, z)) * local)
-		mm.set_instance_custom_data(placed, custom)
+		if tinted:
+			_tint(mm, placed, zoned, cell, bright, dry, phase)
+		else:
+			mm.set_instance_custom_data(placed, Color(bright, dry, phase, 1.0))
 		out[placed] = Vector3(x, y, z)
 		placed += 1
 	mm.visible_instance_count = placed
 	mmi.visible = placed > 0
 	return placed
+
+
+## Instance colour = the tip colour; custom data = the root as a fraction of the tip, and the wind phase.
+## Brightness and dry drift are folded in here, per instance, instead of in the shader. A pebble's colour
+## is in its mesh, so it only takes the brightness.
+func _tint(mm: MultiMesh, i: int, zoned: bool, cell: GrassCell, bright: float, dry: float, phase: float) -> void:
+	var shade: float = GrassMesh.SHADE_MIN + GrassMesh.SHADE_RANGE * bright
+	if kind == "pebble":
+		last_tint = Color(shade, shade, shade, 1.0)
+		last_custom = Color(1.0, 1.0, 1.0, phase)
+		mm.set_instance_color(i, last_tint)
+		mm.set_instance_custom_data(i, last_custom)
+		return
+	if zoned:
+		cell.zone_palette()
+	var root: Color = cell.zone_root if zoned else root_color
+	var tip: Color = cell.zone_tip if zoned else tip_color
+	if kind == "flower":
+		tip = colors[int(phase * float(colors.size())) % colors.size()]
+	var drift: Color = Color.WHITE.lerp(dry_tint, dry * dry_amount) * shade
+	root = root * drift
+	tip = tip * drift
+	last_tint = Color(tip.r, tip.g, tip.b, 1.0)
+	last_custom = Color(root.r / maxf(tip.r, 0.001), root.g / maxf(tip.g, 0.001), root.b / maxf(tip.b, 0.001), phase)
+	mm.set_instance_color(i, last_tint)
+	mm.set_instance_custom_data(i, last_custom)
 
 
 static func _range(v: Variant, fallback: Vector2) -> Vector2:

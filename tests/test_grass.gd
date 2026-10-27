@@ -107,7 +107,7 @@ func test_thin_factor_is_full_near_and_reaches_far_fraction_at_the_edge() -> voi
 func test_clump_mesh_has_the_expected_blades_and_a_root_to_tip_gradient() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7
-	var mesh: ArrayMesh = GrassMesh.clump(4, 3, 0.05, Color(0.1, 0.12, 0.08), Color(0.6, 0.58, 0.45), rng)
+	var mesh: ArrayMesh = GrassMesh.clump(4, 3, 0.05, rng)
 	var arrays: Array = mesh.surface_get_arrays(0)
 	var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 	var uvs: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
@@ -117,9 +117,13 @@ func test_clump_mesh_has_the_expected_blades_and_a_root_to_tip_gradient() -> voi
 	assert_eq(GrassMesh.vertex_count(mesh), verts.size(), "vertex_count matches the arrays")
 	assert_true(is_zero_approx(uvs[0].y) and is_equal_approx(uvs[7].y, 1.0), "UV.y runs 0 at the root to 1 at the tip")
 	assert_true(is_zero_approx(verts[0].y) and is_equal_approx(verts[7].y, 1.0), "blades are unit height")
-	assert_true(colors[7].get_luminance() > colors[0].get_luminance() * 2.0, "the tip is far paler than the root")
+	# Since W8-G colour is per instance (GrassZones): the mesh is white and carries only the shade jitter.
+	for c: Color in colors:
+		assert_true(is_equal_approx(c.r, 1.0) and is_equal_approx(c.g, 1.0) and is_equal_approx(c.b, 1.0), "blade vertices are white; the tint is per instance")
+		assert_true(c.a > 0.05 and c.a < 0.95, "vertex alpha carries the per-blade shade jitter (%s)" % c.a)
+	assert_eq(arrays[Mesh.ARRAY_TEX_UV2], uvs, "a blade's colour ramp (UV2) follows its bend mask (UV)")
 	rng.seed = 7
-	var twin: ArrayMesh = GrassMesh.clump(4, 3, 0.05, Color(0.1, 0.12, 0.08), Color(0.6, 0.58, 0.45), rng)
+	var twin: ArrayMesh = GrassMesh.clump(4, 3, 0.05, rng)
 	assert_eq(twin.surface_get_arrays(0)[Mesh.ARRAY_VERTEX], verts, "the same seed builds the same clump")
 	assert_true(GrassMesh.vertex_count(GrassMesh.pebble(Color.GRAY, rng)) > 8, "a pebble is a small lump")
 	assert_eq(GrassMesh.vertex_count(GrassMesh.patch_quad()), 4, "a patch is one quad")
