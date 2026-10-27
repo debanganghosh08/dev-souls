@@ -50,9 +50,23 @@ var colors: PackedColorArray = PackedColorArray()
 ## renderer discards what a MultiMesh is given; tests read these, the way they read positions.
 var last_tint: Color = Color.BLACK
 var last_custom: Color = Color.BLACK
+## Instances placed by the fill in progress (or the last one finished): what fill() returns.
+var placed: int = 0
+
+## Phase profiling (W8-G2), off in play: with `profile` on, every candidate laps the clock between phases
+## into phase_usec, so a probe can say where a unit's time goes. Static so the figures sum across layers.
+enum Phase { CANDIDATE, LAND, ZONE, SLOPE, TRANSFORM, UPLOAD, COUNT }
+const PHASE_NAMES: Array[String] = ["candidate", "land", "zone", "slope", "transform", "upload"]
+static var profile: bool = false
+static var phase_usec: PackedInt64Array = PackedInt64Array()
+static var _lap_t: int = 0
 
 var _patch: FastNoiseLite
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+# The fill in progress: candidates this cell draws and how many have been drawn. Only one cell is ever
+# part-way through (Grass._partial_slot), so one cursor and the layer's RNG hold exactly one fill.
+var _candidates: int = 0
+var _cursor: int = 0
 
 
 static func from_dict(d: Dictionary, seed_v: int, index: int) -> GrassLayer:
@@ -164,18 +178,50 @@ func set_wind(strength: float, direction: Vector2, speed: float, ripple: float) 
 
 ## Writes this layer's instances for one cell into `mmi` and their world origins into `out` (sized
 ## max_per_cell by the caller); returns how many were placed. `filter` is (x, z) -> float density
-## multiplier and `exact_slope` is (x, z) -> degrees, asked only for borderline candidates.
+## multiplier and `exact_slope` is (x, z) -> degrees, asked only for borderline candidates. One call does
+## the whole cell; Grass fills in budgeted steps through begin() and step() and ends in the same place.
 func fill(key: Vector2i, index: int, seed_v: int, cell: GrassCell, mmi: MultiMeshInstance3D, out: PackedVector3Array, filter: Callable, exact_slope: Callable) -> int:
+	begin(key, index, seed_v, cell)
+	step(cell, mmi, out, filter, exact_slope, 0)
+	return placed
+
+
+## Starts filling `key`'s cell: seeds the RNG from the key and layer index and sizes the candidate pool.
+## `cell` must already be prepared for `key`. Nothing is written until step().
+func begin(key: Vector2i, index: int, seed_v: int, cell: GrassCell) -> void:
 	_rng.seed = hash(Vector3i(key.x, key.y, index)) ^ seed_v
-	var mm: MultiMesh = mmi.multimesh
 	var zoned: bool = zone_channel != "" and cell.zones != null
-	var tinted: bool = kind in TINTED_KINDS
 	# A tall or flower layer draws nothing in a cell whose channel is zero everywhere: no candidates, no cost.
 	var skip: bool = zoned and ((zone_channel == "tall" and cell.zone_tall_max <= 0.0) or (zone_channel == "flowers" and cell.zone_flowers_max <= 0.0))
 	var pool: float = density * (zone_max if zoned and zone_channel == "grass" else 1.0) * cell.size * cell.size
-	var candidates: int = 0 if skip else mini(max_per_cell, ceili(pool))
-	var placed: int = 0
-	for _c: int in candidates:
+	_candidates = 0 if skip else mini(max_per_cell, ceili(pool))
+	_cursor = 0
+	placed = 0
+
+
+## Candidates drawn so far of the cell begun; `step` resumes from here.
+func cursor() -> int:
+	return _cursor
+
+
+## Candidates the cell begun will draw in all.
+func candidates() -> int:
+	return _candidates
+
+
+## Draws up to `max_candidates` more candidates (0: all that remain) of the cell begun with begin(),
+## placing the accepted ones from `placed` on; returns true once the cell is done, when the MultiMesh is
+## shown with every placed instance. Candidates are drawn in one fixed order from one RNG stream, so any
+## split into steps places exactly what one call would (W8-G2): the budget bounds a step, never the world.
+func step(cell: GrassCell, mmi: MultiMeshInstance3D, out: PackedVector3Array, filter: Callable, exact_slope: Callable, max_candidates: int = 0) -> bool:
+	var mm: MultiMesh = mmi.multimesh
+	var zoned: bool = zone_channel != "" and cell.zones != null
+	var tinted: bool = kind in TINTED_KINDS
+	var stop: int = _candidates if max_candidates <= 0 else mini(_candidates, _cursor + max_candidates)
+	var prof: bool = profile
+	if prof:
+		_lap_t = Time.get_ticks_usec()
+	for _c: int in stop - _cursor:
 		# Every draw happens before any early-out so the RNG stream stays aligned whatever is rejected.
 		var x: float = cell.origin.x + _rng.randf() * cell.size
 		var z: float = cell.origin.y + _rng.randf() * cell.size
@@ -189,6 +235,8 @@ func fill(key: Vector2i, index: int, seed_v: int, cell: GrassCell, mmi: MultiMes
 		var n: Vector3 = cell.normal(x, z)
 		var slope: float = GrassCell.slope_deg(n)
 		var d: float = GrassLattice.density_at(slope, cell.height(x, z), cell.water_level, max_slope)
+		if prof:
+			_lap(Phase.CANDIDATE)
 		if d <= 0.0:
 			continue
 		d *= clampf(1.0 + hollow * cell.hollow, 0.15, 2.5)
@@ -198,6 +246,8 @@ func fill(key: Vector2i, index: int, seed_v: int, cell: GrassCell, mmi: MultiMes
 			d *= lerpf(1.0, cluster_outside, smoothstep(cluster_radius, cluster_radius + cluster_falloff, cell.nearest_cluster(x, z)))
 		if filter.is_valid():
 			d *= float(filter.call(x, z))
+		if prof:
+			_lap(Phase.LAND)
 		if zoned:
 			cell.zone_at(x, z)
 			match zone_channel:
@@ -207,26 +257,49 @@ func fill(key: Vector2i, index: int, seed_v: int, cell: GrassCell, mmi: MultiMes
 					d *= cell.zone_tall
 				"flowers":
 					d *= cell.zone_flowers
+		if prof:
+			_lap(Phase.ZONE)
 		if roll >= d:
 			continue
 		# The grid slope is a 3 m average; near the limit ask the heightfield exactly so the probe's
 		# "nothing above max_slope" holds to the degree.
 		if slope > max_slope - EXACT_SLOPE_MARGIN and exact_slope.is_valid() and float(exact_slope.call(x, z)) > max_slope:
+			if prof:
+				_lap(Phase.SLOPE)
 			continue
+		if prof:
+			_lap(Phase.SLOPE)
 		if zoned:
 			h *= cell.zone_height
 		var y: float = float(cell.height_sampler.call(x, z)) - sink * s
 		var basis: Basis = GroundPlacement.aligned_basis(n, yaw, align, 1.0) * Basis.from_scale(Vector3(s, h, s))
-		mm.set_instance_transform(placed, Transform3D(basis, Vector3(x, y, z)) * local)
+		var xform: Transform3D = Transform3D(basis, Vector3(x, y, z)) * local
+		if prof:
+			_lap(Phase.TRANSFORM)
+		mm.set_instance_transform(placed, xform)
 		if tinted:
 			_tint(mm, placed, zoned, cell, bright, dry, phase)
 		else:
 			mm.set_instance_custom_data(placed, Color(bright, dry, phase, 1.0))
+		if prof:
+			_lap(Phase.UPLOAD)
 		out[placed] = Vector3(x, y, z)
 		placed += 1
+	_cursor = stop
+	if _cursor < _candidates:
+		return false
 	mm.visible_instance_count = placed
 	mmi.visible = placed > 0
-	return placed
+	return true
+
+
+static func _lap(phase: int) -> void:
+	var now: int = Time.get_ticks_usec()
+	if phase_usec.size() < Phase.COUNT:
+		phase_usec.resize(Phase.COUNT)
+		phase_usec.fill(0)
+	phase_usec[phase] += now - _lap_t
+	_lap_t = now
 
 
 ## Instance colour = the tip colour; custom data = the root as a fraction of the tip, and the wind phase.
@@ -237,20 +310,21 @@ func _tint(mm: MultiMesh, i: int, zoned: bool, cell: GrassCell, bright: float, d
 	if kind == "pebble":
 		last_tint = Color(shade, shade, shade, 1.0)
 		last_custom = Color(1.0, 1.0, 1.0, phase)
-		mm.set_instance_color(i, last_tint)
-		mm.set_instance_custom_data(i, last_custom)
-		return
-	if zoned:
-		cell.zone_palette()
-	var root: Color = cell.zone_root if zoned else root_color
-	var tip: Color = cell.zone_tip if zoned else tip_color
-	if kind == "flower":
-		tip = colors[int(phase * float(colors.size())) % colors.size()]
-	var drift: Color = Color.WHITE.lerp(dry_tint, dry * dry_amount) * shade
-	root = root * drift
-	tip = tip * drift
-	last_tint = Color(tip.r, tip.g, tip.b, 1.0)
-	last_custom = Color(root.r / maxf(tip.r, 0.001), root.g / maxf(tip.g, 0.001), root.b / maxf(tip.b, 0.001), phase)
+	else:
+		if zoned:
+			cell.zone_palette()
+		var root: Color = cell.zone_root if zoned else root_color
+		var tip: Color = cell.zone_tip if zoned else tip_color
+		if kind == "flower":
+			tip = colors[int(phase * float(colors.size())) % colors.size()]
+		var drift: Color = Color.WHITE.lerp(dry_tint, dry * dry_amount) * shade
+		root = root * drift
+		tip = tip * drift
+		last_tint = Color(tip.r, tip.g, tip.b, 1.0)
+		last_custom = Color(root.r / maxf(tip.r, 0.001), root.g / maxf(tip.g, 0.001), root.b / maxf(tip.b, 0.001), phase)
+	# The colour maths above is building, not uploading: profiled with the transform.
+	if profile:
+		_lap(Phase.TRANSFORM)
 	mm.set_instance_color(i, last_tint)
 	mm.set_instance_custom_data(i, last_custom)
 

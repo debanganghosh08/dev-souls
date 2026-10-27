@@ -15,6 +15,9 @@ const PROBE_MAX_FRAMES := 1500
 const SPRINT_FRAMES := 1500
 const SPRINT_FPS := 60.0
 const SPRINT_NEAR := 30.0
+## The far band too (W8-G2): the grass layer's shader fade starts at 52 m and the far ring is thinned to a
+## quarter, so a cell still unfilled inside 50 m is the first that could ever be seen.
+const SPRINT_FAR := 50.0
 const SPRINT_FROM := Vector2(60.0, 80.0)
 const SPRINT_TOWARD := Vector2(300.0, -120.0)
 const SPAWN_LIFT := 0.6
@@ -58,6 +61,13 @@ var _probe_frames: int = 0
 var _probe_done: bool = false
 var _sprint: bool = false
 var _sprint_running: bool = false
+## `--probe-phases` (W8-G2): profile every grass layer's fill phases through the sprint and print them.
+## Its clock reads inflate the cost figures, so it is a separate run from a timing one.
+var _phases: bool = false
+## The probe frame on which the grass lattice first settled (every cell filled), -1 until it has: a sprint
+## waits for it, so the sprint measures running into new grass, not the tail of the spawn fill.
+var _settle_frame: int = -1
+var _sprint_max_unfilled_far: int = 0
 var _sprint_frame: int = 0
 var _sprint_max_unfilled: int = 0
 var _sprint_unfilled_frames: int = 0
@@ -91,6 +101,7 @@ func _ready() -> void:
 		_game.state = _game.State.PLAYING
 		_game.set_respawn(&"vale", _spawn)
 	_sprint = OS.get_cmdline_user_args().has("--probe-sprint") and get_tree().current_scene == self
+	_phases = _sprint and OS.get_cmdline_user_args().has("--probe-phases")
 	_probe = (OS.get_cmdline_user_args().has("--probe") and get_tree().current_scene == self) or _sprint
 
 
@@ -216,7 +227,13 @@ func _physics_process(_delta: float) -> void:
 	if not _probe or _probe_done:
 		return
 	_probe_frames += 1
-	var ready: bool = _terrain.is_built() and _probe_frames >= PROBE_SETTLE_FRAMES
+	if _settle_frame < 0:
+		var g: Dictionary = _grass.stats()
+		if int(g["cells"]) > 0 and int(g["pending"]) == 0:
+			_settle_frame = _probe_frames
+	# Since W8-G2 the probe also waits (to PROBE_MAX_FRAMES) for the grass lattice to settle, and reports
+	# how long that took, instead of printing a snapshot of the spawn fill still in progress.
+	var ready: bool = _terrain.is_built() and _probe_frames >= PROBE_SETTLE_FRAMES and _settle_frame >= 0
 	if not ready and _probe_frames < PROBE_MAX_FRAMES:
 		return
 	# The sprint runs in _process, one simulated frame per process frame, and reports when it has run.
@@ -277,22 +294,34 @@ func _print_probe() -> void:
 	var grass: Dictionary = _grass.stats()
 	var audit: Dictionary = _grass.audit(hf)
 	var per_layer: Dictionary = grass["per_layer"]
-	print("PROBE grass cells=%d instances=%d blade_verts=%d underwater=%d steep=%d floating=%d pending=%d layers=%d pool=%d tall=%d flowers=%d zones=%s" % [
+	print("PROBE grass cells=%d instances=%d blade_verts=%d underwater=%d steep=%d floating=%d pending=%d layers=%d pool=%d tall=%d flowers=%d zones=%s settle_frames=%d" % [
 		grass["cells"], grass["instances"], grass["blade_verts"], audit["underwater"], audit["steep"], audit["floating"],
-		grass["pending"], grass["layers"], grass["pool"], per_layer.get("tall_grass", 0), per_layer.get("wildflowers", 0), grass["zones"],
+		grass["pending"], grass["layers"], grass["pool"], per_layer.get("tall_grass", 0), per_layer.get("wildflowers", 0), grass["zones"], _settle_frame,
 	])
 	# CPU time only: headless has no renderer, so this says nothing about draw cost. terrain_build_ms is the
 	# wall-clock of the budgeted build across frames; the other _ms figures are what the CPU actually spent.
-	print("PROBE cost grass_fill_frames=%d grass_fill_cells=%d grass_fill_mean_ms=%.3f grass_fill_worst_ms=%.3f terrain_build_ms=%d terrain_build_frames=%d terrain_cpu_ms=%.1f terrain_sample_ms=%.1f terrain_mesh_ms=%.1f terrain_collision_ms=%.1f" % [
-		grass["fill_frames"], grass["fill_cells"], grass["fill_mean_ms"], grass["fill_worst_ms"],
+	print("PROBE cost grass_fill_frames=%d grass_fill_cells=%d grass_fill_mean_ms=%.3f grass_fill_p95_ms=%.1f grass_fill_worst_ms=%.3f grass_fill_over_4ms=%d grass_fill_over_8ms=%d grass_fill_over_16ms=%d grass_fill_steps=%d grass_fill_worst_unit_ms=%.3f grass_fill_worst_unit_layer=%s grass_fill_prepare_ms=%.1f grass_thin_count=%d grass_thin_total_ms=%.1f grass_thin_worst_ms=%.3f terrain_build_ms=%d terrain_build_frames=%d terrain_cpu_ms=%.1f terrain_sample_ms=%.1f terrain_mesh_ms=%.1f terrain_collision_ms=%.1f" % [
+		grass["fill_frames"], grass["fill_cells"], grass["fill_mean_ms"], grass["fill_p95_ms"], grass["fill_worst_ms"],
+		grass["fill_over_4ms"], grass["fill_over_8ms"], grass["fill_over_16ms"], grass["fill_steps"],
+		grass["fill_worst_unit_ms"], grass["fill_worst_unit_layer"], grass["fill_prepare_ms"],
+		grass["thin_count"], grass["thin_total_ms"], grass["thin_worst_ms"],
 		stats["build_ms"], stats["build_frames"], stats["build_cpu_ms"], stats["sample_ms"], stats["mesh_ms"], stats["collision_ms"],
 	])
+	# Where a fill's time goes, per candidate phase, summed over every layer of the sprint (--probe-phases).
+	if _phases and GrassLayer.phase_usec.size() >= GrassLayer.Phase.COUNT:
+		var parts: PackedStringArray = PackedStringArray()
+		var total: float = float(grass["fill_prepare_ms"])
+		for k: int in GrassLayer.Phase.COUNT:
+			parts.append("%s_ms=%.1f" % [GrassLayer.PHASE_NAMES[k], float(GrassLayer.phase_usec[k]) / 1000.0])
+			total += float(GrassLayer.phase_usec[k]) / 1000.0
+		print("PROBE phase prepare_ms=%.1f %s profiled_ms=%.1f" % [grass["fill_prepare_ms"], " ".join(parts), total])
 	# In a --probe-sprint run the fill counters were zeroed when the sprint began, so the cost line above and
 	# this one both describe the sprint alone, not the first fill around the spawn.
 	if _sprint:
-		print("PROBE sprint frames=%d speed=%.1f distance=%.0f max_unfilled_30m=%d frames_with_unfilled=%d settled_before=%s cells_filled=%d fill_frames=%d fill_mean_ms=%.3f fill_worst_ms=%.3f" % [
+		print("PROBE sprint frames=%d speed=%.1f distance=%.0f max_unfilled_30m=%d frames_with_unfilled=%d max_unfilled_50m=%d settled_before=%s settle_frames=%d cells_filled=%d fill_frames=%d fill_mean_ms=%.3f fill_p95_ms=%.1f fill_worst_ms=%.3f fill_over_4ms=%d fill_over_8ms=%d fill_over_16ms=%d" % [
 			_sprint_frame, _player.sprint_speed, float(_sprint_frame) * _player.sprint_speed / SPRINT_FPS, _sprint_max_unfilled,
-			_sprint_unfilled_frames, _sprint_settled, grass["fill_cells"], grass["fill_frames"], grass["fill_mean_ms"], grass["fill_worst_ms"],
+			_sprint_unfilled_frames, _sprint_max_unfilled_far, _sprint_settled, _settle_frame, grass["fill_cells"], grass["fill_frames"], grass["fill_mean_ms"], grass["fill_p95_ms"], grass["fill_worst_ms"],
+			grass["fill_over_4ms"], grass["fill_over_8ms"], grass["fill_over_16ms"],
 		])
 	var fixed: int = 0
 	for site: Dictionary in SiteRegistry.load_area("vale"):
@@ -311,7 +340,18 @@ func _begin_sprint() -> void:
 	_sprint_running = true
 	_sprint_settled = int(_grass.stats()["pending"]) == 0
 	_grass.set_process(false)
+	# The settled lattice round the spawn, before a single sprint frame: the one live-scene snapshot that
+	# is the same whatever the schedule, so a scheduling change can show it changed nothing (W8-G2).
+	var g: Dictionary = _grass.stats()
+	var per_layer: Dictionary = g["per_layer"]
+	print("PROBE grass_settled cells=%d instances=%d blade_verts=%d pending=%d tall=%d flowers=%d settle_frames=%d" % [
+		g["cells"], g["instances"], g["blade_verts"], g["pending"], per_layer.get("tall_grass", 0), per_layer.get("wildflowers", 0), _settle_frame,
+	])
 	_grass.reset_cost_counters()
+	if _phases:
+		GrassLayer.profile = true
+		GrassLayer.phase_usec.resize(GrassLayer.Phase.COUNT)
+		GrassLayer.phase_usec.fill(0)
 
 
 # One simulated 60 fps frame of sprinting: place the player on the line, step the lattice once, and count
@@ -326,6 +366,7 @@ func _sprint_step() -> void:
 	_grass.step(p)
 	var unfilled: int = _grass.unfilled_within(p, SPRINT_NEAR)
 	_sprint_max_unfilled = maxi(_sprint_max_unfilled, unfilled)
+	_sprint_max_unfilled_far = maxi(_sprint_max_unfilled_far, _grass.unfilled_within(p, SPRINT_FAR))
 	if unfilled > 0:
 		_sprint_unfilled_frames += 1
 

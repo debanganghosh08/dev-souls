@@ -28,13 +28,24 @@ const THIN_MOVE := 2.0
 @export var seed_value: int = 20261024
 ## Fraction of radius inside which every placed instance is shown; density thins from there to the edge.
 @export var near_fraction: float = 0.45
-## A frame fills layers until this much CPU time has gone to them: always one layer of one cell, then
-## more only while the budget lasts, the way Terrain spends build_budget_ms. W6-04 measured a whole cell at
+## A frame fills until this much CPU time has gone to it: always one unit of work, then more only while
+## the budget lasts, the way Terrain spends build_budget_ms. W6-04 measured a whole cell at
 ## about 1.2 ms on the lead's machine; W8-G's zoned cells are about 1.7x that and the unit became a layer so
 ## the worst frame stays near one grass layer whether the player walks or sprints. fill_cells_per_frame
-## caps how many cells may start in a frame regardless.
+## caps how many cells may start in a frame regardless. W8-G2 measured a dense cell's grass layer alone
+## at 4.0-4.6 ms idle (240 candidates), four times a budget that is checked only between units, so a
+## unit is now a step of at most fill_step_candidates candidates of one layer (0: a whole layer): the
+## overrun past the budget is one step (32 candidates: about 0.6 ms), and the world built is the same
+## whatever the step (tests/test_grass_budget.gd). Smaller steps cost nothing per candidate, only one
+## clock read per step; what they do cost is the first fill at the spawn, which takes more frames.
+## first_fill_budget_ms is spent instead until the lattice has settled once after rebuild(): the fill
+## round the spawn is a load, not play, and the old schedule overran to 2.3 ms a frame there anyway
+## (p95 6.2, worst 11 ms, measured W8-G2); 2 ms plus one step keeps the same throughput at a third
+## of the worst frame. After that first settle the play budget rules, cell crossings included.
 @export var fill_budget_ms: float = 1.0
+@export var first_fill_budget_ms: float = 2.0
 @export var fill_cells_per_frame: int = 3
+@export var fill_step_candidates: int = 32
 @export var auto_build: bool = false
 
 var cluster_points: PackedVector3Array = PackedVector3Array()
@@ -64,12 +75,32 @@ var _density_filter: Callable = Callable()
 var _water: float = -INF
 var _cluster_reach: float = 0.0
 var _built: bool = false
+# True from rebuild() until the lattice first has nothing pending: the spawn fill, on its own budget.
+var _first_fill: bool = true
 # CPU cost of _fill_pending in microseconds over every frame that filled at least one cell: two clock reads
-# and three integer adds on a working frame, nothing per cell or per blade. Read through stats().
+# and a few integer adds on a working frame, one clock read per unit, nothing per blade. Read through
+# stats(). The histogram (HIST_USEC-wide buckets, the last one open-ended) gives the 95th percentile and
+# the counts over 4, 8 and 16 ms without keeping a sample per frame.
+const HIST_USEC := 100
+const HIST_BUCKETS := 1000
 var _fill_usec: int = 0
 var _fill_worst_usec: int = 0
 var _fill_frames: int = 0
 var _fill_cells: int = 0
+var _fill_steps: int = 0
+var _fill_hist: PackedInt32Array = PackedInt32Array()
+var _fill_over_4: int = 0
+var _fill_over_8: int = 0
+var _fill_over_16: int = 0
+# The dearest single unit of work (one step of one layer, or a cell's prepare) and the layer it was in
+# (-1: prepare): whether a unit alone can blow the budget is the question W8-G2 had to answer.
+var _fill_worst_unit_usec: int = 0
+var _fill_worst_unit_layer: int = -1
+var _fill_prepare_usec: int = 0
+# The re-thinning pass over every held cell: outside the fill timer, but a frame pays for it too.
+var _thin_usec: int = 0
+var _thin_worst_usec: int = 0
+var _thin_count: int = 0
 # The cell whose layers are still being filled across frames (slot, next layer), or -1 between cells.
 var _partial_slot: int = -1
 var _partial_layer: int = 0
@@ -152,12 +183,10 @@ func rebuild(data: Dictionary = {}) -> void:
 	_free_count = pool
 	_centre = NO_CELL
 	_last_thin = Vector3(INF, INF, INF)
-	_fill_usec = 0
-	_fill_worst_usec = 0
-	_fill_frames = 0
-	_fill_cells = 0
+	reset_cost_counters()
 	_partial_slot = -1
 	_partial_layer = 0
+	_first_fill = true
 	_built = true
 
 
@@ -201,6 +230,18 @@ func reset_cost_counters() -> void:
 	_fill_worst_usec = 0
 	_fill_frames = 0
 	_fill_cells = 0
+	_fill_steps = 0
+	_fill_over_4 = 0
+	_fill_over_8 = 0
+	_fill_over_16 = 0
+	_fill_worst_unit_usec = 0
+	_fill_worst_unit_layer = -1
+	_fill_prepare_usec = 0
+	_thin_usec = 0
+	_thin_worst_usec = 0
+	_thin_count = 0
+	_fill_hist.resize(HIST_BUCKETS)
+	_fill_hist.fill(0)
 
 
 func _process(_delta: float) -> void:
@@ -217,9 +258,14 @@ func step(p: Vector3) -> void:
 	var centre: Vector2i = GrassLattice.cell_of(p.x, p.z, cell_size)
 	if centre != _centre:
 		_relayout(centre)
-	_fill_pending()
+	_fill_pending(p)
 	if p.distance_squared_to(_last_thin) > THIN_MOVE * THIN_MOVE:
+		var t0: int = Time.get_ticks_usec()
 		_update_thinning(p)
+		var dt: int = Time.get_ticks_usec() - t0
+		_thin_usec += dt
+		_thin_worst_usec = maxi(_thin_worst_usec, dt)
+		_thin_count += 1
 
 
 # The only allocation on a cell crossing: the wanted-set and its diff. That is once per cell_size metres
@@ -253,19 +299,26 @@ func _release(key: Vector2i) -> void:
 		_partial_slot = -1
 
 
-# The unit of work is one layer of one cell, not a whole cell (W8-G): always one layer, then more while
-# the budget lasts, with fill_cells_per_frame capping how many cells may start in a frame. A zoned cell
-# holds about 1.7x the instances of the old one, and measured as a whole it cost 6 ms a working frame
-# with 14-40 ms spikes on the owner's laptop; a layer is at most the grass layer, roughly half of that.
-# A cell part-way through keeps _cell prepared between frames and counts as unfilled until its last layer.
-func _fill_pending() -> void:
+# The unit of work is one step of one layer of one cell (W8-G made it a layer, W8-G2 a step of at most
+# fill_step_candidates candidates): always one unit, then more while the budget lasts, with
+# fill_cells_per_frame capping how many cells may start in a frame. A frame overruns the budget by at
+# most the unit that crossed it, so the step size is what bounds the worst frame; a cell's prepare (its
+# height and zone grid) is its own unit before the first layer. A cell part-way through keeps _cell
+# prepared and the layer's cursor between frames, and counts as unfilled until its last layer is done.
+# A layer is thinned for the player at `p` the moment it completes; the whole-lattice pass used to
+# rerun on every working frame (W8-G2 measured it at 0.6-0.8 ms, worst 1.4-3.7 ms, as dear as a step)
+# and now runs only when the player has moved THIN_MOVE.
+func _fill_pending(p: Vector3) -> void:
 	if _pending.is_empty() and _partial_slot < 0:
+		_first_fill = false
 		return
 	var t0: int = Time.get_ticks_usec()
-	var deadline: int = t0 + int(maxf(0.0, fill_budget_ms) * 1000.0)
+	var budget_ms: float = first_fill_budget_ms if _first_fill else fill_budget_ms
+	var deadline: int = t0 + int(maxf(0.0, budget_ms) * 1000.0)
 	var starts: int = maxi(1, fill_cells_per_frame)
 	var completed: int = 0
 	var worked: bool = false
+	var unit_t0: int = t0
 	while true:
 		if _partial_slot < 0:
 			if starts <= 0 or _pending.is_empty():
@@ -281,19 +334,38 @@ func _fill_pending() -> void:
 			_cell.prepare(key, cell_size, _height_sampler, _water, cluster_points, _cluster_reach, zones)
 			_partial_slot = slot
 			_partial_layer = 0
+			worked = true
 			if _layers.is_empty():
 				_partial_slot = -1
 				completed += 1
-				continue
+			else:
+				_layers[0].begin(key, 0, seed_value, _cell)
+			var prepared: int = Time.get_ticks_usec()
+			_fill_prepare_usec += prepared - unit_t0
+			_note_unit(prepared - unit_t0, -1)
+			unit_t0 = prepared
+			if prepared >= deadline:
+				break
+			continue
 		var l: int = _partial_layer
 		var i: int = _partial_slot * _layers.size() + l
-		_slot_counts[i] = _layers[l].fill(_slot_key[_partial_slot], l, seed_value, _cell, _slots[_partial_slot][l], _slot_positions[i], _density_filter, _exact_slope)
+		var layer: GrassLayer = _layers[l]
+		var done: bool = layer.step(_cell, _slots[_partial_slot][l], _slot_positions[i], _density_filter, _exact_slope, fill_step_candidates)
 		worked = true
-		_partial_layer += 1
-		if _partial_layer >= _layers.size():
-			_partial_slot = -1
-			completed += 1
-		if Time.get_ticks_usec() >= deadline:
+		_fill_steps += 1
+		if done:
+			_slot_counts[i] = layer.placed
+			_thin_layer(_partial_slot, l, p)
+			_partial_layer += 1
+			if _partial_layer >= _layers.size():
+				_partial_slot = -1
+				completed += 1
+			else:
+				_layers[_partial_layer].begin(_slot_key[_partial_slot], _partial_layer, seed_value, _cell)
+		var now: int = Time.get_ticks_usec()
+		_note_unit(now - unit_t0, l)
+		unit_t0 = now
+		if now >= deadline:
 			break
 	if worked:
 		var dt: int = Time.get_ticks_usec() - t0
@@ -301,7 +373,39 @@ func _fill_pending() -> void:
 		_fill_worst_usec = maxi(_fill_worst_usec, dt)
 		_fill_frames += 1
 		_fill_cells += completed
-		_last_thin = Vector3(INF, INF, INF)
+		_fill_hist[mini(dt / HIST_USEC, HIST_BUCKETS - 1)] += 1
+		if dt > 4000:
+			_fill_over_4 += 1
+		if dt > 8000:
+			_fill_over_8 += 1
+		if dt > 16000:
+			_fill_over_16 += 1
+
+
+func _thin_layer(slot: int, l: int, p: Vector3) -> void:
+	var d: float = Vector2(p.x, p.z).distance_to(GrassLattice.cell_centre(_slot_key[slot], cell_size))
+	var count: int = _slot_counts[slot * _layers.size() + l]
+	_slots[slot][l].multimesh.visible_instance_count = int(float(count) * GrassLattice.thin_factor(d, radius, radius * near_fraction, _layers[l].far_fraction))
+
+
+func _note_unit(usec: int, layer: int) -> void:
+	if usec > _fill_worst_unit_usec:
+		_fill_worst_unit_usec = usec
+		_fill_worst_unit_layer = layer
+
+
+## The working-frame cost under which `fraction` (0..1) of working frames fell, to the histogram's
+## resolution (the upper edge of the bucket, so never flattering); 0 before any frame has worked.
+func fill_percentile_ms(fraction: float) -> float:
+	if _fill_frames <= 0 or _fill_hist.size() < HIST_BUCKETS:
+		return 0.0
+	var need: int = ceili(clampf(fraction, 0.0, 1.0) * float(_fill_frames))
+	var seen: int = 0
+	for b: int in HIST_BUCKETS:
+		seen += _fill_hist[b]
+		if seen >= need:
+			return float((b + 1) * HIST_USEC) / 1000.0
+	return float(_fill_worst_usec) / 1000.0
 
 
 func _update_thinning(p: Vector3) -> void:
@@ -338,7 +442,12 @@ func stats() -> Dictionary:
 	return {"cells": _cells.size(), "pool": _slots.size(), "pending": _pending.size() + (1 if _partial_slot >= 0 else 0), "instances": instance_count(),
 		"blade_verts": blade_verts, "layers": _layers.size(), "per_layer": per_layer, "zones": zones != null,
 		"fill_frames": _fill_frames, "fill_cells": _fill_cells, "fill_total_ms": float(_fill_usec) / 1000.0,
-		"fill_mean_ms": float(_fill_usec) / 1000.0 / float(maxi(1, _fill_frames)), "fill_worst_ms": float(_fill_worst_usec) / 1000.0}
+		"fill_mean_ms": float(_fill_usec) / 1000.0 / float(maxi(1, _fill_frames)), "fill_worst_ms": float(_fill_worst_usec) / 1000.0,
+		"fill_p95_ms": fill_percentile_ms(0.95), "fill_over_4ms": _fill_over_4, "fill_over_8ms": _fill_over_8, "fill_over_16ms": _fill_over_16,
+		"fill_steps": _fill_steps, "fill_worst_unit_ms": float(_fill_worst_unit_usec) / 1000.0,
+		"fill_worst_unit_layer": _layers[_fill_worst_unit_layer].name if _fill_worst_unit_layer >= 0 and _fill_worst_unit_layer < _layers.size() else "prepare",
+		"fill_prepare_ms": float(_fill_prepare_usec) / 1000.0,
+		"thin_count": _thin_count, "thin_total_ms": float(_thin_usec) / 1000.0, "thin_worst_ms": float(_thin_worst_usec) / 1000.0}
 
 
 ## Probe-time copy of every placed instance's world origin, so a test can compare two lattices exactly.

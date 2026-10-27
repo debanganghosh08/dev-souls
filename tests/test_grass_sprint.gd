@@ -41,7 +41,26 @@ func test_no_lattice_cell_within_30_m_is_unfilled_while_sprinting() -> void:
 	assert_true(float(line["distance"]) >= 170.0, "the player covered a long straight path (%s m)" % line["distance"])
 	assert_true(int(line["cells_filled"]) >= 100, "the sprint crossed cells and refilled the leading ring (%s cells)" % line["cells_filled"])
 	assert_eq(int(line["max_unfilled_30m"]), 0, "at sprint speed no lattice cell within 30 m was ever unfilled (%s frames had one)" % line["frames_with_unfilled"])
+	assert_eq(int(line["max_unfilled_50m"]), 0, "nor within 50 m, where the shader fade begins (W8-G2)")
 	assert_true(float(line["fill_worst_ms"]) >= float(line["fill_mean_ms"]), "the worst sprint frame is at least the mean")
+	assert_true(int(line["settle_frames"]) > 0, "the probe recorded when the spawn fill settled (%s)" % line["settle_frames"])
+
+
+func test_sprint_fill_frames_stay_short_even_on_a_busy_machine() -> void:
+	# W8-G2 split the fill into steps so no unit can outrun the budget by more than about 0.6 ms: idle,
+	# this laptop measures p95 1.5-1.8 ms and a worst frame of 2.1-2.9 ms in eight runs of ten. The other
+	# two held one frame of 4.8 and 7.4 ms, and a suite run once saw 36.5 ms: a single step stretched
+	# ten to sixty times, which is the OS taking the thread, not the fill. So the worst frame is not
+	# asserted at all: the bounds are the 95th percentile (twice the 3 ms target) and small fractions of
+	# working frames over 4 and 8 ms. They are honesty about noise, not the target; the structural
+	# guarantee (a unit is at most fill_step_candidates candidates) is tests/test_grass_budget.gd's.
+	var line: Dictionary = _probe_line(_text, "PROBE sprint ")
+	assert_true(not line.is_empty(), "probe printed the sprint line")
+	if line.is_empty():
+		return
+	assert_true(float(line["fill_p95_ms"]) <= 6.0, "95 %% of working sprint frames cost at most 6 ms (p95 %s ms, mean %s ms)" % [line["fill_p95_ms"], line["fill_mean_ms"]])
+	assert_true(int(line["fill_over_4ms"]) <= int(line["fill_frames"]) / 20, "at most one working frame in twenty went over 4 ms (%s of %s)" % [line["fill_over_4ms"], line["fill_frames"]])
+	assert_true(int(line["fill_over_8ms"]) <= 3, "at most three working frames went over 8 ms (%s, worst %s ms)" % [line["fill_over_8ms"], line["fill_worst_ms"]])
 
 
 func test_the_castle_hill_grows_tall_grass_in_the_live_scene() -> void:
@@ -54,8 +73,11 @@ func test_the_castle_hill_grows_tall_grass_in_the_live_scene() -> void:
 	assert_eq(grass["zones"], "true", "the vale's grass is zoned")
 	assert_true(int(grass["tall"]) > 300, "tall grass stands on the castle hill (%s instances)" % grass["tall"])
 	assert_true(int(grass["instances"]) > 8000, "the hill is covered, not bare (%s instances)" % grass["instances"])
-	# The player is still moving when the sprint stops, so at most the cell being filled is outstanding.
-	assert_true(int(grass["pending"]) <= 1, "at most one cell was mid-fill when the sprint ended (%s pending)" % grass["pending"])
+	# The player is still moving when the sprint stops, so the tail of the latest crossing's far ring may
+	# still be outstanding: since W8-G2 a frame spends its 1 ms budget and no more, so that tail is a few
+	# cells 50-70 m out, thinned to a quarter and sinking in the shader fade. The sprint line's
+	# max_unfilled_30m and max_unfilled_50m say whether any of them was ever within sight.
+	assert_true(int(grass["pending"]) <= 8, "only the far ring's tail was mid-fill when the sprint ended (%s pending)" % grass["pending"])
 	assert_eq(int(grass["floating"]), 0, "every instance sits on the heightfield")
 	assert_eq(int(grass["steep"]), 0, "nothing grows above its layer's slope limit")
 

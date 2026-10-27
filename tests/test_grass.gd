@@ -164,3 +164,48 @@ func test_fill_is_deterministic_per_cell_and_respects_water_and_slope() -> void:
 	cell.prepare(Vector2i(3, -2), CELL, flat, WATER, PackedVector3Array(), 0.0)
 	assert_eq(layer.fill(Vector2i(3, -2), 0, 20261024, cell, mmi, out, fenced, Callable()), 0, "a zero density filter grows nothing")
 	mmi.free()
+
+
+func test_a_layer_filled_in_small_steps_places_exactly_what_one_call_does() -> void:
+	# W8-G2: Grass fills a layer in steps of a few candidates so it can check its budget between them.
+	# The RNG stream is drawn in one fixed order whatever the split, so the result is the same to the bit.
+	var layer: GrassLayer = GrassLayer.from_dict(LAYER, 20261024, 0)
+	var mmi: MultiMeshInstance3D = layer.make_instance(0)
+	var cell := GrassCell.new()
+	var out := PackedVector3Array()
+	out.resize(layer.max_per_cell)
+	var rolling: Callable = func(x: float, z: float) -> float: return 2.0 + sin(x * 0.7) * 0.8 + cos(z * 0.5) * 0.6
+	cell.prepare(Vector2i(3, -2), CELL, rolling, WATER, PackedVector3Array(), 0.0)
+	var whole: int = layer.fill(Vector2i(3, -2), 0, 20261024, cell, mmi, out, Callable(), Callable())
+	assert_true(whole > 20 and whole <= layer.max_per_cell, "rolling ground grows a crowd (%d of %d)" % [whole, layer.max_per_cell])
+	var reference: PackedVector3Array = out.slice(0, whole)
+	var reference_tint: Color = layer.last_tint
+	var reference_custom: Color = layer.last_custom
+	assert_eq(layer.cursor(), layer.candidates(), "one call draws every candidate")
+	assert_eq(layer.candidates(), mini(layer.max_per_cell, ceili(CELL * CELL)), "the candidate pool is density x area")
+	for step: int in [1, 7, 50, layer.max_per_cell - 1]:
+		out.fill(Vector3.ZERO)
+		cell.prepare(Vector2i(3, -2), CELL, rolling, WATER, PackedVector3Array(), 0.0)
+		layer.begin(Vector2i(3, -2), 0, 20261024, cell)
+		assert_eq(layer.placed, 0, "step %d: begin places nothing" % step)
+		assert_eq(layer.cursor(), 0, "step %d: begin rewinds the cursor" % step)
+		var steps: int = 0
+		var done: bool = false
+		while not done:
+			var before: int = layer.cursor()
+			done = layer.step(cell, mmi, out, Callable(), Callable(), step)
+			steps += 1
+			assert_true(layer.cursor() - before <= step and (layer.cursor() - before == step or done), "step %d: a step draws at most %d candidates and only the last draws fewer" % [step, step])
+			assert_true(steps <= layer.candidates(), "step %d: never more steps than candidates" % step)
+		assert_eq(steps, ceili(float(layer.candidates()) / float(step)), "step %d: exactly ceil(candidates / step) steps" % step)
+		assert_eq(layer.placed, whole, "step %d: the same count as one call" % step)
+		assert_eq(out.slice(0, layer.placed), reference, "step %d: the same positions as one call" % step)
+		assert_eq(layer.last_tint, reference_tint, "step %d: the same last tint as one call" % step)
+		assert_eq(layer.last_custom, reference_custom, "step %d: the same last custom data as one call" % step)
+		assert_eq(mmi.multimesh.visible_instance_count, whole, "step %d: the MultiMesh shows every placed instance once done" % step)
+	# A zero step is the whole layer in one step, which is what fill() does.
+	cell.prepare(Vector2i(3, -2), CELL, rolling, WATER, PackedVector3Array(), 0.0)
+	layer.begin(Vector2i(3, -2), 0, 20261024, cell)
+	assert_true(layer.step(cell, mmi, out, Callable(), Callable(), 0), "a zero step finishes the layer in one call")
+	assert_eq(layer.placed, whole, "a zero step places the same count")
+	mmi.free()
