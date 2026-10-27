@@ -4,7 +4,7 @@ class_name PlayerAnimator
 ## this node reads its velocity, listens to its signals, Melee's and Game's, and drives a PlayerAnimRig.
 ## Every decision (locomotion blend, foot planting, which state wins) is a static function tests can pin down.
 
-enum State { LOCOMOTION, HIT, ATTACK_LIGHT, ATTACK_HEAVY, ROLL, DEATH }
+enum State { LOCOMOTION, HIT, AIR, ATTACK_LIGHT, ATTACK_HEAVY, ROLL, DEATH }
 
 const WALK_BLEND := PlayerAnimRig.WALK_BLEND
 const RUN_BLEND := PlayerAnimRig.RUN_BLEND
@@ -22,6 +22,16 @@ const RUN_BLEND := PlayerAnimRig.RUN_BLEND
 @export var unarmed_heavy_clip: StringName = &"CharacterArmature|Kick_Right"
 @export var hit_clip: StringName = &"CharacterArmature|HitRecieve"
 @export var death_clip: StringName = &"CharacterArmature|Death"
+## The Wick has no jump, fall or land clip (its 24 clips were listed headlessly for W8-J), so the airborne pose
+## is one frame of the run cycle held still: its flight phase, where both feet are drawn up the most of any
+## upright clip (measured from the bone tracks). Pick another clip or frame here if it reads wrong in play.
+@export var air_clip: StringName = &"CharacterArmature|Run"
+@export var air_pose_time: float = 0.833
+@export_group("Airborne")
+## Seconds off the floor before a walk-off or a bump reads as airborne; a jump reads so at once.
+@export var air_delay: float = 0.15
+## Seconds the airborne pose takes to fade in and out.
+@export var air_fade: float = 0.1
 @export_group("Foot planting")
 ## Ground speed (m/s) at which each clip's feet stay planted: the foot bone's average stance speed in the
 ## clip, measured headlessly, times the Body's 0.932 scale. Playback runs at speed / clip speed.
@@ -45,6 +55,9 @@ var _heavy: bool = false
 var _speed: float = 0.0
 var _blend: float = 0.0
 var _time_scale: float = 1.0
+var _airborne: bool = false
+var _off_floor: float = 0.0
+var _air_blend: float = 0.0
 
 
 func _ready() -> void:
@@ -59,11 +72,12 @@ func _ready() -> void:
 		for clip: StringName in [idle_clip, walk_clip, run_clip]:
 			_anim.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 		_anim.stop()
-		_rig = PlayerAnimRig.build(_anim, idle_clip, walk_clip, run_clip, hit_clip, roll_clip, death_clip, _attack_clips())
+		_rig = PlayerAnimRig.build(_anim, idle_clip, walk_clip, run_clip, hit_clip, roll_clip, death_clip, air_clip, _attack_clips())
 		_rig.attach(model)
 	if _controller != null:
 		_controller.dodged.connect(_on_dodged)
 		_controller.damaged.connect(_on_damaged)
+		_controller.jumped.connect(_on_jumped)
 		# Children ready before parents: the controller's own @onready Melee ref is still null here.
 		_melee = _controller.get_node_or_null(^"Melee") as Melee
 	if _melee != null:
@@ -81,19 +95,33 @@ func _inject(game: Node) -> void:
 		_game.connect(&"respawned", _on_respawned)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if _controller == null or _rig == null:
 		return
 	_speed = Vector2(_controller.velocity.x, _controller.velocity.z).length()
 	_blend = locomotion_blend(_speed, _controller.walk_speed, _controller.sprint_speed)
 	_time_scale = PlayerAnimRig.playback_scale(_speed, _blend, walk_clip_speed, run_clip_speed, min_time_scale, max_time_scale)
 	_rig.set_locomotion(_blend, _time_scale)
+	# The controller (this node's parent) has already moved this frame, so is_on_floor() is current.
+	var on_floor: bool = _controller.is_on_floor()
+	_off_floor = 0.0 if on_floor else _off_floor + delta
+	_set_airborne(airborne_now(_airborne, on_floor, _off_floor, air_delay))
+	_air_blend = move_toward(_air_blend, 1.0 if _airborne else 0.0, delta / maxf(air_fade, 0.001))
+	_rig.set_airborne(_air_blend)
 
 
 func current_state() -> State:
 	if _rig == null:
 		return State.DEATH if _dead else State.LOCOMOTION
-	return resolve(_dead, _rolling(), _rig.is_active(PlayerAnimRig.SHOT_ATTACK), _heavy, _rig.is_active(PlayerAnimRig.SHOT_HIT), false)
+	return resolve(_dead, _rolling(), _rig.is_active(PlayerAnimRig.SHOT_ATTACK), _heavy, _rig.is_active(PlayerAnimRig.SHOT_HIT), false, _airborne)
+
+
+func is_airborne() -> bool:
+	return _airborne
+
+
+func air_blend() -> float:
+	return _air_blend
 
 
 func state_name() -> String:
@@ -121,7 +149,7 @@ func clip_count() -> int:
 
 
 func required_clips() -> Array[StringName]:
-	return [idle_clip, walk_clip, run_clip, roll_clip, light_clip, heavy_clip, hit_clip, death_clip]
+	return [idle_clip, walk_clip, run_clip, roll_clip, light_clip, heavy_clip, hit_clip, death_clip, air_clip]
 
 
 func blend_value() -> float:
@@ -150,17 +178,29 @@ static func locomotion_blend(speed_mps: float, walk_speed: float, sprint_speed: 
 
 # Which animation wins when several are wanted at once. Death is absolute. A roll overrides a swing because
 # the controller lets the player dodge mid-swing. Melee never cancels a swing, so the swing keeps showing over
-# a hit (the blow it lands is real). A hit reaction never shows during i-frames or a roll.
-static func resolve(dead: bool, rolling: bool, attacking: bool, heavy: bool, hit: bool, invulnerable: bool) -> State:
+# a hit (the blow it lands is real) and over the airborne pose (Melee does not check the floor). Being
+# airborne hides a hit reaction: a flinch in mid-air reads as a glitch. A hit reaction never shows during
+# i-frames or a roll.
+static func resolve(dead: bool, rolling: bool, attacking: bool, heavy: bool, hit: bool, invulnerable: bool, airborne: bool = false) -> State:
 	if dead:
 		return State.DEATH
 	if rolling:
 		return State.ROLL
 	if attacking:
 		return State.ATTACK_HEAVY if heavy else State.ATTACK_LIGHT
+	if airborne:
+		return State.AIR
 	if hit and not invulnerable:
 		return State.HIT
 	return State.LOCOMOTION
+
+
+# Whether the body counts as airborne this frame: never on the floor; once airborne, until the floor; otherwise
+# only after `delay` seconds off it, so a slope bump or a step-up blip never flashes the airborne pose.
+static func airborne_now(was_airborne: bool, on_floor: bool, off_floor_for: float, delay: float) -> bool:
+	if on_floor:
+		return false
+	return was_airborne or off_floor_for >= delay
 
 
 func _attack_clips() -> Array[StringName]:
@@ -189,6 +229,19 @@ func _on_dodged() -> void:
 	_rig.fire_roll(PlayerAnimRig.fit_scale(_rig.clip_length(roll_clip), _controller.dodge_duration))
 
 
+# A jump is airborne from its first frame; a walk-off waits out air_delay in _physics_process.
+func _on_jumped() -> void:
+	if _rig == null or _dead:
+		return
+	_set_airborne(true)
+
+
+func _set_airborne(airborne: bool) -> void:
+	if airborne and not _airborne and _rig != null:
+		_rig.hold_air_pose(air_pose_time)
+	_airborne = airborne
+
+
 func _on_swing_started(heavy: bool) -> void:
 	if _rig == null:
 		return
@@ -209,7 +262,7 @@ func _on_damaged(_amount: float, _from: Node) -> void:
 	if _rig == null:
 		return
 	var attacking: bool = _rig.is_active(PlayerAnimRig.SHOT_ATTACK)
-	if resolve(_dead, _rolling(), attacking, _heavy, true, _controller.is_invulnerable) != State.HIT:
+	if resolve(_dead, _rolling(), attacking, _heavy, true, _controller.is_invulnerable, _airborne) != State.HIT:
 		return
 	_rig.fire_hit()
 
@@ -223,8 +276,12 @@ func _on_player_died() -> void:
 
 func _on_respawned() -> void:
 	_dead = false
+	_airborne = false
+	_off_floor = 0.0
+	_air_blend = 0.0
 	if _rig != null:
 		_rig.set_dead(false)
+		_rig.set_airborne(0.0)
 
 
 static func _find_player(node: Node) -> AnimationPlayer:

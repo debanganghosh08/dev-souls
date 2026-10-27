@@ -3,8 +3,10 @@ class_name PlayerAnimRig
 ## Builds and drives the Wick's AnimationTree. It owns the graph and its parameter paths and knows nothing
 ## about game state. Stages, lowest to highest priority, each one overriding the stage before it:
 ##   Locomotion (BlendSpace1D: idle 0, walk 1, run 2) -> LocoScale (foot planting)
-##   -> Hit (OneShot) -> Attack (OneShot whose shot is chosen by the AttackPick transition, timed by AttackScale)
-##   -> Roll (OneShot through RollScale) -> Death (Blend2 held at 1 while dead; DeathSeek restarts the clip).
+##   -> Hit (OneShot) -> Air (Blend2 faded in while airborne, holding one frame of a clip: AirSeek picks the
+##   frame, AirScale at 0 keeps it) -> Attack (OneShot whose shot is chosen by the AttackPick transition, timed
+##   by AttackScale) -> Roll (OneShot through RollScale) -> Death (Blend2 held at 1 while dead; DeathSeek
+##   restarts the clip).
 ## Built in code rather than saved in player.tscn so a renamed clip is one export away, not a graph rewire.
 
 const SHOT_HIT := &"Hit"
@@ -18,6 +20,9 @@ const P_ATTACK_SCALE := &"parameters/AttackScale/scale"
 const P_ROLL_SCALE := &"parameters/RollScale/scale"
 const P_DEATH_BLEND := &"parameters/Death/blend_amount"
 const P_DEATH_SEEK := &"parameters/DeathSeek/seek_request"
+const P_AIR_BLEND := &"parameters/Air/blend_amount"
+const P_AIR_SEEK := &"parameters/AirSeek/seek_request"
+const P_AIR_SCALE := &"parameters/AirScale/scale"
 const FADE_IN := 0.08
 const FADE_OUT := 0.12
 const FIRE := AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
@@ -40,6 +45,7 @@ static func build(
 	hit: StringName,
 	roll: StringName,
 	death: StringName,
+	air: StringName,
 	attacks: Array[StringName],
 ) -> PlayerAnimRig:
 	var rig: PlayerAnimRig = PlayerAnimRig.new()
@@ -57,6 +63,14 @@ static func build(
 	root.connect_node(&"LocoScale", 0, &"Locomotion")
 	root.add_node(&"HitAnim", _anim(hit))
 	_add_shot(root, SHOT_HIT, &"LocoScale", &"HitAnim")
+	root.add_node(&"AirAnim", _anim(air))
+	root.add_node(&"AirScale", AnimationNodeTimeScale.new())
+	root.connect_node(&"AirScale", 0, &"AirAnim")
+	root.add_node(&"AirSeek", AnimationNodeTimeSeek.new())
+	root.connect_node(&"AirSeek", 0, &"AirScale")
+	root.add_node(&"Air", AnimationNodeBlend2.new())
+	root.connect_node(&"Air", 0, SHOT_HIT)
+	root.connect_node(&"Air", 1, &"AirSeek")
 	var pick: AnimationNodeTransition = AnimationNodeTransition.new()
 	pick.xfade_time = 0.0
 	pick.input_count = attacks.size()
@@ -68,7 +82,7 @@ static func build(
 		root.connect_node(&"AttackPick", i, node_name)
 	root.add_node(&"AttackScale", AnimationNodeTimeScale.new())
 	root.connect_node(&"AttackScale", 0, &"AttackPick")
-	_add_shot(root, SHOT_ATTACK, SHOT_HIT, &"AttackScale")
+	_add_shot(root, SHOT_ATTACK, &"Air", &"AttackScale")
 	root.add_node(&"RollAnim", _anim(roll))
 	root.add_node(&"RollScale", AnimationNodeTimeScale.new())
 	root.connect_node(&"RollScale", 0, &"RollAnim")
@@ -94,6 +108,8 @@ func attach(model_root: Node) -> void:
 	model_root.add_child(tree)
 	tree.anim_player = tree.get_path_to(_player)
 	tree.active = true
+	# The airborne pose is a held frame: a seek passes through a zero time scale, nothing else moves it.
+	tree.set(P_AIR_SCALE, 0.0)
 
 
 func set_locomotion(blend: float, time_scale: float) -> void:
@@ -114,6 +130,16 @@ func fire_attack(clip: StringName, time_scale: float) -> void:
 func fire_roll(time_scale: float) -> void:
 	tree.set(P_ROLL_SCALE, time_scale)
 	tree.set(_request[SHOT_ROLL], FIRE)
+
+
+# Seeks the airborne clip to the frame to hold; call when a spell in the air begins.
+func hold_air_pose(time: float) -> void:
+	tree.set(P_AIR_SEEK, maxf(time, 0.0))
+
+
+# 0 = locomotion shows through, 1 = the held airborne pose; the animator fades between them.
+func set_airborne(amount: float) -> void:
+	tree.set(P_AIR_BLEND, clampf(amount, 0.0, 1.0))
 
 
 # Death is a held blend, not a one-shot: a one-shot would fall back to idle and the corpse would stand up.

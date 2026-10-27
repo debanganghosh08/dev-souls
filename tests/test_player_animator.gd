@@ -56,8 +56,27 @@ func test_hit_reaction_is_suppressed_while_invulnerable_or_rolling() -> void:
 	assert_eq(PlayerAnimator.resolve(false, true, false, false, true, false), PlayerAnimator.State.ROLL, "a hit while rolling (after i-frames) keeps the roll")
 
 
+func test_airborne_sits_between_hit_and_attack() -> void:
+	assert_eq(PlayerAnimator.resolve(false, false, false, false, false, false, true), PlayerAnimator.State.AIR, "airborne alone is the airborne pose")
+	assert_eq(PlayerAnimator.resolve(false, false, false, false, true, false, true), PlayerAnimator.State.AIR, "a hit in mid-air does not flinch")
+	assert_eq(PlayerAnimator.resolve(false, false, true, false, false, false, true), PlayerAnimator.State.ATTACK_LIGHT, "a swing shows over the airborne pose")
+	assert_eq(PlayerAnimator.resolve(false, true, false, false, false, true, true), PlayerAnimator.State.ROLL, "a roll shows over the airborne pose")
+	assert_eq(PlayerAnimator.resolve(true, false, false, false, false, false, true), PlayerAnimator.State.DEATH, "death still wins")
+	assert_eq(PlayerAnimator.resolve(false, false, false, false, false, false), PlayerAnimator.State.LOCOMOTION, "the old six-argument call still reads as grounded")
+
+
+func test_airborne_needs_a_jump_or_a_real_fall_not_a_bump() -> void:
+	assert_false(PlayerAnimator.airborne_now(false, true, 0.0, 0.15), "on the floor is never airborne")
+	assert_false(PlayerAnimator.airborne_now(true, true, 1.0, 0.15), "touching down ends it at once")
+	assert_false(PlayerAnimator.airborne_now(false, false, 0.05, 0.15), "a 0.05 s bump off the floor is not airborne")
+	assert_true(PlayerAnimator.airborne_now(false, false, 0.15, 0.15), "0.15 s off the floor is a fall")
+	assert_true(PlayerAnimator.airborne_now(true, false, 0.0, 0.15), "once airborne (a jump) it stays so until the floor")
+
+
 func test_state_order_matches_priority() -> void:
 	assert_true(PlayerAnimator.State.LOCOMOTION < PlayerAnimator.State.HIT, "hit outranks locomotion")
+	assert_true(PlayerAnimator.State.HIT < PlayerAnimator.State.AIR, "airborne outranks hit")
+	assert_true(PlayerAnimator.State.AIR < PlayerAnimator.State.ATTACK_LIGHT, "attack outranks airborne")
 	assert_true(PlayerAnimator.State.HIT < PlayerAnimator.State.ATTACK_LIGHT, "attack outranks hit")
 	assert_true(PlayerAnimator.State.ATTACK_HEAVY < PlayerAnimator.State.ROLL, "roll outranks attack")
 	assert_true(PlayerAnimator.State.ROLL < PlayerAnimator.State.DEATH, "death outranks roll")
