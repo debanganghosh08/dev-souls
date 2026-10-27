@@ -1,0 +1,4 @@
+{
+	"_comment": "Small points of interest in the Ashen Vale (W8-P): wells, carts, fences, haystacks, cairns, camps, signposts. Same schema as vale_houses.json. Scenery only: loot is placed by the houses file so all item sources live in one place.",
+	"sites": []
+}

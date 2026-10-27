@@ -7,6 +7,13 @@ extends Node3D
 ## test runner never enters a tree, so _ready never fires there.
 
 @export_file("*.json") var layout_path: String = ""
+## Pieces built from one layout file are identical every time it is placed, so with this on their meshes and
+## collision shapes are built once per run and reused by every placement of that layout. Settlements turns it
+## on: twenty houses from five archetypes cost five sets of meshes, not twenty. Off by default so the castle,
+## the village and every test keep building their own exactly as before.
+@export var share_pieces: bool = false
+
+static var _shared: Dictionary = {}
 
 var _built: bool = false
 var _layout: Dictionary = {}
@@ -138,6 +145,13 @@ static func make_piece(kind: String, p: Dictionary, name: String = "") -> Dictio
 			return StructureKit.bell(_f(p, "radius", 0.35), _f(p, "h", 0.5), mat, name)
 		"headstone":
 			return StructureKit.headstone(_f(p, "w", 0.5), _f(p, "h", 0.8), _f(p, "t", 0.12), mat, name)
+	# Kinds added for houses and for small props live in their own kits, so the kit can grow in two places at
+	# once without both sides editing this match.
+	var extra: Dictionary = StructureKitHouse.make(kind, p, name)
+	if extra.is_empty():
+		extra = StructureKitProps.make(kind, p, name)
+	if not extra.is_empty():
+		return extra
 	push_warning("StructureBuilder: unknown piece kind '%s'" % kind)
 	return {}
 
@@ -145,7 +159,7 @@ static func make_piece(kind: String, p: Dictionary, name: String = "") -> Dictio
 func _spawn(entry: Dictionary, index: int) -> void:
 	var kind: String = str(entry.get("kind", ""))
 	var name: String = str(entry.get("name", "%s_%d" % [kind, index]))
-	var piece: Dictionary = make_piece(kind, entry.get("params", {}), name)
+	var piece: Dictionary = _piece_for(entry, kind, name, index)
 	if piece.is_empty():
 		return
 	var transforms: Array[Transform3D] = placements_of(entry)
@@ -177,3 +191,17 @@ static func _f(d: Dictionary, key: String, fallback: float) -> float:
 static func _d(d: Dictionary, key: String) -> Dictionary:
 	var v: Variant = d.get(key, {})
 	return v if v is Dictionary else {}
+
+
+func _piece_for(entry: Dictionary, kind: String, name: String, index: int) -> Dictionary:
+	if not share_pieces or layout_path == "":
+		return make_piece(kind, entry.get("params", {}), name)
+	var key: String = "%s#%d" % [layout_path, index]
+	if not _shared.has(key):
+		_shared[key] = make_piece(kind, entry.get("params", {}), name)
+	return _shared[key]
+
+
+## Forgets every shared piece. Tests that change material tuning between builds call this.
+static func clear_shared() -> void:
+	_shared = {}

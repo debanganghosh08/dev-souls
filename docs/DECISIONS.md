@@ -165,3 +165,18 @@ Two guards now, because neither is sufficient alone:
    `assets/`, so lines there are the missing-model failures and must be diffed before/after, never ignored.
 The general lesson is the one this project keeps relearning: a test is only evidence once it has been seen to
 fail. Negative controls are not optional (D-014).
+
+**D-022 (2026-10-27) Built ground is a data layer, and scattering asks it instead of avoiding plateaus.** The
+owner: the hill up to the castle is "only plain ground… there is literally no grass". The cause was a blunt
+rule — grass was zero on every plateau *and* across the first half of its slope skirt, which for the castle is
+everything within **118 m** of its centre; trees and props avoided plateaus the same way. That was a stand-in for
+"don't grow through floors". Replaced by the thing it stood in for: `data/sites/` lists every built place;
+`Footprint` gives each layout's ground pieces as oriented rectangles; `KeepOutMask` rasterises them to 0.5 m
+cells once, so the per-blade question is one lookup. **Terrain holes are masked whole**, because there is no
+ground in a hole for anything to grow on — and buried slabs are deliberately *not* ground pieces: the crypt's
+ceiling lies 0.3 m under the graveyard and counting it would have left an 11 m bare patch over it.
+`Settlements` builds houses and props from the same data at the **highest** ground under each footprint, so no
+corner ever floats. Repeated layouts share meshes and collision shapes (`StructureBuilder.share_pieces`).
+`tests/test_site_placement.gd` holds the rules every site must obey whoever places it — dry, inside the ridge,
+on ground a 2 m foundation can cover, off the old road, clear of the spawn, never crowding another site — so two
+agents can fill the map at once and only ever have to satisfy the tests, not each other.

@@ -1,0 +1,7 @@
+{
+	"_comment": "Test fixture for tests/test_sites.gd: one 4 x 6 m floor slab at the origin, so ground-height sampling can be checked against a footprint whose every corner is known.",
+	"name": "slab_4x6",
+	"pieces": [
+		{"name": "slab", "kind": "floor_slab", "at": [0, 0, 0], "yaw": 0, "params": {"w": 4.0, "d": 6.0, "t": 0.3, "mat": "stone"}}
+	]
+}

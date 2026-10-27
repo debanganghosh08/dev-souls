@@ -21,6 +21,11 @@ const DRAINED_FLAG := &"pond_drained"
 const WATER_FALL_SEC := 7.0
 ## Grass stops this far inside the ridge's inner radius; the ridge slopes would kill it anyway.
 const GRASS_RIDGE_MARGIN := 30.0
+## Built ground, from data/sites/ (D-022). Grass stops this far outside a wall or floor; trees and scattered
+## props need more room than a point, so they keep a clearance.
+const SITE_KEEP_OUT_MARGIN := 0.3
+const TREE_SITE_CLEARANCE := 3.0
+const PROP_SITE_CLEARANCE := 1.5
 const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %s\nchunks  %d / %d built   collision  %d   build  %d ms\ntrees  %d   dressing  %d\ngrass  %d cells   %d instances   %d pending\nfps  %d\n\nWASD move   Shift sprint   Space dodge   mouse look   F3 hide this readout"
 
 @onready var _terrain: Terrain = %Terrain
@@ -30,9 +35,11 @@ const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %
 @onready var _player: PlayerController = %Player
 @onready var _label: Label = %DebugLabel
 @onready var _water: MeshInstance3D = %Water
+@onready var _settlements: Settlements = get_node_or_null(^"%Settlements") as Settlements
 
 var _game: Node
 var _flags: Node
+var _keep_out: KeepOutMask
 var _water_material: StandardMaterial3D
 var _drained: bool = false
 var _spawn: Vector3 = Vector3.ZERO
@@ -49,6 +56,10 @@ func _ready() -> void:
 	_terrain.begin_build(_spawn)
 	_place_water(hf)
 	_bind_pond(hf)
+	# Before anything scatters: every placement filter below asks this mask what is built where.
+	_keep_out = SiteRegistry.keep_out("vale", SITE_KEEP_OUT_MARGIN)
+	if _settlements != null:
+		_settlements.build(hf)
 	_forest.height_sampler = _terrain.height_at
 	_forest.placement_filter = _tree_allowed
 	_forest.rebuild()
@@ -152,6 +163,8 @@ func _tree_allowed(x: float, z: float) -> bool:
 		return false
 	if Vector2(x, z).length() > hf.ridge_inner_radius() - RIDGE_MARGIN:
 		return false
+	if _keep_out != null and _keep_out.blocks_near(x, z, TREE_SITE_CLEARANCE):
+		return false
 	for site: Dictionary in hf.plateaus():
 		if Vector2(x, z).distance_to(site["centre"]) < float(site["radius"]) + float(site["blend"]) * 0.5:
 			return false
@@ -160,6 +173,8 @@ func _tree_allowed(x: float, z: float) -> bool:
 
 func _prop_allowed(x: float, z: float) -> bool:
 	var hf: Heightfield = _terrain.heightfield
+	if _keep_out != null and _keep_out.blocks_near(x, z, PROP_SITE_CLEARANCE):
+		return false
 	return hf.height_at(x, z) >= hf.water_level() + TREE_SHORE_CLEARANCE * 0.5 and hf.slope_at(x, z) <= PROP_MAX_SLOPE
 
 
@@ -167,6 +182,8 @@ func _prop_allowed(x: float, z: float) -> bool:
 func _grass_density(x: float, z: float) -> float:
 	var hf: Heightfield = _terrain.heightfield
 	if Vector2(x, z).length() > hf.ridge_inner_radius() - GRASS_RIDGE_MARGIN:
+		return 0.0
+	if _keep_out != null and _keep_out.blocks(x, z):
 		return 0.0
 	return GrassLattice.site_factor(x, z, hf.plateaus())
 
@@ -240,6 +257,15 @@ func _print_probe() -> void:
 	print("PROBE cost grass_fill_frames=%d grass_fill_cells=%d grass_fill_mean_ms=%.3f grass_fill_worst_ms=%.3f terrain_build_ms=%d terrain_build_frames=%d terrain_cpu_ms=%.1f terrain_sample_ms=%.1f terrain_mesh_ms=%.1f terrain_collision_ms=%.1f" % [
 		grass["fill_frames"], grass["fill_cells"], grass["fill_mean_ms"], grass["fill_worst_ms"],
 		stats["build_ms"], stats["build_frames"], stats["build_cpu_ms"], stats["sample_ms"], stats["mesh_ms"], stats["collision_ms"],
+	])
+	var fixed: int = 0
+	for site: Dictionary in SiteRegistry.load_area("vale"):
+		if bool(site.get("fixed", false)):
+			fixed += 1
+	var built: Dictionary = _settlements.stats() if _settlements != null else {"sites": 0, "props": 0, "pieces": 0}
+	print("PROBE sites fixed=%d spawned=%d props=%d pieces=%d keepout_cells=%d keepout_obbs=%d" % [
+		fixed, built["sites"], built["props"], built["pieces"],
+		_keep_out.cell_count() if _keep_out != null else -1, _keep_out.obb_count() if _keep_out != null else -1,
 	])
 
 

@@ -1,0 +1,4 @@
+{
+	"_comment": "Houses, sheds, barns, watch huts and wayside shrines in the Ashen Vale (W8-H), built at run time by Settlements from the archetype layouts in data/structures/houses/. Schema: see data/sites/vale.json and docs/WORLD_PLAN.md. Optional per site: ground ('max' default, 'min', or an absolute height), lift (metres added), props (interactables: {scene, at [x, y, z] site-local with y = 0 the floor, yaw, set {exported property: value}}). Every interactable id must be unique across the area.",
+	"sites": []
+}

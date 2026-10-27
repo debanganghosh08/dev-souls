@@ -1,0 +1,8 @@
+{
+	"_comment": "Every built place in the Ashen Vale, read by scripts/systems/sites/site_registry.gd. FIXED sites are instanced directly in scenes/levels/vale.tscn and listed here only so grass, trees and scattered props keep off their walls and floors (tests/test_sites.gd checks position, height and layout agree with the scene). Houses live in vale_houses.json and points of interest in vale_pois.json; Settlements builds those at run time. Schema per site: id (unique in the area), layout (a data/structures/ layout), at [x, z] world metres, yaw degrees, and for fixed sites y. See docs/WORLD_PLAN.md.",
+	"sites": [
+		{"id": "castle_morrow", "fixed": true, "layout": "res://data/structures/castle_morrow.json", "at": [200.0, -160.0], "y": 16.0, "yaw": 0.0},
+		{"id": "broken_village", "fixed": true, "layout": "res://data/structures/village.json", "at": [-200.0, 140.0], "y": 3.0, "yaw": 0.0},
+		{"id": "hearth_chamber", "fixed": true, "layout": "res://data/structures/hearth_chamber.json", "at": [0.0, 0.0], "y": -11.375, "yaw": 0.0}
+	]
+}
