@@ -77,8 +77,10 @@ and props consult instead of avoiding whole plateaus, and a spawner for houses a
 model, so the airborne pose is a measured frame of the run cycle.
 **W8-G · Grass everywhere.** `DONE` (Fable). Zones of density and colour, tall grass, wildflowers, a worn road;
 93.6 % of open ground at least half-meadow, the castle hill at 1.38x, no unfilled cell near a sprinting player.
-**W8-G2 · Grass frame spikes.** `IN PROGRESS` (Fable). Worst fill frame measured 17–20 ms on an idle machine;
-the budget is checked only between whole layer-cells, so one unit can blow it. Target ≤ 6 ms worst.
+**W8-G2 · Grass frame spikes.** `DONE` (Fable). Resumable 32-candidate steps: worst frame 17–20 → 7.6–10.5 ms in
+the lead's runs, p95 2.6–2.7 ms, none over 16 ms (D-024).
+**W8-G3 · Incremental re-thinning.** `READY`. The whole-lattice re-thin every 2 m of movement costs up to 10.2 ms
+and is now the largest single spike in the grass; split it across frames like the fill.
 **W8-H · Twenty houses.** `DONE` (Fable). Five archetypes, thirteen layouts, twenty placements, twenty new items,
 two key puzzles, and homes for the castle key, sword and hammer (none had a source in the shipped level).
 **W8-P · Points of interest.** `DONE` (Fable + lead). 46 placements of 15 layouts; eleven of them added by the

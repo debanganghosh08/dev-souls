@@ -192,3 +192,17 @@ spot 137 m** — the gaps all at the valley's outer rim, where nobody had a reas
 flattest legal spot near each gap: **99.9 % within 80 m, 94.1 % within 60 m, median 31 m, emptiest 83 m.**
 `tests/test_world_reach.gd` holds it at ≥ 99 % within 80 m and no spot further than 95 m, and was seen to fail
 against the map without the fillers before it was trusted to pass (D-021).
+
+**D-024 (2026-10-27) Grass fills in resumable steps; the remaining spike is the thinning pass.** After W8-G zoned
+the grass, the lead measured worst fill frames of 16.7–20.2 ms. Cause, confirmed by a per-unit counter: the
+budget (D-019) was checked only *between* units of work and one unit — one layer of one cell — cost 4.0–4.7 ms
+against a 1 ms budget, a floor that any background load multiplied. (W8-G2 could reproduce the large spikes only
+under contention; the lead's three runs had no other session running. The laptop was seen drifting in speed
+through the day, so which figure is "idle" is unresolved; the fix removes the floor either way.) W8-G2 made a
+layer's fill resumable in 32-candidate steps with the RNG drawn in a fixed order, so any split builds identical
+blades (proven for steps 1–72 and whole), and stopped re-thinning the whole lattice on every working frame.
+**Lead's own measurement after the merge, idle, three sprint runs:** mean 1.47–1.53 ms, p95 2.6–2.7 ms, worst
+7.6 / 7.9 / 10.5 ms, **zero frames over 16 ms**, one frame over 8 ms in three runs, no unfilled cell within 50 m
+of a sprinting player. The agent's ≤ 6 ms worst-frame target is met in its runs, **not in the lead's**.
+**Open:** the whole-lattice re-thin, now run every 2 m of movement, itself costs up to **10.2 ms** (`grass_thin_worst_ms`)
+and sits outside the fill timer; make it incremental the way the fill now is. All CPU-side; GPU unmeasured.
