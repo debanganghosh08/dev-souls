@@ -1,0 +1,11 @@
+{
+	"_comment": "Three haystacks, a cart and a fence at a field's edge (W8-P). keep_out: the ground each piece covers, layout-local [x, z, w, d].",
+	"name": "haystacks",
+	"pieces": [
+		{"name": "stacks", "kind": "haystack", "repeat": [[-1.8, 0, 0.5, 0], [1.4, 0, -0.8, 40]], "params": {"radius": 1.3, "h": 2.0, "mat": "plaster"}},
+		{"name": "stack_small", "kind": "haystack", "at": [0.3, 0, 2.6], "yaw": 110, "params": {"radius": 0.9, "h": 1.5, "mat": "plaster"}},
+		{"name": "cart", "kind": "cart", "at": [3.8, 0, 1.8], "yaw": 25, "params": {"w": 2.6, "d": 1.4, "wheel": 0.55, "mat": "planks"}},
+		{"name": "fence", "kind": "fence", "at": [0, 0, -3.2], "yaw": 0, "params": {"length": 6.0, "h": 1.1, "spacing": 2.0, "rails": 2, "mat": "planks"}}
+	],
+	"keep_out": [[-3.1, -0.8, 2.6, 2.6], [0.1, -2.1, 2.6, 2.6], [-0.6, 1.7, 1.8, 1.8], [2.2, 0.3, 3.4, 3.0], [-3.0, -3.35, 6.0, 0.3]]
+}

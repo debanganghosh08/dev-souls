@@ -1,0 +1,12 @@
+{
+	"_comment": "One grave: a mound, its headstone, two sides of a low rail that was once a square, and a small cairn (W8-P). keep_out: layout-local [x, z, w, d].",
+	"name": "lone_grave",
+	"pieces": [
+		{"name": "mound", "kind": "grave_mound", "at": [0, 0, 0], "yaw": 0, "params": {"w": 0.9, "d": 2.0, "mat": "stone", "wood": "planks"}},
+		{"name": "headstone", "kind": "headstone", "at": [0, 0, -1.3], "yaw": 0, "params": {"w": 0.6, "h": 0.9, "t": 0.12, "mat": "stone"}},
+		{"name": "rail_s", "kind": "fence", "at": [0, 0, 1.5], "yaw": 0, "params": {"length": 2.8, "h": 0.6, "spacing": 1.4, "rails": 1, "mat": "planks"}},
+		{"name": "rail_w", "kind": "fence", "at": [-1.4, 0, 0.1], "yaw": 90, "params": {"length": 2.8, "h": 0.6, "spacing": 1.4, "rails": 1, "broken": true, "seed": 3, "mat": "planks"}},
+		{"name": "cairn", "kind": "cairn", "at": [1.3, 0, -1.0], "yaw": 0, "params": {"radius": 0.4, "h": 0.6, "count": 4, "seed": 10, "mat": "stone"}}
+	],
+	"keep_out": [[-0.5, -1.1, 1.0, 2.2], [-0.3, -1.4, 0.6, 0.2], [-1.4, 1.35, 2.8, 0.3], [-1.55, -1.3, 0.3, 2.8], [0.8, -1.5, 1.0, 1.0]]
+}

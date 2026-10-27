@@ -1,0 +1,12 @@
+{
+	"_comment": "A travellers' camp: a fire ring, one planked and one bare tent frame, a cart and a cairn (W8-P). keep_out: layout-local [x, z, w, d].",
+	"name": "campsite",
+	"pieces": [
+		{"name": "fire", "kind": "campfire", "at": [0, 0, 0], "yaw": 0, "params": {"radius": 0.8, "stones": 8, "seed": 3, "mat": "stone", "wood": "timber"}},
+		{"name": "tent_covered", "kind": "tent_frame", "at": [-2.6, 0, -0.4], "yaw": 20, "params": {"w": 2.4, "d": 2.2, "h": 1.7, "covered": true, "mat": "planks"}},
+		{"name": "tent_bare", "kind": "tent_frame", "at": [2.2, 0, -1.6], "yaw": -35, "params": {"w": 2.4, "d": 2.2, "h": 1.7, "covered": false, "mat": "planks"}},
+		{"name": "cart", "kind": "cart", "at": [0.6, 0, 3.4], "yaw": 100, "params": {"w": 2.6, "d": 1.4, "wheel": 0.55, "mat": "planks"}},
+		{"name": "cairn", "kind": "cairn", "at": [-2.4, 0, 2.6], "yaw": 0, "params": {"radius": 0.5, "h": 0.9, "count": 6, "seed": 8, "mat": "stone"}}
+	],
+	"keep_out": [[-0.9, -0.9, 1.8, 1.8], [-4.0, -1.8, 2.8, 2.8], [0.8, -3.0, 2.8, 2.8], [-0.6, 1.8, 2.4, 3.2], [-3.0, 2.0, 1.2, 1.2]]
+}

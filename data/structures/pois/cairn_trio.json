@@ -1,0 +1,10 @@
+{
+	"_comment": "Three cairns of different heights, the way walkers leave them on a hill (W8-P). keep_out: layout-local [x, z, w, d].",
+	"name": "cairn_trio",
+	"pieces": [
+		{"name": "cairn_tall", "kind": "cairn", "at": [0, 0, 0], "yaw": 0, "params": {"radius": 0.6, "h": 1.3, "count": 7, "seed": 1, "mat": "stone"}},
+		{"name": "cairn_mid", "kind": "cairn", "at": [1.6, 0, 0.9], "yaw": 0, "params": {"radius": 0.5, "h": 0.9, "count": 6, "seed": 2, "mat": "stone"}},
+		{"name": "cairn_low", "kind": "cairn", "at": [-1.2, 0, 1.3], "yaw": 0, "params": {"radius": 0.45, "h": 0.7, "count": 5, "seed": 3, "mat": "stone"}}
+	],
+	"keep_out": [[-0.7, -0.7, 1.4, 1.4], [1.0, 0.3, 1.2, 1.2], [-1.7, 0.8, 1.0, 1.0]]
+}
