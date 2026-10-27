@@ -4,7 +4,8 @@ extends Node3D
 ## lattice of square cells covers `radius` around the player; each cell owns one pooled MultiMeshInstance3D
 ## per layer, written when the cell enters the lattice and recycled, not rebuilt, when it leaves: a cell
 ## crossing refills only the ring that came into reach, a few cells per frame. Placement is seeded from the
-## cell key so a spot regrows identically on every visit. Layers and wind: data/grass/<area>.json; pure maths:
+## cell key so a spot regrows identically on every visit. Layers and wind: data/grass/<area>.json; where
+## grass is dense, tall, flowered and what colour: its `zones` file (GrassZones, W8-G); pure maths:
 ## GrassLattice. Density thins with distance per ring (visible_instance_count) and the shaders sink blades
 ## into the ground over the last metres, so the field dissolves into fog instead of ending in a wall.
 
@@ -27,17 +28,23 @@ const THIN_MOVE := 2.0
 @export var seed_value: int = 20261024
 ## Fraction of radius inside which every placed instance is shown; density thins from there to the edge.
 @export var near_fraction: float = 0.45
-## A frame fills cells until this much CPU time has gone to them: always the first, then another only
-## while the budget lasts, the way Terrain spends build_budget_ms. W6-04 measured a cell at about 1.2 ms
-## and a fixed three cells at 5.4 ms worst on the lead's machine; 2 ms makes that one or two cells, so the
-## worst frame stays near 4 ms whether the player walks or sprints. fill_cells_per_frame caps it regardless.
-@export var fill_budget_ms: float = 2.0
+## A frame fills layers until this much CPU time has gone to them: always one layer of one cell, then
+## more only while the budget lasts, the way Terrain spends build_budget_ms. W6-04 measured a whole cell at
+## about 1.2 ms on the lead's machine; W8-G's zoned cells are about 1.7x that and the unit became a layer so
+## the worst frame stays near one grass layer whether the player walks or sprints. fill_cells_per_frame
+## caps how many cells may start in a frame regardless.
+@export var fill_budget_ms: float = 1.0
 @export var fill_cells_per_frame: int = 3
 @export var auto_build: bool = false
 
 var cluster_points: PackedVector3Array = PackedVector3Array()
+## The area's zones (density, palette, tall grass and flowers by place), built from the data file's
+## `zones` path once a Heightfield is bound; null leaves every layer on the land alone.
+var zones: GrassZones
 
 var _layers: Array[GrassLayer] = []
+var _hf: Heightfield
+var _zones_path: String = ""
 var _cell: GrassCell = GrassCell.new()
 var _offsets: Array[Vector2i] = []
 var _slots: Array[Array] = []
@@ -63,6 +70,9 @@ var _fill_usec: int = 0
 var _fill_worst_usec: int = 0
 var _fill_frames: int = 0
 var _fill_cells: int = 0
+# The cell whose layers are still being filled across frames (slot, next layer), or -1 between cells.
+var _partial_slot: int = -1
+var _partial_layer: int = 0
 
 
 func _ready() -> void:
@@ -82,6 +92,8 @@ func bind_heightfield(hf: Heightfield, filter: Callable = Callable(), clusters: 
 	_water = hf.water_level()
 	_density_filter = filter
 	cluster_points = clusters
+	_hf = hf
+	_build_zones()
 
 
 ## Builds the layers and the slot pool from `data`, or from data_path when it is empty (the normal case).
@@ -103,6 +115,7 @@ func rebuild(data: Dictionary = {}) -> void:
 	wind_speed = float(wind.get("speed", wind_speed))
 	wind_ripple = float(wind.get("ripple_scale", wind_ripple))
 	seed_value = int(data.get("seed", seed_value))
+	_zones_path = str(data.get("zones", ""))
 	_cluster_reach = 0.0
 	for entry: Variant in data.get("layers", []):
 		if not entry is Dictionary:
@@ -110,11 +123,13 @@ func rebuild(data: Dictionary = {}) -> void:
 		var layer: GrassLayer = GrassLayer.from_dict(entry, seed_value, _layers.size())
 		layer.density *= maxf(0.0, density)
 		layer.max_slope = minf(layer.max_slope, max_slope)
-		if layer.kind == "clump" and blade_height_min > 0.0 and blade_height_max > 0.0:
+		# The override is for the meadow blades; the tall layer keeps its own waist-high range.
+		if layer.kind == "clump" and layer.zone_channel != "tall" and blade_height_min > 0.0 and blade_height_max > 0.0:
 			layer.height_range = Vector2(blade_height_min, blade_height_max)
 		_cluster_reach = maxf(_cluster_reach, layer.cluster_radius + layer.cluster_falloff)
 		if layer.usable():
 			_layers.append(layer)
+	_build_zones()
 	apply_wind()
 	_offsets = GrassLattice.lattice_offsets(radius, cell_size)
 	var pool: int = _offsets.size()
@@ -141,6 +156,8 @@ func rebuild(data: Dictionary = {}) -> void:
 	_fill_worst_usec = 0
 	_fill_frames = 0
 	_fill_cells = 0
+	_partial_slot = -1
+	_partial_layer = 0
 	_built = true
 
 
@@ -148,6 +165,42 @@ func apply_wind() -> void:
 	var dir: Vector2 = Vector2.from_angle(deg_to_rad(wind_direction_deg))
 	for layer: GrassLayer in _layers:
 		layer.set_wind(wind_strength, dir, wind_speed, wind_ripple)
+
+
+# Zones need both the data file's path (rebuild) and a Heightfield (bind); whichever comes second builds
+# them, and every "grass" layer learns the densest zone so its candidate pool can reach it.
+func _build_zones() -> void:
+	if _zones_path == "" or _hf == null:
+		return
+	if zones == null:
+		zones = GrassZones.load_file(_zones_path, _hf)
+	if zones == null:
+		return
+	for layer: GrassLayer in _layers:
+		layer.zone_max = zones.max_density()
+
+
+## Lattice cells the player should have within `within` metres that are not filled yet. The sprint probe
+## samples this every frame: the failure D-019 guards against is not a slow frame but bare ground ahead.
+func unfilled_within(p: Vector3, within: float) -> int:
+	if _centre == NO_CELL:
+		return 0
+	var count: int = 0
+	var at := Vector2(p.x, p.z)
+	for o: Vector2i in _offsets:
+		var key: Vector2i = _centre + o
+		var partial: bool = _partial_slot >= 0 and _slot_key[_partial_slot] == key
+		if (not _cells.has(key) or partial) and GrassLattice.cell_centre(key, cell_size).distance_to(at) <= within:
+			count += 1
+	return count
+
+
+## Zeroes the fill cost counters so a probe can time one stretch (a sprint) on its own.
+func reset_cost_counters() -> void:
+	_fill_usec = 0
+	_fill_worst_usec = 0
+	_fill_frames = 0
+	_fill_cells = 0
 
 
 func _process(_delta: float) -> void:
@@ -196,36 +249,58 @@ func _release(key: Vector2i) -> void:
 		mmi.visible = false
 	_free[_free_count] = slot
 	_free_count += 1
+	if _partial_slot == slot:
+		_partial_slot = -1
 
 
+# The unit of work is one layer of one cell, not a whole cell (W8-G): always one layer, then more while
+# the budget lasts, with fill_cells_per_frame capping how many cells may start in a frame. A zoned cell
+# holds about 1.7x the instances of the old one, and measured as a whole it cost 6 ms a working frame
+# with 14-40 ms spikes on the owner's laptop; a layer is at most the grass layer, roughly half of that.
+# A cell part-way through keeps _cell prepared between frames and counts as unfilled until its last layer.
 func _fill_pending() -> void:
-	if _pending.is_empty():
+	if _pending.is_empty() and _partial_slot < 0:
 		return
 	var t0: int = Time.get_ticks_usec()
 	var deadline: int = t0 + int(maxf(0.0, fill_budget_ms) * 1000.0)
-	var budget: int = maxi(1, fill_cells_per_frame)
-	while budget > 0 and not _pending.is_empty():
-		var key: Vector2i = _pending.pop_front()
-		if _cells.has(key) or (key - _centre).length() * cell_size > radius + cell_size or _free_count == 0:
-			continue
-		budget -= 1
-		_free_count -= 1
-		var slot: int = _free[_free_count]
-		_cells[key] = slot
-		_slot_key[slot] = key
-		_cell.prepare(key, cell_size, _height_sampler, _water, cluster_points, _cluster_reach)
-		for l: int in _layers.size():
-			var i: int = slot * _layers.size() + l
-			_slot_counts[i] = _layers[l].fill(key, l, seed_value, _cell, _slots[slot][l], _slot_positions[i], _density_filter, _exact_slope)
+	var starts: int = maxi(1, fill_cells_per_frame)
+	var completed: int = 0
+	var worked: bool = false
+	while true:
+		if _partial_slot < 0:
+			if starts <= 0 or _pending.is_empty():
+				break
+			var key: Vector2i = _pending.pop_front()
+			if _cells.has(key) or (key - _centre).length() * cell_size > radius + cell_size or _free_count == 0:
+				continue
+			starts -= 1
+			_free_count -= 1
+			var slot: int = _free[_free_count]
+			_cells[key] = slot
+			_slot_key[slot] = key
+			_cell.prepare(key, cell_size, _height_sampler, _water, cluster_points, _cluster_reach, zones)
+			_partial_slot = slot
+			_partial_layer = 0
+			if _layers.is_empty():
+				_partial_slot = -1
+				completed += 1
+				continue
+		var l: int = _partial_layer
+		var i: int = _partial_slot * _layers.size() + l
+		_slot_counts[i] = _layers[l].fill(_slot_key[_partial_slot], l, seed_value, _cell, _slots[_partial_slot][l], _slot_positions[i], _density_filter, _exact_slope)
+		worked = true
+		_partial_layer += 1
+		if _partial_layer >= _layers.size():
+			_partial_slot = -1
+			completed += 1
 		if Time.get_ticks_usec() >= deadline:
 			break
-	var filled: int = maxi(1, fill_cells_per_frame) - budget
-	if filled > 0:
+	if worked:
 		var dt: int = Time.get_ticks_usec() - t0
 		_fill_usec += dt
 		_fill_worst_usec = maxi(_fill_worst_usec, dt)
 		_fill_frames += 1
-		_fill_cells += filled
+		_fill_cells += completed
 		_last_thin = Vector3(INF, INF, INF)
 
 
@@ -258,10 +333,10 @@ func stats() -> Dictionary:
 		for slot: int in _slots.size():
 			n += _slot_counts[slot * _layers.size() + l]
 		per_layer[_layers[l].name] = n
-		if _layers[l].kind == "clump":
+		if _layers[l].is_blade():
 			blade_verts += n * _layers[l].vertex_count
-	return {"cells": _cells.size(), "pool": _slots.size(), "pending": _pending.size(), "instances": instance_count(),
-		"blade_verts": blade_verts, "layers": _layers.size(), "per_layer": per_layer,
+	return {"cells": _cells.size(), "pool": _slots.size(), "pending": _pending.size() + (1 if _partial_slot >= 0 else 0), "instances": instance_count(),
+		"blade_verts": blade_verts, "layers": _layers.size(), "per_layer": per_layer, "zones": zones != null,
 		"fill_frames": _fill_frames, "fill_cells": _fill_cells, "fill_total_ms": float(_fill_usec) / 1000.0,
 		"fill_mean_ms": float(_fill_usec) / 1000.0 / float(maxi(1, _fill_frames)), "fill_worst_ms": float(_fill_worst_usec) / 1000.0}
 

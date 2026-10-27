@@ -7,6 +7,16 @@ extends Node3D
 
 const PROBE_SETTLE_FRAMES := 240
 const PROBE_MAX_FRAMES := 1500
+## `--probe-sprint` (W8-G): once the lattice has settled, the player runs at sprint speed along a straight
+## line for SPRINT_FRAMES simulated 60 fps frames, Grass is stepped once per frame by hand (its own _process
+## is off, so headless frame pacing cannot flatter it), and every frame the lattice cells still unfilled
+## within SPRINT_NEAR metres are counted. The line leaves the spawn for the castle hill: meadow, the east
+## road and the densest zone in the Vale, all dry and gentle (checked against the heightfield, W8-G report).
+const SPRINT_FRAMES := 1500
+const SPRINT_FPS := 60.0
+const SPRINT_NEAR := 30.0
+const SPRINT_FROM := Vector2(60.0, 80.0)
+const SPRINT_TOWARD := Vector2(300.0, -120.0)
 const SPAWN_LIFT := 0.6
 const SETTLE_TOLERANCE := 0.5
 const TREE_MAX_SLOPE := 38.0
@@ -46,6 +56,12 @@ var _spawn: Vector3 = Vector3.ZERO
 var _probe: bool = false
 var _probe_frames: int = 0
 var _probe_done: bool = false
+var _sprint: bool = false
+var _sprint_running: bool = false
+var _sprint_frame: int = 0
+var _sprint_max_unfilled: int = 0
+var _sprint_unfilled_frames: int = 0
+var _sprint_settled: bool = false
 
 
 func _ready() -> void:
@@ -74,10 +90,13 @@ func _ready() -> void:
 	if _game != null:
 		_game.state = _game.State.PLAYING
 		_game.set_respawn(&"vale", _spawn)
-	_probe = OS.get_cmdline_user_args().has("--probe") and get_tree().current_scene == self
+	_sprint = OS.get_cmdline_user_args().has("--probe-sprint") and get_tree().current_scene == self
+	_probe = (OS.get_cmdline_user_args().has("--probe") and get_tree().current_scene == self) or _sprint
 
 
 func _process(_delta: float) -> void:
+	if _sprint_running and _sprint_frame < SPRINT_FRAMES:
+		_sprint_step()
 	if not _label.visible:
 		return
 	var p: Vector3 = _player.global_position
@@ -178,14 +197,17 @@ func _prop_allowed(x: float, z: float) -> bool:
 	return hf.height_at(x, z) >= hf.water_level() + TREE_SHORE_CLEARANCE * 0.5 and hf.slope_at(x, z) <= PROP_MAX_SLOPE
 
 
-# Density multiplier for Grass: nothing on the paved plateau tops (skirts fade in), nothing up the ridge.
+# Density multiplier for Grass: nothing up the ridge, nothing on built ground or over a terrain hole
+# (KeepOutMask, D-022). Everything else grows; how much, how tall and what colour is the zones' call
+# (data/grass/zones_vale.json, applied inside Grass). The plateau factor that bared the whole castle hill
+# (zero within 118 m of the castle, 81 m of the village) is gone: that was the owner's complaint (W8-G).
 func _grass_density(x: float, z: float) -> float:
 	var hf: Heightfield = _terrain.heightfield
 	if Vector2(x, z).length() > hf.ridge_inner_radius() - GRASS_RIDGE_MARGIN:
 		return 0.0
 	if _keep_out != null and _keep_out.blocks(x, z):
 		return 0.0
-	return GrassLattice.site_factor(x, z, hf.plateaus())
+	return 1.0
 
 
 # --- headless probe --------------------------------------------------------------------------------------
@@ -197,6 +219,12 @@ func _physics_process(_delta: float) -> void:
 	var ready: bool = _terrain.is_built() and _probe_frames >= PROBE_SETTLE_FRAMES
 	if not ready and _probe_frames < PROBE_MAX_FRAMES:
 		return
+	# The sprint runs in _process, one simulated frame per process frame, and reports when it has run.
+	if _sprint:
+		if not _sprint_running:
+			_begin_sprint()
+		if _sprint_frame < SPRINT_FRAMES:
+			return
 	_probe_done = true
 	_print_probe()
 	get_tree().quit()
@@ -248,9 +276,10 @@ func _print_probe() -> void:
 	])
 	var grass: Dictionary = _grass.stats()
 	var audit: Dictionary = _grass.audit(hf)
-	print("PROBE grass cells=%d instances=%d blade_verts=%d underwater=%d steep=%d floating=%d pending=%d layers=%d pool=%d" % [
+	var per_layer: Dictionary = grass["per_layer"]
+	print("PROBE grass cells=%d instances=%d blade_verts=%d underwater=%d steep=%d floating=%d pending=%d layers=%d pool=%d tall=%d flowers=%d zones=%s" % [
 		grass["cells"], grass["instances"], grass["blade_verts"], audit["underwater"], audit["steep"], audit["floating"],
-		grass["pending"], grass["layers"], grass["pool"],
+		grass["pending"], grass["layers"], grass["pool"], per_layer.get("tall_grass", 0), per_layer.get("wildflowers", 0), grass["zones"],
 	])
 	# CPU time only: headless has no renderer, so this says nothing about draw cost. terrain_build_ms is the
 	# wall-clock of the budgeted build across frames; the other _ms figures are what the CPU actually spent.
@@ -258,6 +287,13 @@ func _print_probe() -> void:
 		grass["fill_frames"], grass["fill_cells"], grass["fill_mean_ms"], grass["fill_worst_ms"],
 		stats["build_ms"], stats["build_frames"], stats["build_cpu_ms"], stats["sample_ms"], stats["mesh_ms"], stats["collision_ms"],
 	])
+	# In a --probe-sprint run the fill counters were zeroed when the sprint began, so the cost line above and
+	# this one both describe the sprint alone, not the first fill around the spawn.
+	if _sprint:
+		print("PROBE sprint frames=%d speed=%.1f distance=%.0f max_unfilled_30m=%d frames_with_unfilled=%d settled_before=%s cells_filled=%d fill_frames=%d fill_mean_ms=%.3f fill_worst_ms=%.3f" % [
+			_sprint_frame, _player.sprint_speed, float(_sprint_frame) * _player.sprint_speed / SPRINT_FPS, _sprint_max_unfilled,
+			_sprint_unfilled_frames, _sprint_settled, grass["fill_cells"], grass["fill_frames"], grass["fill_mean_ms"], grass["fill_worst_ms"],
+		])
 	var fixed: int = 0
 	for site: Dictionary in SiteRegistry.load_area("vale"):
 		if bool(site.get("fixed", false)):
@@ -267,6 +303,31 @@ func _print_probe() -> void:
 		fixed, built["sites"], built["props"], built["pieces"],
 		_keep_out.cell_count() if _keep_out != null else -1, _keep_out.obb_count() if _keep_out != null else -1,
 	])
+
+
+# Grass stops stepping itself so that each simulated frame below is exactly one fill budget, whatever the
+# headless frame rate; the counters restart so the cost and sprint lines describe the sprint alone.
+func _begin_sprint() -> void:
+	_sprint_running = true
+	_sprint_settled = int(_grass.stats()["pending"]) == 0
+	_grass.set_process(false)
+	_grass.reset_cost_counters()
+
+
+# One simulated 60 fps frame of sprinting: place the player on the line, step the lattice once, and count
+# the cells within SPRINT_NEAR metres that it has not filled yet -- the ground the player is running into.
+func _sprint_step() -> void:
+	_sprint_frame += 1
+	var dir: Vector2 = (SPRINT_TOWARD - SPRINT_FROM).normalized()
+	var at: Vector2 = SPRINT_FROM + dir * float(_sprint_frame) * _player.sprint_speed / SPRINT_FPS
+	var p := Vector3(at.x, _terrain.height_at(at.x, at.y) + SPAWN_LIFT, at.y)
+	_player.global_position = p
+	_player.velocity = Vector3.ZERO
+	_grass.step(p)
+	var unfilled: int = _grass.unfilled_within(p, SPRINT_NEAR)
+	_sprint_max_unfilled = maxi(_sprint_max_unfilled, unfilled)
+	if unfilled > 0:
+		_sprint_unfilled_frames += 1
 
 
 func _plateau_flat(hf: Heightfield, index: int) -> bool:

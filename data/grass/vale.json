@@ -1,14 +1,28 @@
 {
-	"_comment": "Ground cover for scenes/levels/vale.tscn, read by Grass.rebuild(). Lattice radius/cell size live on the Grass node; this file holds the wind and the layers. density is instances per square metre on ideal ground (before Grass.density_at and the multipliers below); max_per_cell caps a cell's MultiMesh; scale is uniform, height the blade height in metres (clump only); patch_min/patch_frequency is low-frequency noise that leaves bare patches (1.0 = none); hollow boosts density in cells below their surroundings (negative on knolls); cluster thickens within radius of the Forest's trees and falls to `outside` beyond radius+falloff; fade is [start, end] metres over which the shader sinks the piece into the ground; far_fraction is the share still drawn at the lattice edge; align tilts toward the ground normal (0 upright, 1 flat). Ashen, cold-morning palette: grey-green roots, straw tips, no saturated green.",
+	"_comment": "Ground cover for scenes/levels/vale.tscn, read by Grass.rebuild(). Lattice radius/cell size live on the Grass node; this file holds the wind, the zones file and the layers. zones is the GrassZones data (data/grass/zones_vale.json): where grass is dense or sparse, tall or short, and what colour; a layer with zone 'grass' scales its density by the zone's, 'tall' and 'flowers' by those 0..1 weights, and zoned blades take the zone's palette and height, so root_color/tip_color here are the fallback when no zone applies. density is instances per square metre on ideal ground in a 1.0x zone (before Grass.density_at and the multipliers below); a 'grass' layer's candidate pool is sized for the densest zone, so max_per_cell must hold density x the zones' max density x cell area. scale is uniform, height the blade height in metres (clump and flower only); dry_tint/dry_amount drift each blade part way toward a straw colour; patch_min/patch_frequency is low-frequency noise that thins the field in patches (1.0 = none); hollow boosts density in cells below their surroundings (negative on knolls); cluster thickens within radius of the Forest's trees and falls to `outside` beyond radius+falloff; fade is [start, end] metres over which the shader sinks the piece into the ground; far_fraction is the share still drawn at the lattice edge; align tilts toward the ground normal (0 upright, 1 flat); colors are the wildflower head colours, one per instance. Palettes are UNVERIFIED by eye (W8-G): the owner asked for beautiful, dark-fantasy grass, not the old ashen no-green brief; headless cannot judge it.",
 	"seed": 20261024,
+	"zones": "res://data/grass/zones_vale.json",
 	"wind": {"strength": 0.26, "direction_deg": 35.0, "speed": 1.1, "ripple_scale": 0.09},
 	"layers": [
 		{
-			"name": "grass", "kind": "clump", "density": 1.15, "max_per_cell": 170, "max_slope": 32.0,
+			"name": "grass", "kind": "clump", "zone": "grass", "density": 1.15, "max_per_cell": 240, "max_slope": 32.0,
 			"blades": 4, "segments": 3, "blade_width": 0.05, "height": [0.28, 0.62], "scale": [0.75, 1.3],
-			"root_color": "#262a20", "tip_color": "#8a876a", "dry_tint": "#b3a27a",
-			"patch_frequency": 0.035, "patch_min": 0.3, "hollow": 0.6, "align": 0.6, "sink": 0.03,
+			"root_color": "#2f3a1e", "tip_color": "#9a9a52", "dry_tint": "#b3a27a", "dry_amount": 0.45,
+			"patch_frequency": 0.035, "patch_min": 0.5, "hollow": 0.6, "align": 0.6, "sink": 0.03,
 			"far_fraction": 0.25, "fade": [52.0, 70.0]
+		},
+		{
+			"name": "tall_grass", "kind": "clump", "zone": "tall", "density": 0.45, "max_per_cell": 72, "max_slope": 30.0,
+			"blades": 3, "segments": 4, "blade_width": 0.07, "height": [0.8, 1.2], "scale": [0.85, 1.25],
+			"root_color": "#3a3a1c", "tip_color": "#c9a94f", "dry_tint": "#d1b87a", "dry_amount": 0.35,
+			"patch_frequency": 0.05, "patch_min": 0.6, "hollow": 0.4, "align": 0.5, "sink": 0.04,
+			"far_fraction": 0.3, "fade": [48.0, 66.0]
+		},
+		{
+			"name": "wildflowers", "kind": "flower", "zone": "flowers", "density": 0.05, "max_per_cell": 12, "max_slope": 26.0,
+			"height": [0.2, 0.34], "scale": [0.8, 1.2], "root_color": "#3d4d26", "colors": ["#e3c54a", "#ece6d2", "#8d74c6"],
+			"patch_frequency": 0.08, "patch_min": 0.3, "align": 0.3, "sink": 0.01,
+			"far_fraction": 0.4, "fade": [30.0, 44.0]
 		},
 		{
 			"name": "pebbles", "kind": "pebble", "density": 0.22, "max_per_cell": 36, "max_slope": 42.0,
