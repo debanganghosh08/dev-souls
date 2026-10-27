@@ -43,9 +43,15 @@ func test_items_json_gained_slot_and_order_without_losing_anything() -> void:
 	var json := JSON.new()
 	assert_eq(json.parse(FileAccess.get_file_as_string("res://data/items.json")), OK, "items.json parses")
 	var table: Dictionary = json.data
-	assert_eq(table.size(), 13, "still exactly 13 items")
+	var items: int = 0
+	for id: String in table:
+		if table[id] is Dictionary:
+			items += 1
+	assert_eq(items, 33, "exactly 33 items (13 plus the 20 W8-H house items; the file's _comment is not one)")
 	var weapons: Array[String] = []
 	for id: String in table:
+		if not table[id] is Dictionary:
+			continue
 		var entry: Dictionary = table[id]
 		for key: String in ["name", "kind", "lore", "slot", "order"]:
 			assert_true(entry.has(key), "%s has '%s'" % [id, key])
@@ -75,8 +81,8 @@ func test_headless_probe_opens_inventory_shows_the_card_and_equips() -> void:
 	if not inventory.is_empty():
 		assert_eq(inventory["open"], "true", "an injected Tab opened the inventory panel")
 		assert_eq(inventory["state"], "PAUSED", "the open panel holds PAUSED")
-		assert_eq(inventory["rows"], "13", "every known item has a row")
-		assert_eq(inventory["unknown"], "13", "a fresh journey holds nothing: all silhouettes")
+		assert_eq(inventory["rows"], "33", "every known item has a row")
+		assert_eq(inventory["unknown"], "33", "a fresh journey holds nothing: all silhouettes")
 	var card: Dictionary = _probe_line(text, "PROBE itemcard")
 	if not card.is_empty():
 		assert_eq(card["shown"], "true", "the first hammer showed its card")

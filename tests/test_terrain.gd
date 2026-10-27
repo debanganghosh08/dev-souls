@@ -137,6 +137,30 @@ func test_a_drained_pond_loads_empty_and_can_be_walked_into() -> void:
 	assert_eq(line.get("slope_ok", ""), "true", "the basin floor is gentle enough to walk down into")
 
 
+func test_the_settlements_spawned_every_house_with_its_props() -> void:
+	# W8-H: twenty houses from data/sites/vale_houses.json, each with its loot, built by Settlements at load.
+	var line: Dictionary = _probe_line(_text, "PROBE sites ")
+	assert_true(not line.is_empty(), "probe printed the sites line")
+	if line.is_empty():
+		return
+	var houses: int = 0
+	var built: int = 0
+	var props: int = 0
+	for site: Dictionary in SiteRegistry.load_area("vale"):
+		if bool(site.get("fixed", false)):
+			continue
+		built += 1
+		if str(site.get("_file", "")) == "vale_houses.json":
+			houses += 1
+		props += (site.get("props", []) as Array).size()
+	assert_eq(houses, 20, "twenty houses are placed in the Vale")
+	assert_eq(line["fixed"], "3", "the castle, the village and the Hearth chamber are the fixed sites")
+	assert_eq(int(line["spawned"]), built, "every non-fixed site was spawned (%d, of which %d houses)" % [built, houses])
+	assert_true(int(line["spawned"]) >= 20, "at least the twenty houses were spawned")
+	assert_eq(int(line["props"]), props, "every listed prop was instanced (%d)" % props)
+	assert_true(int(line["pieces"]) >= 20 * 8, "each house built at least its eight pieces (%s)" % line["pieces"])
+
+
 func _probe_line(text: String, prefix: String) -> Dictionary:
 	var out: Dictionary = {}
 	for line: String in text.split("\n"):

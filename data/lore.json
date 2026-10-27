@@ -42,5 +42,30 @@
 	"village_lane_stone": {
 		"title": "Lane Stone",
 		"body": "The lane ran from the pond up to the castle, and the ash came down it the other way. Seven houses and a store. The thatch went first, then the people, and the dogs stopped waiting at the doors."
+	},
+	"_comment": "DRAFT (O-3): the entries from maren_tally down are W8-H house inscriptions pending the owner's sign-off. pond_shrine_verse hides a syllable in its mid-sentence capitals (A, S, H as a placeholder); the owner should make it agree with the crypt's syllable, since the Vale's fragment of the Name lives in the crypt.",
+	"maren_tally": {
+		"title": "Gravekeeper's Tally",
+		"body": "Scratched into the hearth wall, one line a grave. Nine by the pond, all of a depth. The tenth was dug ahead of need, for a pilgrim who said he would come back this way. He did not say when."
+	},
+	"pond_shrine_verse": {
+		"title": "Shrine Tablet",
+		"body": "wake it Alone, when the Sun is down, and Hum what the pond hums back to you. Do not bring a lamp. It has seen enough of fire that goes out."
+	},
+	"road_cottage_lintel": {
+		"title": "Door Lintel",
+		"body": "Locked from the outside, and the key gone with whoever turned it. Below the lock, newer and shallower: 'gone to the farms for the sowing. back by first frost.' There have been many frosts."
+	},
+	"north_watch_stone": {
+		"title": "Watch Stone",
+		"body": "From here you could see the castle, the village and the pond in one turn of the head, and the fire under none of them. The watch kept watching anyway. That is what a watch is."
+	},
+	"east_shrine_tablet": {
+		"title": "Toll-Men's Tablet",
+		"body": "The toll-men prayed here before the gate and after it. What they could not carry past the castle they left with the saint: a coin, a name, once a key. The saint keeps what it is given."
+	},
+	"edge_shrine_tablet": {
+		"title": "Edge Tablet",
+		"body": "This is as far as the land goes and as far as he went. A sword laid on an altar is a prayer that the next hand will need it less. Take it. The prayer was not answered the first time."
 	}
 }
