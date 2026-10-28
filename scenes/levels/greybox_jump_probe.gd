@@ -87,6 +87,10 @@ func _flat(timed_out: bool) -> bool:
 		_stand(FLAT_POINT)
 		return false
 	if _frames == SETTLE_FRAMES:
+		# The economy is switched off for play (Stamina.unlimited); the probe switches it back on so the
+		# rule that a jump costs stamina, and is refused without it, is still measured on the real controller.
+		player.unlimited_stamina = false
+		player.get_stamina().unlimited = false
 		player.get_stamina().reset()
 		_stamina_before = player.get_stamina().current
 		_press(&"jump")
@@ -107,6 +111,8 @@ func _refused(timed_out: bool) -> bool:
 		return false
 	if _frames == SETTLE_FRAMES:
 		# Half the cost: regen adds 0.5 a frame, so a pool one short would reach the cost before the press lands.
+		player.unlimited_stamina = false
+		player.get_stamina().unlimited = false
 		player.get_stamina().current = player.jump_cost * 0.5
 		_stamina_before = player.get_stamina().current
 		_press(&"jump")

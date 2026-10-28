@@ -5,7 +5,7 @@ class_name InventoryRows
 ## or not, so an incomplete set is visible as a set. Order is fully deterministic: kind rank, then `order`,
 ## then id, so the list never jumps between openings.
 
-const KIND_ORDER: Array[String] = ["kindling", "fragment", "key", "tool", "lore"]
+const KIND_ORDER: Array[String] = ["kindling", "fragment", "key", "tool", "garment", "lore"]
 const WEAPON_SLOT := "weapon"
 const KINDLING_KIND := "kindling"
 

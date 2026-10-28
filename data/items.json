@@ -230,5 +230,40 @@
 		"lore": "A wax seal stamped with a wick. The Pilgrim leaves one wherever he sleeps, so that somebody will know he passed.",
 		"slot": "",
 		"order": 14
+	},
+	"travellers_cloak": {
+		"name": "Traveller's Cloak",
+		"kind": "garment",
+		"lore": "Heavy wool, rubbed thin at the shoulder where a pack strap sat. Someone walked a long way in this.",
+		"slot": "wear",
+		"order": 15
+	},
+	"leather_coat": {
+		"name": "Leather Coat",
+		"kind": "garment",
+		"lore": "Oiled against a rain that stopped years ago. The collar still stands up on its own.",
+		"slot": "wear",
+		"order": 16
+	},
+	"hunters_mantle": {
+		"name": "Hunter's Mantle",
+		"kind": "garment",
+		"lore": "Short, green, cut to keep a bowstring clear. The Vale had hunters before it had mourners.",
+		"slot": "wear",
+		"order": 17
+	},
+	"ashen_shroud": {
+		"name": "Ashen Shroud",
+		"kind": "garment",
+		"lore": "Grave cloth, and too long for you. The Vale buried its dead in good linen while it still had some.",
+		"slot": "wear",
+		"order": 18
+	},
+	"spear": {
+		"name": "Spear",
+		"kind": "tool",
+		"lore": "A boar spear with a cross-bar below the head, so what you stop stays stopped at arm's length.",
+		"slot": "weapon",
+		"order": 19
 	}
 }

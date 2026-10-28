@@ -207,6 +207,34 @@
 				"radius": 0.5,
 				"sink": 1.2
 			}
+		},
+		{
+			"name": "yard_fence_w",
+			"kind": "fence",
+			"at": [-3.4, 0, 0.2],
+			"yaw": 90,
+			"params": {
+				"length": 6.0,
+				"h": 0.95,
+				"spacing": 2.0,
+				"rails": 2,
+				"broken": true,
+				"seed": 701,
+				"mat": "planks",
+				"sink": 1.0
+			}
+		},
+		{
+			"name": "garden",
+			"kind": "garden_bed",
+			"repeat": [[-3.1, 0, -1.4, 90]],
+			"params": {
+				"w": 1.1,
+				"d": 2.0,
+				"rows": 3,
+				"seed": 702,
+				"sink": 1.0
+			}
 		}
 	]
 }

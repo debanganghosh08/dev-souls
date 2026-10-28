@@ -42,8 +42,11 @@ const THIN_MOVE := 2.0
 ## round the spawn is a load, not play, and the old schedule overran to 2.3 ms a frame there anyway
 ## (p95 6.2, worst 11 ms, measured W8-G2); 2 ms plus one step keeps the same throughput at a third
 ## of the worst frame. After that first settle the play budget rules, cell crossings included.
-@export var fill_budget_ms: float = 1.0
-@export var first_fill_budget_ms: float = 2.0
+## W9-G raised both: the field is 2.4x denser than it was (the owner played it and the grass read as
+## desert scrub a metre apart), and at the old 1 ms a sprinting player outran the fill -- cells inside
+## 50 m of them were still empty. A bigger slice per frame is the price of the denser field.
+@export var fill_budget_ms: float = 2.2
+@export var first_fill_budget_ms: float = 3.0
 @export var fill_cells_per_frame: int = 3
 @export var fill_step_candidates: int = 32
 @export var auto_build: bool = false

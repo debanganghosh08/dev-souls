@@ -5,7 +5,8 @@
 			"props": [
 				{"scene": "res://scenes/props/pickup.tscn", "at": [-1.5, 0.12, 0.6], "yaw": 30, "set": {"id": "maren_spade", "item": "maren_spade", "prompt": "Take the spade"}},
 				{"scene": "res://scenes/props/pickup.tscn", "at": [-1.2, 0.3, -2.3], "yaw": 0, "set": {"id": "maren_hearth_ash", "item": "hearth_ash", "prompt": "Take a handful"}},
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [1.0, 0.12, -2.2], "yaw": 0, "set": {"id": "maren_tally_stone", "lore_key": "maren_tally"}}
+				{"scene": "res://scenes/props/lore_stone.tscn", "at": [1.0, 0.12, -2.2], "yaw": 0, "set": {"id": "maren_tally_stone", "lore_key": "maren_tally"}},
+				{"scene": "res://scenes/props/pickup.tscn", "at": [1.1, 0.14, -1.9], "yaw": 25, "set": {"id": "maren_coat", "item": "leather_coat", "prompt": "Take"}}
 			]},
 		{"id": "fisher_shack", "layout": "res://data/structures/houses/shack_intact.json", "at": [-133.0, -51.0], "yaw": 69.0,
 			"props": [
@@ -36,7 +37,8 @@
 			]},
 		{"id": "village_barn", "layout": "res://data/structures/houses/barn_intact.json", "at": [-111.0, 158.0], "yaw": -147.0,
 			"props": [
-				{"scene": "res://scenes/props/chest.tscn", "at": [0.0, 2.7, -4.0], "yaw": 0, "set": {"id": "village_barn_chest", "contents": {"hammer": 1}}}
+				{"scene": "res://scenes/props/chest.tscn", "at": [0.0, 2.7, -4.0], "yaw": 0, "set": {"id": "village_barn_chest", "contents": {"hammer": 1}}},
+				{"scene": "res://scenes/props/pickup.tscn", "at": [-2.4, 0.14, -3.6], "yaw": -40, "set": {"id": "barn_cloak", "item": "travellers_cloak", "prompt": "Take"}}
 			]},
 		{"id": "farm_barn_w", "layout": "res://data/structures/houses/barn_ruined.json", "at": [-295.0, -60.0], "yaw": 126.0,
 			"props": [
@@ -71,11 +73,13 @@
 		{"id": "east_road_shrine", "layout": "res://data/structures/houses/shrine_ruined.json", "at": [107.0, -34.0], "yaw": -143.0,
 			"props": [
 				{"scene": "res://scenes/props/pickup.tscn", "at": [0.0, 1.02, -1.2], "yaw": 0, "set": {"id": "east_shrine_key", "item": "watch_key", "prompt": "Take the key"}},
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-1.0, 0.12, -1.6], "yaw": 0, "set": {"id": "east_shrine_tablet", "lore_key": "east_shrine_tablet"}}
+				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-1.0, 0.12, -1.6], "yaw": 0, "set": {"id": "east_shrine_tablet", "lore_key": "east_shrine_tablet"}},
+				{"scene": "res://scenes/props/pickup.tscn", "at": [1.0, 0.14, -0.9], "yaw": -20, "set": {"id": "road_spear", "item": "spear", "prompt": "Take"}}
 			]},
 		{"id": "woodcutter_shack", "layout": "res://data/structures/houses/shack_intact.json", "at": [300.0, -10.0], "yaw": -88.0,
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.9, 0.12, -1.2], "yaw": 0, "set": {"id": "woodcutter_wedge", "item": "woodcutter_wedge", "prompt": "Take the wedge"}}
+				{"scene": "res://scenes/props/pickup.tscn", "at": [0.9, 0.12, -1.2], "yaw": 0, "set": {"id": "woodcutter_wedge", "item": "woodcutter_wedge", "prompt": "Take the wedge"}},
+				{"scene": "res://scenes/props/pickup.tscn", "at": [0.8, 0.14, -1.1], "yaw": 15, "set": {"id": "woodcutter_mantle", "item": "hunters_mantle", "prompt": "Take"}}
 			]},
 		{"id": "east_ridge_watch", "layout": "res://data/structures/houses/watch_ruined.json", "at": [326.0, -51.0], "yaw": -131.0,
 			"props": [
@@ -88,7 +92,8 @@
 		{"id": "edge_shrine", "layout": "res://data/structures/houses/shrine_intact.json", "at": [-258.0, -245.0], "yaw": 47.0,
 			"props": [
 				{"scene": "res://scenes/props/pickup.tscn", "at": [0.0, 1.02, -1.2], "yaw": 0, "set": {"id": "edge_shrine_sword", "item": "sword", "prompt": "Take the sword"}},
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-0.9, 0.12, -1.5], "yaw": 20, "set": {"id": "edge_shrine_tablet", "lore_key": "edge_shrine_tablet"}}
+				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-0.9, 0.12, -1.5], "yaw": 20, "set": {"id": "edge_shrine_tablet", "lore_key": "edge_shrine_tablet"}},
+				{"scene": "res://scenes/props/pickup.tscn", "at": [-1.0, 0.14, -0.7], "yaw": 0, "set": {"id": "shrine_shroud", "item": "ashen_shroud", "prompt": "Take"}}
 			]}
 	]
 }

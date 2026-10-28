@@ -8,6 +8,7 @@ const UNARMED := WeaponTable.UNARMED
 const SWORD := &"sword"
 const HAMMER := &"hammer"
 const TORCH := &"torch"
+const SPEAR := &"spear"
 
 # The Wick's armature carries the x100 scale of its centimetre export, so one unit in the hand attachment's
 # local space is 100 model-metres. Props are authored in metres and shrunk by this on the way in.
@@ -44,6 +45,7 @@ var _hand: Node3D
 var _sword: Node3D
 var _hammer: Node3D
 var _torch: Node3D
+var _spear: Node3D
 var _ember: Node3D
 var _light: OmniLight3D
 var _shown: StringName = UNARMED
@@ -99,7 +101,7 @@ func refresh() -> void:
 # Exactly one prop, or none. An id with no prop (unarmed, unknown, or sword with the node missing) empties the hand.
 func show_weapon(id: StringName) -> void:
 	var prop: Node3D = _prop_for(id)
-	for candidate: Node3D in [_sword, _hammer, _torch]:
+	for candidate: Node3D in [_sword, _hammer, _torch, _spear]:
 		if candidate != null:
 			candidate.visible = candidate == prop
 	_shown = id if prop != null else UNARMED
@@ -117,7 +119,7 @@ func shown() -> StringName:
 
 func visible_prop_count() -> int:
 	var count: int = 0
-	for candidate: Node3D in [_sword, _hammer, _torch]:
+	for candidate: Node3D in [_sword, _hammer, _torch, _spear]:
 		if candidate != null and candidate.visible:
 			count += 1
 	return count
@@ -176,6 +178,21 @@ static func build_torch(wood: Material, wrap: Material, char_mat: Material, embe
 	return root
 
 
+## Boar spear, ~1.55 m in the hand: ash shaft, a leaf blade, a socket band and the cross-bar below the head
+## that stops a charge running up the shaft. Cosmetic for now, like every weapon here: WeaponTable gives it
+## the longest reach in the game and the slowest swing. Five primitives, ~190 vertices.
+static func build_spear(wood: Material, iron: Material, iron_dark: Material) -> Node3D:
+	var root := Node3D.new()
+	root.name = "Spear"
+	_cylinder(root, "Shaft", 0.014, 0.018, 1.3, 0.1, wood)
+	_cylinder(root, "Socket", 0.024, 0.026, 0.09, -0.59, iron_dark)
+	_box(root, "Blade", Vector3(0.055, 0.26, 0.016), -0.76, iron)
+	_box(root, "Tip", Vector3(0.02, 0.08, 0.012), -0.92, iron)
+	_box(root, "CrossBar", Vector3(0.2, 0.014, 0.014), -0.63, iron_dark)
+	_cylinder(root, "Butt", 0.019, 0.019, 0.04, 0.73, iron_dark)
+	return root
+
+
 static func vertex_count(node: Node) -> int:
 	var total: int = 0
 	if node is MeshInstance3D:
@@ -190,9 +207,10 @@ static func vertex_count(node: Node) -> int:
 func _build_props() -> void:
 	_hammer = build_hammer(wood_material, iron_material, iron_dark_material)
 	_torch = build_torch(wood_material, wrap_material, char_material, ember_material)
+	_spear = build_spear(wood_material, iron_material, iron_dark_material)
 	_ember = _torch.get_node(NodePath(EMBER_NAME))
 	var grip: Transform3D = _sword.transform if _sword != null else DEFAULT_GRIP
-	for prop: Node3D in [_hammer, _torch]:
+	for prop: Node3D in [_hammer, _torch, _spear]:
 		prop.transform = grip.scaled_local(Vector3.ONE * HAND_METRE)
 		prop.visible = false
 		_hand.add_child(prop)
@@ -213,6 +231,8 @@ func _prop_for(id: StringName) -> Node3D:
 			return _hammer
 		TORCH:
 			return _torch
+		SPEAR:
+			return _spear
 	return null
 
 

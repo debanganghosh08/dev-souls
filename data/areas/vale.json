@@ -67,6 +67,17 @@
       "radius": 78,
       "height": 16.0,
       "blend": 80
+    },
+    {
+      "_comment": "The islet in the Mirror Pond (W9-T): a stub of ground standing 2.6 m clear of the water for the broken light tower. Plateaus are applied after the basin is carved, which is what lets a rise sit inside the pond at all. It is set 28 m out on the perpendicular of the old road, so it crowds neither the pond seal at the centre nor the road that runs through the basin, and its skirt is long enough that the climb out of the water is walkable.",
+      "name": "isle",
+      "centre": [
+        21,
+        27
+      ],
+      "radius": 7,
+      "height": -2.4,
+      "blend": 17
     }
   ],
   "ridge": {
@@ -98,7 +109,39 @@
     "mud_height": 1.6,
     "mud_blend": 1.8,
     "uv_metres_per_tile": 2.0,
-    "normal_strength": 0.8
+    "normal_strength": 0.8,
+    "grass_tint": [
+      0.63,
+      0.82,
+      0.47
+    ],
+    "road": {
+      "_comment": "The old road the terrain wears bare, same line as the valley channel and the grass zones.",
+      "waypoints": [
+        [
+          -200,
+          140
+        ],
+        [
+          -90,
+          70
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          105,
+          -80
+        ],
+        [
+          200,
+          -160
+        ]
+      ],
+      "half_width": 2.6,
+      "feather": 3.4
+    }
   },
   "holes": [
     [

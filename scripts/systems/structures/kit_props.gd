@@ -38,6 +38,9 @@ static func make(kind: String, p: Dictionary, name: String = "") -> Dictionary:
 		"cairn":
 			return cairn(_f(p, "radius", 0.6), _f(p, "h", 1.2), int(p.get("count", 7)), int(p.get("seed", 1)),
 					_or(mat, "stone"), sink_of(p), name)
+		"garden_bed":
+			return garden_bed(_f(p, "w", 1.4), _f(p, "d", 2.6), int(p.get("rows", 3)), int(p.get("seed", 1)),
+					_or(mat, "soil"), str(p.get("crop", "sprout")), sink_of(p), name)
 	return StructureKitPropsCamp.make(kind, p, name)
 
 
@@ -175,6 +178,33 @@ static func cairn(r: float, h: float, count: int, seed: int, mat: String, sink: 
 	shape.height = h + sink
 	b.shapes.append({"shape": shape, "transform": Transform3D(Basis.IDENTITY, Vector3(0.0, (h - sink) * 0.5, 0.0))})
 	return finish("cairn", [[b, mat]])
+
+
+## A kitchen garden bed: a low mound of turned earth with rows of something coming up in it. The owner,
+## after playing: "there should be small gardens and all". Not a Footprint ground kind on purpose -- a bed
+## beside a house must not grow the footprint the house is floored on, or twenty houses move up and down.
+## One low kerb collider the player steps over rather than walks through.
+static func garden_bed(w: float, d: float, rows: int, seed: int, mat: String, crop: String, sink: float,
+		name: String) -> Dictionary:
+	var b := StructureKit.builder(mat, name)
+	var h: float = 0.22
+	box(b, Vector3(0.0, (h - sink) * 0.5, 0.0), Vector3(w, h + sink, d), false)
+	box(b, Vector3(0.0, h * 0.5 + 0.08, 0.0), Vector3(w * 0.84, h * 0.6, d * 0.94), false)
+	var g := StructureKit.builder(crop, name)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed
+	var lines: int = maxi(1, rows)
+	for r: int in range(lines):
+		var x: float = -w * 0.5 + w * (float(r) + 0.5) / float(lines)
+		var per: int = maxi(2, int(d / 0.42))
+		for i: int in range(per):
+			var z: float = -d * 0.5 + d * (float(i) + 0.5) / float(per)
+			var tall: float = rng.randf_range(0.12, 0.26)
+			g.add_box(Transform3D(Basis(Vector3.UP, rng.randf_range(0.0, TAU)),
+					Vector3(x + rng.randf_range(-0.05, 0.05), h + tall * 0.5, z + rng.randf_range(-0.05, 0.05))),
+					Vector3(0.09, tall, 0.09), false)
+	collide(b, Vector3(0.0, (h - sink) * 0.5, 0.0), Vector3(w, h + sink, d))
+	return finish("garden_bed", [[b, mat], [g, crop]])
 
 
 # --- shared helpers (also used by StructureKitPropsCamp) ----------------------------------------------------

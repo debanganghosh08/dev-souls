@@ -694,6 +694,66 @@
 				"radius": 0.5,
 				"sink": 1.2
 			}
+		},
+		{
+			"name": "lane_fence_w",
+			"kind": "fence",
+			"at": [-6.0, 0, 6.0],
+			"yaw": 0,
+			"params": {
+				"length": 10.0,
+				"h": 0.95,
+				"spacing": 2.0,
+				"rails": 2,
+				"broken": true,
+				"seed": 731,
+				"mat": "planks",
+				"sink": 1.0
+			}
+		},
+		{
+			"name": "lane_fence_e",
+			"kind": "fence",
+			"at": [6.5, 0, 6.0],
+			"yaw": 0,
+			"params": {
+				"length": 10.0,
+				"h": 0.95,
+				"spacing": 2.0,
+				"rails": 2,
+				"broken": true,
+				"seed": 732,
+				"mat": "planks",
+				"sink": 1.0
+			}
+		},
+		{
+			"name": "croft_fence",
+			"kind": "fence",
+			"at": [-13.5, 0, 4.0],
+			"yaw": 90,
+			"params": {
+				"length": 8.0,
+				"h": 0.95,
+				"spacing": 2.0,
+				"rails": 2,
+				"broken": true,
+				"seed": 733,
+				"mat": "planks",
+				"sink": 1.0
+			}
+		},
+		{
+			"name": "crofts",
+			"kind": "garden_bed",
+			"repeat": [[-13.0, 0, 2.0, 90], [-13.0, 0, 4.2, 90], [-13.0, 0, 6.4, 90]],
+			"params": {
+				"w": 1.4,
+				"d": 2.6,
+				"rows": 3,
+				"seed": 734,
+				"sink": 1.0
+			}
 		}
 	]
 }

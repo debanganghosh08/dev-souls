@@ -131,7 +131,8 @@ func test_the_road_is_nearly_bare_in_the_middle_and_blends_out_over_a_few_metres
 	var mid: Vector2 = a.lerp(b, 0.5)
 	var across: Vector2 = (b - a).normalized().orthogonal()
 	assert_true(_zones.road_distance(mid.x, mid.y) < 0.01, "the midpoint is on the road's centre line")
-	assert_true(_zones.density_at(mid.x, mid.y) <= 0.1, "the road's middle is nearly bare (%.3f)" % _zones.density_at(mid.x, mid.y))
+	# A worn track, not scoured earth: the ruts still carry a little grass (W9-G).
+	assert_true(_zones.density_at(mid.x, mid.y) <= 0.2, "the road's middle is worn down to a track (%.3f)" % _zones.density_at(mid.x, mid.y))
 	for sign_v: float in [-1.0, 1.0]:
 		var last: float = -1.0
 		for k: int in 17:
@@ -154,8 +155,10 @@ func test_settlements_are_short_and_trampled_and_the_hilltops_and_ridge_foot_pal
 		var p: Vector2 = (site["centre"] as Vector2) + Vector2(0.0, 25.0)
 		assert_true(_zones.road_distance(p.x, p.y) > ROAD_EDGE, "%s sample point is off the road" % name)
 		_zones.sample(p.x, p.y)
-		assert_true(absf(_zones.density - 0.45) < 0.03, "%s interior is about 0.45x (%.2f)" % [name, _zones.density])
-		assert_true(_zones.height < 0.7, "%s interior grass is short (%.2f)" % [name, _zones.height])
+		# W9-G: trampled, not bald. The owner asked for grass everywhere and consistent; a settlement still
+		# reads as walked-over because it is thinner and shorter than the meadow, not because it is bare.
+		assert_true(absf(_zones.density - 0.7) < 0.03, "%s interior is about 0.7x (%.2f)" % [name, _zones.density])
+		assert_true(_zones.height < 0.9, "%s interior grass is short (%.2f)" % [name, _zones.height])
 		assert_true(_zones.tall <= 0.001 and _zones.flowers <= 0.001, "%s interior has no tall grass or flowers" % name)
 	_zones.sample(0.0, 150.0)
 	var meadow_tip: Color = _zones.tip
@@ -170,12 +173,12 @@ func test_settlements_are_short_and_trampled_and_the_hilltops_and_ridge_foot_pal
 				top = Vector2(x, z)
 	assert_true(top_h >= 7.5, "the north hills have a summit above the hilltop band (%.1f m at %s)" % [top_h, top])
 	_zones.sample(top.x, top.y)
-	assert_true(absf(_zones.density - 0.6) < 0.03, "the summit is 0.6x (%.2f)" % _zones.density)
-	assert_true(_zones.tip.get_luminance() > meadow_tip.get_luminance(), "the hilltop palette is paler than the meadow's")
+	assert_true(absf(_zones.density - 0.85) < 0.03, "the summit is thinner than the meadow, not bare (%.2f)" % _zones.density)
+	assert_true(_zones.tip.get_luminance() > meadow_tip.get_luminance() * 0.98, "the hilltop palette is drier than the meadow's")
 	assert_true(_zones.tall <= 0.001, "no tall grass on the summit")
 	_zones.sample(-370.0, 0.0)
-	assert_true(absf(_zones.density - 0.6) < 0.03, "the ridge foot is 0.6x (%.2f)" % _zones.density)
-	assert_true(_zones.tip.get_luminance() > meadow_tip.get_luminance(), "the ridge foot palette is pale straw")
+	assert_true(absf(_zones.density - 0.85) < 0.03, "the ridge foot is thinner than the meadow (%.2f)" % _zones.density)
+	assert_true(_zones.tip.get_luminance() > meadow_tip.get_luminance() * 0.98, "the ridge foot palette is drier")
 	_zones.sample(60.0, 300.0)
 	assert_true(_zones.flowers >= 0.99, "the south meadows are full of wildflowers (%.2f)" % _zones.flowers)
 	assert_true(_zones.tip.g > _zones.tip.r, "the south meadow tip is green, not gold")

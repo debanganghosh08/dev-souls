@@ -33,7 +33,7 @@ func test_ui_text_has_every_inventory_and_card_key() -> void:
 	for key: String in [
 		"inventory_title", "inventory_progress", "kindling_progress", "unknown_item", "not_yet_found", "row_count",
 		"count_line", "kind_kindling", "kind_fragment", "kind_key", "kind_tool", "kind_lore", "equip", "equipped",
-		"inventory_hint", "item_card_hint",
+		"inventory_hint", "item_card_hint", "kind_garment",
 	]:
 		assert_true(table.has(key) and table[key] is String and table[key] != "", "ui_text.json has '%s'" % key)
 		assert_true(UiText.DEFAULTS.has(key), "built-in fallback covers '%s'" % key)
@@ -47,7 +47,7 @@ func test_items_json_gained_slot_and_order_without_losing_anything() -> void:
 	for id: String in table:
 		if table[id] is Dictionary:
 			items += 1
-	assert_eq(items, 33, "exactly 33 items (13 plus the 20 W8-H house items; the file's _comment is not one)")
+	assert_eq(items, 38, "exactly 38 items (13, plus the 20 W8-H house items, plus the four W9-C garments and the spear)")
 	var weapons: Array[String] = []
 	for id: String in table:
 		if not table[id] is Dictionary:
@@ -58,7 +58,7 @@ func test_items_json_gained_slot_and_order_without_losing_anything() -> void:
 		if entry.get("slot", "") == "weapon":
 			weapons.append(id)
 	weapons.sort()
-	assert_eq(weapons, ["hammer", "sword", "torch"], "exactly the three melee weapons carry the weapon slot")
+	assert_eq(weapons, ["hammer", "spear", "sword", "torch"], "exactly the four melee weapons carry the weapon slot")
 
 
 func test_headless_probe_opens_inventory_shows_the_card_and_equips() -> void:
@@ -81,8 +81,8 @@ func test_headless_probe_opens_inventory_shows_the_card_and_equips() -> void:
 	if not inventory.is_empty():
 		assert_eq(inventory["open"], "true", "an injected Tab opened the inventory panel")
 		assert_eq(inventory["state"], "PAUSED", "the open panel holds PAUSED")
-		assert_eq(inventory["rows"], "33", "every known item has a row")
-		assert_eq(inventory["unknown"], "33", "a fresh journey holds nothing: all silhouettes")
+		assert_eq(inventory["rows"], "38", "every known item has a row")
+		assert_eq(inventory["unknown"], "38", "a fresh journey holds nothing: all silhouettes")
 	var card: Dictionary = _probe_line(text, "PROBE itemcard")
 	if not card.is_empty():
 		assert_eq(card["shown"], "true", "the first hammer showed its card")

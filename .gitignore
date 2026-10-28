@@ -32,3 +32,7 @@ assets/
 
 # Agent worktrees (local only)
 .claude/worktrees/
+
+# Gameplay recordings the owner sends for review: 90 MB+ of video, and D-005 keeps
+# binaries out of git. Frames are pulled from them locally and thrown away.
+game_recordings/

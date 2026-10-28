@@ -1,30 +1,203 @@
 {
 	"_comment": "Grass zones for the Ashen Vale (W8-G, docs/WORLD_PLAN.md section 4), read by GrassZones.from_dict and painted in this order: a later zone lerps over an earlier one by its weight, so order is paint order (the castle hill comes after the hilltops and the ridge foot because its skirt reaches both, and the hill is the owner's first complaint). Each zone: name; shape (or shapes, multiplied together) with type base | noise {frequency, range [lo, hi] of the noise mapped 0..1} | rect {min, max, feather} | ring {centre [x, z] | 'pond' | 'plateau:<name>', inner, outer, feather} | top {plateau, feather: the paved disc} | skirt {plateau, feather: rim down to the foot of the blend} | height {range [lo, hi] metres} | road {the old road, from the area's valley waypoints}; and the channels it sets (a missing channel leaves the one painted before): density is a multiplier on the meadow's, height on blade height, tall and flowers are 0..1 weights for the tall-grass and wildflower layers, root/tip the blade palette. road.half_width is the bare middle, feather the metres it blends out over. colour_noise drifts every palette toward green or gold (green) and lighter or darker (light) over 1/frequency metres. EVERY palette and density here is UNVERIFIED by eye: headless proves coverage and counts, never the look. Retune freely.",
 	"seed": 20261024,
-	"road": {"waypoints": "valley", "half_width": 2.5, "feather": 4.0},
-	"colour_noise": {"frequency": 0.0045, "green": 0.16, "light": 0.10},
+	"road": {
+		"waypoints": "valley",
+		"half_width": 2.5,
+		"feather": 4.0
+	},
+	"colour_noise": {
+		"frequency": 0.0045,
+		"green": 0.16,
+		"light": 0.1
+	},
 	"zones": [
-		{"name": "meadow", "shape": {"type": "base"},
-			"density": 1.0, "height": 1.0, "tall": 0.0, "flowers": 0.6, "root": "#2f3a1e", "tip": "#9a9a52"},
-		{"name": "tall_patches", "shape": {"type": "noise", "frequency": 0.011, "range": [0.2, 0.55]},
-			"density": 1.4, "height": 1.15, "tall": 1.0, "root": "#3a3a1c", "tip": "#c9a94f"},
-		{"name": "pond_shore", "shape": {"type": "ring", "centre": "pond", "inner": 42, "outer": 75, "feather": 12},
-			"density": 0.9, "height": 1.05, "tall": 0.0, "flowers": 0.4, "root": "#23331f", "tip": "#6f8f4a"},
-		{"name": "south_meadows", "shape": {"type": "rect", "min": [-50, 200], "max": [200, 420], "feather": 40},
-			"density": 1.1, "flowers": 1.0, "root": "#26381c", "tip": "#7fa046"},
-		{"name": "southwest_farms", "shape": {"type": "rect", "min": [-260, -220], "max": [-110, -40], "feather": 35},
-			"density": 1.4, "height": 1.2, "tall": 1.0, "flowers": 0.2, "root": "#3a3a1c", "tip": "#c9a94f"},
-		{"name": "north_hilltops", "shapes": [{"type": "rect", "min": [-170, -420], "max": [100, -190], "feather": 30}, {"type": "height", "range": [3.5, 7.5]}],
-			"density": 0.6, "height": 0.8, "tall": 0.0, "flowers": 0.0, "root": "#3a3526", "tip": "#b9a77a"},
-		{"name": "ridge_foot", "shape": {"type": "ring", "centre": [0, 0], "inner": 335, "outer": 420, "feather": 25},
-			"density": 0.6, "height": 0.85, "tall": 0.0, "flowers": 0.0, "root": "#3a3526", "tip": "#b9a77a"},
-		{"name": "castle_hill", "shape": {"type": "skirt", "plateau": "castle", "feather": 12},
-			"density": 1.4, "height": 1.2, "tall": 1.0, "flowers": 0.2, "root": "#3a3a1c", "tip": "#c9a94f"},
-		{"name": "castle_courtyard", "shape": {"type": "top", "plateau": "castle", "feather": 6},
-			"density": 0.45, "height": 0.6, "tall": 0.0, "flowers": 0.0, "root": "#2d2f22", "tip": "#8c8460"},
-		{"name": "village", "shape": {"type": "top", "plateau": "village", "feather": 6},
-			"density": 0.45, "height": 0.6, "tall": 0.0, "flowers": 0.0, "root": "#2d2f22", "tip": "#8c8460"},
-		{"name": "road", "shape": {"type": "road"},
-			"density": 0.04, "height": 0.65, "tall": 0.0, "flowers": 0.0, "root": "#2d2f22", "tip": "#8c8460"}
+		{
+			"name": "meadow",
+			"shape": {
+				"type": "base"
+			},
+			"density": 1.0,
+			"height": 1.0,
+			"tall": 0.0,
+			"flowers": 0.6,
+			"root": "#27351a",
+			"tip": "#7f9340"
+		},
+		{
+			"name": "tall_patches",
+			"shape": {
+				"type": "noise",
+				"frequency": 0.011,
+				"range": [
+					0.2,
+					0.55
+				]
+			},
+			"density": 1.4,
+			"height": 1.15,
+			"tall": 1.0,
+			"root": "#33401e",
+			"tip": "#9aa64e"
+		},
+		{
+			"name": "pond_shore",
+			"shape": {
+				"type": "ring",
+				"centre": "pond",
+				"inner": 42,
+				"outer": 75,
+				"feather": 12
+			},
+			"density": 0.9,
+			"height": 1.05,
+			"tall": 0.0,
+			"flowers": 0.4,
+			"root": "#23331f",
+			"tip": "#6f8f4a"
+		},
+		{
+			"name": "south_meadows",
+			"shape": {
+				"type": "rect",
+				"min": [
+					-50,
+					200
+				],
+				"max": [
+					200,
+					420
+				],
+				"feather": 40
+			},
+			"density": 1.1,
+			"flowers": 1.0,
+			"root": "#26381c",
+			"tip": "#7fa046"
+		},
+		{
+			"name": "southwest_farms",
+			"shape": {
+				"type": "rect",
+				"min": [
+					-260,
+					-220
+				],
+				"max": [
+					-110,
+					-40
+				],
+				"feather": 35
+			},
+			"density": 1.4,
+			"height": 1.2,
+			"tall": 1.0,
+			"flowers": 0.2,
+			"root": "#33401e",
+			"tip": "#9aa64e"
+		},
+		{
+			"name": "north_hilltops",
+			"shapes": [
+				{
+					"type": "rect",
+					"min": [
+						-170,
+						-420
+					],
+					"max": [
+						100,
+						-190
+					],
+					"feather": 30
+				},
+				{
+					"type": "height",
+					"range": [
+						3.5,
+						7.5
+					]
+				}
+			],
+			"density": 0.85,
+			"height": 0.95,
+			"tall": 0.0,
+			"flowers": 0.0,
+			"root": "#303a22",
+			"tip": "#90985a"
+		},
+		{
+			"name": "ridge_foot",
+			"shape": {
+				"type": "ring",
+				"centre": [
+					0,
+					0
+				],
+				"inner": 335,
+				"outer": 420,
+				"feather": 25
+			},
+			"density": 0.85,
+			"height": 0.95,
+			"tall": 0.0,
+			"flowers": 0.0,
+			"root": "#303a22",
+			"tip": "#90985a"
+		},
+		{
+			"name": "castle_hill",
+			"shape": {
+				"type": "skirt",
+				"plateau": "castle",
+				"feather": 12
+			},
+			"density": 1.4,
+			"height": 1.2,
+			"tall": 1.0,
+			"flowers": 0.2,
+			"root": "#33401e",
+			"tip": "#9aa64e"
+		},
+		{
+			"name": "castle_courtyard",
+			"shape": {
+				"type": "top",
+				"plateau": "castle",
+				"feather": 6
+			},
+			"density": 0.7,
+			"height": 0.8,
+			"tall": 0.0,
+			"flowers": 0.0,
+			"root": "#2b3320",
+			"tip": "#79834d"
+		},
+		{
+			"name": "village",
+			"shape": {
+				"type": "top",
+				"plateau": "village",
+				"feather": 6
+			},
+			"density": 0.7,
+			"height": 0.8,
+			"tall": 0.0,
+			"flowers": 0.0,
+			"root": "#2b3320",
+			"tip": "#79834d"
+		},
+		{
+			"name": "road",
+			"shape": {
+				"type": "road"
+			},
+			"density": 0.12,
+			"height": 0.75,
+			"tall": 0.0,
+			"flowers": 0.0,
+			"root": "#2b3320",
+			"tip": "#79834d"
+		}
 	]
 }

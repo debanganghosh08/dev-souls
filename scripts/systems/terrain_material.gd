@@ -14,6 +14,8 @@ const LAYERS := {
 }
 const MAPS := {"albedo": "diff", "normal": "nor_gl", "rough": "rough"}
 const FALLBACK := {"albedo": Color(0.45, 0.45, 0.43), "normal": Color(0.5, 0.5, 1.0), "rough": Color(0.9, 0.9, 0.9)}
+## Matches the array in terrain.gdshader.
+const MAX_ROAD_SEGMENTS := 8
 
 static var _cached: ShaderMaterial
 static var _missing: int = 0
@@ -36,8 +38,41 @@ static func get_material(settings: Dictionary, water_level: float) -> ShaderMate
 	material.set_shader_parameter("mud_height", water_level + float(settings.get("mud_height", 1.5)))
 	material.set_shader_parameter("mud_blend", maxf(0.01, float(settings.get("mud_blend", 2.0))))
 	material.set_shader_parameter("normal_strength", float(settings.get("normal_strength", 0.8)))
+	material.set_shader_parameter("grass_tint", _colour(settings.get("grass_tint", null)))
+	_set_road(material, settings)
 	_cached = material
 	return material
+
+
+## The worn track, from the same valley polyline the grass zones and the placement rules already use, so
+## there is one road in the world and not two that drift apart. `road` in the area file's material block
+## gives its half width and feather; MAX_ROAD_SEGMENTS is the shader array's size.
+static func _set_road(material: ShaderMaterial, settings: Dictionary) -> void:
+	var road: Dictionary = settings.get("road", {}) if settings.get("road", {}) is Dictionary else {}
+	var points: Array = road.get("waypoints", [])
+	var segments: Array[Plane] = []
+	for i: int in range(points.size() - 1):
+		if segments.size() >= MAX_ROAD_SEGMENTS:
+			break
+		var a: Array = points[i]
+		var b: Array = points[i + 1]
+		if a.size() < 2 or b.size() < 2:
+			continue
+		segments.append(Plane(float(a[0]), float(a[1]), float(b[0]), float(b[1])))
+	while segments.size() < MAX_ROAD_SEGMENTS:
+		segments.append(Plane(0.0, 0.0, 0.0, 0.0))
+	material.set_shader_parameter("road_segments", segments)
+	material.set_shader_parameter("road_count", mini(maxi(points.size() - 1, 0), MAX_ROAD_SEGMENTS))
+	material.set_shader_parameter("road_half", maxf(0.0, float(road.get("half_width", 2.5))))
+	material.set_shader_parameter("road_feather", maxf(0.01, float(road.get("feather", 4.0))))
+
+
+## [r, g, b] from the area file, white when absent, so an area that says nothing looks as it always did.
+static func _colour(value: Variant) -> Vector3:
+	if value is Array and (value as Array).size() >= 3:
+		var a: Array = value
+		return Vector3(float(a[0]), float(a[1]), float(a[2]))
+	return Vector3.ONE
 
 
 static func clear_cache() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://player0w1030"]
+[gd_scene load_steps=20 format=3 uid="uid://player0w1030"]
 
 [ext_resource type="Script" uid="uid://nk1m6f1hqajs" path="res://scripts/systems/player_controller.gd" id="1_controller"]
 [ext_resource type="Script" uid="uid://cee5fmslkt2jn" path="res://scripts/systems/camera_rig.gd" id="2_rig"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://assets/models/characters/wick.glb" id="5_model"]
 [ext_resource type="Script" path="res://scripts/systems/player_animator.gd" id="6_animator"]
 [ext_resource type="Script" path="res://scripts/systems/player_weapons.gd" id="7_weapons"]
+[ext_resource type="Script" path="res://scripts/systems/wardrobe.gd" id="8_wardrobe"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -145,5 +146,9 @@ iron_dark_material = SubResource("Mat_IronDark")
 wrap_material = SubResource("Mat_LeatherDark")
 char_material = SubResource("Mat_Ash")
 ember_material = SubResource("Mat_Ember")
+
+[node name="Wardrobe" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("8_wardrobe")
 
 [editable path="Body/Model"]

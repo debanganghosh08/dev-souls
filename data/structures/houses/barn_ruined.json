@@ -219,6 +219,34 @@
 				"sink": 1.2,
 				"flicker": 0.42
 			}
+		},
+		{
+			"name": "yard_fence_e",
+			"kind": "fence",
+			"at": [6.0, 0, 0.0],
+			"yaw": 90,
+			"params": {
+				"length": 12.0,
+				"h": 0.95,
+				"spacing": 2.0,
+				"rails": 2,
+				"broken": true,
+				"seed": 681,
+				"mat": "planks",
+				"sink": 1.0
+			}
+		},
+		{
+			"name": "garden",
+			"kind": "garden_bed",
+			"repeat": [[5.4, 0, -3.0, 90], [5.4, 0, -0.8, 90]],
+			"params": {
+				"w": 1.4,
+				"d": 2.6,
+				"rows": 3,
+				"seed": 682,
+				"sink": 1.0
+			}
 		}
 	]
 }

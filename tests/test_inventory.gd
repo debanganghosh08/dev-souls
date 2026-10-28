@@ -19,7 +19,7 @@ func teardown() -> void:
 
 
 func test_definitions_loaded() -> void:
-	assert_eq(inv.all_definitions().size(), 33, "items.json has 33 ids (13 plus the 20 W8-H house items)")
+	assert_eq(inv.all_definitions().size(), 38, "items.json has 38 ids (13, the 20 W8-H house items, the four W9-C garments and the spear)")
 	assert_eq(inv.definition(&"torch")["kind"], "tool", "torch is a tool")
 	assert_eq(inv.definition(&"nope"), {}, "unknown definition is empty")
 

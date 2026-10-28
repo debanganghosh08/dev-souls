@@ -96,6 +96,28 @@ open meadows and the rim are still pitch dark away from them, and the moon is `m
 night palette comes up a little (`data/daynight.json`, one number) or the player needs a light they carry —
 the torch exists and is a weapon slot, so lighting the way currently costs the sword.
 
+**W9-S · Stamina off.** `DONE` (lead, 2026-10-28). The owner: "remove that stamina cap for jumping,
+punching and running... the bar should be there but it should not get depleted." One switch
+(`PlayerController.unlimited_stamina`, `Stamina.unlimited`): every spend and drain succeeds and takes
+nothing, the gauge sits full, and the rule underneath is untouched. The jump probe turns it back on, so
+the cost-and-refusal mechanic is still measured.
+**W9-G · Grass, ground and yards.** `DONE` (lead, 2026-10-28), from the owner's gameplay recording. The
+blades were metre-wide fans a metre apart over brown dirt ("the starting area is not the desert area").
+Base grass 2.4x denser, blades half as tall and a third as wide, barely tilted, evened out, and green;
+the ground under them carries a green tint; the thin zones (hilltops, ridge foot, settlements) no longer
+go bald; fog cut to a third so the valley is visible past 60 m; the old road is worn into the terrain
+shader as real bare ground; and every house and the village got a fence and a kitchen garden.
+**W9-T · The tall towers.** `DONE` (lead, 2026-10-28). Three watchtowers (five and four storeys, 18 m and
+14.6 m) and a broken light tower on a new islet in the Mirror Pond, each climbable storey by storey with
+a beacon burning at its head. Built entirely from existing kit kinds, generated rather than hand-written.
+**W9-C · Clothes and the spear.** `DONE` (lead, 2026-10-28). Four garments (traveller's cloak, leather
+coat, hunter's mantle, ashen shroud) lying in houses: press E and it is worn, no second step. A spear with
+the longest reach in the game, held in the hand like the sword.
+**W9-T2 · Ladders, and towers worth entering.** `READY`. The towers are stairs and empty floors. They want
+a reason to climb: loot at the head, a ladder for the last storey instead of a flight, and something to see
+from the terrace. The owner asked for "stairs or just those ladders" and got stairs; a ladder kind is a
+kit piece nobody has written yet.
+
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
 **W8-01 · Area 2, the Wood.** `READY`. Dense forest, little sky, a drowned shrine. Reuses the heightfield,

@@ -1,0 +1,812 @@
+{
+	"_comment": "A watchtower of the old Vale (W9-T): five storeys of stone, 17 m to the parapet, one straight flight per storey turning 180 degrees each time, and every floor slab short of the wall so the stair head comes up through a gap. The top two storeys have lost their faces (broken_wall), the parapet is gone on one side, and a beacon burns on the head of it, so it reads from 400 m at night. Ground-storey door at +Z with a buried doorstep; foundation 2.4 m down for the slope it stands on.",
+	"name": "watchtower",
+	"deck": 6.4,
+	"storeys": 5,
+	"storey_height": 3.4,
+	"keep_out": [
+		[
+			-0.9,
+			3.4,
+			1.8,
+			2.2
+		]
+	],
+	"pieces": [
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [
+				0,
+				-2.4,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 6.7,
+				"h": 2.4,
+				"d": 6.7,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "ground_floor",
+			"kind": "floor_slab",
+			"at": [
+				0,
+				-0.2,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 5.6000000000000005,
+				"d": 5.6000000000000005,
+				"t": 0.2,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s0_wall_0",
+			"group": "storey_0",
+			"kind": "wall",
+			"at": [
+				-3.2,
+				0.0,
+				0
+			],
+			"yaw": 90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"plinth": {
+					"h": 0.45,
+					"out": 0.14
+				},
+				"opening": {
+					"width": 0.8,
+					"height": 1.3,
+					"sill": 1.1
+				}
+			}
+		},
+		{
+			"name": "s0_wall_1",
+			"group": "storey_0",
+			"kind": "wall",
+			"at": [
+				3.2,
+				0.0,
+				0
+			],
+			"yaw": -90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"plinth": {
+					"h": 0.45,
+					"out": 0.14
+				}
+			}
+		},
+		{
+			"name": "s0_wall_2",
+			"group": "storey_0",
+			"kind": "wall",
+			"at": [
+				0,
+				0.0,
+				-3.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"plinth": {
+					"h": 0.45,
+					"out": 0.14
+				},
+				"opening": {
+					"width": 0.8,
+					"height": 1.3,
+					"sill": 1.1
+				}
+			}
+		},
+		{
+			"name": "s0_wall_3",
+			"group": "storey_0",
+			"kind": "wall",
+			"at": [
+				0,
+				0.0,
+				3.2
+			],
+			"yaw": 180,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"plinth": {
+					"h": 0.45,
+					"out": 0.14
+				},
+				"opening": {
+					"width": 1.4,
+					"height": 2.4
+				}
+			}
+		},
+		{
+			"name": "s0_stairs",
+			"group": "storey_0",
+			"kind": "stairs",
+			"at": [
+				-1.89,
+				0.0,
+				2.45
+			],
+			"yaw": 0,
+			"params": {
+				"w": 1.3,
+				"rise": 3.4,
+				"riser": 0.2833,
+				"tread": 0.33,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s0_ceiling",
+			"group": "storey_0",
+			"kind": "floor_slab",
+			"at": [
+				0.825,
+				3.18,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 3.55,
+				"d": 5.2,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s0_landing",
+			"group": "storey_0",
+			"kind": "floor_slab",
+			"at": [
+				-1.5,
+				3.18,
+				-2.055
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.2,
+				"d": 1.09,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s1_wall_0",
+			"group": "storey_1",
+			"kind": "wall",
+			"at": [
+				-3.2,
+				3.4,
+				0
+			],
+			"yaw": 90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s1_wall_1",
+			"group": "storey_1",
+			"kind": "wall",
+			"at": [
+				3.2,
+				3.4,
+				0
+			],
+			"yaw": -90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.8,
+					"height": 1.3,
+					"sill": 1.1
+				}
+			}
+		},
+		{
+			"name": "s1_wall_2",
+			"group": "storey_1",
+			"kind": "wall",
+			"at": [
+				0,
+				3.4,
+				-3.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s1_wall_3",
+			"group": "storey_1",
+			"kind": "wall",
+			"at": [
+				0,
+				3.4,
+				3.2
+			],
+			"yaw": 180,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.8,
+					"height": 1.3,
+					"sill": 1.1
+				}
+			}
+		},
+		{
+			"name": "s1_stairs",
+			"group": "storey_1",
+			"kind": "stairs",
+			"at": [
+				1.89,
+				3.4,
+				-2.45
+			],
+			"yaw": 180,
+			"params": {
+				"w": 1.3,
+				"rise": 3.4,
+				"riser": 0.2833,
+				"tread": 0.33,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s1_ceiling",
+			"group": "storey_1",
+			"kind": "floor_slab",
+			"at": [
+				-0.825,
+				6.58,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 3.55,
+				"d": 5.2,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s1_landing",
+			"group": "storey_1",
+			"kind": "floor_slab",
+			"at": [
+				1.5,
+				6.58,
+				2.055
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.2,
+				"d": 1.09,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s2_wall_0",
+			"group": "storey_2",
+			"kind": "wall",
+			"at": [
+				-3.2,
+				6.8,
+				0
+			],
+			"yaw": 90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.8,
+					"height": 1.3,
+					"sill": 1.1
+				}
+			}
+		},
+		{
+			"name": "s2_wall_1",
+			"group": "storey_2",
+			"kind": "wall",
+			"at": [
+				3.2,
+				6.8,
+				0
+			],
+			"yaw": -90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s2_wall_2",
+			"group": "storey_2",
+			"kind": "wall",
+			"at": [
+				0,
+				6.8,
+				-3.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 0.8,
+					"height": 1.3,
+					"sill": 1.1
+				}
+			}
+		},
+		{
+			"name": "s2_wall_3",
+			"group": "storey_2",
+			"kind": "wall",
+			"at": [
+				0,
+				6.8,
+				3.2
+			],
+			"yaw": 180,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s2_stairs",
+			"group": "storey_2",
+			"kind": "stairs",
+			"at": [
+				-1.89,
+				6.8,
+				2.45
+			],
+			"yaw": 0,
+			"params": {
+				"w": 1.3,
+				"rise": 3.4,
+				"riser": 0.2833,
+				"tread": 0.33,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s2_ceiling",
+			"group": "storey_2",
+			"kind": "floor_slab",
+			"at": [
+				0.825,
+				9.98,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 3.55,
+				"d": 5.2,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s2_landing",
+			"group": "storey_2",
+			"kind": "floor_slab",
+			"at": [
+				-1.5,
+				9.98,
+				-2.055
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.2,
+				"d": 1.09,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s3_wall_0",
+			"group": "storey_3",
+			"kind": "broken_wall",
+			"at": [
+				-3.2,
+				10.2,
+				0
+			],
+			"yaw": 90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 331,
+				"keep": 0.45
+			}
+		},
+		{
+			"name": "s3_wall_1",
+			"group": "storey_3",
+			"kind": "broken_wall",
+			"at": [
+				3.2,
+				10.2,
+				0
+			],
+			"yaw": -90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 332,
+				"keep": 0.7
+			}
+		},
+		{
+			"name": "s3_wall_2",
+			"group": "storey_3",
+			"kind": "broken_wall",
+			"at": [
+				0,
+				10.2,
+				-3.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 333,
+				"keep": 0.45
+			}
+		},
+		{
+			"name": "s3_wall_3",
+			"group": "storey_3",
+			"kind": "broken_wall",
+			"at": [
+				0,
+				10.2,
+				3.2
+			],
+			"yaw": 180,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 334,
+				"keep": 0.7
+			}
+		},
+		{
+			"name": "s3_stairs",
+			"group": "storey_3",
+			"kind": "stairs",
+			"at": [
+				1.89,
+				10.2,
+				-2.45
+			],
+			"yaw": 180,
+			"params": {
+				"w": 1.3,
+				"rise": 3.4,
+				"riser": 0.2833,
+				"tread": 0.33,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s3_ceiling",
+			"group": "storey_3",
+			"kind": "floor_slab",
+			"at": [
+				-0.825,
+				13.38,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 3.55,
+				"d": 5.2,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s3_landing",
+			"group": "storey_3",
+			"kind": "floor_slab",
+			"at": [
+				1.5,
+				13.38,
+				2.055
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.2,
+				"d": 1.09,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s4_wall_0",
+			"group": "storey_4",
+			"kind": "broken_wall",
+			"at": [
+				-3.2,
+				13.6,
+				0
+			],
+			"yaw": 90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 341,
+				"keep": 0.45
+			}
+		},
+		{
+			"name": "s4_wall_1",
+			"group": "storey_4",
+			"kind": "broken_wall",
+			"at": [
+				3.2,
+				13.6,
+				0
+			],
+			"yaw": -90,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 342,
+				"keep": 0.7
+			}
+		},
+		{
+			"name": "s4_wall_2",
+			"group": "storey_4",
+			"kind": "broken_wall",
+			"at": [
+				0,
+				13.6,
+				-3.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 343,
+				"keep": 0.45
+			}
+		},
+		{
+			"name": "s4_wall_3",
+			"group": "storey_4",
+			"kind": "broken_wall",
+			"at": [
+				0,
+				13.6,
+				3.2
+			],
+			"yaw": 180,
+			"params": {
+				"w": 6.4,
+				"h": 3.4,
+				"t": 0.6,
+				"mat": "castle_wall",
+				"seed": 344,
+				"keep": 0.7
+			}
+		},
+		{
+			"name": "s4_stairs",
+			"group": "storey_4",
+			"kind": "stairs",
+			"at": [
+				-1.89,
+				13.6,
+				2.45
+			],
+			"yaw": 0,
+			"params": {
+				"w": 1.3,
+				"rise": 3.4,
+				"riser": 0.2833,
+				"tread": 0.33,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "s4_ceiling",
+			"group": "storey_4",
+			"kind": "floor_slab",
+			"at": [
+				0.825,
+				16.78,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 3.55,
+				"d": 5.2,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "s4_landing",
+			"group": "storey_4",
+			"kind": "floor_slab",
+			"at": [
+				-1.5,
+				16.78,
+				-2.055
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.2,
+				"d": 1.09,
+				"t": 0.22,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "parapet",
+			"group": "top",
+			"kind": "wall",
+			"repeat": [
+				[
+					-3.1,
+					17.0,
+					0,
+					90
+				],
+				[
+					0,
+					17.0,
+					-3.1,
+					0
+				]
+			],
+			"params": {
+				"w": 6.4,
+				"h": 0.95,
+				"t": 0.22,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "parapet_broken",
+			"group": "top",
+			"kind": "broken_wall",
+			"at": [
+				3.1,
+				17.0,
+				0
+			],
+			"yaw": -90,
+			"params": {
+				"w": 6.4,
+				"h": 1.1,
+				"t": 0.22,
+				"mat": "castle_wall",
+				"seed": 378,
+				"keep": 0.3
+			}
+		},
+		{
+			"name": "tower_fire",
+			"group": "top",
+			"kind": "beacon",
+			"at": [
+				0,
+				17.1,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"h": 1.2,
+				"radius": 0.6,
+				"sink": 0,
+				"energy": 5.4,
+				"range": 36.0,
+				"flame": 1.4,
+				"cull": 420.0
+			}
+		},
+		{
+			"name": "rubble",
+			"kind": "rubble",
+			"at": [
+				-3.8,
+				0,
+				1.6
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.8800000000000003,
+				"count": 7,
+				"mat": "castle_wall",
+				"seed": 306
+			}
+		},
+		{
+			"name": "doorstep",
+			"kind": "stairs",
+			"at": [
+				0,
+				-1.6,
+				5.5
+			],
+			"yaw": 0,
+			"params": {
+				"w": 1.8,
+				"rise": 1.72,
+				"riser": 0.3,
+				"tread": 0.35,
+				"mat": "castle_wall"
+			}
+		}
+	]
+}

@@ -37,6 +37,9 @@ signal damaged(amount: float, from: Node)
 ## Fraction of the ground acceleration and friction that applies in the air: enough to adjust a hop, not steer it.
 @export var air_control: float = 0.3
 @export_group("Stamina")
+## Off switch for the whole stamina economy (see Stamina.unlimited). On since the owner asked for it:
+## running, jumping, dodging and swinging cost nothing and the gauge sits full.
+@export var unlimited_stamina: bool = true
 @export var stamina_max: float = 100.0
 @export var stamina_regen_per_sec: float = 30.0
 @export var stamina_regen_delay_sec: float = 0.6
@@ -179,6 +182,7 @@ func _is_playing() -> bool:
 
 
 func _sync_stamina_tuning() -> void:
+	_stamina.unlimited = unlimited_stamina
 	_stamina.max_value = stamina_max
 	_stamina.regen_per_sec = stamina_regen_per_sec
 	_stamina.regen_delay_sec = stamina_regen_delay_sec

@@ -237,3 +237,33 @@ drawing=9 worst_crowd_60m=26 cull=90 nearest_to_spawn=21.7` — nine flames draw
 three, and at most twenty-six can ever fall inside one cull sphere, which is the number to watch if more are
 added. **Unverified:** every colour, size and energy here is a first guess against a null renderer. Nobody
 has seen a single flame.
+
+**D-026 (2026-10-28) The recording settled four arguments that headless runs could not.** The owner sent 83
+seconds of gameplay. It is the first time anybody has seen this world, and it moved four things from opinion
+to fact:
+1. **The grass was desert scrub.** Blades were metre-wide splayed fans standing a metre apart over brown
+   ground: 1.15 clumps/m², 0.28-0.62 m tall, `align` 0.6 (tilted outward, which is what made them read as
+   agave), coloured pale straw and drifted 45 % further toward straw by `dry_amount`. The owner: "the
+   starting area is not the desert area". Now 2.8/m² (2.4x), 0.15-0.33 m, a third as wide, `align` 0.22, and
+   green. Density alone was not enough: the ground BETWEEN blades was the problem, so the terrain shader
+   gained `grass_tint`, applied to the grass layer only, and the bald zones (hilltops, ridge foot,
+   settlements, 0.45-0.6x) came up to 0.7-0.85x. Consistency was the owner's word and it is now the rule.
+2. **Fog was hiding the whole game.** 0.034-0.050 is a wall at roughly 60 m. Every house, the castle and all
+   103 fires of W9-F were behind it, which is most of what "the game feels too empty" was measuring. Cut to
+   a third (0.012-0.017). It is still hazy, still thickest at dawn and dusk.
+3. **There was no road, because thin grass is not a road.** The grass zones have thinned the valley line
+   since W8-G, but with the same ground texture under it the result is invisible. The old road is now worn
+   into the terrain shader itself (up to eight segments of the same valley polyline every other system
+   already uses, gravel blended over grass, fading out as the slope turns to rock).
+4. **Stamina was costing the owner play time, not adding tension.** "Remove that stamina cap... the bar
+   should be there but it should not get depleted." One switch rather than ripped-out code: `Stamina.unlimited`
+   makes every spend and drain succeed and take nothing. The pool, the costs and the refusals are all still
+   there, still tested, and the jump probe turns them back on to prove it.
+
+**Also decided:** a tower is generated, not hand-written. Three towers of 33-42 pieces each are a script's
+output (stairs turning 180° a storey, floor slabs that leave the stairwell open, a landing at every head), so
+the shape is argued about in one place instead of in 110 JSON entries. **The headroom test is why that
+mattered:** the first cut roofed every flight at 1.2 m and the second left the top flight of every watchtower
+climbing to no floor at all. Both were found by walking the real treads in a test, not by eye.
+
+**Measured after the pass:** grass instances **12,142 -> 31,357** (blade verts 324k -> 718k), worst fill frame **5.8 ms** (p95 3.8, none over 8), which needed the fill slice raised from 1.0 to 2.2 ms -- at 1.0 a sprinting player outran the fill and left cells bare inside 50 m, so a bigger slice is simply the price of the field the owner asked for. `PROBE sites fixed=3 spawned=91 props=34 pieces=709` and `PROBE fires total=107`. Suite **419 -> 428, 0 failures, 0 script errors, 51/51 files.**

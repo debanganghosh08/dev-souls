@@ -1,0 +1,55 @@
+{
+	"_comment": "What the player can wear (W9-C), read by Wardrobe/GarmentKit. Each garment is a curved sheet of cloth hanging off the chest bone: spread_deg is how far it wraps round the body, length how far it falls, flare how much it widens at the hem, lean how far it stands off the legs, collar the height of the trim band at the neck, and lift/back/yaw_deg place it on the bone. If a cloak ever faces the wrong way, yaw_deg 180 turns it round and nothing else has to change. UNVERIFIED by eye.",
+	"travellers_cloak": {
+		"colour": "#4a4336",
+		"trim": "#2c271f",
+		"spread_deg": 150.0,
+		"length": 0.86,
+		"radius": 0.2,
+		"flare": 0.16,
+		"lean": 0.07,
+		"collar": 0.11,
+		"lift": 0.06,
+		"back": 0.04,
+		"roughness": 0.92
+	},
+	"leather_coat": {
+		"colour": "#3b2a1d",
+		"trim": "#241910",
+		"spread_deg": 196.0,
+		"length": 0.72,
+		"radius": 0.21,
+		"flare": 0.1,
+		"lean": 0.04,
+		"collar": 0.14,
+		"lift": 0.05,
+		"back": 0.02,
+		"roughness": 0.6
+	},
+	"hunters_mantle": {
+		"colour": "#3c4432",
+		"trim": "#272d20",
+		"spread_deg": 175.0,
+		"length": 0.38,
+		"radius": 0.21,
+		"flare": 0.07,
+		"lean": 0.03,
+		"collar": 0.09,
+		"lift": 0.08,
+		"back": 0.03,
+		"roughness": 0.88
+	},
+	"ashen_shroud": {
+		"colour": "#6d6a60",
+		"trim": "#4c4941",
+		"spread_deg": 135.0,
+		"length": 1.02,
+		"radius": 0.19,
+		"flare": 0.22,
+		"lean": 0.09,
+		"collar": 0.0,
+		"lift": 0.04,
+		"back": 0.05,
+		"roughness": 0.95
+	}
+}

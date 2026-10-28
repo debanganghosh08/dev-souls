@@ -182,6 +182,38 @@
 				"seed": 63,
 				"sink": 1.2
 			}
+		},
+		{
+			"name": "yard_fence_w",
+			"kind": "fence",
+			"at": [-3.4, 0, 0.0],
+			"yaw": 90,
+			"params": {
+				"length": 6.0,
+				"h": 0.8,
+				"spacing": 2.0,
+				"rails": 2,
+				"broken": false,
+				"seed": 711,
+				"mat": "planks",
+				"sink": 1.0
+			}
+		},
+		{
+			"name": "yard_fence_e",
+			"kind": "fence",
+			"at": [3.4, 0, 0.0],
+			"yaw": 90,
+			"params": {
+				"length": 6.0,
+				"h": 0.8,
+				"spacing": 2.0,
+				"rails": 2,
+				"broken": false,
+				"seed": 712,
+				"mat": "planks",
+				"sink": 1.0
+			}
 		}
 	]
 }

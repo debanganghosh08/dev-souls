@@ -122,7 +122,11 @@ func test_vale_palette_has_a_horizon_glow_at_dawn_and_dusk() -> void:
 	assert_true(glow > before * 2.0, "the horizon brightens into sunrise, not a step (%s vs %s)" % [glow, before])
 	assert_true(after > glow * 0.8, "daylight keeps the horizon lit after the glow")
 	assert_true(float(vale.sample(0.0)["ambient_energy"]) >= 0.1, "midnight keeps enough ambient for silhouettes")
-	assert_true(float(vale.sample(12.0)["fog_density"]) >= 0.03, "the vale stays foggy at noon")
+	# W9-G: thinned to a third. At 0.034 the fog was a wall at ~60 m -- the castle, the houses and all
+	# 103 fires were invisible, which is most of why the owner said the world felt empty. It is still
+	# hazy, and still thickest at dawn and dusk (below); it just no longer hides what was built.
+	var noon_fog: float = float(vale.sample(12.0)["fog_density"])
+	assert_true(noon_fog >= 0.008 and noon_fog <= 0.02, "the vale stays hazy at noon without hiding it (%.3f)" % noon_fog)
 
 
 func test_aligned_basis_tilts_part_way_and_stays_upright_without_a_normal() -> void:

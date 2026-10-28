@@ -42,6 +42,9 @@ const FALLBACKS: Dictionary = {
 	"cloth": Color(0.40, 0.36, 0.31),
 	"bone": Color(0.78, 0.75, 0.67),
 	"ember": Color(0.95, 0.33, 0.09),
+	# The kitchen gardens (W9-G): turned earth and what is coming up in it.
+	"soil": Color(0.23, 0.18, 0.13),
+	"sprout": Color(0.30, 0.42, 0.18),
 }
 
 ## What a kind gets when neither DEFAULTS nor the file names it: the pre-W6-02 behaviour (one tile per

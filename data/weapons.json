@@ -22,5 +22,11 @@
 		"damage_multiplier": 1.6,
 		"stamina_multiplier": 1.5,
 		"reach_bonus": 0.2
+	},
+	"spear": {
+		"name": "Spear",
+		"damage_multiplier": 1.15,
+		"stamina_multiplier": 1.2,
+		"reach_bonus": 0.75
 	}
 }
