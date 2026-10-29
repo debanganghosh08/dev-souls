@@ -18,6 +18,12 @@ const BONES: Array[String] = ["Chest", "Spine2", "Spine_02", "spine_02", "UpperC
 		"Spine", "spine", "Torso"]
 
 @export var skeleton_path: NodePath = ^"../Body/Model/RootNode/CharacterArmature/Skeleton3D"
+## Bone space is not metres. The character glTF is authored in centimetres, so every bone under the
+## armature carries a scale of about 100 and anything parented to one inherits it: PlayerWeapons has always
+## divided its props by HAND_METRE (0.01) for the same reason. The first cut of this file did not, and the
+## owner's recording showed the result -- an 86 m sheet of cloth standing behind the player like a wall,
+## growing taller the higher they climbed. The factor is measured from the host's own chain of scales
+## rather than assumed, so a rig in metres (and every test) gets 1.0 and is left alone.
 ## Where the cloth hangs when no bone matched: metres above this node.
 @export var fallback_height: float = 1.25
 ## Turned off by the tests that build a player without a model.
@@ -81,12 +87,28 @@ func wear(id: StringName) -> bool:
 	if _attach == null:
 		_node.position += Vector3(0.0, fallback_height, 0.0)
 	host.add_child(_node)
+	# Both the size and the offset are in metres, so both are divided by the host's scale.
+	var fit: float = fit_factor(host)
+	_node.transform = Transform3D(_node.transform.basis.scaled(Vector3.ONE * fit), _node.transform.origin * fit)
 	_worn = id
 	return true
 
 
 func take_off() -> void:
 	wear(&"")
+
+
+## What a metre is worth inside `host`: 1.0 under an unscaled node, 0.01 under a bone scaled by 100. Walks
+## the parent chain rather than reading global_transform, so it is the same answer in a test, where nothing
+## is in a tree. A zero or negative scale falls back to 1.0 instead of dividing by nothing.
+static func fit_factor(host: Node3D) -> float:
+	var scale: float = 1.0
+	var node: Node = host
+	while node != null:
+		if node is Node3D:
+			scale *= absf((node as Node3D).scale.x)
+		node = node.get_parent()
+	return 1.0 / scale if scale > 0.0001 else 1.0
 
 
 ## data/garments.json: id -> {colour, trim, length, spread_deg, radius, flare, lean, collar, lift, back,

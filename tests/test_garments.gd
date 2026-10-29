@@ -89,6 +89,46 @@ func test_picking_one_up_puts_it_on_with_nothing_else_pressed() -> void:
 	assert_eq(wardrobe.get_child_count(), 0, "nothing is left hanging")
 
 
+## The bug the owner filmed: the cloak came out 86 m tall because bone space is centimetres. Mesh size was
+## never wrong -- WORLD size was -- so this measures the cloth where the player sees it, under a bone scaled
+## the way the real character armature scales.
+func test_a_garment_is_worn_at_human_size_even_on_a_rig_authored_in_centimetres() -> void:
+	for host_scale: float in [1.0, 100.0]:
+		var skeleton := Node3D.new()
+		skeleton.scale = Vector3.ONE * host_scale
+		_nodes.append(skeleton)
+		var bone := Node3D.new()
+		skeleton.add_child(bone)
+		var wardrobe := Wardrobe.new()
+		_nodes.append(wardrobe)
+		var inventory := _FakeInventory.new()
+		_nodes.append(inventory)
+		wardrobe._inject(inventory)
+		wardrobe._ready()
+		wardrobe._attach = bone
+		assert_true(wardrobe.wear(&"travellers_cloak"), "the cloak goes on at scale %.0f" % host_scale)
+		var worn: Node3D = wardrobe.worn_node()
+		assert_not_null(worn, "something is worn")
+		if worn == null:
+			continue
+		var cloth: MeshInstance3D = worn.get_node_or_null(^"Cloth") as MeshInstance3D
+		var aabb: AABB = (cloth.mesh as ArrayMesh).get_aabb()
+		# Local mesh extent times every scale between it and the world.
+		var factor: float = 1.0
+		var node: Node = cloth
+		while node != null:
+			if node is Node3D:
+				factor *= absf((node as Node3D).scale.x)
+			node = node.get_parent()
+		var worn_height: float = aabb.size.y * factor
+		var worn_width: float = aabb.size.x * factor
+		assert_true(worn_height > 0.4 and worn_height < 1.6,
+				"a cloak on a rig scaled %.0fx is still about a metre of cloth, not %.1f m" % [host_scale, worn_height])
+		assert_true(worn_width < 2.0, "and about a body wide, not %.1f m" % worn_width)
+		var lift: float = absf(worn.position.y * factor / maxf(0.0001, absf(cloth.scale.y)))
+		assert_true(lift < 1.0, "it hangs at the shoulder, not %.1f m above it" % lift)
+
+
 func test_the_spear_is_a_real_weapon_with_the_longest_reach_and_a_prop_to_hold() -> void:
 	var table: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/weapons.json"))
 	assert_true(table.has("spear"), "the spear is in the weapon table")

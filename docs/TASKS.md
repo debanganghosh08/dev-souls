@@ -118,6 +118,14 @@ a reason to climb: loot at the head, a ladder for the last storey instead of a f
 from the terrace. The owner asked for "stairs or just those ladders" and got stairs; a ladder kind is a
 kit piece nobody has written yet.
 
+**W9-C2 · The cloak was 86 m tall.** `DONE` (lead, 2026-10-29). Bone space is centimetres; the garment
+inherited a scale of 100 and stood behind the player as a wall. `Wardrobe.fit_factor` now measures the
+chain of scales instead of assuming one, and the test measures world size rather than mesh size (D-027).
+**W10 · A living village.** `READY`, and written up as a hand-off prompt in `docs/BRIEF_W10_VILLAGE.md`
+for an agent outside this session: a dense village of 25-35 structures, a climbable plateau with a view,
+villagers built on the existing `Creature` wander AI, rest-at-a-fire to move the sun, and a straight answer
+to the owner about what water and boats would actually cost.
+
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
 **W8-01 · Area 2, the Wood.** `READY`. Dense forest, little sky, a drowned shrine. Reuses the heightfield,

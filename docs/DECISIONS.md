@@ -267,3 +267,19 @@ mattered:** the first cut roofed every flight at 1.2 m and the second left the t
 climbing to no floor at all. Both were found by walking the real treads in a test, not by eye.
 
 **Measured after the pass:** grass instances **12,142 -> 31,357** (blade verts 324k -> 718k), worst fill frame **5.8 ms** (p95 3.8, none over 8), which needed the fill slice raised from 1.0 to 2.2 ms -- at 1.0 a sprinting player outran the fill and left cells bare inside 50 m, so a bigger slice is simply the price of the field the owner asked for. `PROBE sites fixed=3 spawned=91 props=34 pieces=709` and `PROBE fires total=107`. Suite **419 -> 428, 0 failures, 0 script errors, 51/51 files.**
+
+**D-027 (2026-10-29) Bone space is centimetres, and the test has to measure the world, not the mesh.** The
+owner's second recording showed an enormous black sheet standing behind the player, always behind them and
+growing with every climb. It was the W9-C cloak: the character glTF is authored in centimetres, every bone
+under `CharacterArmature/Skeleton3D` carries a scale of about 100, and anything parented to one inherits it.
+`PlayerWeapons` has divided its props by `HAND_METRE` (0.01) since W6-03 for exactly this reason; `Wardrobe`
+did not. **Measured by the negative control: 86.0 m tall, 69.5 m wide, hanging 6.0 m over the shoulder.**
+Two things follow, and the second is the general one:
+1. The factor is now **measured, not assumed** (`Wardrobe.fit_factor` walks the parent chain of scales), so
+   a rig in metres gets 1.0 and nothing has to know which rig it is standing on.
+2. **`test_a_garment_builds_cloth_that_hangs_down_and_wraps_the_body` passed throughout.** It checked the
+   mesh, and the mesh was always right: a 0.86 m sheet of cloth. Only the world transform was wrong. Any
+   test of something attached to a bone, a scaled node or an imported rig has to measure it **where the
+   player sees it** -- local extent times every scale between it and the world -- or it is testing the one
+   number that was never in doubt.
+
