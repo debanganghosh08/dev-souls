@@ -121,6 +121,12 @@ kit piece nobody has written yet.
 **W9-C2 · The cloak was 86 m tall.** `DONE` (lead, 2026-10-29). Bone space is centimetres; the garment
 inherited a scale of 100 and stood behind the player as a wall. `Wardrobe.fit_factor` now measures the
 chain of scales instead of assuming one, and the test measures world size rather than mesh size (D-027).
+**W10-T · The placement tool.** `DONE` (lead, 2026-10-29). `GroundProbe` + `tools/ground_report.gd`:
+"can a building stand here, and if not, where is the nearest spot that can" as a command anyone may run.
+Content work needed heightfield queries, which until now meant writing a throwaway program each time --
+impossible for an agent the owner has restricted to data only. Seen to disagree with the live map twice
+while being built (too strict on water, and a hard-coded ridge limit); the test that every site already
+standing must come back legal is what caught both.
 **W10 · A living village.** `READY`, and written up as a hand-off prompt in `docs/BRIEF_W10_VILLAGE.md`
 for an agent outside this session: a dense village of 25-35 structures, a climbable plateau with a view,
 villagers built on the existing `Creature` wander AI, rest-at-a-fire to move the sun, and a straight answer
