@@ -1,0 +1,122 @@
+{
+	"_comment": "Rock, camps and the road cut (W12). Crags, boulder fields and standing stones scattered over the empty ground, war camps nobody is in yet, and a cut driven through a rocky spur with the road between its two faces. Every spot was chosen against the real heightfield by tools/ground_report.gd's rules.",
+	"sites": [
+		{
+			"at": [
+				11.0,
+				152.3
+			],
+			"id": "rock_boulders_00",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": 131.2
+		},
+		{
+			"at": [
+				270.4,
+				18.8
+			],
+			"id": "rock_standing_stones_01",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": 54.5
+		},
+		{
+			"at": [
+				124.8,
+				-186.4
+			],
+			"id": "rock_crag_02",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": -147.1
+		},
+		{
+			"at": [
+				90.9,
+				-296.7
+			],
+			"id": "rock_crag_03",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": -18.0
+		},
+		{
+			"at": [
+				51.6,
+				-216.0
+			],
+			"id": "rock_boulders_04",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -41.6
+		},
+		{
+			"at": [
+				35.1,
+				-138.0
+			],
+			"id": "rock_standing_stones_05",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": 44.6
+		},
+		{
+			"at": [
+				164.7,
+				41.5
+			],
+			"id": "rock_standing_stones_06",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": -45.0
+		},
+		{
+			"at": [
+				239.7,
+				-226.9
+			],
+			"id": "rock_crag_07",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 130.1
+		},
+		{
+			"at": [
+				118.6,
+				125.7
+			],
+			"id": "rock_crag_08",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 3.5
+		},
+		{
+			"at": [
+				-312.6,
+				59.4
+			],
+			"id": "rock_boulders_09",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": 95.6
+		},
+		{
+			"at": [
+				-43.9,
+				152.1
+			],
+			"id": "rock_standing_stones_10",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": -177.6
+		},
+		{
+			"at": [
+				-247.4,
+				269.9
+			],
+			"id": "rock_crag_11",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": -123.4
+		},
+		{
+			"at": [
+				-19.9,
+				243.2
+			],
+			"id": "rock_boulders_12",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": 47.4
+		}
+	]
+}

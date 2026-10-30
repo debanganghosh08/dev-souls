@@ -42,6 +42,8 @@ const FALLBACKS: Dictionary = {
 	"cloth": Color(0.40, 0.36, 0.31),
 	"bone": Color(0.78, 0.75, 0.67),
 	"ember": Color(0.95, 0.33, 0.09),
+	# Living rock (W12): greyer and colder than the cut stone of a wall.
+	"rock": Color(0.35, 0.34, 0.33),
 	# The kitchen gardens (W9-G): turned earth and what is coming up in it.
 	"soil": Color(0.23, 0.18, 0.13),
 	"sprout": Color(0.30, 0.42, 0.18),

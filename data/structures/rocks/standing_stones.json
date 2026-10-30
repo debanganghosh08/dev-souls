@@ -1,0 +1,62 @@
+{
+	"_comment": "Standing stones (W12): a ring somebody set up, one or two of them fallen. Rock that reads as a place rather than as scenery, with a fire at the centre so it carries at night.",
+	"name": "standing_stones",
+	"keep_out": [
+		[
+			-5.5,
+			-5.5,
+			11.0,
+			11.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "ring",
+			"kind": "standing_stones",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 5.0,
+				"count": 8,
+				"h": 3.6,
+				"seed": 4301,
+				"mat": "rock"
+			}
+		},
+		{
+			"name": "altar",
+			"kind": "block",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 1.6,
+				"h": 0.5,
+				"d": 1.1,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "fire",
+			"kind": "hearth_remains",
+			"at": [
+				0,
+				0.5,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.8,
+				"seed": 4302,
+				"sink": 1.8
+			}
+		}
+	]
+}

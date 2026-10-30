@@ -1,0 +1,93 @@
+{
+	"_comment": "The cut (W12): a rocky spur driven through, with a face of broken rock standing on either side and the road running between them. The owner asked for a hill cut into pieces with a road going through; this is the piece that makes it read as cut rather than as a gap.",
+	"name": "road_cut",
+	"keep_out": [
+		[
+			-13.0,
+			-9.0,
+			26.0,
+			4.0
+		],
+		[
+			-13.0,
+			5.0,
+			26.0,
+			4.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "west_face",
+			"kind": "cut_face",
+			"at": [
+				0,
+				0,
+				-7.0
+			],
+			"yaw": 0,
+			"params": {
+				"length": 24.0,
+				"h": 12.0,
+				"t": 3.4,
+				"seed": 4401,
+				"mat": "rock"
+			}
+		},
+		{
+			"name": "east_face",
+			"kind": "cut_face",
+			"at": [
+				0,
+				0,
+				7.0
+			],
+			"yaw": 180,
+			"params": {
+				"length": 24.0,
+				"h": 12.0,
+				"t": 3.4,
+				"seed": 4402,
+				"mat": "rock"
+			}
+		},
+		{
+			"name": "fallen",
+			"kind": "boulders",
+			"at": [
+				-9.0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 4.0,
+				"count": 5,
+				"size": 1.2,
+				"seed": 4403,
+				"mat": "rock"
+			}
+		},
+		{
+			"name": "lamps",
+			"kind": "lamp_stone",
+			"repeat": [
+				[
+					-10.0,
+					0,
+					-4.4,
+					0
+				],
+				[
+					10.0,
+					0,
+					4.4,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.55,
+				"sink": 1.8
+			}
+		}
+	]
+}

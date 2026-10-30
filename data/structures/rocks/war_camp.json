@@ -1,0 +1,145 @@
+{
+	"_comment": "A war camp (W12): tents, a rack of spears, a palisade and a fire big enough to see from the road. Nobody is in it yet, which the owner asked for -- it is a place for them to be.",
+	"name": "war_camp",
+	"keep_out": [
+		[
+			-6.5,
+			-5.5,
+			13.0,
+			11.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "fire",
+			"kind": "pyre",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"h": 1.5,
+				"radius": 1.0,
+				"seed": 4501,
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "tents",
+			"kind": "tent_frame",
+			"repeat": [
+				[
+					-4.2,
+					0,
+					-2.4,
+					25
+				],
+				[
+					-4.6,
+					0,
+					1.8,
+					-15
+				],
+				[
+					4.4,
+					0,
+					-1.2,
+					160
+				]
+			],
+			"params": {
+				"w": 2.6,
+				"d": 2.4,
+				"h": 1.8,
+				"covered": true,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "racks",
+			"kind": "weapon_rack",
+			"repeat": [
+				[
+					2.2,
+					0,
+					3.2,
+					10
+				],
+				[
+					-1.8,
+					0,
+					-4.4,
+					95
+				]
+			],
+			"params": {
+				"w": 1.8,
+				"h": 1.6,
+				"spears": 5,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "palisade",
+			"kind": "fence",
+			"at": [
+				0,
+				0,
+				-6.0
+			],
+			"yaw": 0,
+			"params": {
+				"length": 11.0,
+				"h": 1.6,
+				"spacing": 1.8,
+				"rails": 3,
+				"broken": true,
+				"seed": 4502,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "cart",
+			"kind": "cart",
+			"at": [
+				5.6,
+				0,
+				2.6
+			],
+			"yaw": 70,
+			"params": {
+				"w": 2.8,
+				"d": 1.5,
+				"wheel": 0.6,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "watch",
+			"kind": "torch_post",
+			"repeat": [
+				[
+					-6.0,
+					0,
+					4.0,
+					0
+				],
+				[
+					6.2,
+					0,
+					-4.6,
+					0
+				]
+			],
+			"params": {
+				"h": 2.4,
+				"sink": 1.8
+			}
+		}
+	]
+}

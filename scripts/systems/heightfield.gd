@@ -35,6 +35,11 @@ var _valley_blend: float = 0.0
 var _valley_depth: float = 0.0
 var _valley_flatten: float = 0.0
 var _plateaus: Array[Dictionary] = []
+## Lines of raised ground (W12). Each is {points, height, half_width, blend}: within half_width of the
+## polyline the ground stands `height` above whatever was there, falling to nothing over `blend`. A closed
+## ring walls in a valley; a gap left in the ring is the only way into it. Applied BEFORE plateaus, so the
+## village and castle sites still flatten whatever a crest did underneath them.
+var _crests: Array[Dictionary] = []
 # World-space rectangles where the terrain is omitted entirely — mesh and collision — so built structures can
 # descend below the surface (the castle crypt, later the Wood's drowned shrine and the Barrens' caves).
 # Whatever is built there must enclose the opening itself; the terrain simply stops.
@@ -80,6 +85,18 @@ static func from_dict(data: Dictionary) -> Heightfield:
 	hf._valley_blend = maxf(0.0, float(valley.get("blend", 0.0)))
 	hf._valley_depth = float(valley.get("depth", 0.0))
 	hf._valley_flatten = clampf(float(valley.get("flatten", 0.0)), 0.0, 1.0)
+	for raw: Variant in data.get("crests", []):
+		if not raw is Dictionary:
+			continue
+		var crest: Dictionary = raw
+		var pts := PackedVector2Array()
+		for point: Variant in crest.get("points", []):
+			pts.append(_vec2(point))
+		if pts.size() >= 2:
+			hf._crests.append({"name": str(crest.get("name", "")), "points": pts,
+				"height": float(crest.get("height", 0.0)),
+				"half_width": maxf(0.5, float(crest.get("half_width", 8.0))),
+				"blend": maxf(1.0, float(crest.get("blend", 30.0)))})
 	for p: Variant in data.get("plateaus", []):
 		if p is Dictionary:
 			hf._plateaus.append({"centre": _vec2(p.get("centre", [0, 0])), "radius": maxf(0.0, float(p.get("radius", 0.0))),
@@ -144,6 +161,7 @@ func height_at(x: float, z: float) -> float:
 	var h: float = _channel(px, pz, _noise.get_noise_2d(px, pz) * _amplitude)
 	h = _basin(px, pz, h)
 	h += _ridge(px, pz)
+	h = _crest(px, pz, h)
 	h = _plateau(px, pz, h)
 	return 0.0 if is_nan(h) or is_inf(h) else h
 
@@ -168,6 +186,28 @@ func _channel(px: float, pz: float, h: float) -> float:
 		best = minf(best, p.distance_to(Geometry2D.get_closest_point_to_segment(p, _valley[i], _valley[i + 1])))
 	var w: float = 1.0 - _smooth(_valley_width, _valley_width + _valley_blend, best)
 	return lerpf(h, h * (1.0 - _valley_flatten) - _valley_depth, w)
+
+
+## The tallest crest wins rather than the sum of them: two ridges crossing should make a saddle, not a
+## tower twice the height of either.
+func _crest(px: float, pz: float, h: float) -> float:
+	if _crests.is_empty():
+		return h
+	var p := Vector2(px, pz)
+	var raise_by: float = 0.0
+	for crest: Dictionary in _crests:
+		var line: PackedVector2Array = crest["points"]
+		var d: float = INF
+		for i: int in line.size() - 1:
+			d = minf(d, p.distance_to(Geometry2D.get_closest_point_to_segment(p, line[i], line[i + 1])))
+		var half: float = crest["half_width"]
+		var t: float = 1.0 - _smooth(half, half + float(crest["blend"]), d)
+		raise_by = maxf(raise_by, float(crest["height"]) * t)
+	return h + raise_by
+
+
+func crests() -> Array[Dictionary]:
+	return _crests
 
 
 func _plateau(px: float, pz: float, h: float) -> float:

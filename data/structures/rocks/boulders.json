@@ -1,0 +1,48 @@
+{
+	"_comment": "A boulder field (W12): rounded masses half buried in the grass, the way glacial rock lies.",
+	"name": "boulders",
+	"keep_out": [
+		[
+			-5.0,
+			-5.0,
+			10.0,
+			10.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "field",
+			"kind": "boulders",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 5.5,
+				"count": 9,
+				"size": 1.8,
+				"seed": 4201,
+				"mat": "rock"
+			}
+		},
+		{
+			"name": "stray",
+			"kind": "boulders",
+			"at": [
+				7.5,
+				0,
+				-4.0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 3.0,
+				"count": 3,
+				"size": 1.1,
+				"seed": 4202,
+				"mat": "rock"
+			}
+		}
+	]
+}

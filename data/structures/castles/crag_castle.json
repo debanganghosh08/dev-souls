@@ -1,0 +1,523 @@
+{
+	"_comment": "The crag castle (W12): a ring of curtain wall with eight towers, two stretches of it fallen, and a keep in the middle with a beacon on its head that carries 460 m. Empty inside for now, which is what the owner asked for. Generated from the same kit as Castle Morrow rather than hand-written, so its shape is argued about in one place.",
+	"name": "crag_castle",
+	"keep_out": [
+		[
+			-4.0,
+			18.2,
+			8.0,
+			8.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "plinth",
+			"kind": "floor_slab",
+			"at": [
+				0,
+				-0.6,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 58.0,
+				"d": 58.0,
+				"t": 0.6,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [
+				0,
+				-6.6,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 58.0,
+				"h": 6.0,
+				"d": 58.0,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_0",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [
+				22.19,
+				0,
+				9.19
+			],
+			"yaw": -112.5,
+			"params": {
+				"w": 21.1,
+				"h": 7.5,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"opening": {
+					"width": 2.4,
+					"height": 4.2
+				}
+			}
+		},
+		{
+			"name": "tower_0",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				26.0,
+				0,
+				0.0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 11.0,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_1",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [
+				9.19,
+				0,
+				22.19
+			],
+			"yaw": -157.5,
+			"params": {
+				"w": 21.1,
+				"h": 7.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "tower_1",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				18.38,
+				0,
+				18.38
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 8.5,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_2",
+			"group": "curtain",
+			"kind": "broken_wall",
+			"at": [
+				-9.19,
+				0,
+				22.19
+			],
+			"yaw": 157.5,
+			"params": {
+				"w": 21.1,
+				"h": 6.0,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"seed": 4602,
+				"keep": 0.45
+			}
+		},
+		{
+			"name": "tower_2",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				0.0,
+				0,
+				26.0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 11.0,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_3",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [
+				-22.19,
+				0,
+				9.19
+			],
+			"yaw": 112.5,
+			"params": {
+				"w": 21.1,
+				"h": 7.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "tower_3",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				-18.38,
+				0,
+				18.38
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 8.5,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_4",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [
+				-22.19,
+				0,
+				-9.19
+			],
+			"yaw": 67.5,
+			"params": {
+				"w": 21.1,
+				"h": 7.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "tower_4",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				-26.0,
+				0,
+				0.0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 11.0,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_5",
+			"group": "curtain",
+			"kind": "broken_wall",
+			"at": [
+				-9.19,
+				0,
+				-22.19
+			],
+			"yaw": 22.5,
+			"params": {
+				"w": 21.1,
+				"h": 6.0,
+				"t": 1.3,
+				"mat": "castle_wall",
+				"seed": 4605,
+				"keep": 0.45
+			}
+		},
+		{
+			"name": "tower_5",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				-18.38,
+				0,
+				-18.38
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 8.5,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_6",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [
+				9.19,
+				0,
+				-22.19
+			],
+			"yaw": -22.5,
+			"params": {
+				"w": 21.1,
+				"h": 7.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "tower_6",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				-0.0,
+				0,
+				-26.0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 11.0,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "curtain_7",
+			"group": "curtain",
+			"kind": "wall",
+			"at": [
+				22.19,
+				0,
+				-9.19
+			],
+			"yaw": -67.5,
+			"params": {
+				"w": 21.1,
+				"h": 7.5,
+				"t": 1.3,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "tower_7",
+			"group": "towers",
+			"kind": "pillar",
+			"at": [
+				18.38,
+				0,
+				-18.38
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 2.6,
+				"h": 8.5,
+				"sides": 10,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "keep_walls",
+			"group": "keep",
+			"kind": "wall",
+			"repeat": [
+				[
+					0,
+					0,
+					-6.5,
+					0
+				],
+				[
+					0,
+					0,
+					6.5,
+					0
+				],
+				[
+					-6.5,
+					0,
+					0,
+					90
+				],
+				[
+					6.5,
+					0,
+					0,
+					90
+				]
+			],
+			"params": {
+				"w": 13.0,
+				"h": 10.0,
+				"t": 1.1,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "keep_floor",
+			"group": "keep",
+			"kind": "floor_slab",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 12.0,
+				"d": 12.0,
+				"t": 0.4,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "keep_upper",
+			"group": "keep",
+			"kind": "floor_slab",
+			"at": [
+				0,
+				5.0,
+				-3.0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 11.0,
+				"d": 6.0,
+				"t": 0.3,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "keep_stair",
+			"group": "keep",
+			"kind": "stairs",
+			"at": [
+				4.0,
+				0,
+				5.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 1.6,
+				"rise": 5.0,
+				"riser": 0.28,
+				"tread": 0.33,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "keep_gable",
+			"group": "keep",
+			"kind": "gable",
+			"at": [
+				0,
+				10.0,
+				-6.5
+			],
+			"yaw": 0,
+			"params": {
+				"w": 13.0,
+				"rise": 2.6,
+				"t": 1.1,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "rubble",
+			"kind": "rubble",
+			"at": [
+				-9.0,
+				0,
+				7.0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 4.0,
+				"count": 9,
+				"mat": "castle_wall",
+				"seed": 4699
+			}
+		},
+		{
+			"name": "gate_fires",
+			"group": "gate",
+			"kind": "brazier",
+			"repeat": [
+				[
+					20.28,
+					0,
+					-3.4,
+					0
+				],
+				[
+					20.28,
+					0,
+					3.4,
+					0
+				]
+			],
+			"params": {
+				"h": 1.2,
+				"radius": 0.5,
+				"seed": 4698,
+				"sink": 1.8,
+				"energy": 3.2,
+				"range": 15.0
+			}
+		},
+		{
+			"name": "beacon",
+			"group": "keep",
+			"kind": "beacon",
+			"at": [
+				0,
+				10.0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"h": 1.6,
+				"radius": 0.6,
+				"sink": 0,
+				"energy": 5.4,
+				"range": 38.0,
+				"flame": 1.5,
+				"cull": 460.0
+			}
+		},
+		{
+			"name": "yard_lamps",
+			"kind": "lamp_stone",
+			"repeat": [
+				[
+					-13.0,
+					0,
+					-9.0,
+					0
+				],
+				[
+					13.0,
+					0,
+					9.0,
+					0
+				],
+				[
+					-13.0,
+					0,
+					9.0,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.55,
+				"sink": 1.8
+			}
+		}
+	]
+}

@@ -47,6 +47,10 @@ const THIN_MOVE := 2.0
 ## 50 m of them were still empty. A bigger slice per frame is the price of the denser field.
 @export var fill_budget_ms: float = 2.2
 @export var first_fill_budget_ms: float = 3.0
+## Deliberately small. The budget above caps what a frame SPENDS, so letting more cells make progress
+## at once does not buy more work -- it spreads the same work thinner and the nearest cell, the one
+## the player is standing in, finishes later. Raised to 6 in W12 and reverted: cells left unfilled
+## within 50 m of a sprinting player went from 9 to 14.
 @export var fill_cells_per_frame: int = 3
 @export var fill_step_candidates: int = 32
 @export var auto_build: bool = false

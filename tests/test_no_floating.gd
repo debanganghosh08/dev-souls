@@ -11,7 +11,8 @@ const COVER := 0.3
 ## Kit kinds that bury their own base by `sink` (StructureKitProps.SINK when the layout names none).
 const SINKABLE: Array[String] = ["fence", "garden_bed", "haystack", "scarecrow", "cairn", "well", "trough",
 		"signpost", "campfire", "tent_frame", "weapon_rack", "grave_mound", "brazier", "torch_post",
-		"hearth_remains", "lamp_stone", "pyre", "beacon"]
+		"hearth_remains", "lamp_stone", "pyre", "beacon",
+		"crag", "boulders", "standing_stones", "cut_face"]
 
 var _hf: Heightfield
 var _sites: Array[Dictionary] = []
@@ -56,7 +57,9 @@ func test_every_building_reaches_the_ground_on_its_low_side() -> void:
 					deepest = minf(deepest, bottom - float(params["sink"]))
 				elif SINKABLE.has(kind):
 					# A layout that names no sink gets the kit default, which is most of them.
-					deepest = minf(deepest, bottom - StructureKitProps.SINK)
+					var default_sink: float = StructureKitRock.SINK if kind in ["crag", "boulders", "standing_stones",
+							"cut_face"] else StructureKitProps.SINK
+					deepest = minf(deepest, bottom - default_sink)
 		var reach: float = -deepest
 		if fall - reach > worst:
 			worst = fall - reach

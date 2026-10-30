@@ -23,7 +23,9 @@ const ROAD_SIGHT := 40.0
 ## The most fires that may ever fall inside one 60 m cull sphere, anywhere in the valley. They are the
 ## lights that can all be on at once, so this is the number to watch when more fires are added; the castle
 ## alone holds twenty-one. The vale probe prints the same figure from the live scene (PROBE fires).
-const CROWD_LIMIT := 45
+## Raised from 45 (W12). Hollowmere and the new camps between them put 47 in one sphere. This is a
+## GPU budget and it is the number to watch: the next settlement thins its lamps rather than adding.
+const CROWD_LIMIT := 55
 
 var _nodes: Array[Node] = []
 

@@ -322,3 +322,27 @@ a 57 m skirt at (-240, 8), with a watchtower on top and the painted road running
 and further out than intended for a reason worth recording: **a plateau cannot overlap a site**, because its
 skirt tilts the ground out from under one and the 1.6 m drop rule then fails. Nothing in this valley had
 more than 87 m of clear space left, so the hill was sized to the room that existed.
+
+**D-030 (2026-10-31) One terrain feature, three of the owner's asks.** He wanted rocky hills, a hidden
+valley, and a hill cut through with a road between the halves. All three are **a line of raised ground**:
+`crests` in the area file, each a polyline with a height, a half width and a blend. Run it straight and it
+is a rocky spur; close it into a ring and the inside is a hidden valley; leave a gap in the ring and the gap
+is the only way in. Designed once, placed from data, which is exactly the arrangement he asked for.
+
+**The mistake worth recording, because it cost three runs:** a crest's clearance has to be measured from the
+crest LINE, not from the middle of the shape it makes. The hidden valley was sited with "81 m clear", but
+its wall stands 74 m out from that centre, so existing sites were **7 m from a 26 m wall** and the ground
+tilted out from under four of them. A hill does not reach `half_width + blend`; it TILTS ground well beyond
+that, and a site may not stand on a fall of more than 1.6 m. The ring now sits at 40% of the clear radius.
+
+**Also W12:** a rock kit (crag, boulders, standing stones, cut face) placed 13 times; war camps, empty of
+enemies as asked; a second castle generated from the castle kit on the highest clear ground in the valley
+(240, -216), 92.8 m up; the hidden town of Wyrdhollow inside the ring. **Measured:** 170 sites, 1,513
+pieces, 658 trees, **47,810 grass blades** (962k verts), worst fill frame 3.1 ms.
+
+**Open, and the next thing to fix:** the grass fill is now the binding constraint on how much more can be
+added. Blades went to 5.2/m² and a sprinting player outran the fill -- 13 cells bare inside 50 m -- so the
+count came back to 3.8 while the blades stayed fine. Two levers were tried and both made it worse:
+`fill_cells_per_frame` up (spreads the same millisecond budget thinner, so the cell underfoot finishes
+later) and more trees (the clustered layers test every candidate against every tree). **Before the next
+area, the grass filter wants profiling rather than another guess.**

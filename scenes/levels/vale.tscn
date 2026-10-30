@@ -40,12 +40,12 @@ archetype_mix = {
 "fir": 3.0,
 "pine": 2.0
 }
-count = 320
+count = 560
 radius = 330.0
 band_points = PackedVector2Array(48, 86, 4, 140, -52, 186, -96, 222)
 band_gap = 8.0
 band_half = 38.0
-band_count = 560
+band_count = 620
 landmark_at = 0.46
 landmark_scale = 4.2
 clearing_radius = 0.0

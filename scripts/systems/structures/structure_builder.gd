@@ -147,7 +147,9 @@ static func make_piece(kind: String, p: Dictionary, name: String = "") -> Dictio
 			return StructureKit.headstone(_f(p, "w", 0.5), _f(p, "h", 0.8), _f(p, "t", 0.12), mat, name)
 	# Kinds added for houses and for small props live in their own kits, so the kit can grow in two places at
 	# once without both sides editing this match.
-	var extra: Dictionary = StructureKitHouse.make(kind, p, name)
+	var extra: Dictionary = StructureKitRock.make(kind, p, name)
+	if extra.is_empty():
+		extra = StructureKitHouse.make(kind, p, name)
 	if extra.is_empty():
 		extra = StructureKitFire.make(kind, p, name)
 	if extra.is_empty():

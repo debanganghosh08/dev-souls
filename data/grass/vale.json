@@ -13,19 +13,19 @@
 			"name": "grass",
 			"kind": "clump",
 			"zone": "grass",
-			"density": 3.4,
-			"max_per_cell": 760,
+			"density": 3.8,
+			"max_per_cell": 820,
 			"max_slope": 32.0,
 			"blades": 3,
 			"segments": 3,
-			"blade_width": 0.035,
+			"blade_width": 0.026,
 			"height": [
-				0.15,
-				0.33
+				0.1,
+				0.24
 			],
 			"scale": [
 				0.85,
-				1.15
+				1.1
 			],
 			"root_color": "#27351a",
 			"tip_color": "#7f9340",
@@ -51,10 +51,10 @@
 			"max_slope": 30.0,
 			"blades": 3,
 			"segments": 4,
-			"blade_width": 0.05,
+			"blade_width": 0.04,
 			"height": [
-				0.55,
-				0.95
+				0.45,
+				0.8
 			],
 			"scale": [
 				0.85,
