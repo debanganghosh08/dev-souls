@@ -1,5 +1,5 @@
 {
-	"_comment": "Wyrdhollow (W12): the town inside the hidden valley, and the castle on the crag. The valley is walled by the hidden_ring crest in data/areas/vale.json with one gap in it, so the only way in is the pass. Built from the layouts Hollowmere already uses.",
+	"_comment": "Wyrdhollow (W12, grown W17): the town inside the hidden valley, walled by the hidden_ring crest with one gap in it, so the pass is the only way in. Built from the layouts Hollowmere already uses.",
 	"sites": [
 		{
 			"at": [
@@ -45,6 +45,15 @@
 			"id": "wyrdhollow_04",
 			"layout": "res://data/structures/village/market_stalls.json",
 			"yaw": -108.9
+		},
+		{
+			"at": [
+				204.1,
+				197.1
+			],
+			"id": "wyrdhollow_g00",
+			"layout": "res://data/structures/village/townhouse.json",
+			"yaw": 65.2
 		}
 	]
 }

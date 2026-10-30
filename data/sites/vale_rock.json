@@ -351,6 +351,240 @@
 			"id": "riverside_07",
 			"layout": "res://data/structures/village/market_stalls.json",
 			"yaw": 90.4
+		},
+		{
+			"at": [
+				290.3,
+				89.8
+			],
+			"id": "rim_crag_00",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": -108.6
+		},
+		{
+			"at": [
+				310.1,
+				155.2
+			],
+			"id": "rim_boulders_01",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": 162.2
+		},
+		{
+			"at": [
+				300.5,
+				235.8
+			],
+			"id": "rim_standing_stones_02",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": 73.1
+		},
+		{
+			"at": [
+				155.0,
+				215.1
+			],
+			"id": "rim_graveyard_03",
+			"layout": "res://data/structures/rocks/graveyard.json",
+			"yaw": 41.5
+		},
+		{
+			"at": [
+				123.0,
+				223.1
+			],
+			"id": "rim_sword_monument_04",
+			"layout": "res://data/structures/rocks/sword_monument.json",
+			"yaw": -102.9
+		},
+		{
+			"at": [
+				82.3,
+				295.0
+			],
+			"id": "rim_war_camp_05",
+			"layout": "res://data/structures/rocks/war_camp.json",
+			"yaw": -128.5
+		},
+		{
+			"at": [
+				95.2,
+				353.4
+			],
+			"id": "rim_crag_06",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 98.8
+		},
+		{
+			"at": [
+				64.9,
+				336.1
+			],
+			"id": "rim_boulders_07",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -31.0
+		},
+		{
+			"at": [
+				19.8,
+				316.5
+			],
+			"id": "rim_crag_08",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 13.5
+		},
+		{
+			"at": [
+				-3.6,
+				346.5
+			],
+			"id": "rim_boulders_09",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -9.5
+		},
+		{
+			"at": [
+				-32.8,
+				314.0
+			],
+			"id": "rim_standing_stones_10",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": -51.7
+		},
+		{
+			"at": [
+				-63.0,
+				336.3
+			],
+			"id": "rim_graveyard_11",
+			"layout": "res://data/structures/rocks/graveyard.json",
+			"yaw": -111.2
+		},
+		{
+			"at": [
+				-236.3,
+				244.3
+			],
+			"id": "rim_sword_monument_12",
+			"layout": "res://data/structures/rocks/sword_monument.json",
+			"yaw": 30.6
+		},
+		{
+			"at": [
+				-276.9,
+				241.1
+			],
+			"id": "rim_war_camp_13",
+			"layout": "res://data/structures/rocks/war_camp.json",
+			"yaw": 38.9
+		},
+		{
+			"at": [
+				-275.7,
+				203.1
+			],
+			"id": "rim_crag_14",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 146.0
+		},
+		{
+			"at": [
+				-337.4,
+				-47.5
+			],
+			"id": "rim_boulders_15",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -171.0
+		},
+		{
+			"at": [
+				-265.0,
+				-69.9
+			],
+			"id": "rim_crag_16",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 169.2
+		},
+		{
+			"at": [
+				-242.2,
+				-111.3
+			],
+			"id": "rim_boulders_17",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": 7.1
+		},
+		{
+			"at": [
+				-255.7,
+				-142.8
+			],
+			"id": "rim_standing_stones_18",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": 67.4
+		},
+		{
+			"at": [
+				-189.5,
+				-257.5
+			],
+			"id": "rim_graveyard_19",
+			"layout": "res://data/structures/rocks/graveyard.json",
+			"yaw": 178.9
+		},
+		{
+			"at": [
+				-164.6,
+				-275.8
+			],
+			"id": "rim_sword_monument_20",
+			"layout": "res://data/structures/rocks/sword_monument.json",
+			"yaw": 149.9
+		},
+		{
+			"at": [
+				1.1,
+				-283.2
+			],
+			"id": "rim_war_camp_21",
+			"layout": "res://data/structures/rocks/war_camp.json",
+			"yaw": -42.9
+		},
+		{
+			"at": [
+				46.1,
+				-286.2
+			],
+			"id": "rim_crag_22",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 69.9
+		},
+		{
+			"at": [
+				197.8,
+				-241.5
+			],
+			"id": "rim_boulders_23",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -91.8
+		},
+		{
+			"at": [
+				277.0,
+				-185.0
+			],
+			"id": "rim_crag_24",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 168.5
+		},
+		{
+			"at": [
+				274.8,
+				-127.7
+			],
+			"id": "rim_boulders_25",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -85.2
 		}
 	]
 }
