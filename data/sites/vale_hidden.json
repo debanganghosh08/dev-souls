@@ -3,8 +3,8 @@
 	"sites": [
 		{
 			"at": [
-				245.9,
-				170.0
+				249.8,
+				174.5
 			],
 			"id": "wyrdhollow_00",
 			"layout": "res://data/structures/village/townhouse.json",

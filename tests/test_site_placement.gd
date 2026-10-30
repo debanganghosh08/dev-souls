@@ -54,9 +54,17 @@ func _corners(obb: Dictionary) -> Array[Vector2]:
 	return out
 
 
+## A crossing is the exception to every rule in this file: it stands over water on purpose, its deck
+## hangs over a channel on purpose, and that is what makes it a bridge rather than a building.
+static func _is_crossing(site: Dictionary) -> bool:
+	return str(site.get("layout", "")).contains("bridge")
+
+
 func test_every_site_stands_on_dry_ground_inside_the_ridge() -> void:
 	assert_true(_sites.size() >= 3, "the registry loads (%d sites)" % _sites.size())
 	for site: Dictionary in _built():
+		if _is_crossing(site):
+			continue
 		var span: Vector2 = Settlements.ground_span(site, _hf)
 		assert_true(span.x > _hf.water_level() + 0.5, "%s is out of the water (lowest %.2f)" % [site["id"], span.x])
 		var at: Vector2 = SiteRegistry.at_of(site)
@@ -72,6 +80,8 @@ func test_every_site_stands_on_ground_its_foundation_can_cover() -> void:
 					"at": site["at"]}, _hf)
 			assert_true(flat.y - flat.x < 0.1, "%s's plateau is flat at its centre" % site["id"])
 	for site: Dictionary in _built():
+		if _is_crossing(site):
+			continue
 		var span: Vector2 = Settlements.ground_span(site, _hf)
 		assert_true(span.y - span.x <= MAX_GROUND_DROP,
 				"%s: ground falls %.2f m under it (limit %.1f)" % [site["id"], span.y - span.x, MAX_GROUND_DROP])

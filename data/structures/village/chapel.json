@@ -1,0 +1,321 @@
+{
+	"_comment": "A chapel (W14): a nave with an arched door, a bell frame over it, an altar with a light on it and a small graveyard wall. The owner asked for a church or a temple.",
+	"name": "chapel",
+	"keep_out": [
+		[
+			-3.0,
+			6.2,
+			6.0,
+			2.6
+		]
+	],
+	"pieces": [
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [
+				0,
+				-4.5,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 9.4,
+				"h": 4.5,
+				"d": 15.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "floor",
+			"kind": "floor_slab",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 9.0,
+				"d": 15.0,
+				"t": 0.2,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "front",
+			"kind": "arch",
+			"at": [
+				0,
+				0,
+				7.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 9.0,
+				"h": 7.0,
+				"t": 0.8,
+				"mat": "blocks",
+				"ow": 2.0,
+				"oh": 3.4
+			}
+		},
+		{
+			"name": "sides",
+			"kind": "wall",
+			"repeat": [
+				[
+					-4.2,
+					0,
+					0,
+					90
+				],
+				[
+					4.2,
+					0,
+					0,
+					90
+				]
+			],
+			"params": {
+				"w": 15.0,
+				"h": 6.0,
+				"t": 0.7,
+				"mat": "blocks",
+				"opening": {
+					"width": 1.0,
+					"height": 2.4,
+					"sill": 2.2
+				}
+			}
+		},
+		{
+			"name": "back",
+			"kind": "wall",
+			"at": [
+				0,
+				0,
+				-7.2
+			],
+			"yaw": 0,
+			"params": {
+				"w": 9.0,
+				"h": 6.0,
+				"t": 0.7,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "gables",
+			"kind": "gable",
+			"repeat": [
+				[
+					0,
+					6.0,
+					-7.2,
+					0
+				],
+				[
+					0,
+					6.0,
+					7.2,
+					0
+				]
+			],
+			"params": {
+				"w": 9.0,
+				"rise": 2.6,
+				"t": 0.7,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "roof",
+			"kind": "pitched_roof",
+			"at": [
+				0,
+				6.0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 9.2,
+				"d": 15.2,
+				"rise": 2.6,
+				"t": 0.14,
+				"overhang": 0.4,
+				"mat": "roof"
+			}
+		},
+		{
+			"name": "altar",
+			"kind": "block",
+			"at": [
+				0,
+				0.2,
+				-5.6
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.0,
+				"h": 1.0,
+				"d": 0.9,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "altar_light",
+			"kind": "wall_torch",
+			"at": [
+				0,
+				2.6,
+				-6.8
+			],
+			"yaw": 0,
+			"params": {
+				"out": 0.34,
+				"flame": 0.32,
+				"energy": 2.0,
+				"range": 9.0,
+				"day": 0.9
+			}
+		},
+		{
+			"name": "nave_lights",
+			"kind": "wall_torch",
+			"repeat": [
+				[
+					-3.6,
+					2.6,
+					-2.0,
+					90
+				],
+				[
+					3.6,
+					2.6,
+					-2.0,
+					-90
+				],
+				[
+					-3.6,
+					2.6,
+					3.0,
+					90
+				],
+				[
+					3.6,
+					2.6,
+					3.0,
+					-90
+				]
+			],
+			"params": {
+				"out": 0.34,
+				"flame": 0.3,
+				"energy": 1.9,
+				"range": 8.5,
+				"day": 0.85
+			}
+		},
+		{
+			"name": "bell",
+			"kind": "timber_frame",
+			"at": [
+				0,
+				8.6,
+				5.6
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.6,
+				"h": 3.0,
+				"d": 2.0,
+				"beam": 0.22,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "bell_body",
+			"kind": "bell",
+			"at": [
+				0,
+				10.4,
+				5.6
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.42,
+				"h": 0.6,
+				"mat": "bronze"
+			}
+		},
+		{
+			"name": "graves",
+			"kind": "grave_mound",
+			"repeat": [
+				[
+					-6.4,
+					0,
+					-3.0,
+					0
+				],
+				[
+					-6.4,
+					0,
+					-0.4,
+					3
+				],
+				[
+					6.4,
+					0,
+					-3.0,
+					-2
+				]
+			],
+			"params": {
+				"w": 0.9,
+				"d": 2.0,
+				"mat": "stone",
+				"wood": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "wall",
+			"kind": "fence",
+			"at": [
+				-7.6,
+				0,
+				0
+			],
+			"yaw": 90,
+			"params": {
+				"length": 15.0,
+				"h": 1.0,
+				"spacing": 2.4,
+				"rails": 2,
+				"broken": true,
+				"seed": 6101,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "doorstep",
+			"kind": "stairs",
+			"at": [
+				0,
+				-1.6,
+				9.6
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.4,
+				"rise": 1.72,
+				"riser": 0.3,
+				"tread": 0.35,
+				"mat": "stone"
+			}
+		}
+	]
+}

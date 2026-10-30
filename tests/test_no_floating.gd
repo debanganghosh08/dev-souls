@@ -32,7 +32,11 @@ func test_every_building_reaches_the_ground_on_its_low_side() -> void:
 	for site: Dictionary in _sites:
 		if bool(site.get("fixed", false)):
 			continue
-		var layout: Dictionary = StructureBuilder.load_layout(str(site.get("layout", "")))
+		var path: String = str(site.get("layout", ""))
+		# A bridge stands over a gap on purpose; so does a hanging one. The rule is for buildings.
+		if path.contains("bridge"):
+			continue
+		var layout: Dictionary = StructureBuilder.load_layout(path)
 		if layout.is_empty():
 			continue
 		var span: Vector2 = Settlements.ground_span(site, _hf, 1.0)

@@ -1,5 +1,5 @@
 {
-	"_comment": "Rock, camps, the road cut, and what fills the empty quarters (W12-W13): crags, boulder fields, standing stones, graveyards and blade monuments. The rim of the drained pond is the biggest dead space in the valley and gets the most of it. Every spot chosen against the real heightfield by tools/ground_report.gd's rules.",
+	"_comment": "Rock, camps, crossings and what fills the empty quarters (W12-W14). Crags, boulder fields, standing stones, graveyards, blade monuments, the war camps, the road cut, the crag castle, the chapel, the flood pool, the river crossings and the village on the bank. Every spot chosen against the real heightfield by tools/ground_report.gd's rules.",
 	"sites": [
 		{
 			"at": [
@@ -12,8 +12,8 @@
 		},
 		{
 			"at": [
-				270.4,
-				18.8
+				270.0,
+				19.7
 			],
 			"id": "rock_standing_stones_01",
 			"layout": "res://data/structures/rocks/standing_stones.json",
@@ -30,8 +30,8 @@
 		},
 		{
 			"at": [
-				90.9,
-				-296.7
+				91.3,
+				-294.7
 			],
 			"id": "rock_crag_03",
 			"layout": "res://data/structures/rocks/crag.json",
@@ -147,8 +147,8 @@
 		},
 		{
 			"at": [
-				20.2,
-				-152.9
+				20.6,
+				-152.0
 			],
 			"id": "fill_boulders_03",
 			"layout": "res://data/structures/rocks/boulders.json",
@@ -183,8 +183,8 @@
 		},
 		{
 			"at": [
-				-20.7,
-				-225.2
+				-13.3,
+				-220.0
 			],
 			"id": "fill_standing_stones_07",
 			"layout": "res://data/structures/rocks/standing_stones.json",
@@ -192,12 +192,165 @@
 		},
 		{
 			"at": [
-				76.5,
-				-247.0
+				71.7,
+				-245.7
 			],
 			"id": "fill_boulders_08",
 			"layout": "res://data/structures/rocks/boulders.json",
 			"yaw": -177.4
+		},
+		{
+			"at": [
+				310.6,
+				-250.6
+			],
+			"id": "crossing_hanging_bridge_0",
+			"layout": "res://data/structures/rocks/hanging_bridge.json",
+			"yaw": -45.0
+		},
+		{
+			"at": [
+				195.9,
+				-313.8
+			],
+			"id": "crossing_river_bridge_1",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"yaw": -23.0
+		},
+		{
+			"at": [
+				62.6,
+				-356.8
+			],
+			"id": "crossing_river_bridge_2",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"yaw": -10.1
+		},
+		{
+			"at": [
+				-146.3,
+				-21.6
+			],
+			"id": "road_cut",
+			"layout": "res://data/structures/rocks/road_cut.json",
+			"yaw": -127.8
+		},
+		{
+			"at": [
+				-288.0,
+				101.5
+			],
+			"id": "war_camp_a",
+			"layout": "res://data/structures/rocks/war_camp.json",
+			"yaw": 73.8
+		},
+		{
+			"at": [
+				168.4,
+				-87.9
+			],
+			"id": "war_camp_b",
+			"layout": "res://data/structures/rocks/war_camp.json",
+			"yaw": -87.3
+		},
+		{
+			"at": [
+				-90.0,
+				-298.7
+			],
+			"id": "war_camp_c",
+			"layout": "res://data/structures/rocks/war_camp.json",
+			"yaw": 65.7
+		},
+		{
+			"at": [
+				86.8,
+				120.4
+			],
+			"id": "chapel",
+			"layout": "res://data/structures/village/chapel.json",
+			"yaw": 171.5
+		},
+		{
+			"at": [
+				-14.4,
+				-192.2
+			],
+			"id": "flood_pool",
+			"layout": "res://data/structures/village/flood_pool.json",
+			"yaw": 51.8
+		},
+		{
+			"at": [
+				-35.6,
+				-299.8
+			],
+			"id": "riverside_00",
+			"layout": "res://data/structures/village/townhouse.json",
+			"yaw": 75.4
+		},
+		{
+			"at": [
+				-103.7,
+				-275.1
+			],
+			"id": "riverside_01",
+			"layout": "res://data/structures/village/workshop_leanto.json",
+			"yaw": 136.4
+		},
+		{
+			"at": [
+				-135.0,
+				-293.0
+			],
+			"id": "riverside_02",
+			"layout": "res://data/structures/village/walled_yard.json",
+			"yaw": 41.3
+		},
+		{
+			"at": [
+				-61.5,
+				-379.3
+			],
+			"id": "riverside_03",
+			"layout": "res://data/structures/houses/cottage_intact.json",
+			"yaw": 162.1
+		},
+		{
+			"at": [
+				-104.5,
+				-314.3
+			],
+			"id": "riverside_04",
+			"layout": "res://data/structures/village/village_well_house.json",
+			"yaw": 55.8
+		},
+		{
+			"at": [
+				-99.9,
+				-371.7
+			],
+			"id": "riverside_05",
+			"layout": "res://data/structures/village/animal_pen.json",
+			"yaw": 47.6
+		},
+		{
+			"at": [
+				-24.2,
+				-384.0
+			],
+			"id": "riverside_06",
+			"layout": "res://data/structures/houses/barn_intact.json",
+			"yaw": -58.6
+		},
+		{
+			"at": [
+				-81.0,
+				-374.6
+			],
+			"id": "riverside_07",
+			"layout": "res://data/structures/village/market_stalls.json",
+			"yaw": 90.4
 		}
 	]
 }

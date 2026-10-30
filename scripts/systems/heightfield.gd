@@ -194,7 +194,8 @@ func _crest(px: float, pz: float, h: float) -> float:
 	if _crests.is_empty():
 		return h
 	var p := Vector2(px, pz)
-	var raise_by: float = 0.0
+	var up: float = 0.0
+	var down: float = 0.0
 	for crest: Dictionary in _crests:
 		var line: PackedVector2Array = crest["points"]
 		var d: float = INF
@@ -202,8 +203,15 @@ func _crest(px: float, pz: float, h: float) -> float:
 			d = minf(d, p.distance_to(Geometry2D.get_closest_point_to_segment(p, line[i], line[i + 1])))
 		var half: float = crest["half_width"]
 		var t: float = 1.0 - _smooth(half, half + float(crest["blend"]), d)
-		raise_by = maxf(raise_by, float(crest["height"]) * t)
-	return h + raise_by
+		# A negative height cuts a channel instead of raising a ridge, which is what a river runs in.
+		# The deepest cut and the tallest rise are taken separately, so a ridge beside a channel does not
+		# cancel it out.
+		var amount: float = float(crest["height"]) * t
+		if amount >= 0.0:
+			up = maxf(up, amount)
+		else:
+			down = minf(down, amount)
+	return h + up + down
 
 
 func crests() -> Array[Dictionary]:

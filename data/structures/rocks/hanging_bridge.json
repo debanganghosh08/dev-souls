@@ -1,0 +1,149 @@
+{
+	"_comment": "The hanging bridge (W14): a plank deck slung between two towers on a rope of iron, high over the river. The owner asked for it between the two great hills; this is the span, and the hills are crests in the area file.",
+	"name": "hanging_bridge",
+	"keep_out": [
+		[
+			-5.0,
+			-30.0,
+			10.0,
+			60.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "anchors",
+			"kind": "block",
+			"repeat": [
+				[
+					0,
+					-4.0,
+					-27.0,
+					0
+				],
+				[
+					0,
+					-4.0,
+					27.0,
+					0
+				]
+			],
+			"params": {
+				"w": 4.5,
+				"h": 9.0,
+				"d": 4.5,
+				"mat": "castle_wall"
+			}
+		},
+		{
+			"name": "masts",
+			"kind": "timber_frame",
+			"repeat": [
+				[
+					0,
+					5.0,
+					-27.0,
+					0
+				],
+				[
+					0,
+					5.0,
+					27.0,
+					0
+				]
+			],
+			"params": {
+				"w": 4.0,
+				"h": 6.5,
+				"d": 4.0,
+				"beam": 0.3,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "deck",
+			"kind": "floor_slab",
+			"at": [
+				0,
+				5.0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 3.2,
+				"d": 54.0,
+				"t": 0.22,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "rails",
+			"kind": "wall",
+			"repeat": [
+				[
+					-1.6,
+					5.2,
+					0,
+					90
+				],
+				[
+					1.6,
+					5.2,
+					0,
+					90
+				]
+			],
+			"params": {
+				"w": 54.0,
+				"h": 1.1,
+				"t": 0.12,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "stays",
+			"kind": "block",
+			"repeat": [
+				[
+					-1.7,
+					7.4,
+					0,
+					0
+				],
+				[
+					1.7,
+					7.4,
+					0,
+					0
+				]
+			],
+			"params": {
+				"w": 0.16,
+				"h": 0.16,
+				"d": 54.0,
+				"mat": "iron"
+			}
+		},
+		{
+			"name": "lamps",
+			"kind": "lamp_stone",
+			"repeat": [
+				[
+					-2.6,
+					5.0,
+					-24.0,
+					0
+				],
+				[
+					2.6,
+					5.0,
+					24.0,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.5,
+				"sink": 1.8
+			}
+		}
+	]
+}

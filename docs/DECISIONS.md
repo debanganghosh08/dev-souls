@@ -365,3 +365,25 @@ answer was that there was simply too much lattice to keep filled, and the blades
 56-62 m, so the outer ring was work nobody could see. **81 cells instead of 109, 29,353 blades, worst fill
 frame unchanged, and the sprint is clean.** General lesson: when a budget cannot cover the work, look for
 work that buys nothing before trying to buy more budget.
+
+**D-032 (2026-10-31) The river is hand-routed, after a solver found eight ways to lay it across somebody's
+doorstep.** This valley was laid out over four weeks before it had a river, and 190 sites do not move for
+one. A greedy router that maximised clearance was tried, then relaxation sweeps, then naming the chronic
+offenders as obstacles, then moving the affected sites off the bank. Every version found a NEW set of
+buildings to tilt the ground out from under. The route that works is eight waypoints hand-picked through
+the empty north: 120 m clear of Castle Morrow, well north of the old road, reaching the rim at both ends.
+**A route checked once beats a solver checked every time**, and the lesson generalises -- a constraint
+solver is the wrong tool when the constraints are a map somebody already built.
+
+Three things made it fit even then: the channel is **2.4 m deep over a 20 m bank** rather than the gorge it
+started as (a 0.12 m/m slope tilts nothing enough to matter), crossings are exempt from the rules about dry
+ground and ground a foundation can cover (**a bridge stands over a gap: that is what makes it a bridge**),
+and a bounded nudge moves anything still on the bank, never a village building, which only pushed
+Hollowmere's houses into each other.
+
+**Water itself (W14):** there was none in this game until now -- the Mirror Pond is a hole with a name. A
+`Water` node builds a ribbon of surface from a polyline wearing a shader of two crossed noise fields (no
+texture, so it cannot be a missing asset), and a volume of killing water under it: touching it drowns you
+over 1.6 s, which is the owner's rule for the river. **The mountains do not exist and should not be
+claimed:** two were sized to the room beside the river and neither cleared 78 m, so neither was built. This
+valley has no space left for a mountain. The hanging bridge spans the river instead.

@@ -1,60 +1,419 @@
 {
 	"_comment": "Small points of interest in the Ashen Vale (W8-P): wells, carts, fences, haystacks, cairns, camps, signposts, graves, built at run time by Settlements from data/structures/pois/. Same schema as vale_houses.json. Scenery only: no props, so every item's one source stays the houses file. Every footprint keeps 25 m from every house anchor (tests/test_pois.gd) and obeys tests/test_site_placement.gd. Regions are docs/WORLD_PLAN.md section 1. Spots were chosen from the real heightfield: the pond basin is below water out to r ~ 85 and its only dry shore inside r ~ 105 is the east; the castle approach skirt is 13-19 degrees, so the siege camp stands on the flat plateau before the gate and spreads to pickets along the road's climb.",
 	"sites": [
-		{"id": "shore_fire_east", "layout": "res://data/structures/pois/shore_fire.json", "at": [100.0, 15.0], "yaw": 200.0},
-		{"id": "shore_cairn", "layout": "res://data/structures/pois/cairn_lone.json", "at": [95.0, 40.0], "yaw": 0.0},
-
-		{"id": "crossroads", "layout": "res://data/structures/pois/crossroads.json", "at": [-114.6, 78.5], "yaw": -147.5},
-		{"id": "field_gate_west_road", "layout": "res://data/structures/pois/field_gate.json", "at": [-135.0, 55.0], "yaw": 20.0},
-		{"id": "west_road_cairn", "layout": "res://data/structures/pois/cairn_lone.json", "at": [-151.0, 102.0], "yaw": 0.0},
-
-		{"id": "village_well", "layout": "res://data/structures/pois/well_trough.json", "at": [-213.0, 190.0], "yaw": -30.0},
-		{"id": "village_haystacks", "layout": "res://data/structures/pois/haystacks.json", "at": [-160.0, 172.0], "yaw": 15.0},
-		{"id": "village_farm_corner", "layout": "res://data/structures/pois/farm_corner.json", "at": [-245.0, 112.0], "yaw": 180.0},
-
-		{"id": "farm_corner_sw", "layout": "res://data/structures/pois/farm_corner.json", "at": [-265.0, -105.0], "yaw": 0.0},
-		{"id": "farm_corner_s", "layout": "res://data/structures/pois/farm_corner.json", "at": [-237.0, -157.0], "yaw": 90.0},
-		{"id": "field_gate_farms", "layout": "res://data/structures/pois/field_gate.json", "at": [-185.0, -95.0], "yaw": 100.0},
-		{"id": "orchard_fence", "layout": "res://data/structures/pois/orchard_fence.json", "at": [-225.0, -83.0], "yaw": 0.0},
-
-		{"id": "stone_ring_north", "layout": "res://data/structures/pois/stone_ring.json", "at": [22.0, -305.0], "yaw": 0.0},
-		{"id": "north_cairns", "layout": "res://data/structures/pois/cairn_trio.json", "at": [20.0, -190.0], "yaw": 0.0},
-		{"id": "north_cairns_west", "layout": "res://data/structures/pois/cairn_trio.json", "at": [-62.0, -297.0], "yaw": 0.0},
-		{"id": "shepherd_grave", "layout": "res://data/structures/pois/lone_grave.json", "at": [0.0, -255.0], "yaw": 40.0},
-		{"id": "north_cairns_east", "layout": "res://data/structures/pois/cairn_trio.json", "at": [60.0, -200.0], "yaw": 0.0},
-
-		{"id": "siege_camp", "layout": "res://data/structures/pois/siege_camp.json", "at": [224.0, -108.0], "yaw": -115.0},
-		{"id": "siege_graves", "layout": "res://data/structures/pois/field_graves.json", "at": [190.0, -98.0], "yaw": 30.0},
-		{"id": "siege_picket", "layout": "res://data/structures/pois/picket.json", "at": [140.0, -148.0], "yaw": 0.0},
-		{"id": "siege_campsite", "layout": "res://data/structures/pois/campsite.json", "at": [138.0, -168.0], "yaw": 60.0},
-		{"id": "east_road_cairn", "layout": "res://data/structures/pois/cairn_lone.json", "at": [104.0, -70.0], "yaw": 0.0},
-		{"id": "castle_north_cairns", "layout": "res://data/structures/pois/cairn_trio.json", "at": [150.0, -205.0], "yaw": 0.0},
-
-		{"id": "woods_camp", "layout": "res://data/structures/pois/campsite.json", "at": [225.0, 28.0], "yaw": 40.0},
-		{"id": "woods_cairns", "layout": "res://data/structures/pois/cairn_trio.json", "at": [265.0, 103.0], "yaw": 0.0},
-		{"id": "woods_cairn_east", "layout": "res://data/structures/pois/cairn_lone.json", "at": [300.0, 32.0], "yaw": 0.0},
-
-		{"id": "south_grave", "layout": "res://data/structures/pois/lone_grave.json", "at": [125.0, 186.0], "yaw": -20.0},
-		{"id": "south_cairns", "layout": "res://data/structures/pois/cairn_trio.json", "at": [25.0, 230.0], "yaw": 0.0},
-		{"id": "hermit_cairn", "layout": "res://data/structures/pois/cairn_lone.json", "at": [145.0, 272.0], "yaw": 0.0},
-		{"id": "southeast_cairns", "layout": "res://data/structures/pois/cairn_trio.json", "at": [160.0, 110.0], "yaw": 0.0},
-
-		{"id": "edge_grave_south", "layout": "res://data/structures/pois/lone_grave.json", "at": [-118.0, 358.0], "yaw": 0.0},
-		{"id": "edge_grave_west", "layout": "res://data/structures/pois/lone_grave.json", "at": [-300.0, 230.0], "yaw": 0.0},
-		{"id": "edge_cairn_west", "layout": "res://data/structures/pois/cairn_lone.json", "at": [-335.0, 162.0], "yaw": 0.0},
-		{"id": "edge_cairns_southwest", "layout": "res://data/structures/pois/cairn_trio.json", "at": [-350.0, -75.0], "yaw": 0.0},
-		{"id": "edge_cairn_east", "layout": "res://data/structures/pois/cairn_lone.json", "at": [350.0, -70.0], "yaw": 0.0},
-
-		{"id": "edge_camp_west", "layout": "res://data/structures/pois/campsite.json", "at": [-330.0, 30.0], "yaw": 70.0},
-		{"id": "hayfield_far_west", "layout": "res://data/structures/pois/haystacks.json", "at": [-300.0, -195.0], "yaw": 140.0},
-		{"id": "lost_well_south", "layout": "res://data/structures/pois/well_trough.json", "at": [-195.0, 270.0], "yaw": 25.0},
-		{"id": "hill_graves_north", "layout": "res://data/structures/pois/field_graves.json", "at": [-185.0, -320.0], "yaw": 160.0},
-		{"id": "meadow_grave_south", "layout": "res://data/structures/pois/lone_grave.json", "at": [-50.0, 255.0], "yaw": 300.0},
-		{"id": "south_ring", "layout": "res://data/structures/pois/stone_ring.json", "at": [45.0, 350.0], "yaw": 110.0},
-		{"id": "south_rim_cairn", "layout": "res://data/structures/pois/cairn_lone.json", "at": [-40.0, 362.0], "yaw": 35.0},
-		{"id": "north_rim_cairns", "layout": "res://data/structures/pois/cairn_trio.json", "at": [110.0, -310.0], "yaw": 250.0},
-		{"id": "castle_back_cairn", "layout": "res://data/structures/pois/cairn_lone.json", "at": [225.0, -290.0], "yaw": 80.0},
-		{"id": "southeast_camp", "layout": "res://data/structures/pois/campsite.json", "at": [262.0, 240.0], "yaw": 215.0},
-		{"id": "east_rim_grave", "layout": "res://data/structures/pois/lone_grave.json", "at": [290.0, -155.0], "yaw": 190.0}
+		{
+			"at": [
+				100.0,
+				15.0
+			],
+			"id": "shore_fire_east",
+			"layout": "res://data/structures/pois/shore_fire.json",
+			"yaw": 200.0
+		},
+		{
+			"at": [
+				95.0,
+				40.0
+			],
+			"id": "shore_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-114.6,
+				78.5
+			],
+			"id": "crossroads",
+			"layout": "res://data/structures/pois/crossroads.json",
+			"yaw": -147.5
+		},
+		{
+			"at": [
+				-135.0,
+				55.0
+			],
+			"id": "field_gate_west_road",
+			"layout": "res://data/structures/pois/field_gate.json",
+			"yaw": 20.0
+		},
+		{
+			"at": [
+				-151.0,
+				102.0
+			],
+			"id": "west_road_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-213.0,
+				190.0
+			],
+			"id": "village_well",
+			"layout": "res://data/structures/pois/well_trough.json",
+			"yaw": -30.0
+		},
+		{
+			"at": [
+				-160.0,
+				172.0
+			],
+			"id": "village_haystacks",
+			"layout": "res://data/structures/pois/haystacks.json",
+			"yaw": 15.0
+		},
+		{
+			"at": [
+				-245.0,
+				112.0
+			],
+			"id": "village_farm_corner",
+			"layout": "res://data/structures/pois/farm_corner.json",
+			"yaw": 180.0
+		},
+		{
+			"at": [
+				-265.0,
+				-105.0
+			],
+			"id": "farm_corner_sw",
+			"layout": "res://data/structures/pois/farm_corner.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-237.0,
+				-157.0
+			],
+			"id": "farm_corner_s",
+			"layout": "res://data/structures/pois/farm_corner.json",
+			"yaw": 90.0
+		},
+		{
+			"at": [
+				-185.0,
+				-95.0
+			],
+			"id": "field_gate_farms",
+			"layout": "res://data/structures/pois/field_gate.json",
+			"yaw": 100.0
+		},
+		{
+			"at": [
+				-225.0,
+				-83.0
+			],
+			"id": "orchard_fence",
+			"layout": "res://data/structures/pois/orchard_fence.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				22.0,
+				-305.0
+			],
+			"id": "stone_ring_north",
+			"layout": "res://data/structures/pois/stone_ring.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				20.0,
+				-190.0
+			],
+			"id": "north_cairns",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-62.0,
+				-297.0
+			],
+			"id": "north_cairns_west",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				0.0,
+				-255.0
+			],
+			"id": "shepherd_grave",
+			"layout": "res://data/structures/pois/lone_grave.json",
+			"yaw": 40.0
+		},
+		{
+			"at": [
+				48.4,
+				-196.9
+			],
+			"id": "north_cairns_east",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				224.0,
+				-108.0
+			],
+			"id": "siege_camp",
+			"layout": "res://data/structures/pois/siege_camp.json",
+			"yaw": -115.0
+		},
+		{
+			"at": [
+				190.0,
+				-98.0
+			],
+			"id": "siege_graves",
+			"layout": "res://data/structures/pois/field_graves.json",
+			"yaw": 30.0
+		},
+		{
+			"at": [
+				140.0,
+				-148.0
+			],
+			"id": "siege_picket",
+			"layout": "res://data/structures/pois/picket.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				138.0,
+				-168.0
+			],
+			"id": "siege_campsite",
+			"layout": "res://data/structures/pois/campsite.json",
+			"yaw": 60.0
+		},
+		{
+			"at": [
+				104.0,
+				-70.0
+			],
+			"id": "east_road_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				150.0,
+				-205.0
+			],
+			"id": "castle_north_cairns",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				225.0,
+				28.0
+			],
+			"id": "woods_camp",
+			"layout": "res://data/structures/pois/campsite.json",
+			"yaw": 40.0
+		},
+		{
+			"at": [
+				265.0,
+				103.0
+			],
+			"id": "woods_cairns",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				299.3,
+				32.8
+			],
+			"id": "woods_cairn_east",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				125.0,
+				186.0
+			],
+			"id": "south_grave",
+			"layout": "res://data/structures/pois/lone_grave.json",
+			"yaw": -20.0
+		},
+		{
+			"at": [
+				25.0,
+				230.0
+			],
+			"id": "south_cairns",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				145.0,
+				272.0
+			],
+			"id": "hermit_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				160.0,
+				110.0
+			],
+			"id": "southeast_cairns",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-118.0,
+				358.0
+			],
+			"id": "edge_grave_south",
+			"layout": "res://data/structures/pois/lone_grave.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-300.0,
+				230.0
+			],
+			"id": "edge_grave_west",
+			"layout": "res://data/structures/pois/lone_grave.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-335.0,
+				162.0
+			],
+			"id": "edge_cairn_west",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-350.0,
+				-75.0
+			],
+			"id": "edge_cairns_southwest",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				350.0,
+				-70.0
+			],
+			"id": "edge_cairn_east",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-330.0,
+				30.0
+			],
+			"id": "edge_camp_west",
+			"layout": "res://data/structures/pois/campsite.json",
+			"yaw": 70.0
+		},
+		{
+			"at": [
+				-293.4,
+				-192.6
+			],
+			"id": "hayfield_far_west",
+			"layout": "res://data/structures/pois/haystacks.json",
+			"yaw": 140.0
+		},
+		{
+			"at": [
+				-195.0,
+				270.0
+			],
+			"id": "lost_well_south",
+			"layout": "res://data/structures/pois/well_trough.json",
+			"yaw": 25.0
+		},
+		{
+			"at": [
+				-185.0,
+				-320.0
+			],
+			"id": "hill_graves_north",
+			"layout": "res://data/structures/pois/field_graves.json",
+			"yaw": 160.0
+		},
+		{
+			"at": [
+				-50.0,
+				255.0
+			],
+			"id": "meadow_grave_south",
+			"layout": "res://data/structures/pois/lone_grave.json",
+			"yaw": 300.0
+		},
+		{
+			"at": [
+				45.0,
+				350.0
+			],
+			"id": "south_ring",
+			"layout": "res://data/structures/pois/stone_ring.json",
+			"yaw": 110.0
+		},
+		{
+			"at": [
+				-40.0,
+				362.0
+			],
+			"id": "south_rim_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 35.0
+		},
+		{
+			"at": [
+				110.0,
+				-310.0
+			],
+			"id": "north_rim_cairns",
+			"layout": "res://data/structures/pois/cairn_trio.json",
+			"yaw": 250.0
+		},
+		{
+			"at": [
+				225.0,
+				-290.0
+			],
+			"id": "castle_back_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 80.0
+		},
+		{
+			"at": [
+				262.0,
+				240.0
+			],
+			"id": "southeast_camp",
+			"layout": "res://data/structures/pois/campsite.json",
+			"yaw": 215.0
+		},
+		{
+			"at": [
+				282.0,
+				-155.7
+			],
+			"id": "east_rim_grave",
+			"layout": "res://data/structures/pois/lone_grave.json",
+			"yaw": 190.0
+		}
 	]
 }

@@ -1,99 +1,703 @@
 {
 	"_comment": "Houses, sheds, barns, watch huts and wayside shrines in the Ashen Vale (W8-H), built at run time by Settlements from the archetype layouts in data/structures/houses/. Schema: see data/sites/vale.json and docs/WORLD_PLAN.md. Optional per site: ground ('max' default, 'min', or an absolute height), lift (metres added), props (interactables: {scene, at [x, y, z] site-local with y = 0 the floor, yaw, set {exported property: value}}). Every interactable id must be unique across the area. Loot: every item in data/items.json that belongs to the Vale has exactly one source here or in the castle/village scenes (tests/test_houses.gd audits it); the keys make two small puzzles (the west-road cottage's key is in the south farm barn's loft, the castle-foot watch chest's key is on the ruined east-road shrine's altar). Prop heights: 0.12 is the floor slab's top, 2.1 a cottage loft, 2.7 a barn hayloft, 3.12 a watch lookout, 1.02 a shrine altar. Doors face the road or the approach (+Z of the layout is the door side; yaw 0 faces +Z world).",
 	"sites": [
-		{"id": "maren_cottage", "layout": "res://data/structures/houses/cottage_intact.json", "at": [70.0, 130.0], "yaw": -159.0,
+		{
+			"at": [
+				70.0,
+				130.0
+			],
+			"id": "maren_cottage",
+			"layout": "res://data/structures/houses/cottage_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [-1.5, 0.12, 0.6], "yaw": 30, "set": {"id": "maren_spade", "item": "maren_spade", "prompt": "Take the spade"}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [-1.2, 0.3, -2.3], "yaw": 0, "set": {"id": "maren_hearth_ash", "item": "hearth_ash", "prompt": "Take a handful"}},
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [1.0, 0.12, -2.2], "yaw": 0, "set": {"id": "maren_tally_stone", "lore_key": "maren_tally"}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [1.1, 0.14, -1.9], "yaw": 25, "set": {"id": "maren_coat", "item": "leather_coat", "prompt": "Take"}}
-			]},
-		{"id": "fisher_shack", "layout": "res://data/structures/houses/shack_intact.json", "at": [-133.0, -51.0], "yaw": 69.0,
+				{
+					"at": [
+						-1.5,
+						0.12,
+						0.6
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "maren_spade",
+						"item": "maren_spade",
+						"prompt": "Take the spade"
+					},
+					"yaw": 30.0
+				},
+				{
+					"at": [
+						-1.2,
+						0.3,
+						-2.3
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "maren_hearth_ash",
+						"item": "hearth_ash",
+						"prompt": "Take a handful"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						1.0,
+						0.12,
+						-2.2
+					],
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"set": {
+						"id": "maren_tally_stone",
+						"lore_key": "maren_tally"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						1.1,
+						0.14,
+						-1.9
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "maren_coat",
+						"item": "leather_coat",
+						"prompt": "Take"
+					},
+					"yaw": 25.0
+				}
+			],
+			"yaw": -159.0
+		},
+		{
+			"at": [
+				-133.0,
+				-51.0
+			],
+			"id": "fisher_shack",
+			"layout": "res://data/structures/houses/shack_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.9, 0.12, -1.2], "yaw": 0, "set": {"id": "fisher_fish", "item": "pell_fish", "prompt": "Take the fish"}}
-			]},
-		{"id": "pond_shrine", "layout": "res://data/structures/houses/shrine_intact.json", "at": [-87.0, 112.0], "yaw": -147.0,
+				{
+					"at": [
+						0.9,
+						0.12,
+						-1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "fisher_fish",
+						"item": "pell_fish",
+						"prompt": "Take the fish"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 69.0
+		},
+		{
+			"at": [
+				-87.0,
+				112.0
+			],
+			"id": "pond_shrine",
+			"layout": "res://data/structures/houses/shrine_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-0.9, 0.12, -1.5], "yaw": 20, "set": {"id": "pond_shrine_tablet", "lore_key": "pond_shrine_verse"}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.0, 1.02, -1.2], "yaw": 0, "set": {"id": "pond_shrine_candle", "item": "candle_stub", "prompt": "Take the candle"}}
-			]},
-		{"id": "road_cottage", "layout": "res://data/structures/houses/cottage_intact_blocks.json", "at": [-158.0, 130.0], "yaw": -147.0,
+				{
+					"at": [
+						-0.9,
+						0.12,
+						-1.5
+					],
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"set": {
+						"id": "pond_shrine_tablet",
+						"lore_key": "pond_shrine_verse"
+					},
+					"yaw": 20.0
+				},
+				{
+					"at": [
+						0.0,
+						1.02,
+						-1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "pond_shrine_candle",
+						"item": "candle_stub",
+						"prompt": "Take the candle"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": -147.0
+		},
+		{
+			"at": [
+				-158.0,
+				130.0
+			],
+			"id": "road_cottage",
+			"layout": "res://data/structures/houses/cottage_intact_blocks.json",
 			"props": [
-				{"scene": "res://scenes/props/door.tscn", "at": [-1.375, 0.12, 3.0], "yaw": 0, "set": {"id": "road_cottage_door", "required_item": "cottage_key", "prompt": "Unlock"}},
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [1.6, 0.0, 3.7], "yaw": 0, "set": {"id": "road_cottage_lintel_stone", "lore_key": "road_cottage_lintel"}},
-				{"scene": "res://scenes/props/chest.tscn", "at": [0.5, 2.1, -2.0], "yaw": 0, "set": {"id": "road_cottage_chest", "contents": {"unsent_letter": 1}}}
-			]},
-		{"id": "outskirt_cottage_n", "layout": "res://data/structures/houses/cottage_ruined_blocks.json", "at": [-218.0, 92.0], "yaw": 21.0,
+				{
+					"at": [
+						-1.375,
+						0.12,
+						3.0
+					],
+					"scene": "res://scenes/props/door.tscn",
+					"set": {
+						"id": "road_cottage_door",
+						"prompt": "Unlock",
+						"required_item": "cottage_key"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						1.6,
+						0.0,
+						3.7
+					],
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"set": {
+						"id": "road_cottage_lintel_stone",
+						"lore_key": "road_cottage_lintel"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						0.5,
+						2.1,
+						-2.0
+					],
+					"scene": "res://scenes/props/chest.tscn",
+					"set": {
+						"contents": {
+							"unsent_letter": 1.0
+						},
+						"id": "road_cottage_chest"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": -147.0
+		},
+		{
+			"at": [
+				-218.0,
+				92.0
+			],
+			"id": "outskirt_cottage_n",
+			"layout": "res://data/structures/houses/cottage_ruined_blocks.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [1.6, 0.12, 1.5], "yaw": 0, "set": {"id": "outskirt_n_hymnal", "item": "bell_ringers_hymnal", "prompt": "Take the hymnal"}}
-			]},
-		{"id": "outskirt_cottage_s", "layout": "res://data/structures/houses/cottage_intact.json", "at": [-127.0, 198.0], "yaw": -128.0,
+				{
+					"at": [
+						1.6,
+						0.12,
+						1.5
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "outskirt_n_hymnal",
+						"item": "bell_ringers_hymnal",
+						"prompt": "Take the hymnal"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 21.0
+		},
+		{
+			"at": [
+				-127.0,
+				198.0
+			],
+			"id": "outskirt_cottage_s",
+			"layout": "res://data/structures/houses/cottage_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/chest.tscn", "at": [0.5, 2.1, -2.0], "yaw": 0, "set": {"id": "outskirt_s_chest", "contents": {"cracked_mirror": 1}}}
-			]},
-		{"id": "village_shack", "layout": "res://data/structures/houses/shack_ruined.json", "at": [-250.0, 150.0], "yaw": 101.0,
+				{
+					"at": [
+						0.5,
+						2.1,
+						-2.0
+					],
+					"scene": "res://scenes/props/chest.tscn",
+					"set": {
+						"contents": {
+							"cracked_mirror": 1.0
+						},
+						"id": "outskirt_s_chest"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": -128.0
+		},
+		{
+			"at": [
+				-250.0,
+				150.0
+			],
+			"id": "village_shack",
+			"layout": "res://data/structures/houses/shack_ruined.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.8, 0.12, 1.2], "yaw": 0, "set": {"id": "village_shack_collar", "item": "dog_collar", "prompt": "Take the collar"}}
-			]},
-		{"id": "village_barn", "layout": "res://data/structures/houses/barn_intact.json", "at": [-111.0, 158.0], "yaw": -147.0,
+				{
+					"at": [
+						0.8,
+						0.12,
+						1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "village_shack_collar",
+						"item": "dog_collar",
+						"prompt": "Take the collar"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 101.0
+		},
+		{
+			"at": [
+				-111.0,
+				158.0
+			],
+			"id": "village_barn",
+			"layout": "res://data/structures/houses/barn_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/chest.tscn", "at": [0.0, 2.7, -4.0], "yaw": 0, "set": {"id": "village_barn_chest", "contents": {"hammer": 1}}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [-2.4, 0.14, -3.6], "yaw": -40, "set": {"id": "barn_cloak", "item": "travellers_cloak", "prompt": "Take"}}
-			]},
-		{"id": "farm_barn_w", "layout": "res://data/structures/houses/barn_ruined.json", "at": [-295.0, -60.0], "yaw": 126.0,
+				{
+					"at": [
+						0.0,
+						2.7,
+						-4.0
+					],
+					"scene": "res://scenes/props/chest.tscn",
+					"set": {
+						"contents": {
+							"hammer": 1.0
+						},
+						"id": "village_barn_chest"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						-2.4,
+						0.14,
+						-3.6
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "barn_cloak",
+						"item": "travellers_cloak",
+						"prompt": "Take"
+					},
+					"yaw": -40.0
+				}
+			],
+			"yaw": -147.0
+		},
+		{
+			"at": [
+				-295.0,
+				-60.0
+			],
+			"id": "farm_barn_w",
+			"layout": "res://data/structures/houses/barn_ruined.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [-1.0, 2.7, -4.5], "yaw": 0, "set": {"id": "farm_w_sickle", "item": "rust_sickle", "prompt": "Take the sickle"}}
-			]},
-		{"id": "farm_barn_s", "layout": "res://data/structures/houses/barn_intact.json", "at": [-154.0, -200.0], "yaw": -37.0,
+				{
+					"at": [
+						-1.0,
+						2.7,
+						-4.5
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "farm_w_sickle",
+						"item": "rust_sickle",
+						"prompt": "Take the sickle"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 126.0
+		},
+		{
+			"at": [
+				-154.0,
+				-200.0
+			],
+			"id": "farm_barn_s",
+			"layout": "res://data/structures/houses/barn_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/chest.tscn", "at": [0.0, 2.7, -4.0], "yaw": 0, "set": {"id": "farm_s_chest", "contents": {"cottage_key": 1}}}
-			]},
-		{"id": "farmhouse", "layout": "res://data/structures/houses/cottage_ruined.json", "at": [-215.0, -118.0], "yaw": 61.0,
+				{
+					"at": [
+						0.0,
+						2.7,
+						-4.0
+					],
+					"scene": "res://scenes/props/chest.tscn",
+					"set": {
+						"contents": {
+							"cottage_key": 1.0
+						},
+						"id": "farm_s_chest"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": -37.0
+		},
+		{
+			"at": [
+				-215.0,
+				-118.0
+			],
+			"id": "farmhouse",
+			"layout": "res://data/structures/houses/cottage_ruined.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [1.6, 0.12, 1.5], "yaw": 0, "set": {"id": "farmhouse_apple", "item": "orchard_apple", "prompt": "Take the apple"}}
-			]},
-		{"id": "orchard_shack", "layout": "res://data/structures/houses/shack_ruined.json", "at": [-51.0, -197.0], "yaw": 15.0,
+				{
+					"at": [
+						1.6,
+						0.12,
+						1.5
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "farmhouse_apple",
+						"item": "orchard_apple",
+						"prompt": "Take the apple"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 61.0
+		},
+		{
+			"at": [
+				-51.0,
+				-197.0
+			],
+			"id": "orchard_shack",
+			"layout": "res://data/structures/houses/shack_ruined.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.8, 0.12, 1.2], "yaw": 0, "set": {"id": "orchard_hook", "item": "pruning_hook", "prompt": "Take the hook"}}
-			]},
-		{"id": "north_watch", "layout": "res://data/structures/houses/watch_intact.json", "at": [-30.0, -280.0], "yaw": 6.0,
+				{
+					"at": [
+						0.8,
+						0.12,
+						1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "orchard_hook",
+						"item": "pruning_hook",
+						"prompt": "Take the hook"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 15.0
+		},
+		{
+			"at": [
+				-30.0,
+				-280.0
+			],
+			"id": "north_watch",
+			"layout": "res://data/structures/houses/watch_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-0.8, 3.12, 0.6], "yaw": 180, "set": {"id": "north_watch_stone", "lore_key": "north_watch_stone"}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.6, 3.12, -0.8], "yaw": 0, "set": {"id": "north_watch_horn", "item": "watchmans_horn", "prompt": "Take the horn"}}
-			]},
-		{"id": "shepherd_shack", "layout": "res://data/structures/houses/shack_intact_plaster.json", "at": [-110.0, -234.0], "yaw": 25.0,
+				{
+					"at": [
+						-0.8,
+						3.12,
+						0.6
+					],
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"set": {
+						"id": "north_watch_stone",
+						"lore_key": "north_watch_stone"
+					},
+					"yaw": 180.0
+				},
+				{
+					"at": [
+						0.6,
+						3.12,
+						-0.8
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "north_watch_horn",
+						"item": "watchmans_horn",
+						"prompt": "Take the horn"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 6.0
+		},
+		{
+			"at": [
+				-110.0,
+				-234.0
+			],
+			"id": "shepherd_shack",
+			"layout": "res://data/structures/houses/shack_intact_plaster.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.9, 0.12, -1.2], "yaw": 0, "set": {"id": "shepherd_crook", "item": "shepherd_crook", "prompt": "Take the crook"}}
-			]},
-		{"id": "castle_foot_watch", "layout": "res://data/structures/houses/watch_intact.json", "at": [138.0, -16.0], "yaw": -143.0,
+				{
+					"at": [
+						0.9,
+						0.12,
+						-1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "shepherd_crook",
+						"item": "shepherd_crook",
+						"prompt": "Take the crook"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 25.0
+		},
+		{
+			"at": [
+				138.1,
+				-10.0
+			],
+			"id": "castle_foot_watch",
+			"layout": "res://data/structures/houses/watch_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/chest.tscn", "at": [0.0, 0.12, -0.6], "yaw": 0, "set": {"id": "castle_foot_chest", "required_item": "watch_key", "prompt": "Unlock", "contents": {"castle_key": 1, "oath_ribbon": 1}}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.6, 3.12, -0.8], "yaw": 0, "set": {"id": "castle_foot_ledger", "item": "toll_ledger", "prompt": "Take the ledger"}}
-			]},
-		{"id": "east_road_shrine", "layout": "res://data/structures/houses/shrine_ruined.json", "at": [107.0, -34.0], "yaw": -143.0,
+				{
+					"at": [
+						0.0,
+						0.12,
+						-0.6
+					],
+					"scene": "res://scenes/props/chest.tscn",
+					"set": {
+						"contents": {
+							"castle_key": 1.0,
+							"oath_ribbon": 1.0
+						},
+						"id": "castle_foot_chest",
+						"prompt": "Unlock",
+						"required_item": "watch_key"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						0.6,
+						3.12,
+						-0.8
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "castle_foot_ledger",
+						"item": "toll_ledger",
+						"prompt": "Take the ledger"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": -143.0
+		},
+		{
+			"at": [
+				107.0,
+				-34.0
+			],
+			"id": "east_road_shrine",
+			"layout": "res://data/structures/houses/shrine_ruined.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.0, 1.02, -1.2], "yaw": 0, "set": {"id": "east_shrine_key", "item": "watch_key", "prompt": "Take the key"}},
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-1.0, 0.12, -1.6], "yaw": 0, "set": {"id": "east_shrine_tablet", "lore_key": "east_shrine_tablet"}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [1.0, 0.14, -0.9], "yaw": -20, "set": {"id": "road_spear", "item": "spear", "prompt": "Take"}}
-			]},
-		{"id": "woodcutter_shack", "layout": "res://data/structures/houses/shack_intact.json", "at": [300.0, -10.0], "yaw": -88.0,
+				{
+					"at": [
+						0.0,
+						1.02,
+						-1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "east_shrine_key",
+						"item": "watch_key",
+						"prompt": "Take the key"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						-1.0,
+						0.12,
+						-1.6
+					],
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"set": {
+						"id": "east_shrine_tablet",
+						"lore_key": "east_shrine_tablet"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						1.0,
+						0.14,
+						-0.9
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "road_spear",
+						"item": "spear",
+						"prompt": "Take"
+					},
+					"yaw": -20.0
+				}
+			],
+			"yaw": -143.0
+		},
+		{
+			"at": [
+				300.0,
+				-10.0
+			],
+			"id": "woodcutter_shack",
+			"layout": "res://data/structures/houses/shack_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.9, 0.12, -1.2], "yaw": 0, "set": {"id": "woodcutter_wedge", "item": "woodcutter_wedge", "prompt": "Take the wedge"}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.8, 0.14, -1.1], "yaw": 15, "set": {"id": "woodcutter_mantle", "item": "hunters_mantle", "prompt": "Take"}}
-			]},
-		{"id": "east_ridge_watch", "layout": "res://data/structures/houses/watch_ruined.json", "at": [326.0, -51.0], "yaw": -131.0,
+				{
+					"at": [
+						0.9,
+						0.12,
+						-1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "woodcutter_wedge",
+						"item": "woodcutter_wedge",
+						"prompt": "Take the wedge"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						0.8,
+						0.14,
+						-1.1
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "woodcutter_mantle",
+						"item": "hunters_mantle",
+						"prompt": "Take"
+					},
+					"yaw": 15.0
+				}
+			],
+			"yaw": -88.0
+		},
+		{
+			"at": [
+				326.0,
+				-51.0
+			],
+			"id": "east_ridge_watch",
+			"layout": "res://data/structures/houses/watch_ruined.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.6, 3.12, -0.8], "yaw": 0, "set": {"id": "east_ridge_tally", "item": "siege_tally", "prompt": "Take the tally stick"}}
-			]},
-		{"id": "hermit_shack", "layout": "res://data/structures/houses/shack_intact_plaster.json", "at": [113.0, 273.0], "yaw": -158.0,
+				{
+					"at": [
+						0.6,
+						3.12,
+						-0.8
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "east_ridge_tally",
+						"item": "siege_tally",
+						"prompt": "Take the tally stick"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": -131.0
+		},
+		{
+			"at": [
+				113.0,
+				273.0
+			],
+			"id": "hermit_shack",
+			"layout": "res://data/structures/houses/shack_intact_plaster.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.9, 0.12, -1.2], "yaw": 0, "set": {"id": "hermit_token", "item": "pilgrim_token", "prompt": "Take the token"}}
-			]},
-		{"id": "edge_shrine", "layout": "res://data/structures/houses/shrine_intact.json", "at": [-258.0, -245.0], "yaw": 47.0,
+				{
+					"at": [
+						0.9,
+						0.12,
+						-1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "hermit_token",
+						"item": "pilgrim_token",
+						"prompt": "Take the token"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": -158.0
+		},
+		{
+			"at": [
+				-258.0,
+				-245.0
+			],
+			"id": "edge_shrine",
+			"layout": "res://data/structures/houses/shrine_intact.json",
 			"props": [
-				{"scene": "res://scenes/props/pickup.tscn", "at": [0.0, 1.02, -1.2], "yaw": 0, "set": {"id": "edge_shrine_sword", "item": "sword", "prompt": "Take the sword"}},
-				{"scene": "res://scenes/props/lore_stone.tscn", "at": [-0.9, 0.12, -1.5], "yaw": 20, "set": {"id": "edge_shrine_tablet", "lore_key": "edge_shrine_tablet"}},
-				{"scene": "res://scenes/props/pickup.tscn", "at": [-1.0, 0.14, -0.7], "yaw": 0, "set": {"id": "shrine_shroud", "item": "ashen_shroud", "prompt": "Take"}}
-			]}
+				{
+					"at": [
+						0.0,
+						1.02,
+						-1.2
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "edge_shrine_sword",
+						"item": "sword",
+						"prompt": "Take the sword"
+					},
+					"yaw": 0.0
+				},
+				{
+					"at": [
+						-0.9,
+						0.12,
+						-1.5
+					],
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"set": {
+						"id": "edge_shrine_tablet",
+						"lore_key": "edge_shrine_tablet"
+					},
+					"yaw": 20.0
+				},
+				{
+					"at": [
+						-1.0,
+						0.14,
+						-0.7
+					],
+					"scene": "res://scenes/props/pickup.tscn",
+					"set": {
+						"id": "shrine_shroud",
+						"item": "ashen_shroud",
+						"prompt": "Take"
+					},
+					"yaw": 0.0
+				}
+			],
+			"yaw": 47.0
+		}
 	]
 }

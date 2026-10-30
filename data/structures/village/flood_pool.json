@@ -1,0 +1,120 @@
+{
+	"_comment": "What the flood left (W14): a dip in the ground at the edge of a village with water standing in it, a kerb of stones, and the wreck of what it took. The owner asked for a slight hole where a little water has gathered, as if a pond had been there once.",
+	"name": "flood_pool",
+	"keep_out": [
+		[
+			-7.0,
+			-7.0,
+			14.0,
+			14.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "kerb",
+			"kind": "cairn",
+			"repeat": [
+				[
+					-5.2,
+					0,
+					-1.4,
+					0
+				],
+				[
+					-3.4,
+					0,
+					3.8,
+					0
+				],
+				[
+					4.6,
+					0,
+					-2.6,
+					0
+				],
+				[
+					2.8,
+					0,
+					4.4,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.5,
+				"h": 0.7,
+				"count": 4,
+				"seed": 6201,
+				"mat": "stone",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "silt",
+			"kind": "boulders",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 4.0,
+				"count": 5,
+				"size": 0.8,
+				"seed": 6202,
+				"mat": "rock",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "wreck",
+			"kind": "cart",
+			"at": [
+				5.0,
+				0.3,
+				2.0
+			],
+			"yaw": 70,
+			"params": {
+				"w": 2.6,
+				"d": 1.4,
+				"wheel": 0.55,
+				"mat": "planks"
+			}
+		},
+		{
+			"name": "posts",
+			"kind": "fence",
+			"at": [
+				0,
+				0,
+				-6.4
+			],
+			"yaw": 0,
+			"params": {
+				"length": 7.0,
+				"h": 1.0,
+				"spacing": 2.2,
+				"rails": 2,
+				"broken": true,
+				"seed": 6203,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "lamp",
+			"kind": "lamp_stone",
+			"at": [
+				-6.0,
+				0,
+				4.8
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.5,
+				"sink": 1.8
+			}
+		}
+	]
+}
