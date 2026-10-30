@@ -1,0 +1,38 @@
+{
+	"_comment": "Village square: stone paved gathering circle with ceremonial central pyre and four surrounding stone benches.",
+	"name": "village_square_pyre",
+	"keep_out": [
+		[-4.2, -4.2, 8.4, 8.4]
+	],
+	"pieces": [
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [0.0, -2.0, 0.0],
+			"params": {"w": 8.4, "h": 2.0, "d": 8.4, "mat": "stone"}
+		},
+		{
+			"name": "paving",
+			"kind": "floor_slab",
+			"at": [0.0, 0.0, 0.0],
+			"params": {"w": 8.0, "d": 8.0, "t": 0.12, "mat": "stone"}
+		},
+		{
+			"name": "central_pyre",
+			"kind": "pyre",
+			"at": [0.0, 0.0, 0.0],
+			"params": {"h": 1.5, "radius": 1.1, "mat": "char", "sink": 0.8}
+		},
+		{
+			"name": "benches",
+			"kind": "block",
+			"repeat": [
+				[-2.5, 0.0, 0.0, 90],
+				[2.5, 0.0, 0.0, 90],
+				[0.0, 0.0, -2.5, 0],
+				[0.0, 0.0, 2.5, 0]
+			],
+			"params": {"w": 1.8, "h": 0.45, "d": 0.5, "mat": "stone"}
+		}
+	]
+}

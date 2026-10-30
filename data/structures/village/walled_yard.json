@@ -1,0 +1,89 @@
+{
+	"_comment": "Walled yard with a gate: stone boundary walls, arched entrance, interior garden beds, dry well, and cart.",
+	"name": "walled_yard",
+	"keep_out": [
+		[-5.2, -5.2, 10.4, 10.4],
+		[-1.2, 5.0, 2.4, 2.2]
+	],
+	"pieces": [
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [0.0, -2.0, 0.0],
+			"params": {"w": 10.4, "h": 2.0, "d": 10.4, "mat": "stone"}
+		},
+		{
+			"name": "yard_ground",
+			"kind": "floor_slab",
+			"at": [0.0, 0.0, 0.0],
+			"params": {"w": 10.0, "d": 10.0, "t": 0.12, "mat": "soil"}
+		},
+		{
+			"name": "gate_arch",
+			"kind": "arch",
+			"at": [0.0, 0.0, 4.8],
+			"params": {"w": 4.0, "h": 3.0, "t": 0.5, "ow": 1.8, "oh": 2.5, "mat": "stone"}
+		},
+		{
+			"name": "front_wall_left",
+			"kind": "wall",
+			"at": [-3.5, 0.0, 4.8],
+			"params": {"w": 3.0, "h": 2.0, "t": 0.5, "mat": "stone"}
+		},
+		{
+			"name": "front_wall_right",
+			"kind": "wall",
+			"at": [3.5, 0.0, 4.8],
+			"params": {"w": 3.0, "h": 2.0, "t": 0.5, "mat": "stone"}
+		},
+		{
+			"name": "back_wall",
+			"kind": "wall",
+			"at": [0.0, 0.0, -4.8],
+			"params": {"w": 10.0, "h": 2.0, "t": 0.5, "mat": "stone"}
+		},
+		{
+			"name": "east_wall",
+			"kind": "wall",
+			"at": [4.8, 0.0, 0.0],
+			"yaw": 90.0,
+			"params": {"w": 10.0, "h": 2.0, "t": 0.5, "mat": "stone"}
+		},
+		{
+			"name": "west_wall",
+			"kind": "wall",
+			"at": [-4.8, 0.0, 0.0],
+			"yaw": 90.0,
+			"params": {"w": 10.0, "h": 2.0, "t": 0.5, "mat": "stone"}
+		},
+		{
+			"name": "garden_beds",
+			"kind": "garden_bed",
+			"repeat": [
+				[-2.4, 0.0, -2.4, 0],
+				[-2.4, 0.0, 1.2, 0]
+			],
+			"params": {"w": 1.6, "d": 3.0, "rows": 4, "sink": 0.8, "mat": "soil", "crop": "sprout"}
+		},
+		{
+			"name": "well",
+			"kind": "well",
+			"at": [2.5, 0.0, -2.5],
+			"params": {"radius": 0.9, "h": 1.0, "post_h": 2.3, "mat": "stone", "wood": "planks", "sink": 0.8}
+		},
+		{
+			"name": "cart",
+			"kind": "cart",
+			"at": [2.5, 0.0, 1.8],
+			"yaw": 30.0,
+			"params": {"w": 2.8, "d": 1.4, "wheel": 0.55, "mat": "planks"}
+		},
+		{
+			"name": "gate_doorstep",
+			"kind": "stairs",
+			"at": [0.0, 0.0, 5.0],
+			"yaw": 180.0,
+			"params": {"w": 2.2, "rise": 1.5, "riser": 0.25, "tread": 0.35, "mat": "stone"}
+		}
+	]
+}

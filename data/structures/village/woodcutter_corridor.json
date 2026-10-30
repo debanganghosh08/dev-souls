@@ -1,0 +1,63 @@
+{
+	"_comment": "Woodcutter's wayside rest & charcoal burning camp along the forest road (W10-C): burning hearth, sitting logs, charcoal mound, signpost at the fork, tool rack, log piles, and road lamps.",
+	"name": "woodcutter_corridor",
+	"keep_out": [
+		[-3.8, -2.8, 7.6, 5.6]
+	],
+	"pieces": [
+		{
+			"name": "hearth",
+			"kind": "hearth_remains",
+			"at": [0.0, 0.0, 0.0],
+			"params": {"radius": 0.85, "sink": 0.8}
+		},
+		{
+			"name": "sitting_logs",
+			"kind": "block",
+			"repeat": [
+				[-1.5, 0.0, 0.0, 90],
+				[1.5, 0.0, 0.0, 90],
+				[0.0, 0.0, -1.5, 0]
+			],
+			"params": {"w": 1.4, "h": 0.45, "d": 0.45, "mat": "timber"}
+		},
+		{
+			"name": "charcoal_mound",
+			"kind": "grave_mound",
+			"at": [2.6, 0.0, 1.4],
+			"params": {"w": 1.4, "d": 2.2, "mat": "char", "wood": "timber", "sink": 0.8}
+		},
+		{
+			"name": "signpost",
+			"kind": "signpost",
+			"at": [-2.4, 0.0, 1.8],
+			"params": {"h": 2.4, "yaws": [0.0, 80.0], "mat": "planks", "sink": 0.8}
+		},
+		{
+			"name": "tool_rack",
+			"kind": "weapon_rack",
+			"at": [-1.8, 0.0, -1.8],
+			"params": {"w": 1.5, "h": 1.4, "spears": 4, "mat": "timber", "sink": 0.8}
+		},
+		{
+			"name": "log_piles",
+			"kind": "block",
+			"repeat": [
+				[2.4, 0.0, -1.4, 0],
+				[2.4, 0.35, -1.4, 0],
+				[2.4, 0.0, -2.0, 0]
+			],
+			"params": {"w": 1.8, "h": 0.35, "d": 0.55, "mat": "timber"}
+		},
+		{
+			"name": "corridor_lamps",
+			"kind": "lamp_stone",
+			"repeat": [
+				[-3.2, 0.0, 0.0, 0],
+				[3.2, 0.0, 0.0, 0]
+			],
+			"params": {"radius": 0.45, "sink": 0.8}
+		}
+	]
+}
+

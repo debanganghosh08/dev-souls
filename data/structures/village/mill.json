@@ -1,0 +1,103 @@
+{
+	"_comment": "Village grist mill: heavy blockwork tower base, arched doorway, upper floor, millstone blocks, meal trough and rooftop beacon.",
+	"name": "mill",
+	"keep_out": [
+		[-3.2, -3.2, 6.4, 6.4],
+		[-1.0, 3.0, 2.0, 2.2]
+	],
+	"pieces": [
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [0.0, -2.0, 0.0],
+			"params": {"w": 6.4, "h": 2.0, "d": 6.4, "mat": "stone"}
+		},
+		{
+			"name": "floor",
+			"kind": "floor_slab",
+			"at": [0.0, 0.0, 0.0],
+			"params": {"w": 6.0, "d": 6.0, "t": 0.12, "mat": "stone"}
+		},
+		{
+			"name": "front_wall",
+			"kind": "wall",
+			"at": [0.0, 0.0, 2.8],
+			"params": {
+				"w": 6.0, "h": 3.8, "t": 0.5, "mat": "blocks",
+				"opening": {"width": 1.4, "height": 2.5, "sill": 0.0, "offset": 0.0}
+			}
+		},
+		{
+			"name": "back_wall",
+			"kind": "wall",
+			"at": [0.0, 0.0, -2.8],
+			"params": {"w": 6.0, "h": 3.8, "t": 0.5, "mat": "blocks"}
+		},
+		{
+			"name": "east_wall",
+			"kind": "wall",
+			"at": [2.8, 0.0, 0.0],
+			"yaw": 90.0,
+			"params": {"w": 6.0, "h": 3.8, "t": 0.5, "mat": "blocks"}
+		},
+		{
+			"name": "west_wall",
+			"kind": "wall",
+			"at": [-2.8, 0.0, 0.0],
+			"yaw": 90.0,
+			"params": {"w": 6.0, "h": 3.8, "t": 0.5, "mat": "blocks"}
+		},
+		{
+			"name": "upper_floor",
+			"kind": "floor_slab",
+			"at": [0.0, 3.8, 0.0],
+			"params": {"w": 6.0, "d": 6.0, "t": 0.15, "mat": "planks"}
+		},
+		{
+			"name": "front_gable",
+			"kind": "gable",
+			"at": [0.0, 3.8, 2.8],
+			"params": {"w": 6.0, "rise": 1.8, "t": 0.4, "mat": "timber"}
+		},
+		{
+			"name": "back_gable",
+			"kind": "gable",
+			"at": [0.0, 3.8, -2.8],
+			"params": {"w": 6.0, "rise": 1.8, "t": 0.4, "mat": "timber"}
+		},
+		{
+			"name": "roof",
+			"kind": "pitched_roof",
+			"at": [0.0, 3.8, 0.0],
+			"params": {"w": 6.4, "d": 6.4, "rise": 1.8, "t": 0.12, "overhang": 0.3, "mat": "roof"}
+		},
+		{
+			"name": "doorstep",
+			"kind": "stairs",
+			"at": [0.0, 0.0, 3.0],
+			"yaw": 180.0,
+			"params": {"w": 2.0, "rise": 1.5, "riser": 0.25, "tread": 0.35, "mat": "stone"}
+		},
+		{
+			"name": "millstones",
+			"kind": "pillar",
+			"repeat": [
+				[1.8, 0.0, -1.8, 0],
+				[1.8, 0.35, -1.8, 0]
+			],
+			"params": {"radius": 0.75, "h": 0.35, "sides": 10, "mat": "stone"}
+		},
+		{
+			"name": "meal_trough",
+			"kind": "trough",
+			"at": [-1.8, 0.0, -1.8],
+			"params": {"w": 1.8, "d": 0.6, "h": 0.5, "mat": "planks", "sink": 0.8}
+		},
+		{
+			"name": "beacon",
+			"kind": "beacon",
+			"at": [0.0, 5.6, 0.0],
+			"params": {"radius": 0.55, "h": 1.3, "mat": "iron", "sink": 0.8}
+		}
+	]
+}

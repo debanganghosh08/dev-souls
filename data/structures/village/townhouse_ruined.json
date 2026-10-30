@@ -1,0 +1,76 @@
+{
+	"_comment": "Ruined townhouse: stone foundation and broken walls, fallen roof, and rubble on ground floor.",
+	"name": "townhouse_ruined",
+	"keep_out": [
+		[-3.2, -4.2, 6.4, 8.4],
+		[-1.2, 4.0, 2.4, 2.5]
+	],
+	"pieces": [
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [0.0, -2.0, 0.0],
+			"params": {"w": 6.4, "h": 2.0, "d": 8.4, "mat": "stone"}
+		},
+		{
+			"name": "ground_floor",
+			"kind": "floor_slab",
+			"at": [0.0, 0.0, 0.0],
+			"params": {"w": 6.0, "d": 8.0, "t": 0.12, "mat": "stone"}
+		},
+		{
+			"name": "front_wall",
+			"kind": "broken_wall",
+			"at": [0.0, 0.0, 3.8],
+			"params": {"w": 6.0, "h": 2.8, "t": 0.4, "mat": "stone", "seed": 10, "keep": 0.5}
+		},
+		{
+			"name": "back_wall",
+			"kind": "wall",
+			"at": [0.0, 0.0, -3.8],
+			"params": {
+				"w": 6.0, "h": 2.8, "t": 0.4, "mat": "stone",
+				"opening": {"width": 1.0, "height": 1.2, "sill": 1.1, "offset": 0.0}
+			}
+		},
+		{
+			"name": "west_wall",
+			"kind": "broken_wall",
+			"at": [-2.8, 0.0, 0.0],
+			"yaw": 90.0,
+			"params": {"w": 8.0, "h": 2.8, "t": 0.4, "mat": "stone", "seed": 12, "keep": 0.35}
+		},
+		{
+			"name": "east_wall",
+			"kind": "wall",
+			"at": [2.8, 0.0, 0.0],
+			"yaw": 90.0,
+			"params": {"w": 8.0, "h": 2.8, "t": 0.4, "mat": "stone"}
+		},
+		{
+			"name": "upper_partial_floor",
+			"kind": "floor_slab",
+			"at": [1.0, 2.8, -1.8],
+			"params": {"w": 3.6, "d": 4.0, "t": 0.12, "mat": "planks"}
+		},
+		{
+			"name": "collapsed_roof",
+			"kind": "collapsed_roof",
+			"at": [0.0, 2.2, 0.0],
+			"params": {"w": 6.4, "d": 8.4, "rise": 1.8, "t": 0.12, "mat": "roof", "seed": 15}
+		},
+		{
+			"name": "rubble_floor",
+			"kind": "rubble",
+			"at": [0.0, 0.0, 0.0],
+			"params": {"radius": 2.6, "count": 14, "mat": "stone", "seed": 21}
+		},
+		{
+			"name": "doorstep",
+			"kind": "stairs",
+			"at": [-1.2, 0.0, 4.0],
+			"yaw": 180.0,
+			"params": {"w": 1.8, "rise": 1.5, "riser": 0.25, "tread": 0.35, "mat": "stone"}
+		}
+	]
+}
