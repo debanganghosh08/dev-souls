@@ -1,0 +1,150 @@
+{
+	"_comment": "A monument of blades (W13). The owner asked for swords driven into the soil. Headstones stood on end and leaned are the kit's nearest thing to a blade; set in a ring round a plinth with a fire on it, they read as something somebody meant rather than scenery.",
+	"name": "sword_monument",
+	"keep_out": [
+		[
+			-4.0,
+			-4.0,
+			8.0,
+			8.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "plinth",
+			"kind": "block",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 2.6,
+				"h": 0.55,
+				"d": 2.6,
+				"mat": "stone",
+				"plinth": {
+					"h": 0.18,
+					"out": 0.12
+				}
+			}
+		},
+		{
+			"name": "blades",
+			"kind": "headstone",
+			"repeat": [
+				[
+					-2.6,
+					0,
+					-1.4,
+					12
+				],
+				[
+					-2.9,
+					0,
+					1.2,
+					-9
+				],
+				[
+					2.7,
+					0,
+					-1.6,
+					-14
+				],
+				[
+					2.5,
+					0,
+					1.5,
+					7
+				],
+				[
+					-0.2,
+					0,
+					-3.0,
+					4
+				],
+				[
+					0.3,
+					0,
+					2.9,
+					-5
+				]
+			],
+			"params": {
+				"w": 0.34,
+				"h": 2.1,
+				"t": 0.1,
+				"mat": "iron"
+			}
+		},
+		{
+			"name": "fallen",
+			"kind": "headstone",
+			"repeat": [
+				[
+					-4.2,
+					0.2,
+					0.2,
+					85
+				],
+				[
+					4.0,
+					0.2,
+					-0.4,
+					-80
+				]
+			],
+			"params": {
+				"w": 0.32,
+				"h": 1.8,
+				"t": 0.1,
+				"mat": "iron"
+			}
+		},
+		{
+			"name": "fire",
+			"kind": "brazier",
+			"at": [
+				0,
+				0.55,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"h": 0.9,
+				"radius": 0.42,
+				"seed": 5201,
+				"sink": 0,
+				"energy": 2.8,
+				"range": 13.0
+			}
+		},
+		{
+			"name": "stones",
+			"kind": "cairn",
+			"repeat": [
+				[
+					-3.4,
+					0,
+					3.2,
+					0
+				],
+				[
+					3.6,
+					0,
+					3.0,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.45,
+				"h": 0.8,
+				"count": 5,
+				"seed": 5202,
+				"mat": "stone",
+				"sink": 1.8
+			}
+		}
+	]
+}

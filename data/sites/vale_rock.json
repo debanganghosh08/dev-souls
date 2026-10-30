@@ -1,5 +1,5 @@
 {
-	"_comment": "Rock, camps and the road cut (W12). Crags, boulder fields and standing stones scattered over the empty ground, war camps nobody is in yet, and a cut driven through a rocky spur with the road between its two faces. Every spot was chosen against the real heightfield by tools/ground_report.gd's rules.",
+	"_comment": "Rock, camps, the road cut, and what fills the empty quarters (W12-W13): crags, boulder fields, standing stones, graveyards and blade monuments. The rim of the drained pond is the biggest dead space in the valley and gets the most of it. Every spot chosen against the real heightfield by tools/ground_report.gd's rules.",
 	"sites": [
 		{
 			"at": [
@@ -117,6 +117,87 @@
 			"id": "rock_boulders_12",
 			"layout": "res://data/structures/rocks/boulders.json",
 			"yaw": 47.4
+		},
+		{
+			"at": [
+				113.0,
+				82.9
+			],
+			"id": "fill_graveyard_00",
+			"layout": "res://data/structures/rocks/graveyard.json",
+			"yaw": -168.5
+		},
+		{
+			"at": [
+				-132.7,
+				0.0
+			],
+			"id": "fill_sword_monument_01",
+			"layout": "res://data/structures/rocks/sword_monument.json",
+			"yaw": -153.8
+		},
+		{
+			"at": [
+				-122.2,
+				-99.4
+			],
+			"id": "fill_standing_stones_02",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": -151.5
+		},
+		{
+			"at": [
+				20.2,
+				-152.9
+			],
+			"id": "fill_boulders_03",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -78.3
+		},
+		{
+			"at": [
+				90.4,
+				161.7
+			],
+			"id": "fill_crag_04",
+			"layout": "res://data/structures/rocks/crag.json",
+			"yaw": 67.7
+		},
+		{
+			"at": [
+				-74.1,
+				171.6
+			],
+			"id": "fill_graveyard_05",
+			"layout": "res://data/structures/rocks/graveyard.json",
+			"yaw": 141.7
+		},
+		{
+			"at": [
+				-158.5,
+				-48.4
+			],
+			"id": "fill_sword_monument_06",
+			"layout": "res://data/structures/rocks/sword_monument.json",
+			"yaw": -3.1
+		},
+		{
+			"at": [
+				-20.7,
+				-225.2
+			],
+			"id": "fill_standing_stones_07",
+			"layout": "res://data/structures/rocks/standing_stones.json",
+			"yaw": -88.2
+		},
+		{
+			"at": [
+				76.5,
+				-247.0
+			],
+			"id": "fill_boulders_08",
+			"layout": "res://data/structures/rocks/boulders.json",
+			"yaw": -177.4
 		}
 	]
 }

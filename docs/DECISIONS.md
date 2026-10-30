@@ -346,3 +346,22 @@ count came back to 3.8 while the blades stayed fine. Two levers were tried and b
 `fill_cells_per_frame` up (spreads the same millisecond budget thinner, so the cell underfoot finishes
 later) and more trees (the clustered layers test every candidate against every tree). **Before the next
 area, the grass filter wants profiling rather than another guess.**
+
+**D-031 (2026-10-31) The road had grass growing down the middle of it.** The owner: "proper roads, brown,
+on which grass is not present". The track has been worn into the terrain shader since W9, but the road
+grass zone still ran at 0.12x, so a brown track with grass on it is what the player saw, which is not a
+road. Nothing grows on a road now (0.0x) and both the painted band and the bare band are wider.
+
+**Graphics, three settings, no gambles:** volumetric fog (light becomes visible in the air -- with 164
+fires in the valley this is the largest mood change available for the price), SSIL, and a colour grade
+(contrast 1.12, saturation 1.14). All measurable, all revertible, none of them dependent on the geometry
+being something it is not.
+
+**And the grass lattice came in from 70 m to 60 m**, which is the lever that finally fixed a problem four
+earlier attempts did not. The fill could not keep up with a sprinting player as the valley filled: cells
+sat bare inside 50 m. Raising the budget broke the frame-time test; raising `fill_cells_per_frame` spread
+one budget thinner and made it worse; cutting trees barely moved it; cutting density helped a little. The
+answer was that there was simply too much lattice to keep filled, and the blades already fade out at
+56-62 m, so the outer ring was work nobody could see. **81 cells instead of 109, 29,353 blades, worst fill
+frame unchanged, and the sprint is clean.** General lesson: when a budget cannot cover the work, look for
+work that buys nothing before trying to buy more budget.

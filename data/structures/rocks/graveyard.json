@@ -1,0 +1,229 @@
+{
+	"_comment": "A field of graves (W13). The owner asked for a graveyard with weapons and the remains of other people in it. The racks are what is left of their arms, the hearths are what is left of them -- the hearth_remains piece scatters burnt cloth, bones and a pot of its own. A lamp at the gate so it reads at night.",
+	"name": "graveyard",
+	"keep_out": [
+		[
+			-7.0,
+			-7.0,
+			14.0,
+			14.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "mounds",
+			"kind": "grave_mound",
+			"repeat": [
+				[
+					-4.0,
+					0,
+					-3.0,
+					0
+				],
+				[
+					-1.6,
+					0,
+					-3.2,
+					4
+				],
+				[
+					0.8,
+					0,
+					-3.0,
+					-3
+				],
+				[
+					3.2,
+					0,
+					-3.1,
+					2
+				],
+				[
+					-3.2,
+					0,
+					0.6,
+					1
+				],
+				[
+					-0.8,
+					0,
+					0.5,
+					-4
+				],
+				[
+					1.8,
+					0,
+					0.7,
+					3
+				],
+				[
+					4.2,
+					0,
+					0.4,
+					0
+				]
+			],
+			"params": {
+				"w": 0.9,
+				"d": 2.0,
+				"mat": "stone",
+				"wood": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "stones",
+			"kind": "headstone",
+			"repeat": [
+				[
+					-4.0,
+					0,
+					-4.4,
+					-6
+				],
+				[
+					-1.6,
+					0,
+					-4.6,
+					3
+				],
+				[
+					0.8,
+					0,
+					-4.4,
+					8
+				],
+				[
+					3.2,
+					0,
+					-4.5,
+					-2
+				],
+				[
+					-3.2,
+					0,
+					-0.8,
+					5
+				],
+				[
+					-0.8,
+					0,
+					-0.9,
+					-7
+				],
+				[
+					1.8,
+					0,
+					-0.7,
+					2
+				]
+			],
+			"params": {
+				"w": 0.52,
+				"h": 0.9,
+				"t": 0.14,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "arms",
+			"kind": "weapon_rack",
+			"repeat": [
+				[
+					-6.0,
+					0,
+					2.6,
+					20
+				],
+				[
+					5.6,
+					0,
+					2.4,
+					-25
+				]
+			],
+			"params": {
+				"w": 1.7,
+				"h": 1.5,
+				"spears": 5,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "remains",
+			"kind": "hearth_remains",
+			"at": [
+				0.4,
+				0,
+				3.4
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.85,
+				"seed": 5101,
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "cairns",
+			"kind": "cairn",
+			"repeat": [
+				[
+					-6.6,
+					0,
+					-2.0,
+					0
+				],
+				[
+					6.4,
+					0,
+					-1.4,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.5,
+				"h": 1.0,
+				"count": 6,
+				"seed": 5102,
+				"mat": "stone",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "wall",
+			"kind": "fence",
+			"at": [
+				0,
+				0,
+				-6.2
+			],
+			"yaw": 0,
+			"params": {
+				"length": 13.0,
+				"h": 1.0,
+				"spacing": 2.2,
+				"rails": 2,
+				"broken": true,
+				"seed": 5103,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "gate_lamp",
+			"kind": "lamp_stone",
+			"at": [
+				0,
+				0,
+				5.4
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.55,
+				"sink": 1.8
+			}
+		}
+	]
+}

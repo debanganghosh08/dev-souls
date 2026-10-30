@@ -95,8 +95,8 @@
     "normal_strength": 0.8,
     "road": {
       "_comment": "The old road the terrain wears bare, same line as the valley channel and the grass zones.",
-      "feather": 3.4,
-      "half_width": 2.6,
+      "feather": 4.6,
+      "half_width": 3.8,
       "waypoints": [
         [
           -200.0,
