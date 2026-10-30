@@ -141,6 +141,21 @@ rest as a landmark (D-028).
 player has no swim state, and a boat needs collision against a moving platform. A system, not content:
 estimate it honestly before starting, and offer the owner a cut-down version first.
 
+**W14 · Water and the river.** `DONE` (lead, 2026-10-31). A Water node, a shader, a drowning volume, a
+hand-routed river rim to rim, three crossings including a hanging bridge, a village of eight on the bank,
+a chapel, the flood pool, the crag castle and the road cut (D-032).
+**W15 · The pond holds water.** `DONE`. The flat plane wears the river shader; pools can drain.
+**W16 · Hills and SDFGI.** `DONE`. Two hills of 13 m and 12 m with towers on them; global illumination on.
+**W17 · The rim, and light indoors.** `DONE`. 26 sites in the empty outer band; a fire inside 18 houses,
+which is what SDFGI needed in order to have anything to bounce (D-033).
+**W18 · A second area.** `READY`, and the honest next step. The Vale is full: 225 sites, and the last
+three things placed all had to be shrunk to fit. Mountains, a proper town in a bowl, and cut plateaus need
+ground that does not exist here. main.gd._begin_level() is the single entry point, and the structure,
+grass, fire, water and site systems are all area-driven already.
+**W19 · Profile the grass filter.** `READY`. Every new site enlarges the keep-out mask the grass consults,
+and the fill is the binding constraint on how much more the Vale can hold. Four levers were tried and
+three made it worse; it wants measurement, not another guess (D-031).
+
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
 **W8-01 · Area 2, the Wood.** `READY`. Dense forest, little sky, a drowned shrine. Reuses the heightfield,
