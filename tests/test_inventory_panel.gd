@@ -38,7 +38,7 @@ func _ids(rows: Array[Dictionary]) -> Array[String]:
 
 func test_rows_cover_every_definition_grouped_by_kind_in_a_fixed_order() -> void:
 	var rows: Array[Dictionary] = _rows({})
-	assert_eq(rows.size(), 38, "one row per item in items.json, held or not")
+	assert_eq(rows.size(), 42, "one row per item in items.json, held or not")
 	var seen_kinds: Array[String] = []
 	for group: Dictionary in InventoryRows.group_rows(rows):
 		assert_false(seen_kinds.has(group["kind"]), "kind '%s' appears as one contiguous group" % group["kind"])
@@ -48,7 +48,7 @@ func test_rows_cover_every_definition_grouped_by_kind_in_a_fixed_order() -> void
 	for row: Dictionary in rows:
 		if row["kind"] == "tool":
 			tools.append(String(row["id"]))
-	assert_eq(tools, ["sword", "hammer", "torch", "storm_lantern", "sluice_wheel", "bell_rope", "spear"], "tools sort by their `order` field")
+	assert_eq(tools, ["sword", "hammer", "torch", "storm_lantern", "sluice_wheel", "bell_rope", "spear", "smith_tongs"], "tools sort by their `order` field")
 	assert_eq(_ids(rows).slice(0, 3), ["kindling_grey", "kindling_green", "kindling_red"], "kindlings sort grey, green, red")
 
 
@@ -92,12 +92,12 @@ func test_counts_above_one_render_in_the_title() -> void:
 
 
 func test_progress_header_maths_including_the_edges() -> void:
-	assert_eq(InventoryRows.progress(_rows({})), Vector2i(0, 38), "empty inventory: 0 of 38")
-	assert_eq(InventoryRows.unknown_count(_rows({})), 38, "everything unknown at the start")
+	assert_eq(InventoryRows.progress(_rows({})), Vector2i(0, 42), "empty inventory: 0 of 42")
+	assert_eq(InventoryRows.unknown_count(_rows({})), 42, "everything unknown at the start")
 	var everything: Dictionary = {}
 	for id: StringName in _inv.all_definitions():
 		everything[id] = 2
-	assert_eq(InventoryRows.progress(_rows(everything)), Vector2i(38, 38), "all found: 38 of 38")
+	assert_eq(InventoryRows.progress(_rows(everything)), Vector2i(42, 42), "all found: 42 of 42")
 	assert_eq(InventoryRows.unknown_count(_rows(everything)), 0, "nothing unknown once all are found")
 	assert_eq(InventoryRows.kindling_progress(_rows({})), Vector2i(0, 3), "no kindling of three")
 	assert_eq(InventoryRows.kindling_progress(_rows({&"kindling_red": 5})), Vector2i(1, 3), "kindling counts distinct kinds, not pieces")
@@ -107,7 +107,7 @@ func test_progress_header_maths_including_the_edges() -> void:
 
 func test_unknown_ids_and_unknown_kinds_do_not_break_the_builder() -> void:
 	var rows: Array[Dictionary] = _rows({&"dragon_egg": 1, "torch": 1})
-	assert_eq(rows.size(), 38, "an id with no definition adds no row")
+	assert_eq(rows.size(), 42, "an id with no definition adds no row")
 	var held: int = 0
 	for row: Dictionary in rows:
 		if row["held"]:
@@ -144,10 +144,10 @@ func test_panel_opens_only_while_playing_and_restores_the_state() -> void:
 	panel.open()
 	assert_true(panel.is_open(), "Tab while PLAYING opens the panel")
 	assert_eq(_game.state, _game.State.PAUSED, "opening pauses the game")
-	assert_eq(panel.row_count(), 38, "every item has a row")
-	assert_eq(panel.unknown_count(), 37, "thirty-seven rows are silhouettes with one item held")
-	assert_eq((panel.get_node("%Rows") as Node).get_child_count(), 38 + 7, "38 rows plus 7 kind headings (Clothes is the seventh)")
-	assert_true("1 of 38" in (panel.get_node("%Progress") as Label).text, "header shows 1 of 38 found")
+	assert_eq(panel.row_count(), 42, "every item has a row")
+	assert_eq(panel.unknown_count(), 41, "forty-one rows are silhouettes with one item held")
+	assert_eq((panel.get_node("%Rows") as Node).get_child_count(), 42 + 7, "42 rows plus 7 kind headings (Clothes is the seventh)")
+	assert_true("1 of 42" in (panel.get_node("%Progress") as Label).text, "header shows 1 of 42 found")
 	assert_false(panel.request_equip(&"torch"), "no player bound: equip is refused quietly")
 	panel.close()
 	assert_false(panel.is_open(), "closed")

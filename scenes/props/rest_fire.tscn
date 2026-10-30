@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://proprestfire1"]
+
+[ext_resource type="Script" path="res://scripts/systems/interactables/rest_fire.gd" id="1_rest"]
+
+[sub_resource type="SphereShape3D" id="Shape_rest"]
+radius = 2.2
+
+[node name="RestFire" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_rest")
+prompt = "Rest"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("Shape_rest")

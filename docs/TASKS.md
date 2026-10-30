@@ -132,6 +132,15 @@ for an agent outside this session: a dense village of 25-35 structures, a climba
 villagers built on the existing `Creature` wander AI, rest-at-a-fire to move the sun, and a straight answer
 to the owner about what water and boats would actually cost.
 
+**W10 · Hollowmere, peopled.** `DONE` (lead + Antigravity, 2026-10-30). The village merged (60 sites, 15
+new layouts, 57 fires, built as data by an outside agent under the no-code rule), then given 10 villagers
+who walk their own street and answer on E, 13 animals, 6 fires that turn the day, 4 things to find and 2
+stones to read. Plus a forest band: trees crowding both sides of the castle road, with one tree 3.4x the
+rest as a landmark (D-028).
+**W10-W · Water and boats.** `READY`, and the big one. The pond is a flat plane with no buoyancy, the
+player has no swim state, and a boat needs collision against a moving platform. A system, not content:
+estimate it honestly before starting, and offer the owner a cut-down version first.
+
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
 **W8-01 · Area 2, the Wood.** `READY`. Dense forest, little sky, a drowned shrine. Reuses the heightfield,

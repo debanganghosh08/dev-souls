@@ -390,7 +390,7 @@ func test_every_item_has_exactly_one_source_in_the_shipped_vale() -> void:
 			assert_eq(found.size(), 0, "%s belongs to another area and has no source in the Vale (found %s)" % [id, found])
 		else:
 			assert_eq(found.size(), 1, "%s has exactly one source (found %s)" % [id, found])
-	assert_eq(defined, 38, "38 items audited")
+	assert_eq(defined, 42, "42 items audited")
 	for id: String in sources:
 		assert_true(items.has(id) and items[id] is Dictionary, "sourced item '%s' is defined in items.json (from %s)" % [id, sources[id]])
 	for id: String in OTHER_AREAS:

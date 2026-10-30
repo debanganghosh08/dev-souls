@@ -25,6 +25,19 @@ const PLACE_ATTEMPTS := 12
 @export var chunk_size: float = 40.0
 ## Off when a level sets height_sampler / placement_filter first and calls rebuild() itself.
 @export var auto_build: bool = true
+@export_group("Band")
+## A corridor of trees along a polyline, on top of the radial wood: the owner asked for a forest area with
+## a road through it and dense trees down both sides. Points are world XZ; leave it empty and the forest is
+## exactly what it was.
+@export var band_points: PackedVector2Array = PackedVector2Array()
+## Trees reach from band_gap to band_half either side of the line, so the road itself stays walkable.
+@export var band_gap: float = 5.0
+@export var band_half: float = 26.0
+@export var band_count: int = 0
+## One tree far bigger than the rest, this far along the band (0 start, 1 end), at this scale: the landmark
+## the owner asked for. Scale 0 leaves it out.
+@export_range(0.0, 1.0) var landmark_at: float = 0.5
+@export var landmark_scale: float = 0.0
 
 ## Optional world-space ground: (x, z) -> y. When valid, trees stand on it instead of this node's XZ plane.
 var height_sampler: Callable = Callable()
@@ -45,7 +58,10 @@ func rebuild() -> void:
 	for node: Node in _built:
 		node.queue_free()
 	_built.clear()
-	_layout = _grounded(plan_layout(count, radius, clearing_radius, seed_value, archetype_mix))
+	var plan: Dictionary = plan_layout(count, radius, clearing_radius, seed_value, archetype_mix)
+	merge_layout(plan, plan_band(band_points, band_gap, band_half, band_count, seed_value + 7919,
+			archetype_mix, landmark_at, landmark_scale))
+	_layout = _grounded(plan)
 	_stats = {"per_archetype": {}, "trunk_vertices": 0, "card_vertices": 0, "card_vertices_lod1": 0,
 		"multimeshes": 0, "colliders": 0}
 	var positions: PackedVector3Array = _layout["positions"]
@@ -139,6 +155,90 @@ static func plan_layout(tree_count: int, forest_radius: float, clearing: float, 
 		yaws.append(rng.randf_range(0.0, TAU))
 		scales.append(rng.randf_range(0.8, 1.25))
 	return {"positions": positions, "archetypes": archetypes, "yaws": yaws, "scales": scales, "clusters": centres}
+
+
+## Trees scattered along a polyline rather than round a centre: a random point on the line, pushed out
+## sideways between `gap` and `half`, which is what a road through a wood looks like. Same shape as
+## plan_layout returns, so merge_layout can pour one into the other.
+static func plan_band(points: PackedVector2Array, gap: float, half: float, tree_count: int, seed_v: int,
+		mix: Dictionary, landmark_t: float = 0.5, landmark_scale: float = 0.0) -> Dictionary:
+	var positions := PackedVector3Array()
+	var archetypes := PackedStringArray()
+	var yaws := PackedFloat32Array()
+	var scales := PackedFloat32Array()
+	var out: Dictionary = {"positions": positions, "archetypes": archetypes, "yaws": yaws, "scales": scales}
+	if points.size() < 2 or tree_count <= 0:
+		return out
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var names: Array[String] = []
+	var weights: Array[float] = []
+	for key: Variant in mix.keys():
+		if float(mix[key]) > 0.0:
+			names.append(str(key))
+			weights.append(float(mix[key]))
+	if names.is_empty():
+		return out
+	var reach: float = maxf(gap + 0.5, half)
+	for i: int in tree_count:
+		var t: float = rng.randf()
+		var spot: Vector2 = point_on(points, t)
+		var side: float = 1.0 if rng.randf() < 0.5 else -1.0
+		# Crowded near the road and thinning outward: the power biases the draw toward the gap.
+		var push: float = lerpf(gap, reach, pow(rng.randf(), 0.7))
+		var cand: Vector2 = spot + heading_at(points, t).orthogonal() * push * side
+		if _too_close(cand, positions):
+			continue
+		positions.append(Vector3(cand.x, 0.0, cand.y))
+		archetypes.append(_weighted(names, weights, rng))
+		yaws.append(rng.randf_range(0.0, TAU))
+		scales.append(rng.randf_range(0.85, 1.3))
+	if landmark_scale > 0.0:
+		var lt: float = clampf(landmark_t, 0.0, 1.0)
+		var where: Vector2 = point_on(points, lt) + heading_at(points, lt).orthogonal() * (reach * 0.55)
+		positions.append(Vector3(where.x, 0.0, where.y))
+		archetypes.append(names[0])
+		yaws.append(rng.randf_range(0.0, TAU))
+		scales.append(landmark_scale)
+	return {"positions": positions, "archetypes": archetypes, "yaws": yaws, "scales": scales}
+
+
+## Pours `extra` into `into`, in place. Both carry the four parallel arrays.
+static func merge_layout(into: Dictionary, extra: Dictionary) -> void:
+	if (extra.get("positions", PackedVector3Array()) as PackedVector3Array).is_empty():
+		return
+	for key: String in ["positions", "archetypes", "yaws", "scales"]:
+		var merged: Variant = into[key]
+		for item: Variant in extra[key]:
+			merged.append(item)
+		into[key] = merged
+
+
+## The point `t` of the way along a polyline, measured by distance rather than by segment count.
+static func point_on(points: PackedVector2Array, t: float) -> Vector2:
+	var lengths: Array[float] = []
+	var total: float = 0.0
+	for i: int in range(points.size() - 1):
+		var seg: float = points[i].distance_to(points[i + 1])
+		lengths.append(seg)
+		total += seg
+	if total <= 0.0:
+		return points[0]
+	var want: float = clampf(t, 0.0, 1.0) * total
+	for i: int in range(lengths.size()):
+		if want <= lengths[i] or i == lengths.size() - 1:
+			return points[i].lerp(points[i + 1], clampf(want / maxf(0.001, lengths[i]), 0.0, 1.0))
+		want -= lengths[i]
+	return points[points.size() - 1]
+
+
+## The unit direction of the polyline at `t`, for pushing a tree out sideways from it.
+static func heading_at(points: PackedVector2Array, t: float) -> Vector2:
+	var here: Vector2 = point_on(points, t)
+	var dir: Vector2 = point_on(points, minf(1.0, t + 0.02)) - here
+	if dir.length_squared() < 0.0001:
+		dir = point_on(points, 1.0) - point_on(points, 0.0)
+	return dir.normalized() if dir.length_squared() > 0.0001 else Vector2.RIGHT
 
 
 func _grounded(layout: Dictionary) -> Dictionary:

@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://creaturvillg1"]
+
+[ext_resource type="Script" path="res://scripts/systems/creature.gd" id="1_creature"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/wick.glb" id="2_model"]
+[ext_resource type="Script" path="res://scripts/systems/interactables/lore_stone.gd" id="3_talk"]
+
+[sub_resource type="CapsuleShape3D" id="Shape_villager"]
+radius = 0.32
+height = 1.7
+
+[sub_resource type="SphereShape3D" id="Shape_talk"]
+radius = 1.5
+
+[node name="Villager" type="CharacterBody3D" groups=["villager"]]
+collision_layer = 16
+collision_mask = 3
+floor_snap_length = 0.3
+script = ExtResource("1_creature")
+max_health = 60.0
+disposition = 0
+move_speed = 1.1
+flee_speed = 3.2
+chase_speed = 0.0
+sight_range = 10.0
+wander_radius = 7.0
+home_leash = 14.0
+attack_range = 0.0
+attack_damage = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
+shape = SubResource("Shape_villager")
+
+[node name="Body" type="Node3D" parent="."]
+transform = Transform3D(-0.932, 0, 0, 0, 0.932, 0, 0, 0, -0.932, 0, 0, 0)
+
+[node name="Model" parent="Body" instance=ExtResource("2_model")]
+
+[node name="Talk" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_talk")
+prompt = "Speak"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Talk"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("Shape_talk")
+
+[node name="Motes" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 24
+lifetime = 1.2
+one_shot = true

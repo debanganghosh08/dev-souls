@@ -1,73 +1,1041 @@
 {
-	"_comment": "Hollowmere (W10): A complete, living settlement in the south meadows, built in three concentric rings across ~260 m with dense core streetscapes, workshops, barns, market stalls, and outer crofts.",
+	"_comment": "Hollowmere (W10): A complete, living settlement in the south meadows, built in three concentric rings across ~260 m with dense core streetscapes, workshops, barns, market stalls, and outer crofts. W10: the village is also peopled -- villagers who walk their own street and answer on E, animals in the pens, fires to rest at that turn the day, and things to find in the houses. All of it props on sites that already existed, so no new ground had to be chosen.",
 	"sites": [
-		{"id": "hollowmere_square", "layout": "res://data/structures/village/village_square_pyre.json", "at": [-120.0, 250.0], "yaw": 0.0},
-		{"id": "hollowmere_well", "layout": "res://data/structures/village/village_well_house.json", "at": [-120.0, 237.0], "yaw": 0.0},
-		{"id": "hollowmere_bridge_north", "layout": "res://data/structures/village/stone_bridge.json", "at": [-120.0, 222.0], "yaw": 0.0},
-		{"id": "hollowmere_gate_north", "layout": "res://data/structures/village/village_gate.json", "at": [-120.0, 208.0], "yaw": 0.0},
-		{"id": "hollowmere_sitting_core", "layout": "res://data/structures/village/sitting_area.json", "at": [-120.0, 263.0], "yaw": 0.0},
-		{"id": "hollowmere_bridge_south", "layout": "res://data/structures/village/stone_bridge.json", "at": [-120.0, 277.0], "yaw": 0.0},
-		{"id": "hollowmere_gate_south", "layout": "res://data/structures/village/village_gate.json", "at": [-120.0, 292.0], "yaw": 0.0},
-
-		{"id": "hollowmere_townhouse_01", "layout": "res://data/structures/village/townhouse.json", "at": [-134.0, 248.0], "yaw": 90.0},
-		{"id": "hollowmere_townhouse_02", "layout": "res://data/structures/village/townhouse.json", "at": [-134.0, 262.0], "yaw": 90.0},
-		{"id": "hollowmere_townhouse_03", "layout": "res://data/structures/village/townhouse.json", "at": [-106.0, 262.0], "yaw": -90.0},
-		{"id": "hollowmere_townhouse_04", "layout": "res://data/structures/village/townhouse.json", "at": [-134.0, 235.0], "yaw": 90.0},
-		{"id": "hollowmere_townhouse_06", "layout": "res://data/structures/village/townhouse.json", "at": [-134.0, 275.0], "yaw": 90.0},
-		{"id": "hollowmere_townhouse_07", "layout": "res://data/structures/village/townhouse.json", "at": [-106.0, 276.0], "yaw": -90.0},
-
-		{"id": "hollowmere_market_01", "layout": "res://data/structures/village/market_stalls.json", "at": [-106.0, 250.0], "yaw": 90.0},
-		{"id": "hollowmere_market_02", "layout": "res://data/structures/village/market_stalls.json", "at": [-106.0, 239.0], "yaw": 90.0},
-
-		{"id": "hollowmere_smithy", "layout": "res://data/structures/village/smithy.json", "at": [-134.0, 221.0], "yaw": 90.0},
-		{"id": "hollowmere_workshop_01", "layout": "res://data/structures/village/workshop_leanto.json", "at": [-106.0, 224.0], "yaw": 0.0},
-
-		{"id": "hollowmere_cart_01", "layout": "res://data/structures/village/bullock_cart.json", "at": [-130.0, 227.0], "yaw": 15.0},
-		{"id": "hollowmere_cart_02", "layout": "res://data/structures/village/bullock_cart.json", "at": [-127.0, 257.0], "yaw": -35.0},
-		{"id": "hollowmere_cart_03", "layout": "res://data/structures/village/bullock_cart.json", "at": [-99.0, 245.0], "yaw": 45.0},
-		{"id": "hollowmere_cart_04", "layout": "res://data/structures/village/bullock_cart.json", "at": [-127.0, 242.0], "yaw": -50.0},
-
-		{"id": "hollowmere_cottage_core_01", "layout": "res://data/structures/houses/cottage_intact.json", "at": [-148.0, 248.0], "yaw": 90.0},
-		{"id": "hollowmere_cottage_core_02", "layout": "res://data/structures/houses/cottage_intact_blocks.json", "at": [-94.0, 252.0], "yaw": -90.0},
-		{"id": "hollowmere_sitting_north", "layout": "res://data/structures/village/sitting_area.json", "at": [-132.0, 210.0], "yaw": 0.0},
-		{"id": "hollowmere_yard_core", "layout": "res://data/structures/village/walled_yard.json", "at": [-148.0, 234.0], "yaw": 90.0},
-		{"id": "hollowmere_animal_pen_01", "layout": "res://data/structures/village/animal_pen.json", "at": [-94.0, 238.0], "yaw": 0.0},
-		{"id": "hollowmere_townhouse_ruined_01", "layout": "res://data/structures/village/townhouse_ruined.json", "at": [-148.0, 262.0], "yaw": 90.0},
-
-		{"id": "hollowmere_mill", "layout": "res://data/structures/village/mill.json", "at": [-148.0, 282.0], "yaw": 45.0},
-		{"id": "hollowmere_workshop_02", "layout": "res://data/structures/village/workshop_leanto.json", "at": [-88.0, 224.0], "yaw": 0.0},
-		{"id": "hollowmere_workshop_03", "layout": "res://data/structures/village/workshop_leanto.json", "at": [-156.0, 218.0], "yaw": 90.0},
-		{"id": "hollowmere_yard_west", "layout": "res://data/structures/village/walled_yard.json", "at": [-175.0, 248.0], "yaw": 60.0},
-		{"id": "hollowmere_yard_east", "layout": "res://data/structures/village/walled_yard.json", "at": [-72.0, 235.0], "yaw": -45.0},
-		{"id": "hollowmere_barn_mid_01", "layout": "res://data/structures/houses/barn_intact.json", "at": [-100.0, 295.0], "yaw": 0.0},
-		{"id": "hollowmere_barn_mid_02", "layout": "res://data/structures/houses/barn_intact.json", "at": [-146.0, 296.0], "yaw": 30.0},
-		{"id": "hollowmere_animal_pen_02", "layout": "res://data/structures/village/animal_pen.json", "at": [-92.0, 214.0], "yaw": 0.0},
-		{"id": "hollowmere_animal_pen_03", "layout": "res://data/structures/village/animal_pen.json", "at": [-156.0, 270.0], "yaw": 90.0},
-		{"id": "hollowmere_cottage_mid_01", "layout": "res://data/structures/houses/cottage_intact.json", "at": [-76.0, 248.0], "yaw": -90.0},
-		{"id": "hollowmere_cottage_mid_02", "layout": "res://data/structures/houses/cottage_intact_blocks.json", "at": [-68.0, 260.0], "yaw": 0.0},
-		{"id": "hollowmere_cottage_mid_03", "layout": "res://data/structures/houses/cottage_intact.json", "at": [-164.0, 234.0], "yaw": 90.0},
-		{"id": "hollowmere_sitting_mid", "layout": "res://data/structures/village/sitting_area.json", "at": [-92.0, 276.0], "yaw": 0.0},
-		{"id": "hollowmere_cart_05", "layout": "res://data/structures/village/bullock_cart.json", "at": [-84.0, 242.0], "yaw": 15.0},
-		{"id": "hollowmere_cart_06", "layout": "res://data/structures/village/bullock_cart.json", "at": [-136.0, 286.0], "yaw": -45.0},
-
-		{"id": "hollowmere_shack_ruined_01", "layout": "res://data/structures/houses/shack_ruined.json", "at": [-188.0, 255.0], "yaw": 60.0},
-		{"id": "hollowmere_shack_ruined_02", "layout": "res://data/structures/houses/shack_ruined.json", "at": [-58.0, 248.0], "yaw": -120.0},
-		{"id": "hollowmere_townhouse_ruined_02", "layout": "res://data/structures/village/townhouse_ruined.json", "at": [-176.0, 220.0], "yaw": 45.0},
-		{"id": "hollowmere_cottage_ruined_01", "layout": "res://data/structures/houses/cottage_ruined.json", "at": [-136.0, 310.0], "yaw": 180.0},
-		{"id": "hollowmere_cottage_ruined_02", "layout": "res://data/structures/houses/cottage_ruined_blocks.json", "at": [-104.0, 310.0], "yaw": 180.0},
-		{"id": "hollowmere_barn_ruined_01", "layout": "res://data/structures/houses/barn_ruined.json", "at": [-174.0, 280.0], "yaw": 30.0},
-		{"id": "hollowmere_graveyard", "layout": "res://data/structures/pois/field_graves.json", "at": [-62.0, 270.0], "yaw": 0.0},
-		{"id": "hollowmere_haystacks_outer", "layout": "res://data/structures/pois/haystacks.json", "at": [-160.0, 305.0], "yaw": 20.0},
-		{"id": "hollowmere_orchard_outer", "layout": "res://data/structures/pois/orchard_fence.json", "at": [-60.0, 215.0], "yaw": -45.0},
-		{"id": "hollowmere_crofts_shack", "layout": "res://data/structures/houses/shack_intact.json", "at": [-78.0, 286.0], "yaw": -90.0},
-		{"id": "hollowmere_field_gate", "layout": "res://data/structures/pois/field_gate.json", "at": [-120.0, 314.0], "yaw": 0.0},
-		{"id": "hollowmere_watchfire_south", "layout": "res://data/structures/pois/watchfire.json", "at": [-120.0, 328.0], "yaw": 0.0},
-		{"id": "hollowmere_shack_intact_02", "layout": "res://data/structures/houses/shack_intact_plaster.json", "at": [-162.0, 198.0], "yaw": 40.0},
-		{"id": "hollowmere_campsite_outer", "layout": "res://data/structures/pois/campsite.json", "at": [-180.0, 202.0], "yaw": 0.0},
-
-		{"id": "forest_road_camp", "layout": "res://data/structures/village/woodcutter_corridor.json", "at": [175.0, 15.0], "yaw": 35.0},
-		{"id": "forest_road_sitting", "layout": "res://data/structures/village/sitting_area.json", "at": [205.0, 10.0], "yaw": 20.0},
-		{"id": "forest_road_shrine", "layout": "res://data/structures/houses/shrine_intact.json", "at": [238.0, 5.0], "yaw": -45.0},
-		{"id": "forest_road_cart", "layout": "res://data/structures/village/bullock_cart.json", "at": [190.0, 22.0], "yaw": -25.0}
+		{
+			"id": "hollowmere_square",
+			"layout": "res://data/structures/village/village_square_pyre.json",
+			"at": [
+				-120.0,
+				250.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/rest_fire.tscn",
+					"at": [
+						0.0,
+						0.3,
+						2.4
+					],
+					"yaw": 0,
+					"set": {
+						"id": "hollowmere_square_rest"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_well",
+			"layout": "res://data/structures/village/village_well_house.json",
+			"at": [
+				-120.0,
+				237.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_bridge_north",
+			"layout": "res://data/structures/village/stone_bridge.json",
+			"at": [
+				-120.0,
+				222.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_gate_north",
+			"layout": "res://data/structures/village/village_gate.json",
+			"at": [
+				-120.0,
+				208.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"at": [
+						1.4,
+						0.14,
+						-1.2
+					],
+					"yaw": 0,
+					"set": {
+						"id": "hollowmere_gate_stone",
+						"lore_key": "villager_elder"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_sitting_core",
+			"layout": "res://data/structures/village/sitting_area.json",
+			"at": [
+				-120.0,
+				263.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/rest_fire.tscn",
+					"at": [
+						0.0,
+						0.3,
+						2.4
+					],
+					"yaw": 0,
+					"set": {
+						"id": "hollowmere_sitting_core_rest"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_bridge_south",
+			"layout": "res://data/structures/village/stone_bridge.json",
+			"at": [
+				-120.0,
+				277.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_gate_south",
+			"layout": "res://data/structures/village/village_gate.json",
+			"at": [
+				-120.0,
+				292.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_townhouse_01",
+			"layout": "res://data/structures/village/townhouse.json",
+			"at": [
+				-134.0,
+				248.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.2,
+						0.0,
+						2.2
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_smith",
+						"Talk/id": "villager_smith_talk"
+					}
+				},
+				{
+					"scene": "res://scenes/props/pickup.tscn",
+					"at": [
+						-1.6,
+						0.14,
+						-1.8
+					],
+					"yaw": 20,
+					"set": {
+						"id": "hollowmere_mantle",
+						"item": "smith_tongs",
+						"prompt": "Take"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_townhouse_02",
+			"layout": "res://data/structures/village/townhouse.json",
+			"at": [
+				-134.0,
+				262.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.2,
+						0.0,
+						2.2
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_miller",
+						"Talk/id": "villager_miller_talk"
+					}
+				},
+				{
+					"scene": "res://scenes/props/pickup.tscn",
+					"at": [
+						-1.6,
+						0.14,
+						-1.8
+					],
+					"yaw": 20,
+					"set": {
+						"id": "hollowmere_cloak",
+						"item": "millers_measure",
+						"prompt": "Take"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_townhouse_03",
+			"layout": "res://data/structures/village/townhouse.json",
+			"at": [
+				-106.0,
+				262.0
+			],
+			"yaw": -90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.2,
+						0.0,
+						2.2
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_herder",
+						"Talk/id": "villager_herder_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_townhouse_04",
+			"layout": "res://data/structures/village/townhouse.json",
+			"at": [
+				-134.0,
+				235.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.2,
+						0.0,
+						2.2
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_widow",
+						"Talk/id": "villager_widow_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_townhouse_06",
+			"layout": "res://data/structures/village/townhouse.json",
+			"at": [
+				-134.0,
+				275.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.2,
+						0.0,
+						2.2
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_boy",
+						"Talk/id": "villager_boy_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_townhouse_07",
+			"layout": "res://data/structures/village/townhouse.json",
+			"at": [
+				-106.0,
+				276.0
+			],
+			"yaw": -90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.2,
+						0.0,
+						2.2
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_carter",
+						"Talk/id": "villager_carter_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_market_01",
+			"layout": "res://data/structures/village/market_stalls.json",
+			"at": [
+				-106.0,
+				250.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						1.8,
+						0.0,
+						2.4
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_digger",
+						"Talk/id": "villager_digger_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_market_02",
+			"layout": "res://data/structures/village/market_stalls.json",
+			"at": [
+				-106.0,
+				239.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						1.8,
+						0.0,
+						2.4
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_wife",
+						"Talk/id": "villager_wife_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_smithy",
+			"layout": "res://data/structures/village/smithy.json",
+			"at": [
+				-134.0,
+				221.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.0,
+						0.0,
+						1.6
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_elder",
+						"Talk/id": "villager_elder_talk"
+					}
+				},
+				{
+					"scene": "res://scenes/props/pickup.tscn",
+					"at": [
+						-1.6,
+						0.14,
+						-1.8
+					],
+					"yaw": 20,
+					"set": {
+						"id": "hollowmere_spear",
+						"item": "lamplighters_wick",
+						"prompt": "Take"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_workshop_01",
+			"layout": "res://data/structures/village/workshop_leanto.json",
+			"at": [
+				-106.0,
+				224.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_cart_01",
+			"layout": "res://data/structures/village/bullock_cart.json",
+			"at": [
+				-130.0,
+				227.0
+			],
+			"yaw": 15.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_cart_01_beast_0"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_cart_02",
+			"layout": "res://data/structures/village/bullock_cart.json",
+			"at": [
+				-127.0,
+				257.0
+			],
+			"yaw": -35.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_cart_02_beast_0"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_cart_03",
+			"layout": "res://data/structures/village/bullock_cart.json",
+			"at": [
+				-99.0,
+				245.0
+			],
+			"yaw": 45.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_cart_03_beast_0"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_cart_04",
+			"layout": "res://data/structures/village/bullock_cart.json",
+			"at": [
+				-127.0,
+				242.0
+			],
+			"yaw": -50.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_cart_04_beast_0"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_cottage_core_01",
+			"layout": "res://data/structures/houses/cottage_intact.json",
+			"at": [
+				-148.0,
+				248.0
+			],
+			"yaw": 90.0
+		},
+		{
+			"id": "hollowmere_cottage_core_02",
+			"layout": "res://data/structures/houses/cottage_intact_blocks.json",
+			"at": [
+				-94.0,
+				252.0
+			],
+			"yaw": -90.0
+		},
+		{
+			"id": "hollowmere_sitting_north",
+			"layout": "res://data/structures/village/sitting_area.json",
+			"at": [
+				-132.0,
+				210.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/rest_fire.tscn",
+					"at": [
+						0.0,
+						0.3,
+						2.4
+					],
+					"yaw": 0,
+					"set": {
+						"id": "hollowmere_sitting_north_rest"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_yard_core",
+			"layout": "res://data/structures/village/walled_yard.json",
+			"at": [
+				-148.0,
+				234.0
+			],
+			"yaw": 90.0
+		},
+		{
+			"id": "hollowmere_animal_pen_01",
+			"layout": "res://data/structures/village/animal_pen.json",
+			"at": [
+				-94.0,
+				238.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_animal_pen_01_beast_0"
+					}
+				},
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						2.5999999999999996,
+						0.0,
+						-0.09999999999999998
+					],
+					"yaw": 60,
+					"set": {
+						"id": "hollowmere_animal_pen_01_beast_1"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_townhouse_ruined_01",
+			"layout": "res://data/structures/village/townhouse_ruined.json",
+			"at": [
+				-148.0,
+				262.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"at": [
+						1.4,
+						0.14,
+						-1.2
+					],
+					"yaw": 0,
+					"set": {
+						"id": "hollowmere_widow_stone",
+						"lore_key": "villager_widow"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_mill",
+			"layout": "res://data/structures/village/mill.json",
+			"at": [
+				-148.0,
+				282.0
+			],
+			"yaw": 45.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						2.4,
+						0.0,
+						1.8
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "villager_watch",
+						"Talk/id": "villager_watch_talk"
+					}
+				},
+				{
+					"scene": "res://scenes/props/pickup.tscn",
+					"at": [
+						-1.6,
+						0.14,
+						-1.8
+					],
+					"yaw": 20,
+					"set": {
+						"id": "hollowmere_wheel",
+						"item": "oxbow_yoke",
+						"prompt": "Take"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_workshop_02",
+			"layout": "res://data/structures/village/workshop_leanto.json",
+			"at": [
+				-88.0,
+				224.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_workshop_03",
+			"layout": "res://data/structures/village/workshop_leanto.json",
+			"at": [
+				-156.0,
+				218.0
+			],
+			"yaw": 90.0
+		},
+		{
+			"id": "hollowmere_yard_west",
+			"layout": "res://data/structures/village/walled_yard.json",
+			"at": [
+				-175.0,
+				248.0
+			],
+			"yaw": 60.0
+		},
+		{
+			"id": "hollowmere_yard_east",
+			"layout": "res://data/structures/village/walled_yard.json",
+			"at": [
+				-72.0,
+				235.0
+			],
+			"yaw": -45.0
+		},
+		{
+			"id": "hollowmere_barn_mid_01",
+			"layout": "res://data/structures/houses/barn_intact.json",
+			"at": [
+				-100.0,
+				295.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_barn_mid_02",
+			"layout": "res://data/structures/houses/barn_intact.json",
+			"at": [
+				-146.0,
+				296.0
+			],
+			"yaw": 30.0
+		},
+		{
+			"id": "hollowmere_animal_pen_02",
+			"layout": "res://data/structures/village/animal_pen.json",
+			"at": [
+				-92.0,
+				214.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_animal_pen_02_beast_0"
+					}
+				},
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						2.5999999999999996,
+						0.0,
+						-0.09999999999999998
+					],
+					"yaw": 60,
+					"set": {
+						"id": "hollowmere_animal_pen_02_beast_1"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_animal_pen_03",
+			"layout": "res://data/structures/village/animal_pen.json",
+			"at": [
+				-156.0,
+				270.0
+			],
+			"yaw": 90.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_animal_pen_03_beast_0"
+					}
+				},
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						2.5999999999999996,
+						0.0,
+						-0.09999999999999998
+					],
+					"yaw": 60,
+					"set": {
+						"id": "hollowmere_animal_pen_03_beast_1"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_cottage_mid_01",
+			"layout": "res://data/structures/houses/cottage_intact.json",
+			"at": [
+				-76.0,
+				248.0
+			],
+			"yaw": -90.0
+		},
+		{
+			"id": "hollowmere_cottage_mid_02",
+			"layout": "res://data/structures/houses/cottage_intact_blocks.json",
+			"at": [
+				-68.0,
+				260.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_cottage_mid_03",
+			"layout": "res://data/structures/houses/cottage_intact.json",
+			"at": [
+				-164.0,
+				234.0
+			],
+			"yaw": 90.0
+		},
+		{
+			"id": "hollowmere_sitting_mid",
+			"layout": "res://data/structures/village/sitting_area.json",
+			"at": [
+				-92.0,
+				276.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/rest_fire.tscn",
+					"at": [
+						0.0,
+						0.3,
+						2.4
+					],
+					"yaw": 0,
+					"set": {
+						"id": "hollowmere_sitting_mid_rest"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_cart_05",
+			"layout": "res://data/structures/village/bullock_cart.json",
+			"at": [
+				-84.0,
+				242.0
+			],
+			"yaw": 15.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_cart_05_beast_0"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_cart_06",
+			"layout": "res://data/structures/village/bullock_cart.json",
+			"at": [
+				-136.0,
+				286.0
+			],
+			"yaw": -45.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "hollowmere_cart_06_beast_0"
+					}
+				}
+			]
+		},
+		{
+			"id": "hollowmere_shack_ruined_01",
+			"layout": "res://data/structures/houses/shack_ruined.json",
+			"at": [
+				-188.0,
+				255.0
+			],
+			"yaw": 60.0
+		},
+		{
+			"id": "hollowmere_shack_ruined_02",
+			"layout": "res://data/structures/houses/shack_ruined.json",
+			"at": [
+				-58.0,
+				248.0
+			],
+			"yaw": -120.0
+		},
+		{
+			"id": "hollowmere_townhouse_ruined_02",
+			"layout": "res://data/structures/village/townhouse_ruined.json",
+			"at": [
+				-176.0,
+				220.0
+			],
+			"yaw": 45.0
+		},
+		{
+			"id": "hollowmere_cottage_ruined_01",
+			"layout": "res://data/structures/houses/cottage_ruined.json",
+			"at": [
+				-136.0,
+				310.0
+			],
+			"yaw": 180.0
+		},
+		{
+			"id": "hollowmere_cottage_ruined_02",
+			"layout": "res://data/structures/houses/cottage_ruined_blocks.json",
+			"at": [
+				-104.0,
+				310.0
+			],
+			"yaw": 180.0
+		},
+		{
+			"id": "hollowmere_barn_ruined_01",
+			"layout": "res://data/structures/houses/barn_ruined.json",
+			"at": [
+				-174.0,
+				280.0
+			],
+			"yaw": 30.0
+		},
+		{
+			"id": "hollowmere_graveyard",
+			"layout": "res://data/structures/pois/field_graves.json",
+			"at": [
+				-62.0,
+				270.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_haystacks_outer",
+			"layout": "res://data/structures/pois/haystacks.json",
+			"at": [
+				-160.0,
+				305.0
+			],
+			"yaw": 20.0
+		},
+		{
+			"id": "hollowmere_orchard_outer",
+			"layout": "res://data/structures/pois/orchard_fence.json",
+			"at": [
+				-60.0,
+				215.0
+			],
+			"yaw": -45.0
+		},
+		{
+			"id": "hollowmere_crofts_shack",
+			"layout": "res://data/structures/houses/shack_intact.json",
+			"at": [
+				-78.0,
+				286.0
+			],
+			"yaw": -90.0
+		},
+		{
+			"id": "hollowmere_field_gate",
+			"layout": "res://data/structures/pois/field_gate.json",
+			"at": [
+				-120.0,
+				314.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_watchfire_south",
+			"layout": "res://data/structures/pois/watchfire.json",
+			"at": [
+				-120.0,
+				328.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "hollowmere_shack_intact_02",
+			"layout": "res://data/structures/houses/shack_intact_plaster.json",
+			"at": [
+				-162.0,
+				198.0
+			],
+			"yaw": 40.0
+		},
+		{
+			"id": "hollowmere_campsite_outer",
+			"layout": "res://data/structures/pois/campsite.json",
+			"at": [
+				-180.0,
+				202.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "forest_road_camp",
+			"layout": "res://data/structures/village/woodcutter_corridor.json",
+			"at": [
+				175.0,
+				15.0
+			],
+			"yaw": 35.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/rest_fire.tscn",
+					"at": [
+						0.0,
+						0.3,
+						2.4
+					],
+					"yaw": 0,
+					"set": {
+						"id": "forest_road_camp_rest"
+					}
+				}
+			]
+		},
+		{
+			"id": "forest_road_sitting",
+			"layout": "res://data/structures/village/sitting_area.json",
+			"at": [
+				205.0,
+				10.0
+			],
+			"yaw": 20.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/rest_fire.tscn",
+					"at": [
+						0.0,
+						0.3,
+						2.4
+					],
+					"yaw": 0,
+					"set": {
+						"id": "forest_road_sitting_rest"
+					}
+				}
+			]
+		},
+		{
+			"id": "forest_road_shrine",
+			"layout": "res://data/structures/houses/shrine_intact.json",
+			"at": [
+				238.0,
+				5.0
+			],
+			"yaw": -45.0
+		},
+		{
+			"id": "forest_road_cart",
+			"layout": "res://data/structures/village/bullock_cart.json",
+			"at": [
+				190.0,
+				22.0
+			],
+			"yaw": -25.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/deer.tscn",
+					"at": [
+						1.2,
+						0.0,
+						-1.0
+					],
+					"yaw": 30,
+					"set": {
+						"id": "forest_road_cart_beast_0"
+					}
+				}
+			]
+		}
 	]
 }

@@ -42,6 +42,12 @@ archetype_mix = {
 }
 count = 320
 radius = 330.0
+band_points = PackedVector2Array(62, -46, 112, -86, 176, -134)
+band_gap = 7.5
+band_half = 30.0
+band_count = 240
+landmark_at = 0.42
+landmark_scale = 3.4
 clearing_radius = 0.0
 seed_value = 20261024
 lod1_distance = 60.0

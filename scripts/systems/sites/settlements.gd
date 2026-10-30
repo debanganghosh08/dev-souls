@@ -123,6 +123,16 @@ static func spawn_prop(entry: Dictionary) -> Node:
 ## JSON has no StringName, and an exported StringName or int assigned a String or a float would otherwise
 ## keep the wrong type silently. Coerce to whatever the property already holds.
 static func set_coerced(node: Object, key: String, value: Variant) -> void:
+	# "Talk/lore_key" sets a property on a CHILD, which is how a villager scene gets a line of its own
+	# without a script of its own and without one scene per villager. Everything else is unchanged.
+	if key.contains("/") and node is Node:
+		var cut: int = key.rfind("/")
+		var child: Node = (node as Node).get_node_or_null(NodePath(key.substr(0, cut)))
+		if child == null:
+			push_error("Settlements: no child '%s' to set" % key.substr(0, cut))
+			return
+		set_coerced(child, key.substr(cut + 1), value)
+		return
 	var current: Variant = node.get(key)
 	match typeof(current):
 		TYPE_STRING_NAME:

@@ -47,7 +47,7 @@ func test_items_json_gained_slot_and_order_without_losing_anything() -> void:
 	for id: String in table:
 		if table[id] is Dictionary:
 			items += 1
-	assert_eq(items, 38, "exactly 38 items (13, plus the 20 W8-H house items, plus the four W9-C garments and the spear)")
+	assert_eq(items, 42, "exactly 42 items (13, the 20 W8-H house items, the four W9-C garments, the spear, and the four W10 Hollowmere finds)")
 	var weapons: Array[String] = []
 	for id: String in table:
 		if not table[id] is Dictionary:
@@ -81,8 +81,8 @@ func test_headless_probe_opens_inventory_shows_the_card_and_equips() -> void:
 	if not inventory.is_empty():
 		assert_eq(inventory["open"], "true", "an injected Tab opened the inventory panel")
 		assert_eq(inventory["state"], "PAUSED", "the open panel holds PAUSED")
-		assert_eq(inventory["rows"], "38", "every known item has a row")
-		assert_eq(inventory["unknown"], "38", "a fresh journey holds nothing: all silhouettes")
+		assert_eq(inventory["rows"], "42", "every known item has a row")
+		assert_eq(inventory["unknown"], "42", "a fresh journey holds nothing: all silhouettes")
 	var card: Dictionary = _probe_line(text, "PROBE itemcard")
 	if not card.is_empty():
 		assert_eq(card["shown"], "true", "the first hammer showed its card")

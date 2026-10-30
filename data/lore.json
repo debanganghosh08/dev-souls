@@ -67,5 +67,45 @@
 	"edge_shrine_tablet": {
 		"title": "Edge Tablet",
 		"body": "This is as far as the land goes and as far as he went. A sword laid on an altar is a prayer that the next hand will need it less. Take it. The prayer was not answered the first time."
+	},
+	"villager_smith": {
+		"title": "The Smith",
+		"body": "Iron I have. Charcoal I have. What I have not had in four years is a reason, and you do not look like one."
+	},
+	"villager_miller": {
+		"title": "The Miller",
+		"body": "The wheel turns on wind now. There has been no water in that race since the pond went down, and I grind nothing but talk."
+	},
+	"villager_herder": {
+		"title": "The Herder",
+		"body": "Six left, of forty. They will not go near the water, and I have stopped making them."
+	},
+	"villager_widow": {
+		"title": "The Widow",
+		"body": "They went up the road to the castle to ask for help. That was the asking. There was no coming back."
+	},
+	"villager_boy": {
+		"title": "The Lamplighter",
+		"body": "I light them at dusk and they are out by morning, every one. Something walks the street and does not like the light."
+	},
+	"villager_carter": {
+		"title": "The Carter",
+		"body": "The ox died standing in the traces. I have not had the heart to unhitch him, so the cart stays where it is."
+	},
+	"villager_elder": {
+		"title": "The Elder",
+		"body": "You are the first through the gate in a long while. Mind that we are the sort of place people pass through."
+	},
+	"villager_watch": {
+		"title": "The Watchman",
+		"body": "There is nothing to watch for. I watch anyway. It is the last thing anyone asked me to do."
+	},
+	"villager_digger": {
+		"title": "The Gravedigger",
+		"body": "I dig them two at a time now. It saves walking back for the spade."
+	},
+	"villager_wife": {
+		"title": "At the Well",
+		"body": "Draw if you like. It comes up clean, which is the only thing in this valley that still does."
 	}
 }

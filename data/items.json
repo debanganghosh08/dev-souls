@@ -265,5 +265,33 @@
 		"lore": "A boar spear with a cross-bar below the head, so what you stop stays stopped at arm's length.",
 		"slot": "weapon",
 		"order": 19
+	},
+	"smith_tongs": {
+		"name": "Smith's Tongs",
+		"kind": "tool",
+		"lore": "Still warm is a thing people say about tongs. These are not. The fire they belonged to went out with the man who lit it.",
+		"slot": "",
+		"order": 20
+	},
+	"millers_measure": {
+		"name": "Miller's Measure",
+		"kind": "keepsake",
+		"lore": "A wooden cup, worn thin on one side by the same thumb for thirty years. The last grain it measured is still in the bottom.",
+		"slot": "",
+		"order": 21
+	},
+	"lamplighters_wick": {
+		"name": "Lamplighter's Wick",
+		"kind": "keepsake",
+		"lore": "A coil of waxed cord, enough for a hundred lamps. The boy who carried it lit them all every dusk, and found them out again by dawn.",
+		"slot": "",
+		"order": 22
+	},
+	"oxbow_yoke": {
+		"name": "Ox-bow",
+		"kind": "keepsake",
+		"lore": "Polished where the neck went. The carter never unhitched him, so the cart is still standing in the lane with nothing in front of it.",
+		"slot": "",
+		"order": 23
 	}
 }

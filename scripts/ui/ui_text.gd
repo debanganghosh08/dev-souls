@@ -55,6 +55,7 @@ const DEFAULTS: Dictionary = {
 	"item_card_hint": "[%s]  continue",
 	# The endgame (scripts/systems/hearth.gd). DRAFT WORDING pending O-3: the owner's voice, not an agent's.
 	"hearth_prompt": "Kindle",
+	"rest_prompt": "Rest",
 	"hearth_sealed": "The water has not left this place yet.",
 	"hearth_needs": "It will not take you yet. Still wanting: %s",
 	"hearth_spent": "There is nothing here left to light.",

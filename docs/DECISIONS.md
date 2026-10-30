@@ -283,3 +283,23 @@ Two things follow, and the second is the general one:
    player sees it** -- local extent times every scale between it and the world -- or it is testing the one
    number that was never in doubt.
 
+**D-028 (2026-10-30) A village is props on ground somebody already cleared.** W10 put people, animals, fires
+to rest at and things to find into Hollowmere without choosing a single new piece of ground. Every one of
+them is a **prop on a site that already existed**, which is why it cost an afternoon rather than a week:
+placement rules, legality, the keep-out mask and the reach tests were all settled when the buildings went
+in, and `tests/test_site_placement.gd` only asks that a prop sit within 4 m of its own site. Three things
+made that possible, and each is small:
+1. **`Settlements.set_coerced` understands a child path.** `"Talk/lore_key"` sets a property on a child
+   node, so one villager scene serves ten villagers who each say something different -- no script per
+   villager, no scene per villager.
+2. **An NPC is a `Creature`.** The wander/flee/leash state machine written for deer is what a villager
+   needs; a villager is that script, the player's body, and a `LoreStone` on an Area3D child.
+3. **A rest fire is an `Interactable` that calls `Game.advance_time`.** The sky, the fog, the sun, the moon
+   and all 164 fires already follow the clock, so moving the clock moves the world. The whole feature is
+   `next_stop()`, a pure function over a list of hours, and the wrap past midnight is the only hard part.
+
+**Measured:** 151 sites (was 94), 1,354 structure pieces, **164 fires**, 10 villagers, 13 animals, 6 rest
+fires, 42 items. Grass worst fill frame 5.55 ms. **Open, and honest:** `worst_crowd_60m` is now **44** --
+forty-four fires can fall inside one cull sphere in Hollowmere, against a budget of 45. The village is at
+the limit, and the next settlement will need the cull distance tuned or the lamps thinned rather than more
+of both.
