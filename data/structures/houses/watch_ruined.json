@@ -4,7 +4,10 @@
 	"archetype": "watch",
 	"variant": "ruined",
 	"door": {
-		"at": [0, 1.7],
+		"at": [
+			0,
+			1.7
+		],
 		"width": 1.2,
 		"height": 2.4,
 		"stair": "doorstep"
@@ -15,12 +18,23 @@
 			"slab": "lookout_floor"
 		}
 	],
-	"keep_out": [[-0.7, 1.7, 1.4, 2.1]],
+	"keep_out": [
+		[
+			-0.7,
+			1.7,
+			1.4,
+			2.1
+		]
+	],
 	"pieces": [
 		{
 			"name": "floor",
 			"kind": "floor_slab",
-			"at": [0, 0, 0],
+			"at": [
+				0,
+				0,
+				0
+			],
 			"params": {
 				"w": 3.4,
 				"d": 3.4,
@@ -31,7 +45,11 @@
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0, -2, 0],
+			"at": [
+				0,
+				-2,
+				0
+			],
 			"params": {
 				"w": 3.6,
 				"h": 2,
@@ -42,7 +60,11 @@
 		{
 			"name": "front",
 			"kind": "wall",
-			"at": [0, 0, 1.5],
+			"at": [
+				0,
+				0,
+				1.5
+			],
 			"params": {
 				"w": 3.4,
 				"h": 3,
@@ -57,7 +79,11 @@
 		{
 			"name": "east",
 			"kind": "wall",
-			"at": [1.5, 0, 0],
+			"at": [
+				1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 3.4,
@@ -69,7 +95,11 @@
 		{
 			"name": "lookout_floor",
 			"kind": "floor_slab",
-			"at": [0, 3, 0],
+			"at": [
+				0,
+				3,
+				0
+			],
 			"params": {
 				"w": 3.4,
 				"d": 3.4,
@@ -80,7 +110,11 @@
 		{
 			"name": "lookout_frame",
 			"kind": "timber_frame",
-			"at": [0, 3.12, 0],
+			"at": [
+				0,
+				3.12,
+				0
+			],
 			"params": {
 				"w": 3.4,
 				"h": 2.2,
@@ -92,7 +126,11 @@
 		{
 			"name": "lookout_stairs",
 			"kind": "stairs",
-			"at": [2.2, 0, 2.15],
+			"at": [
+				2.2,
+				0,
+				2.15
+			],
 			"params": {
 				"w": 1,
 				"rise": 3.12,
@@ -104,7 +142,11 @@
 		{
 			"name": "stair_base",
 			"kind": "block",
-			"at": [2.2, -2, 0.225],
+			"at": [
+				2.2,
+				-2,
+				0.225
+			],
 			"params": {
 				"w": 1,
 				"h": 2,
@@ -115,7 +157,11 @@
 		{
 			"name": "back",
 			"kind": "broken_wall",
-			"at": [0, 0, -1.5],
+			"at": [
+				0,
+				0,
+				-1.5
+			],
 			"params": {
 				"w": 3.4,
 				"h": 3,
@@ -128,7 +174,11 @@
 		{
 			"name": "west",
 			"kind": "broken_wall",
-			"at": [-1.5, 0, 0],
+			"at": [
+				-1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 3.4,
@@ -142,7 +192,20 @@
 		{
 			"name": "parapet",
 			"kind": "wall",
-			"repeat": [[0, 3.12, -1.7, 0], [-1.7, 3.12, 0, 90]],
+			"repeat": [
+				[
+					0,
+					3.12,
+					-1.7,
+					0
+				],
+				[
+					-1.7,
+					3.12,
+					0,
+					90
+				]
+			],
 			"params": {
 				"w": 3.4,
 				"h": 0.9,
@@ -153,7 +216,11 @@
 		{
 			"name": "rubble",
 			"kind": "rubble",
-			"at": [-0.3, 0, -0.2],
+			"at": [
+				-0.3,
+				0,
+				-0.2
+			],
 			"params": {
 				"radius": 1,
 				"count": 5,
@@ -164,7 +231,11 @@
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [0, -1.6, 3.8],
+			"at": [
+				0,
+				-1.6,
+				3.8
+			],
 			"params": {
 				"w": 1.4,
 				"rise": 1.72,
@@ -176,7 +247,11 @@
 		{
 			"name": "roof_beacon",
 			"kind": "beacon",
-			"at": [-0.85, 3.12, -0.85],
+			"at": [
+				-0.85,
+				3.12,
+				-0.85
+			],
 			"yaw": 0,
 			"params": {
 				"h": 0.9,
@@ -190,28 +265,40 @@
 		{
 			"name": "yard_hearth",
 			"kind": "hearth_remains",
-			"at": [-2.7, 0, 1.8],
+			"at": [
+				-2.7,
+				0,
+				1.8
+			],
 			"yaw": -20,
 			"params": {
 				"radius": 0.9,
 				"seed": 97,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "step_lamp",
 			"kind": "lamp_stone",
-			"at": [2.6, 0, 3.2],
+			"at": [
+				2.6,
+				0,
+				3.2
+			],
 			"yaw": 0,
 			"params": {
 				"radius": 0.5,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "yard_fence_w",
 			"kind": "fence",
-			"at": [-3.4, 0, 0.2],
+			"at": [
+				-3.4,
+				0,
+				0.2
+			],
 			"yaw": 90,
 			"params": {
 				"length": 6.0,
@@ -221,19 +308,26 @@
 				"broken": true,
 				"seed": 701,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "garden",
 			"kind": "garden_bed",
-			"repeat": [[-3.1, 0, -1.4, 90]],
+			"repeat": [
+				[
+					-3.1,
+					0,
+					-1.4,
+					90
+				]
+			],
 			"params": {
 				"w": 1.1,
 				"d": 2.0,
 				"rows": 3,
 				"seed": 702,
-				"sink": 1.0
+				"sink": 1.8
 			}
 		}
 	]

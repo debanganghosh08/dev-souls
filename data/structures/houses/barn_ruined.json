@@ -4,7 +4,10 @@
 	"archetype": "barn",
 	"variant": "ruined",
 	"door": {
-		"at": [0, 6.06],
+		"at": [
+			0,
+			6.06
+		],
 		"width": 2.6,
 		"height": 3.2,
 		"stair": "doorstep"
@@ -15,12 +18,23 @@
 			"slab": "loft"
 		}
 	],
-	"keep_out": [[-1.4, 6.06, 2.8, 2.1]],
+	"keep_out": [
+		[
+			-1.4,
+			6.06,
+			2.8,
+			2.1
+		]
+	],
 	"pieces": [
 		{
 			"name": "floor",
 			"kind": "floor_slab",
-			"at": [0, 0, 0],
+			"at": [
+				0,
+				0,
+				0
+			],
 			"params": {
 				"w": 8.12,
 				"d": 12.12,
@@ -31,7 +45,11 @@
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0, -2, 0],
+			"at": [
+				0,
+				-2,
+				0
+			],
 			"params": {
 				"w": 8.32,
 				"h": 2,
@@ -42,7 +60,11 @@
 		{
 			"name": "frame",
 			"kind": "timber_frame",
-			"at": [0, 0, 0],
+			"at": [
+				0,
+				0,
+				0
+			],
 			"params": {
 				"w": 8.24,
 				"h": 4,
@@ -54,7 +76,11 @@
 		{
 			"name": "front",
 			"kind": "wall",
-			"at": [0, 0, 6],
+			"at": [
+				0,
+				0,
+				6
+			],
 			"params": {
 				"w": 8.12,
 				"h": 4,
@@ -69,7 +95,11 @@
 		{
 			"name": "east",
 			"kind": "wall",
-			"at": [4, 0, 0],
+			"at": [
+				4,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 12.12,
@@ -81,7 +111,11 @@
 		{
 			"name": "gable_front",
 			"kind": "gable",
-			"at": [0, 4, 6],
+			"at": [
+				0,
+				4,
+				6
+			],
 			"params": {
 				"w": 8.12,
 				"rise": 2.4,
@@ -92,7 +126,11 @@
 		{
 			"name": "loft",
 			"kind": "floor_slab",
-			"at": [0, 2.6, -4],
+			"at": [
+				0,
+				2.6,
+				-4
+			],
 			"params": {
 				"w": 7.6,
 				"d": 4,
@@ -103,7 +141,11 @@
 		{
 			"name": "loft_beam",
 			"kind": "block",
-			"at": [0, 2.4, -2],
+			"at": [
+				0,
+				2.4,
+				-2
+			],
 			"params": {
 				"w": 7.6,
 				"h": 0.2,
@@ -114,7 +156,18 @@
 		{
 			"name": "loft_posts",
 			"kind": "block",
-			"repeat": [[-1.5, 0, -2.1], [1.5, 0, -2.1]],
+			"repeat": [
+				[
+					-1.5,
+					0,
+					-2.1
+				],
+				[
+					1.5,
+					0,
+					-2.1
+				]
+			],
 			"params": {
 				"w": 0.24,
 				"h": 2.6,
@@ -125,7 +178,11 @@
 		{
 			"name": "loft_stairs",
 			"kind": "stairs",
-			"at": [2.8, 0.12, 1.15],
+			"at": [
+				2.8,
+				0.12,
+				1.15
+			],
 			"params": {
 				"w": 1,
 				"rise": 2.58,
@@ -137,7 +194,11 @@
 		{
 			"name": "back",
 			"kind": "broken_wall",
-			"at": [0, 0, -6],
+			"at": [
+				0,
+				0,
+				-6
+			],
 			"params": {
 				"w": 8.12,
 				"h": 4,
@@ -150,7 +211,11 @@
 		{
 			"name": "west",
 			"kind": "broken_wall",
-			"at": [-4, 0, 0],
+			"at": [
+				-4,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 12.12,
@@ -164,7 +229,11 @@
 		{
 			"name": "roof",
 			"kind": "collapsed_roof",
-			"at": [0, 4, 0],
+			"at": [
+				0,
+				4,
+				0
+			],
 			"yaw": -90,
 			"params": {
 				"w": 12,
@@ -178,7 +247,11 @@
 		{
 			"name": "rubble",
 			"kind": "rubble",
-			"at": [-1.5, 0, 1.5],
+			"at": [
+				-1.5,
+				0,
+				1.5
+			],
 			"params": {
 				"radius": 2.5,
 				"count": 8,
@@ -189,7 +262,11 @@
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [0, -1.6, 8.16],
+			"at": [
+				0,
+				-1.6,
+				8.16
+			],
 			"params": {
 				"w": 2.8,
 				"rise": 1.72,
@@ -201,29 +278,41 @@
 		{
 			"name": "yard_hearth",
 			"kind": "hearth_remains",
-			"at": [3.0, 0, 7.6],
+			"at": [
+				3.0,
+				0,
+				7.6
+			],
 			"yaw": 10,
 			"params": {
 				"radius": 1.0,
 				"seed": 83,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "door_torch",
 			"kind": "torch_post",
-			"at": [-3.4, 0, 7.2],
+			"at": [
+				-3.4,
+				0,
+				7.2
+			],
 			"yaw": 0,
 			"params": {
 				"h": 1.9,
-				"sink": 1.2,
+				"sink": 1.8,
 				"flicker": 0.42
 			}
 		},
 		{
 			"name": "yard_fence_e",
 			"kind": "fence",
-			"at": [6.0, 0, 0.0],
+			"at": [
+				6.0,
+				0,
+				0.0
+			],
 			"yaw": 90,
 			"params": {
 				"length": 12.0,
@@ -233,19 +322,32 @@
 				"broken": true,
 				"seed": 681,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "garden",
 			"kind": "garden_bed",
-			"repeat": [[5.4, 0, -3.0, 90], [5.4, 0, -0.8, 90]],
+			"repeat": [
+				[
+					5.4,
+					0,
+					-3.0,
+					90
+				],
+				[
+					5.4,
+					0,
+					-0.8,
+					90
+				]
+			],
 			"params": {
 				"w": 1.4,
 				"d": 2.6,
 				"rows": 3,
 				"seed": 682,
-				"sink": 1.0
+				"sink": 1.8
 			}
 		}
 	]

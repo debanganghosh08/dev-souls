@@ -4,18 +4,32 @@
 	"archetype": "shack",
 	"variant": "intact",
 	"door": {
-		"at": [0, 2.05],
+		"at": [
+			0,
+			2.05
+		],
 		"width": 1.1,
 		"height": 2.4,
 		"stair": "doorstep"
 	},
 	"lofts": [],
-	"keep_out": [[-0.7, 2.05, 1.4, 2.1]],
+	"keep_out": [
+		[
+			-0.7,
+			2.05,
+			1.4,
+			2.1
+		]
+	],
 	"pieces": [
 		{
 			"name": "floor",
 			"kind": "floor_slab",
-			"at": [0, 0, 0],
+			"at": [
+				0,
+				0,
+				0
+			],
 			"params": {
 				"w": 3.1,
 				"d": 4.1,
@@ -26,7 +40,11 @@
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0, -2, 0],
+			"at": [
+				0,
+				-2,
+				0
+			],
 			"params": {
 				"w": 3.3,
 				"h": 2,
@@ -37,7 +55,11 @@
 		{
 			"name": "front",
 			"kind": "wall",
-			"at": [0, 0, 2],
+			"at": [
+				0,
+				0,
+				2
+			],
 			"params": {
 				"w": 3.1,
 				"h": 2.5,
@@ -52,7 +74,11 @@
 		{
 			"name": "back",
 			"kind": "wall",
-			"at": [0, 0, -2],
+			"at": [
+				0,
+				0,
+				-2
+			],
 			"params": {
 				"w": 3.1,
 				"h": 3.1,
@@ -63,7 +89,11 @@
 		{
 			"name": "west",
 			"kind": "lean_wall",
-			"at": [-1.5, 0, 0],
+			"at": [
+				-1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 4.1,
@@ -81,7 +111,11 @@
 		{
 			"name": "east",
 			"kind": "lean_wall",
-			"at": [1.5, 0, 0],
+			"at": [
+				1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 4.1,
@@ -94,7 +128,11 @@
 		{
 			"name": "roof",
 			"kind": "lean_roof",
-			"at": [0, 3.1, 0],
+			"at": [
+				0,
+				3.1,
+				0
+			],
 			"params": {
 				"w": 3.1,
 				"d": 4.1,
@@ -107,7 +145,11 @@
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [0, -1.6, 4.15],
+			"at": [
+				0,
+				-1.6,
+				4.15
+			],
 			"params": {
 				"w": 1.4,
 				"rise": 1.72,
@@ -119,17 +161,25 @@
 		{
 			"name": "door_torch",
 			"kind": "torch_post",
-			"at": [1.5, 0, 2.9],
+			"at": [
+				1.5,
+				0,
+				2.9
+			],
 			"yaw": 0,
 			"params": {
 				"h": 2.1,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "yard_fence_e",
 			"kind": "fence",
-			"at": [3.3, 0, 0.6],
+			"at": [
+				3.3,
+				0,
+				0.6
+			],
 			"yaw": 90,
 			"params": {
 				"length": 6.0,
@@ -139,19 +189,32 @@
 				"broken": false,
 				"seed": 601,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "garden",
 			"kind": "garden_bed",
-			"repeat": [[3.0, 0, -2.2, 90], [3.0, 0, -0.4, 90]],
+			"repeat": [
+				[
+					3.0,
+					0,
+					-2.2,
+					90
+				],
+				[
+					3.0,
+					0,
+					-0.4,
+					90
+				]
+			],
 			"params": {
 				"w": 1.1,
 				"d": 2.0,
 				"rows": 3,
 				"seed": 602,
-				"sink": 1.0
+				"sink": 1.8
 			}
 		}
 	]

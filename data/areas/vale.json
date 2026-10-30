@@ -78,6 +78,17 @@
       "radius": 7,
       "height": -2.4,
       "blend": 17
+    },
+    {
+      "_comment": "The Overlook (W11): high ground the player climbs to see the valley, asked for twice and finally built. It is 22 m up over a 57 m skirt, which is as big as the Vale had room for: a plateau cannot overlap a site, because its skirt would tilt the ground out from under one, and nothing in this valley had more than 87 m of clear space left. A watchtower stands on top so there is a reason to climb it.",
+      "name": "overlook",
+      "centre": [
+        -240,
+        8
+      ],
+      "radius": 22.0,
+      "height": 22.0,
+      "blend": 57
     }
   ],
   "ridge": {
@@ -137,6 +148,22 @@
         [
           200,
           -160
+        ],
+        [
+          -150,
+          196
+        ],
+        [
+          -96,
+          244
+        ],
+        [
+          -168,
+          126
+        ],
+        [
+          -240,
+          -18
         ]
       ],
       "half_width": 2.6,

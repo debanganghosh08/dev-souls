@@ -4,18 +4,32 @@
 	"archetype": "shack",
 	"variant": "ruined",
 	"door": {
-		"at": [0, 2.05],
+		"at": [
+			0,
+			2.05
+		],
 		"width": 1.1,
 		"height": 2.4,
 		"stair": "doorstep"
 	},
 	"lofts": [],
-	"keep_out": [[-0.7, 2.05, 1.4, 2.1]],
+	"keep_out": [
+		[
+			-0.7,
+			2.05,
+			1.4,
+			2.1
+		]
+	],
 	"pieces": [
 		{
 			"name": "floor",
 			"kind": "floor_slab",
-			"at": [0, 0, 0],
+			"at": [
+				0,
+				0,
+				0
+			],
 			"params": {
 				"w": 3.1,
 				"d": 4.1,
@@ -26,7 +40,11 @@
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0, -2, 0],
+			"at": [
+				0,
+				-2,
+				0
+			],
 			"params": {
 				"w": 3.3,
 				"h": 2,
@@ -37,7 +55,11 @@
 		{
 			"name": "front",
 			"kind": "wall",
-			"at": [0, 0, 2],
+			"at": [
+				0,
+				0,
+				2
+			],
 			"params": {
 				"w": 3.1,
 				"h": 2.5,
@@ -52,7 +74,11 @@
 		{
 			"name": "back",
 			"kind": "broken_wall",
-			"at": [0, 0, -2],
+			"at": [
+				0,
+				0,
+				-2
+			],
 			"params": {
 				"w": 3.1,
 				"h": 3.1,
@@ -65,7 +91,11 @@
 		{
 			"name": "west",
 			"kind": "lean_wall",
-			"at": [-1.5, 0, 0],
+			"at": [
+				-1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 4.1,
@@ -83,7 +113,11 @@
 		{
 			"name": "east",
 			"kind": "broken_wall",
-			"at": [1.5, 0, 0],
+			"at": [
+				1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 4.1,
@@ -97,7 +131,11 @@
 		{
 			"name": "roof_fallen",
 			"kind": "lean_roof",
-			"at": [0.3, 1.2, -0.8],
+			"at": [
+				0.3,
+				1.2,
+				-0.8
+			],
 			"tilt": 25,
 			"params": {
 				"w": 3.1,
@@ -111,7 +149,11 @@
 		{
 			"name": "rubble",
 			"kind": "rubble",
-			"at": [-0.8, 0, 0.9],
+			"at": [
+				-0.8,
+				0,
+				0.9
+			],
 			"params": {
 				"radius": 1,
 				"count": 4,
@@ -122,7 +164,11 @@
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [0, -1.6, 4.15],
+			"at": [
+				0,
+				-1.6,
+				4.15
+			],
 			"params": {
 				"w": 1.4,
 				"rise": 1.72,
@@ -134,29 +180,41 @@
 		{
 			"name": "door_torch",
 			"kind": "torch_post",
-			"at": [1.6, 0, 3.1],
+			"at": [
+				1.6,
+				0,
+				3.1
+			],
 			"yaw": 0,
 			"params": {
 				"h": 1.8,
-				"sink": 1.2,
+				"sink": 1.8,
 				"flicker": 0.45
 			}
 		},
 		{
 			"name": "yard_hearth",
 			"kind": "hearth_remains",
-			"at": [-2.4, 0, 3.6],
+			"at": [
+				-2.4,
+				0,
+				3.6
+			],
 			"yaw": 20,
 			"params": {
 				"radius": 0.8,
 				"seed": 57,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "yard_fence_e",
 			"kind": "fence",
-			"at": [3.3, 0, 0.6],
+			"at": [
+				3.3,
+				0,
+				0.6
+			],
 			"yaw": 90,
 			"params": {
 				"length": 6.0,
@@ -166,19 +224,26 @@
 				"broken": true,
 				"seed": 621,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "garden",
 			"kind": "garden_bed",
-			"repeat": [[3.0, 0, -1.6, 90]],
+			"repeat": [
+				[
+					3.0,
+					0,
+					-1.6,
+					90
+				]
+			],
 			"params": {
 				"w": 1.1,
 				"d": 2.0,
 				"rows": 3,
 				"seed": 622,
-				"sink": 1.0
+				"sink": 1.8
 			}
 		}
 	]

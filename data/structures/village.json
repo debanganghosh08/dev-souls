@@ -8,7 +8,11 @@
 			"name": "shack_roofless_frame",
 			"group": "shack_roofless",
 			"kind": "timber_frame",
-			"at": [-9, 0, -14],
+			"at": [
+				-9,
+				0,
+				-14
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -22,7 +26,11 @@
 			"name": "shack_roofless_n",
 			"group": "shack_roofless",
 			"kind": "wall",
-			"at": [-9, 0, -17],
+			"at": [
+				-9,
+				0,
+				-17
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -35,7 +43,11 @@
 			"name": "shack_roofless_e",
 			"group": "shack_roofless",
 			"kind": "wall",
-			"at": [-6.5, 0, -14],
+			"at": [
+				-6.5,
+				0,
+				-14
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6,
@@ -48,7 +60,11 @@
 			"name": "shack_roofless_w",
 			"group": "shack_roofless",
 			"kind": "wall",
-			"at": [-11.5, 0, -14],
+			"at": [
+				-11.5,
+				0,
+				-14
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6,
@@ -66,7 +82,11 @@
 			"name": "shack_roofless_s",
 			"group": "shack_roofless",
 			"kind": "broken_wall",
-			"at": [-9, 0, -11],
+			"at": [
+				-9,
+				0,
+				-11
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -81,7 +101,11 @@
 			"name": "shack_roofless_rubble",
 			"group": "shack_roofless",
 			"kind": "rubble",
-			"at": [-9, 0, -13.5],
+			"at": [
+				-9,
+				0,
+				-13.5
+			],
 			"yaw": 0,
 			"params": {
 				"radius": 1.5,
@@ -94,7 +118,11 @@
 			"name": "shack_collapsed_n",
 			"group": "shack_collapsed",
 			"kind": "wall",
-			"at": [8, 0, -14.5],
+			"at": [
+				8,
+				0,
+				-14.5
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -108,7 +136,11 @@
 			"name": "shack_collapsed_s",
 			"group": "shack_collapsed",
 			"kind": "wall",
-			"at": [8, 0, -9.5],
+			"at": [
+				8,
+				0,
+				-9.5
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -122,7 +154,11 @@
 			"name": "shack_collapsed_e",
 			"group": "shack_collapsed",
 			"kind": "wall",
-			"at": [10.5, 0, -12],
+			"at": [
+				10.5,
+				0,
+				-12
+			],
 			"yaw": 90,
 			"params": {
 				"w": 5,
@@ -136,7 +172,11 @@
 			"name": "shack_collapsed_w",
 			"group": "shack_collapsed",
 			"kind": "wall",
-			"at": [5.5, 0, -12],
+			"at": [
+				5.5,
+				0,
+				-12
+			],
 			"yaw": 90,
 			"params": {
 				"w": 5,
@@ -154,7 +194,11 @@
 			"name": "shack_collapsed_roof",
 			"group": "shack_collapsed",
 			"kind": "collapsed_roof",
-			"at": [8, 2, -12],
+			"at": [
+				8,
+				2,
+				-12
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -169,7 +213,11 @@
 			"name": "shack_hearth_chimney",
 			"group": "shack_hearth",
 			"kind": "block",
-			"at": [-12, 0, 0],
+			"at": [
+				-12,
+				0,
+				0
+			],
 			"yaw": 0,
 			"params": {
 				"w": 1,
@@ -182,7 +230,11 @@
 			"name": "shack_hearth_hearth",
 			"group": "shack_hearth",
 			"kind": "block",
-			"at": [-11.1, 0, 0],
+			"at": [
+				-11.1,
+				0,
+				0
+			],
 			"yaw": 0,
 			"params": {
 				"w": 1.4,
@@ -195,7 +247,11 @@
 			"name": "shack_hearth_floor",
 			"group": "shack_hearth",
 			"kind": "floor_slab",
-			"at": [-9.5, 0, 0],
+			"at": [
+				-9.5,
+				0,
+				0
+			],
 			"yaw": 0,
 			"params": {
 				"w": 4,
@@ -208,7 +264,11 @@
 			"name": "shack_hearth_n",
 			"group": "shack_hearth",
 			"kind": "broken_wall",
-			"at": [-10, 0, -2.5],
+			"at": [
+				-10,
+				0,
+				-2.5
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -223,7 +283,11 @@
 			"name": "shack_hearth_rubble",
 			"group": "shack_hearth",
 			"kind": "rubble",
-			"at": [-9.2, 0, 0.5],
+			"at": [
+				-9.2,
+				0,
+				0.5
+			],
 			"yaw": 0,
 			"params": {
 				"radius": 2,
@@ -236,7 +300,11 @@
 			"name": "shack_half_roof_frame",
 			"group": "shack_half_roof",
 			"kind": "timber_frame",
-			"at": [9, 0, 0],
+			"at": [
+				9,
+				0,
+				0
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -250,7 +318,11 @@
 			"name": "shack_half_roof_n",
 			"group": "shack_half_roof",
 			"kind": "wall",
-			"at": [9, 0, -3],
+			"at": [
+				9,
+				0,
+				-3
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -268,7 +340,11 @@
 			"name": "shack_half_roof_s",
 			"group": "shack_half_roof",
 			"kind": "wall",
-			"at": [9, 0, 3],
+			"at": [
+				9,
+				0,
+				3
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -285,7 +361,11 @@
 			"name": "shack_half_roof_e",
 			"group": "shack_half_roof",
 			"kind": "wall",
-			"at": [11.5, 0, 0],
+			"at": [
+				11.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6,
@@ -298,7 +378,11 @@
 			"name": "shack_half_roof_w",
 			"group": "shack_half_roof",
 			"kind": "wall",
-			"at": [6.5, 0, 0],
+			"at": [
+				6.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6,
@@ -311,7 +395,11 @@
 			"name": "shack_half_roof_roof",
 			"group": "shack_half_roof",
 			"kind": "collapsed_roof",
-			"at": [9, 2.8, 0],
+			"at": [
+				9,
+				2.8,
+				0
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -326,7 +414,11 @@
 			"name": "shack_burnt_frame",
 			"group": "shack_burnt",
 			"kind": "timber_frame",
-			"at": [-8, 0, 13],
+			"at": [
+				-8,
+				0,
+				13
+			],
 			"yaw": 0,
 			"params": {
 				"w": 4,
@@ -340,7 +432,11 @@
 			"name": "shack_burnt_w",
 			"group": "shack_burnt",
 			"kind": "broken_wall",
-			"at": [-10, 0, 13],
+			"at": [
+				-10,
+				0,
+				13
+			],
 			"yaw": 90,
 			"params": {
 				"w": 5,
@@ -355,7 +451,11 @@
 			"name": "shack_burnt_rubble",
 			"group": "shack_burnt",
 			"kind": "rubble",
-			"at": [-8, 0, 13],
+			"at": [
+				-8,
+				0,
+				13
+			],
 			"yaw": 0,
 			"params": {
 				"radius": 1.8,
@@ -368,7 +468,11 @@
 			"name": "shack_chest_frame",
 			"group": "shack_chest",
 			"kind": "timber_frame",
-			"at": [10, 0, 12],
+			"at": [
+				10,
+				0,
+				12
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -382,7 +486,11 @@
 			"name": "shack_chest_n",
 			"group": "shack_chest",
 			"kind": "wall",
-			"at": [10, 0, 9],
+			"at": [
+				10,
+				0,
+				9
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -395,7 +503,11 @@
 			"name": "shack_chest_w",
 			"group": "shack_chest",
 			"kind": "wall",
-			"at": [7.5, 0, 12],
+			"at": [
+				7.5,
+				0,
+				12
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6,
@@ -408,7 +520,11 @@
 			"name": "shack_chest_e",
 			"group": "shack_chest",
 			"kind": "broken_wall",
-			"at": [12.5, 0, 12],
+			"at": [
+				12.5,
+				0,
+				12
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6,
@@ -423,7 +539,11 @@
 			"name": "shack_chest_s",
 			"group": "shack_chest",
 			"kind": "wall",
-			"at": [10, 0, 15],
+			"at": [
+				10,
+				0,
+				15
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -440,7 +560,11 @@
 			"name": "shack_chest_roof",
 			"group": "shack_chest",
 			"kind": "pitched_roof",
-			"at": [10, 2.8, 12],
+			"at": [
+				10,
+				2.8,
+				12
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -455,7 +579,11 @@
 			"name": "shack_fallen_frame",
 			"group": "shack_fallen",
 			"kind": "timber_frame",
-			"at": [0, 0, 24],
+			"at": [
+				0,
+				0,
+				24
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -469,7 +597,11 @@
 			"name": "shack_fallen_n",
 			"group": "shack_fallen",
 			"kind": "wall",
-			"at": [0, 0, 21.5],
+			"at": [
+				0,
+				0,
+				21.5
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -482,7 +614,11 @@
 			"name": "shack_fallen_e",
 			"group": "shack_fallen",
 			"kind": "wall",
-			"at": [2.5, 0, 24],
+			"at": [
+				2.5,
+				0,
+				24
+			],
 			"yaw": 90,
 			"params": {
 				"w": 5,
@@ -495,7 +631,11 @@
 			"name": "shack_fallen_s",
 			"group": "shack_fallen",
 			"kind": "wall",
-			"at": [0, 0, 26.5],
+			"at": [
+				0,
+				0,
+				26.5
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -512,7 +652,11 @@
 			"name": "shack_fallen_w_fallen",
 			"group": "shack_fallen",
 			"kind": "wall",
-			"at": [-2.6, 0.1, 24],
+			"at": [
+				-2.6,
+				0.1,
+				24
+			],
 			"yaw": 90,
 			"params": {
 				"w": 5,
@@ -526,7 +670,11 @@
 			"name": "shack_fallen_roof",
 			"group": "shack_fallen",
 			"kind": "collapsed_roof",
-			"at": [0, 1.2, 24],
+			"at": [
+				0,
+				1.2,
+				24
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -541,7 +689,11 @@
 			"name": "storage_n",
 			"group": "storage",
 			"kind": "wall",
-			"at": [0, 0, -29.5],
+			"at": [
+				0,
+				0,
+				-29.5
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -554,7 +706,11 @@
 			"name": "storage_s",
 			"group": "storage",
 			"kind": "wall",
-			"at": [0, 0, -22.5],
+			"at": [
+				0,
+				0,
+				-22.5
+			],
 			"yaw": 0,
 			"params": {
 				"w": 5,
@@ -571,7 +727,11 @@
 			"name": "storage_w",
 			"group": "storage",
 			"kind": "wall",
-			"at": [-2.5, 0, -26],
+			"at": [
+				-2.5,
+				0,
+				-26
+			],
 			"yaw": 90,
 			"params": {
 				"w": 7,
@@ -584,7 +744,11 @@
 			"name": "storage_e",
 			"group": "storage",
 			"kind": "broken_wall",
-			"at": [2.5, 0, -26],
+			"at": [
+				2.5,
+				0,
+				-26
+			],
 			"yaw": 90,
 			"params": {
 				"w": 7,
@@ -599,7 +763,11 @@
 			"name": "storage_roof",
 			"group": "storage",
 			"kind": "collapsed_roof",
-			"at": [0, 3.2, -26],
+			"at": [
+				0,
+				3.2,
+				-26
+			],
 			"yaw": 90,
 			"params": {
 				"w": 7,
@@ -614,7 +782,11 @@
 			"name": "lane_rubble",
 			"group": "lane",
 			"kind": "rubble",
-			"at": [1, 0, 6],
+			"at": [
+				1,
+				0,
+				6
+			],
 			"yaw": 0,
 			"params": {
 				"radius": 2.5,
@@ -627,7 +799,11 @@
 			"name": "edge_beacon",
 			"group": "beacon",
 			"kind": "beacon",
-			"at": [-4.5, 0, 21.0],
+			"at": [
+				-4.5,
+				0,
+				21.0
+			],
 			"yaw": 0,
 			"params": {
 				"h": 2.2,
@@ -641,19 +817,27 @@
 			"name": "hearth_fire",
 			"group": "shack_hearth",
 			"kind": "hearth_remains",
-			"at": [-10.2, 0, 3.4],
+			"at": [
+				-10.2,
+				0,
+				3.4
+			],
 			"yaw": 15,
 			"params": {
 				"radius": 0.85,
 				"seed": 101,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "lane_pyre",
 			"group": "lane",
 			"kind": "pyre",
-			"at": [2.5, 0, 3.0],
+			"at": [
+				2.5,
+				0,
+				3.0
+			],
 			"yaw": 0,
 			"params": {
 				"h": 1.4,
@@ -665,40 +849,71 @@
 			"name": "chest_torch",
 			"group": "shack_chest",
 			"kind": "torch_post",
-			"at": [7.0, 0, 16.5],
+			"at": [
+				7.0,
+				0,
+				16.5
+			],
 			"yaw": 0,
 			"params": {
 				"h": 2.0,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "storage_brazier",
 			"group": "storage",
 			"kind": "brazier",
-			"at": [3.4, 0, -22.0],
+			"at": [
+				3.4,
+				0,
+				-22.0
+			],
 			"yaw": 0,
 			"params": {
 				"h": 1.05,
 				"radius": 0.45,
 				"seed": 107,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "lane_lamps",
 			"group": "lane",
 			"kind": "lamp_stone",
-			"repeat": [[-3.5, 0, 9.0, 0], [4.5, 0, 18.0, 0], [-5.0, 0, -6.0, 0]],
+			"repeat": [
+				[
+					-3.5,
+					0,
+					9.0,
+					0
+				],
+				[
+					4.5,
+					0,
+					18.0,
+					0
+				],
+				[
+					-5.0,
+					0,
+					-6.0,
+					0
+				]
+			],
 			"params": {
 				"radius": 0.5,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "lane_fence_w",
 			"kind": "fence",
-			"at": [-6.0, 0, 6.0],
+			"at": [
+				-6.0,
+				0,
+				6.0
+			],
 			"yaw": 0,
 			"params": {
 				"length": 10.0,
@@ -708,13 +923,17 @@
 				"broken": true,
 				"seed": 731,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "lane_fence_e",
 			"kind": "fence",
-			"at": [6.5, 0, 6.0],
+			"at": [
+				6.5,
+				0,
+				6.0
+			],
 			"yaw": 0,
 			"params": {
 				"length": 10.0,
@@ -724,13 +943,17 @@
 				"broken": true,
 				"seed": 732,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "croft_fence",
 			"kind": "fence",
-			"at": [-13.5, 0, 4.0],
+			"at": [
+				-13.5,
+				0,
+				4.0
+			],
 			"yaw": 90,
 			"params": {
 				"length": 8.0,
@@ -740,19 +963,38 @@
 				"broken": true,
 				"seed": 733,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "crofts",
 			"kind": "garden_bed",
-			"repeat": [[-13.0, 0, 2.0, 90], [-13.0, 0, 4.2, 90], [-13.0, 0, 6.4, 90]],
+			"repeat": [
+				[
+					-13.0,
+					0,
+					2.0,
+					90
+				],
+				[
+					-13.0,
+					0,
+					4.2,
+					90
+				],
+				[
+					-13.0,
+					0,
+					6.4,
+					90
+				]
+			],
 			"params": {
 				"w": 1.4,
 				"d": 2.6,
 				"rows": 3,
 				"seed": 734,
-				"sink": 1.0
+				"sink": 1.8
 			}
 		}
 	]

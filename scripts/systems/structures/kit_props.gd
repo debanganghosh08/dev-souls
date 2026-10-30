@@ -15,7 +15,12 @@ extends RefCounted
 ## node and one body. None of these kinds is a Footprint ground kind: a layout declares the ground its
 ## pieces cover with `keep_out` rects, which is what grass, trees and the placement rules read.
 
-const SINK := 0.8
+## How far a loose prop reaches below its own base. A site is floored at the HIGHEST ground under it
+## (D-022), so this is what stops the low side of a cairn or a fire ring hanging in the air on a slope --
+## the owner saw exactly that in his recording. Raised from 0.8 m, which was not enough for the Vale once
+## it had sites on real slopes; tests/test_no_floating.gd is what measures it now. Costs nothing: every
+## centimetre of it is under the ground line unless the ground has already fallen away.
+const SINK := 1.8
 const POST := 0.12
 
 

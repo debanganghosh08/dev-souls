@@ -2,90 +2,221 @@
 	"_comment": "Village smithy: stone rear chimney and forge hearth, open timber work bay, iron anvil, water quenching trough, tool rack and doorstep.",
 	"name": "smithy",
 	"keep_out": [
-		[-3.2, -3.2, 6.4, 6.4],
-		[-1.1, 3.0, 2.2, 2.2]
+		[
+			-3.2,
+			-3.2,
+			6.4,
+			6.4
+		],
+		[
+			-1.1,
+			3.0,
+			2.2,
+			2.2
+		]
 	],
 	"pieces": [
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0.0, -2.0, 0.0],
-			"params": {"w": 6.4, "h": 2.0, "d": 6.4, "mat": "stone"}
+			"at": [
+				0.0,
+				-4.5,
+				0.0
+			],
+			"params": {
+				"w": 6.4,
+				"h": 4.5,
+				"d": 6.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "floor",
 			"kind": "floor_slab",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 6.0, "d": 6.0, "t": 0.12, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 6.0,
+				"d": 6.0,
+				"t": 0.12,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "rear_wall",
 			"kind": "wall",
-			"at": [0.0, 0.0, -2.8],
-			"params": {"w": 6.0, "h": 3.0, "t": 0.5, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				-2.8
+			],
+			"params": {
+				"w": 6.0,
+				"h": 3.0,
+				"t": 0.5,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "chimney",
 			"kind": "block",
-			"at": [0.0, 0.0, -3.3],
-			"params": {"w": 1.6, "h": 4.8, "d": 0.8, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				-3.3
+			],
+			"params": {
+				"w": 1.6,
+				"h": 4.8,
+				"d": 0.8,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "forge_fire",
 			"kind": "hearth_remains",
-			"at": [0.0, 0.0, -1.8],
-			"params": {"radius": 0.85, "sink": 0.8}
+			"at": [
+				0.0,
+				0.0,
+				-1.8
+			],
+			"params": {
+				"radius": 0.85,
+				"sink": 1.8
+			}
 		},
 		{
 			"name": "anvil",
 			"kind": "block",
-			"at": [0.0, 0.0, 0.3],
-			"params": {"w": 0.55, "h": 0.85, "d": 0.55, "mat": "iron"}
+			"at": [
+				0.0,
+				0.0,
+				0.3
+			],
+			"params": {
+				"w": 0.55,
+				"h": 0.85,
+				"d": 0.55,
+				"mat": "iron"
+			}
 		},
 		{
 			"name": "frame",
 			"kind": "timber_frame",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 6.0, "h": 3.0, "d": 6.0, "beam": 0.2, "mat": "timber"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 6.0,
+				"h": 3.0,
+				"d": 6.0,
+				"beam": 0.2,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "front_gable",
 			"kind": "gable",
-			"at": [0.0, 3.0, 2.8],
-			"params": {"w": 6.0, "rise": 1.5, "t": 0.3, "mat": "timber"}
+			"at": [
+				0.0,
+				3.0,
+				2.8
+			],
+			"params": {
+				"w": 6.0,
+				"rise": 1.5,
+				"t": 0.3,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "back_gable",
 			"kind": "gable",
-			"at": [0.0, 3.0, -2.8],
-			"params": {"w": 6.0, "rise": 1.5, "t": 0.3, "mat": "timber"}
+			"at": [
+				0.0,
+				3.0,
+				-2.8
+			],
+			"params": {
+				"w": 6.0,
+				"rise": 1.5,
+				"t": 0.3,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "roof",
 			"kind": "pitched_roof",
-			"at": [0.0, 3.0, 0.0],
-			"params": {"w": 6.4, "d": 6.4, "rise": 1.5, "t": 0.12, "overhang": 0.3, "mat": "roof"}
+			"at": [
+				0.0,
+				3.0,
+				0.0
+			],
+			"params": {
+				"w": 6.4,
+				"d": 6.4,
+				"rise": 1.5,
+				"t": 0.12,
+				"overhang": 0.3,
+				"mat": "roof"
+			}
 		},
 		{
 			"name": "trough",
 			"kind": "trough",
-			"at": [2.0, 0.0, 0.0],
+			"at": [
+				2.0,
+				0.0,
+				0.0
+			],
 			"yaw": 90.0,
-			"params": {"w": 1.8, "d": 0.6, "h": 0.5, "sink": 0.8, "mat": "stone"}
+			"params": {
+				"w": 1.8,
+				"d": 0.6,
+				"h": 0.5,
+				"sink": 1.8,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "weapon_rack",
 			"kind": "weapon_rack",
-			"at": [-2.2, 0.0, -1.0],
+			"at": [
+				-2.2,
+				0.0,
+				-1.0
+			],
 			"yaw": 90.0,
-			"params": {"w": 1.6, "h": 1.5, "spears": 4, "sink": 0.8, "mat": "timber"}
+			"params": {
+				"w": 1.6,
+				"h": 1.5,
+				"spears": 4,
+				"sink": 1.8,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [0.0, 0.0, 3.0],
+			"at": [
+				0.0,
+				0.0,
+				3.0
+			],
 			"yaw": 180.0,
-			"params": {"w": 2.0, "rise": 1.5, "riser": 0.25, "tread": 0.35, "mat": "stone"}
+			"params": {
+				"w": 2.0,
+				"rise": 1.5,
+				"riser": 0.25,
+				"tread": 0.35,
+				"mat": "stone"
+			}
 		}
 	]
 }

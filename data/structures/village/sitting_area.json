@@ -2,44 +2,127 @@
 	"_comment": "Village sitting area: warm central brazier, timber benches, and washing lines with hanging cloth.",
 	"name": "sitting_area",
 	"keep_out": [
-		[-2.6, -2.4, 5.2, 4.8]
+		[
+			-2.6,
+			-2.4,
+			5.2,
+			4.8
+		]
 	],
 	"pieces": [
 		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [
+				0.0,
+				-4.5,
+				0.23
+			],
+			"yaw": 0,
+			"params": {
+				"w": 5.0,
+				"h": 4.5,
+				"d": 4.19,
+				"mat": "stone"
+			}
+		},
+		{
 			"name": "brazier",
 			"kind": "brazier",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"radius": 0.42, "h": 1.05, "sink": 0.8}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"radius": 0.42,
+				"h": 1.05,
+				"sink": 1.8
+			}
 		},
 		{
 			"name": "benches",
 			"kind": "block",
 			"repeat": [
-				[-1.6, 0.0, 0.0, 90],
-				[1.6, 0.0, 0.0, 90],
-				[0.0, 0.0, -1.6, 0],
-				[0.0, 0.0, 1.6, 0]
+				[
+					-1.6,
+					0.0,
+					0.0,
+					90
+				],
+				[
+					1.6,
+					0.0,
+					0.0,
+					90
+				],
+				[
+					0.0,
+					0.0,
+					-1.6,
+					0
+				],
+				[
+					0.0,
+					0.0,
+					1.6,
+					0
+				]
 			],
-			"params": {"w": 1.5, "h": 0.45, "d": 0.45, "mat": "timber"}
+			"params": {
+				"w": 1.5,
+				"h": 0.45,
+				"d": 0.45,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "washing_posts",
 			"kind": "pillar",
 			"repeat": [
-				[-2.2, 0.0, 2.2, 0],
-				[2.2, 0.0, 2.2, 0]
+				[
+					-2.2,
+					0.0,
+					2.2,
+					0
+				],
+				[
+					2.2,
+					0.0,
+					2.2,
+					0
+				]
 			],
-			"params": {"radius": 0.1, "h": 2.2, "sides": 6, "mat": "timber"}
+			"params": {
+				"radius": 0.1,
+				"h": 2.2,
+				"sides": 6,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "washing_cloth",
 			"kind": "block",
 			"repeat": [
-				[-0.9, 1.3, 2.2, 0],
-				[0.9, 1.3, 2.2, 0]
+				[
+					-0.9,
+					1.3,
+					2.2,
+					0
+				],
+				[
+					0.9,
+					1.3,
+					2.2,
+					0
+				]
 			],
-			"params": {"w": 1.1, "h": 0.8, "d": 0.06, "mat": "cloth"}
+			"params": {
+				"w": 1.1,
+				"h": 0.8,
+				"d": 0.06,
+				"mat": "cloth"
+			}
 		}
 	]
 }
-

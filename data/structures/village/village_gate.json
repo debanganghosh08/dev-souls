@@ -2,58 +2,150 @@
 	"_comment": "Village gatehouse portal: two stone towers with buttressed piers, arched gate, and a lookout beacon.",
 	"name": "village_gate",
 	"keep_out": [
-		[-5.2, -2.2, 10.4, 4.4]
+		[
+			-5.2,
+			-2.2,
+			10.4,
+			4.4
+		]
 	],
 	"pieces": [
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0.0, -2.0, 0.0],
-			"params": {"w": 10.4, "h": 2.0, "d": 4.4, "mat": "stone"}
+			"at": [
+				0.0,
+				-4.5,
+				0.0
+			],
+			"params": {
+				"w": 10.4,
+				"h": 4.5,
+				"d": 4.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "road_deck",
 			"kind": "floor_slab",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 10.0, "d": 4.0, "t": 0.12, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 10.0,
+				"d": 4.0,
+				"t": 0.12,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "gate_arch",
 			"kind": "arch",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 4.4, "h": 4.2, "t": 0.8, "ow": 2.4, "oh": 3.2, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 4.4,
+				"h": 4.2,
+				"t": 0.8,
+				"ow": 2.4,
+				"oh": 3.2,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "towers",
 			"kind": "block",
 			"repeat": [
-				[-3.6, 0.0, 0.0, 0],
-				[3.6, 0.0, 0.0, 0]
+				[
+					-3.6,
+					0.0,
+					0.0,
+					0
+				],
+				[
+					3.6,
+					0.0,
+					0.0,
+					0
+				]
 			],
-			"params": {"w": 2.8, "h": 4.8, "d": 3.6, "mat": "stone"}
+			"params": {
+				"w": 2.8,
+				"h": 4.8,
+				"d": 3.6,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "buttresses",
 			"kind": "buttress",
 			"repeat": [
-				[-4.0, 0.0, 1.8, 0],
-				[-4.0, 0.0, -1.8, 180],
-				[4.0, 0.0, 1.8, 0],
-				[4.0, 0.0, -1.8, 180]
+				[
+					-4.0,
+					0.0,
+					1.8,
+					0
+				],
+				[
+					-4.0,
+					0.0,
+					-1.8,
+					180
+				],
+				[
+					4.0,
+					0.0,
+					1.8,
+					0
+				],
+				[
+					4.0,
+					0.0,
+					-1.8,
+					180
+				]
 			],
-			"params": {"w": 0.9, "h": 3.6, "depth": 1.1, "mat": "stone"}
+			"params": {
+				"w": 0.9,
+				"h": 3.6,
+				"depth": 1.1,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "walk_parapet",
 			"kind": "wall",
-			"at": [0.0, 4.2, 0.0],
-			"params": {"w": 4.4, "h": 0.9, "t": 0.4, "mat": "stone"}
+			"at": [
+				0.0,
+				4.2,
+				0.0
+			],
+			"params": {
+				"w": 4.4,
+				"h": 0.9,
+				"t": 0.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "tower_beacon",
 			"kind": "beacon",
-			"at": [-3.6, 4.8, 0.0],
-			"params": {"radius": 0.55, "h": 1.3, "mat": "iron", "sink": 0.8}
+			"at": [
+				-3.6,
+				4.8,
+				0.0
+			],
+			"params": {
+				"radius": 0.55,
+				"h": 1.3,
+				"mat": "iron",
+				"sink": 1.8
+			}
 		}
 	]
 }

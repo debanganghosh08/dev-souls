@@ -2,9 +2,70 @@
 	"_comment": "A road brazier (W9-F): a standing fire bowl where the old road turns, a seat stone worn smooth beside it and a cairn. Brighter and taller than a way_lamp, so the bends of the road read from further off than its straights.",
 	"name": "road_brazier",
 	"pieces": [
-		{"name": "fire", "kind": "brazier", "at": [0, 0, 0], "yaw": 0, "params": {"h": 1.15, "radius": 0.48, "seed": 221, "sink": 1.0, "energy": 3.0, "range": 14.0}},
-		{"name": "seat", "kind": "block", "at": [-1.5, 0, 0.7], "yaw": 25, "params": {"w": 1.1, "h": 0.45, "d": 0.5, "mat": "stone"}},
-		{"name": "marker", "kind": "cairn", "at": [1.7, 0, -0.9], "yaw": 0, "params": {"radius": 0.45, "h": 0.9, "count": 5, "seed": 222, "mat": "stone"}}
+		{
+			"name": "fire",
+			"kind": "brazier",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"h": 1.15,
+				"radius": 0.48,
+				"seed": 221,
+				"sink": 1.8,
+				"energy": 3.0,
+				"range": 14.0
+			}
+		},
+		{
+			"name": "seat",
+			"kind": "block",
+			"at": [
+				-1.5,
+				0,
+				0.7
+			],
+			"yaw": 25,
+			"params": {
+				"w": 1.1,
+				"h": 0.45,
+				"d": 0.5,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "marker",
+			"kind": "cairn",
+			"at": [
+				1.7,
+				0,
+				-0.9
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.45,
+				"h": 0.9,
+				"count": 5,
+				"seed": 222,
+				"mat": "stone"
+			}
+		}
 	],
-	"keep_out": [[-0.7, -0.7, 1.4, 1.4], [1.1, -1.5, 1.2, 1.2]]
+	"keep_out": [
+		[
+			-0.7,
+			-0.7,
+			1.4,
+			1.4
+		],
+		[
+			1.1,
+			-1.5,
+			1.2,
+			1.2
+		]
+	]
 }

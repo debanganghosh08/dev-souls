@@ -4,7 +4,10 @@
 	"archetype": "cottage",
 	"variant": "intact",
 	"door": {
-		"at": [-1.375, 3.25],
+		"at": [
+			-1.375,
+			3.25
+		],
 		"width": 1.4,
 		"height": 2.4,
 		"stair": "doorstep"
@@ -15,12 +18,23 @@
 			"slab": "loft"
 		}
 	],
-	"keep_out": [[-2.175, 3.25, 1.6, 2.1]],
+	"keep_out": [
+		[
+			-2.175,
+			3.25,
+			1.6,
+			2.1
+		]
+	],
 	"pieces": [
 		{
 			"name": "floor",
 			"kind": "floor_slab",
-			"at": [0, 0, 0],
+			"at": [
+				0,
+				0,
+				0
+			],
 			"params": {
 				"w": 5.5,
 				"d": 6.5,
@@ -31,7 +45,11 @@
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0, -2, 0],
+			"at": [
+				0,
+				-2,
+				0
+			],
 			"params": {
 				"w": 5.7,
 				"h": 2,
@@ -42,7 +60,11 @@
 		{
 			"name": "front_door",
 			"kind": "wall",
-			"at": [-1.375, 0, 3],
+			"at": [
+				-1.375,
+				0,
+				3
+			],
 			"params": {
 				"w": 2.75,
 				"h": 2.8,
@@ -57,7 +79,11 @@
 		{
 			"name": "front_window",
 			"kind": "wall",
-			"at": [1.375, 0, 3],
+			"at": [
+				1.375,
+				0,
+				3
+			],
 			"params": {
 				"w": 2.75,
 				"h": 2.8,
@@ -73,7 +99,11 @@
 		{
 			"name": "east",
 			"kind": "wall",
-			"at": [2.5, 0, 0],
+			"at": [
+				2.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6.5,
@@ -85,7 +115,11 @@
 		{
 			"name": "chimney",
 			"kind": "block",
-			"at": [-1.2, 0, -3.65],
+			"at": [
+				-1.2,
+				0,
+				-3.65
+			],
 			"params": {
 				"w": 1.4,
 				"h": 4.8,
@@ -96,7 +130,11 @@
 		{
 			"name": "hearthstone",
 			"kind": "block",
-			"at": [-1.2, 0, -2.3],
+			"at": [
+				-1.2,
+				0,
+				-2.3
+			],
 			"params": {
 				"w": 1.4,
 				"h": 0.3,
@@ -107,7 +145,11 @@
 		{
 			"name": "gable_east",
 			"kind": "gable",
-			"at": [2.5, 2.8, 0],
+			"at": [
+				2.5,
+				2.8,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6.5,
@@ -119,7 +161,11 @@
 		{
 			"name": "back",
 			"kind": "wall",
-			"at": [0, 0, -3],
+			"at": [
+				0,
+				0,
+				-3
+			],
 			"params": {
 				"w": 5.5,
 				"h": 2.8,
@@ -135,7 +181,11 @@
 		{
 			"name": "west",
 			"kind": "wall",
-			"at": [-2.5, 0, 0],
+			"at": [
+				-2.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6.5,
@@ -153,7 +203,11 @@
 		{
 			"name": "gable_west",
 			"kind": "gable",
-			"at": [-2.5, 2.8, 0],
+			"at": [
+				-2.5,
+				2.8,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 6.5,
@@ -165,7 +219,11 @@
 		{
 			"name": "roof",
 			"kind": "pitched_roof",
-			"at": [0, 2.8, 0],
+			"at": [
+				0,
+				2.8,
+				0
+			],
 			"params": {
 				"w": 5,
 				"d": 6,
@@ -178,7 +236,11 @@
 		{
 			"name": "loft",
 			"kind": "floor_slab",
-			"at": [0, 2, -2],
+			"at": [
+				0,
+				2,
+				-2
+			],
 			"params": {
 				"w": 4.5,
 				"d": 2,
@@ -189,7 +251,11 @@
 		{
 			"name": "loft_beam",
 			"kind": "block",
-			"at": [0, 1.85, -1],
+			"at": [
+				0,
+				1.85,
+				-1
+			],
 			"params": {
 				"w": 4.5,
 				"h": 0.15,
@@ -200,7 +266,11 @@
 		{
 			"name": "loft_stairs",
 			"kind": "stairs",
-			"at": [1.75, 0.12, 1.45],
+			"at": [
+				1.75,
+				0.12,
+				1.45
+			],
 			"params": {
 				"w": 1,
 				"rise": 1.98,
@@ -212,7 +282,11 @@
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [-1.375, -1.6, 5.35],
+			"at": [
+				-1.375,
+				-1.6,
+				5.35
+			],
 			"params": {
 				"w": 1.6,
 				"rise": 1.72,
@@ -224,19 +298,27 @@
 		{
 			"name": "yard_brazier",
 			"kind": "brazier",
-			"at": [2.2, 0, 4.4],
+			"at": [
+				2.2,
+				0,
+				4.4
+			],
 			"yaw": 0,
 			"params": {
 				"h": 1.1,
 				"radius": 0.45,
 				"seed": 7,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "hearth_fire",
 			"kind": "wall_torch",
-			"at": [-1.2, 1.7, -2.75],
+			"at": [
+				-1.2,
+				1.7,
+				-2.75
+			],
 			"yaw": 0,
 			"params": {
 				"out": 0.3,
@@ -250,7 +332,11 @@
 		{
 			"name": "yard_fence_w",
 			"kind": "fence",
-			"at": [-4.4, 0, 0.4],
+			"at": [
+				-4.4,
+				0,
+				0.4
+			],
 			"yaw": 90,
 			"params": {
 				"length": 8.0,
@@ -260,13 +346,17 @@
 				"broken": false,
 				"seed": 641,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "yard_fence_n",
 			"kind": "fence",
-			"at": [-1.2, 0, -4.6],
+			"at": [
+				-1.2,
+				0,
+				-4.6
+			],
 			"yaw": 0,
 			"params": {
 				"length": 6.0,
@@ -276,19 +366,38 @@
 				"broken": false,
 				"seed": 642,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "garden",
 			"kind": "garden_bed",
-			"repeat": [[-4.0, 0, -2.4, 90], [-4.0, 0, -0.6, 90], [-4.0, 0, 1.2, 90]],
+			"repeat": [
+				[
+					-4.0,
+					0,
+					-2.4,
+					90
+				],
+				[
+					-4.0,
+					0,
+					-0.6,
+					90
+				],
+				[
+					-4.0,
+					0,
+					1.2,
+					90
+				]
+			],
 			"params": {
 				"w": 1.3,
 				"d": 2.4,
 				"rows": 3,
 				"seed": 643,
-				"sink": 1.0
+				"sink": 1.8
 			}
 		}
 	]

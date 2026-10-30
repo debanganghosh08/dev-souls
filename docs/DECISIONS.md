@@ -303,3 +303,22 @@ fires, 42 items. Grass worst fill frame 5.55 ms. **Open, and honest:** `worst_cr
 forty-four fires can fall inside one cull sphere in Hollowmere, against a budget of 45. The village is at
 the limit, and the next settlement will need the cull distance tuned or the lamps thinned rather than more
 of both.
+
+**D-029 (2026-10-30) Things floated because nothing measured whether they touched the ground.** The owner,
+watching his own recording: "many things are floating in the air". Every placement test asked whether a
+thing stood in a legal PLACE; none asked whether there was ground under all of it. A site is floored at the
+HIGHEST point under its footprint (D-022), so on any slope the low side hangs unless the building reaches
+down past the fall. `tests/test_no_floating.gd` now measures exactly that for all 126 sloping sites, and it
+was not a village problem: cairns, shore fires and road braziers across the whole valley were standing over
+gaps. Two fixes, both data: village foundations 2 m -> 4.5 m, and the kit's default `SINK` for a loose prop
+0.8 m -> 1.8 m, which is free because every centimetre of it is under the ground line unless the ground has
+already fallen away. **Worst shortfall 3.51 m -> 0.21 m.**
+
+**Also W11:** the forest band moved to the road the player walks first, spawn to Hollowmere, at more than
+twice the trees (**213 -> 533 in the valley**); ferns and sprigs went from one every five paces to roughly
+one per two square metres, which is what "bushes, big bushes" had to mean with no new models; grass
+**31,357 -> 43,551** instances, worst fill frame 3.63 ms. The **Overlook** was finally built -- 22 m up over
+a 57 m skirt at (-240, 8), with a watchtower on top and the painted road running to its foot. It is smaller
+and further out than intended for a reason worth recording: **a plateau cannot overlap a site**, because its
+skirt tilts the ground out from under one and the 1.6 m drop rule then fails. Nothing in this valley had
+more than 87 m of clear space left, so the hill was sized to the room that existed.

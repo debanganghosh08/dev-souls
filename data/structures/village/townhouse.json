@@ -2,141 +2,333 @@
 	"_comment": "Two-storey townhouse: stone ground floor with heavy foundation, plaster upper storey reached by outside stairs, pitched roof with plaster gables, ground doorway and doorstep.",
 	"name": "townhouse",
 	"keep_out": [
-		[-3.2, -4.2, 6.4, 8.4],
-		[-1.2, 4.0, 2.4, 2.5]
+		[
+			-3.2,
+			-4.2,
+			6.4,
+			8.4
+		],
+		[
+			-1.2,
+			4.0,
+			2.4,
+			2.5
+		]
 	],
 	"pieces": [
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0.0, -2.0, 0.0],
-			"params": {"w": 6.4, "h": 2.0, "d": 8.4, "mat": "stone"}
+			"at": [
+				0.0,
+				-4.5,
+				0.0
+			],
+			"params": {
+				"w": 6.4,
+				"h": 4.5,
+				"d": 8.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "ground_floor",
 			"kind": "floor_slab",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 6.0, "d": 8.0, "t": 0.12, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 6.0,
+				"d": 8.0,
+				"t": 0.12,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "front_wall",
 			"kind": "wall",
-			"at": [0.0, 0.0, 3.8],
+			"at": [
+				0.0,
+				0.0,
+				3.8
+			],
 			"params": {
-				"w": 6.0, "h": 2.8, "t": 0.4, "mat": "stone",
-				"opening": {"width": 1.4, "height": 2.4, "sill": 0.0, "offset": -1.2}
+				"w": 6.0,
+				"h": 2.8,
+				"t": 0.4,
+				"mat": "stone",
+				"opening": {
+					"width": 1.4,
+					"height": 2.4,
+					"sill": 0.0,
+					"offset": -1.2
+				}
 			}
 		},
 		{
 			"name": "back_wall",
 			"kind": "wall",
-			"at": [0.0, 0.0, -3.8],
+			"at": [
+				0.0,
+				0.0,
+				-3.8
+			],
 			"params": {
-				"w": 6.0, "h": 2.8, "t": 0.4, "mat": "stone",
-				"opening": {"width": 1.0, "height": 1.2, "sill": 1.1, "offset": 0.0}
+				"w": 6.0,
+				"h": 2.8,
+				"t": 0.4,
+				"mat": "stone",
+				"opening": {
+					"width": 1.0,
+					"height": 1.2,
+					"sill": 1.1,
+					"offset": 0.0
+				}
 			}
 		},
 		{
 			"name": "west_wall",
 			"kind": "wall",
-			"at": [-2.8, 0.0, 0.0],
+			"at": [
+				-2.8,
+				0.0,
+				0.0
+			],
 			"yaw": 90.0,
-			"params": {"w": 8.0, "h": 2.8, "t": 0.4, "mat": "stone"}
+			"params": {
+				"w": 8.0,
+				"h": 2.8,
+				"t": 0.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "east_wall",
 			"kind": "wall",
-			"at": [2.8, 0.0, 0.0],
+			"at": [
+				2.8,
+				0.0,
+				0.0
+			],
 			"yaw": 90.0,
-			"params": {"w": 8.0, "h": 2.8, "t": 0.4, "mat": "stone"}
+			"params": {
+				"w": 8.0,
+				"h": 2.8,
+				"t": 0.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "outside_stairs",
 			"kind": "stairs",
-			"at": [3.6, 0.0, 2.2],
+			"at": [
+				3.6,
+				0.0,
+				2.2
+			],
 			"yaw": 0.0,
-			"params": {"w": 1.1, "rise": 2.8, "riser": 0.25, "tread": 0.35, "mat": "stone"}
+			"params": {
+				"w": 1.1,
+				"rise": 2.8,
+				"riser": 0.25,
+				"tread": 0.35,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "stair_landing",
 			"kind": "block",
-			"at": [3.6, 2.68, -2.4],
-			"params": {"w": 1.2, "h": 0.24, "d": 1.4, "mat": "planks"}
+			"at": [
+				3.6,
+				2.68,
+				-2.4
+			],
+			"params": {
+				"w": 1.2,
+				"h": 0.24,
+				"d": 1.4,
+				"mat": "planks"
+			}
 		},
 		{
 			"name": "upper_floor",
 			"kind": "floor_slab",
-			"at": [0.0, 2.8, 0.0],
-			"params": {"w": 6.0, "d": 8.0, "t": 0.12, "mat": "planks"}
+			"at": [
+				0.0,
+				2.8,
+				0.0
+			],
+			"params": {
+				"w": 6.0,
+				"d": 8.0,
+				"t": 0.12,
+				"mat": "planks"
+			}
 		},
 		{
 			"name": "upper_front",
 			"kind": "wall",
-			"at": [0.0, 2.8, 3.8],
+			"at": [
+				0.0,
+				2.8,
+				3.8
+			],
 			"params": {
-				"w": 6.0, "h": 2.6, "t": 0.4, "mat": "plaster",
-				"opening": {"width": 1.2, "height": 1.2, "sill": 0.9, "offset": 1.0}
+				"w": 6.0,
+				"h": 2.6,
+				"t": 0.4,
+				"mat": "plaster",
+				"opening": {
+					"width": 1.2,
+					"height": 1.2,
+					"sill": 0.9,
+					"offset": 1.0
+				}
 			}
 		},
 		{
 			"name": "upper_back",
 			"kind": "wall",
-			"at": [0.0, 2.8, -3.8],
+			"at": [
+				0.0,
+				2.8,
+				-3.8
+			],
 			"params": {
-				"w": 6.0, "h": 2.6, "t": 0.4, "mat": "plaster",
-				"opening": {"width": 1.2, "height": 1.2, "sill": 0.9, "offset": -1.0}
+				"w": 6.0,
+				"h": 2.6,
+				"t": 0.4,
+				"mat": "plaster",
+				"opening": {
+					"width": 1.2,
+					"height": 1.2,
+					"sill": 0.9,
+					"offset": -1.0
+				}
 			}
 		},
 		{
 			"name": "upper_west",
 			"kind": "wall",
-			"at": [-2.8, 2.8, 0.0],
+			"at": [
+				-2.8,
+				2.8,
+				0.0
+			],
 			"yaw": 90.0,
 			"params": {
-				"w": 8.0, "h": 2.6, "t": 0.4, "mat": "plaster",
-				"opening": {"width": 1.1, "height": 1.2, "sill": 0.9, "offset": 0.0}
+				"w": 8.0,
+				"h": 2.6,
+				"t": 0.4,
+				"mat": "plaster",
+				"opening": {
+					"width": 1.1,
+					"height": 1.2,
+					"sill": 0.9,
+					"offset": 0.0
+				}
 			}
 		},
 		{
 			"name": "upper_east",
 			"kind": "wall",
-			"at": [2.8, 2.8, 0.0],
+			"at": [
+				2.8,
+				2.8,
+				0.0
+			],
 			"yaw": 90.0,
 			"params": {
-				"w": 8.0, "h": 2.6, "t": 0.4, "mat": "plaster",
-				"opening": {"width": 1.2, "height": 2.3, "sill": 0.0, "offset": 2.4}
+				"w": 8.0,
+				"h": 2.6,
+				"t": 0.4,
+				"mat": "plaster",
+				"opening": {
+					"width": 1.2,
+					"height": 2.3,
+					"sill": 0.0,
+					"offset": 2.4
+				}
 			}
 		},
 		{
 			"name": "front_gable",
 			"kind": "gable",
-			"at": [0.0, 5.4, 3.8],
-			"params": {"w": 6.0, "rise": 2.0, "t": 0.4, "mat": "plaster"}
+			"at": [
+				0.0,
+				5.4,
+				3.8
+			],
+			"params": {
+				"w": 6.0,
+				"rise": 2.0,
+				"t": 0.4,
+				"mat": "plaster"
+			}
 		},
 		{
 			"name": "back_gable",
 			"kind": "gable",
-			"at": [0.0, 5.4, -3.8],
-			"params": {"w": 6.0, "rise": 2.0, "t": 0.4, "mat": "plaster"}
+			"at": [
+				0.0,
+				5.4,
+				-3.8
+			],
+			"params": {
+				"w": 6.0,
+				"rise": 2.0,
+				"t": 0.4,
+				"mat": "plaster"
+			}
 		},
 		{
 			"name": "roof",
 			"kind": "pitched_roof",
-			"at": [0.0, 5.4, 0.0],
-			"params": {"w": 6.6, "d": 8.8, "rise": 2.0, "t": 0.12, "overhang": 0.35, "mat": "roof"}
+			"at": [
+				0.0,
+				5.4,
+				0.0
+			],
+			"params": {
+				"w": 6.6,
+				"d": 8.8,
+				"rise": 2.0,
+				"t": 0.12,
+				"overhang": 0.35,
+				"mat": "roof"
+			}
 		},
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [-1.2, 0.0, 4.0],
+			"at": [
+				-1.2,
+				0.0,
+				4.0
+			],
 			"yaw": 180.0,
-			"params": {"w": 1.8, "rise": 1.5, "riser": 0.25, "tread": 0.35, "mat": "stone"}
+			"params": {
+				"w": 1.8,
+				"rise": 1.5,
+				"riser": 0.25,
+				"tread": 0.35,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "lamp",
 			"kind": "lamp_stone",
-			"at": [1.2, 0.0, 4.4],
-			"params": {"radius": 0.45, "sink": 0.8}
+			"at": [
+				1.2,
+				0.0,
+				4.4
+			],
+			"params": {
+				"radius": 0.45,
+				"sink": 1.8
+			}
 		}
 	]
 }

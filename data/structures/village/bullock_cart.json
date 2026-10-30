@@ -2,24 +2,74 @@
 	"_comment": "Heavy bullock cart: wide hauler cart with 0.7m wheels and stacked timber cargo crates.",
 	"name": "bullock_cart",
 	"keep_out": [
-		[-2.2, -1.2, 4.4, 2.4]
+		[
+			-2.2,
+			-1.2,
+			4.4,
+			2.4
+		]
 	],
 	"pieces": [
 		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [
+				0.0,
+				-4.5,
+				0.0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 4.56,
+				"h": 4.5,
+				"d": 2.16,
+				"mat": "stone"
+			}
+		},
+		{
 			"name": "cart",
 			"kind": "cart",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 3.8, "d": 1.8, "wheel": 0.7, "mat": "planks"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 3.8,
+				"d": 1.8,
+				"wheel": 0.7,
+				"mat": "planks"
+			}
 		},
 		{
 			"name": "cargo_crates",
 			"kind": "block",
 			"repeat": [
-				[-0.8, 0.8, 0.0, 0],
-				[0.6, 0.8, 0.0, 15],
-				[0.0, 0.8, 0.0, -10]
+				[
+					-0.8,
+					0.8,
+					0.0,
+					0
+				],
+				[
+					0.6,
+					0.8,
+					0.0,
+					15
+				],
+				[
+					0.0,
+					0.8,
+					0.0,
+					-10
+				]
 			],
-			"params": {"w": 0.75, "h": 0.65, "d": 0.75, "mat": "timber"}
+			"params": {
+				"w": 0.75,
+				"h": 0.65,
+				"d": 0.75,
+				"mat": "timber"
+			}
 		}
 	]
 }

@@ -13,8 +13,8 @@
 			"name": "grass",
 			"kind": "clump",
 			"zone": "grass",
-			"density": 2.8,
-			"max_per_cell": 620,
+			"density": 3.4,
+			"max_per_cell": 760,
 			"max_slope": 32.0,
 			"blades": 3,
 			"segments": 3,
@@ -46,8 +46,8 @@
 			"name": "tall_grass",
 			"kind": "clump",
 			"zone": "tall",
-			"density": 0.8,
-			"max_per_cell": 170,
+			"density": 1.0,
+			"max_per_cell": 210,
 			"max_slope": 30.0,
 			"blades": 3,
 			"segments": 4,
@@ -160,12 +160,12 @@
 			"kind": "model",
 			"model": "res://assets/models/foliage/fern_02/fern_02_1k.gltf",
 			"mesh": "fern_02_b",
-			"density": 0.035,
-			"max_per_cell": 8,
+			"density": 0.5,
+			"max_per_cell": 110,
 			"max_slope": 30.0,
 			"scale": [
-				0.3,
-				0.55
+				0.45,
+				0.95
 			],
 			"cluster": {
 				"radius": 7.0,
@@ -173,13 +173,13 @@
 				"outside": 0.06
 			},
 			"patch_frequency": 0.06,
-			"patch_min": 0.2,
+			"patch_min": 0.35,
 			"align": 0.5,
 			"sink": 0.02,
 			"far_fraction": 0.5,
 			"fade": [
-				34.0,
-				48.0
+				44.0,
+				62.0
 			]
 		},
 		{
@@ -187,22 +187,22 @@
 			"kind": "model",
 			"model": "res://assets/models/foliage/shrub_03/shrub_03_1k.gltf",
 			"mesh": "shrub_03_a",
-			"density": 0.05,
-			"max_per_cell": 9,
+			"density": 0.65,
+			"max_per_cell": 140,
 			"max_slope": 32.0,
 			"scale": [
-				0.35,
-				0.7
+				0.5,
+				1.15
 			],
 			"patch_frequency": 0.07,
-			"patch_min": 0.0,
+			"patch_min": 0.3,
 			"hollow": 0.4,
 			"align": 0.5,
 			"sink": 0.02,
 			"far_fraction": 0.5,
 			"fade": [
-				34.0,
-				48.0
+				44.0,
+				62.0
 			]
 		}
 	]

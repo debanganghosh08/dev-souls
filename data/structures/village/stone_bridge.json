@@ -2,35 +2,80 @@
 	"_comment": "Stone bridge culvert: stone foundation abutments, deck slab, low side parapets, and waypoint light.",
 	"name": "stone_bridge",
 	"keep_out": [
-		[-2.2, -3.2, 4.4, 6.4]
+		[
+			-2.2,
+			-3.2,
+			4.4,
+			6.4
+		]
 	],
 	"pieces": [
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0.0, -2.0, 0.0],
-			"params": {"w": 4.4, "h": 2.0, "d": 6.4, "mat": "stone"}
+			"at": [
+				0.0,
+				-4.5,
+				0.0
+			],
+			"params": {
+				"w": 4.4,
+				"h": 4.5,
+				"d": 6.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "bridge_deck",
 			"kind": "floor_slab",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 4.0, "d": 6.0, "t": 0.15, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 4.0,
+				"d": 6.0,
+				"t": 0.15,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "parapets",
 			"kind": "wall",
 			"repeat": [
-				[-1.9, 0.0, 0.0, 90],
-				[1.9, 0.0, 0.0, 90]
+				[
+					-1.9,
+					0.0,
+					0.0,
+					90
+				],
+				[
+					1.9,
+					0.0,
+					0.0,
+					90
+				]
 			],
-			"params": {"w": 6.0, "h": 0.85, "t": 0.35, "mat": "stone"}
+			"params": {
+				"w": 6.0,
+				"h": 0.85,
+				"t": 0.35,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "bridge_lamp",
 			"kind": "lamp_stone",
-			"at": [1.9, 0.85, 2.6],
-			"params": {"radius": 0.38, "sink": 0.5}
+			"at": [
+				1.9,
+				0.85,
+				2.6
+			],
+			"params": {
+				"radius": 0.38,
+				"sink": 1.8
+			}
 		}
 	]
 }

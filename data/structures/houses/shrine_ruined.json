@@ -4,18 +4,32 @@
 	"archetype": "shrine",
 	"variant": "ruined",
 	"door": {
-		"at": [0, 2.2],
+		"at": [
+			0,
+			2.2
+		],
 		"width": 1.6,
 		"height": 2.6,
 		"stair": "doorstep"
 	},
 	"lofts": [],
-	"keep_out": [[-0.8, 2.2, 1.6, 2.1]],
+	"keep_out": [
+		[
+			-0.8,
+			2.2,
+			1.6,
+			2.1
+		]
+	],
 	"pieces": [
 		{
 			"name": "floor",
 			"kind": "floor_slab",
-			"at": [0, 0, 0],
+			"at": [
+				0,
+				0,
+				0
+			],
 			"params": {
 				"w": 3.4,
 				"d": 4.4,
@@ -26,7 +40,11 @@
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0, -2, 0],
+			"at": [
+				0,
+				-2,
+				0
+			],
 			"params": {
 				"w": 3.6,
 				"h": 2,
@@ -37,7 +55,11 @@
 		{
 			"name": "arch",
 			"kind": "arch",
-			"at": [0, 0, 2],
+			"at": [
+				0,
+				0,
+				2
+			],
 			"params": {
 				"w": 3.4,
 				"h": 3,
@@ -50,7 +72,11 @@
 		{
 			"name": "back",
 			"kind": "wall",
-			"at": [0, 0, -2],
+			"at": [
+				0,
+				0,
+				-2
+			],
 			"params": {
 				"w": 3.4,
 				"h": 3,
@@ -61,7 +87,11 @@
 		{
 			"name": "east",
 			"kind": "wall",
-			"at": [1.5, 0, 0],
+			"at": [
+				1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 4.4,
@@ -78,7 +108,11 @@
 		{
 			"name": "altar",
 			"kind": "block",
-			"at": [0, 0.12, -1.3],
+			"at": [
+				0,
+				0.12,
+				-1.3
+			],
 			"params": {
 				"w": 1.2,
 				"h": 0.9,
@@ -89,7 +123,11 @@
 		{
 			"name": "west",
 			"kind": "broken_wall",
-			"at": [-1.5, 0, 0],
+			"at": [
+				-1.5,
+				0,
+				0
+			],
 			"yaw": 90,
 			"params": {
 				"w": 4.4,
@@ -103,7 +141,11 @@
 		{
 			"name": "gable_front",
 			"kind": "gable",
-			"at": [0, 3, 2],
+			"at": [
+				0,
+				3,
+				2
+			],
 			"params": {
 				"w": 3.4,
 				"rise": 1.2,
@@ -114,7 +156,11 @@
 		{
 			"name": "roof",
 			"kind": "collapsed_roof",
-			"at": [0, 3, 0],
+			"at": [
+				0,
+				3,
+				0
+			],
 			"yaw": -90,
 			"params": {
 				"w": 4,
@@ -128,7 +174,11 @@
 		{
 			"name": "candle",
 			"kind": "block",
-			"at": [0.4, 1.02, -1.3],
+			"at": [
+				0.4,
+				1.02,
+				-1.3
+			],
 			"params": {
 				"w": 0.08,
 				"h": 0.25,
@@ -139,7 +189,11 @@
 		{
 			"name": "rubble",
 			"kind": "rubble",
-			"at": [-0.9, 0, 0.6],
+			"at": [
+				-0.9,
+				0,
+				0.6
+			],
 			"params": {
 				"radius": 1,
 				"count": 5,
@@ -150,7 +204,11 @@
 		{
 			"name": "doorstep",
 			"kind": "stairs",
-			"at": [0, -1.6, 4.3],
+			"at": [
+				0,
+				-1.6,
+				4.3
+			],
 			"params": {
 				"w": 1.6,
 				"rise": 1.72,
@@ -162,28 +220,40 @@
 		{
 			"name": "yard_hearth",
 			"kind": "hearth_remains",
-			"at": [-2.3, 0, 3.4],
+			"at": [
+				-2.3,
+				0,
+				3.4
+			],
 			"yaw": 25,
 			"params": {
 				"radius": 0.95,
 				"seed": 71,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "step_lamp",
 			"kind": "lamp_stone",
-			"at": [2.1, 0, 2.9],
+			"at": [
+				2.1,
+				0,
+				2.9
+			],
 			"yaw": 0,
 			"params": {
 				"radius": 0.5,
-				"sink": 1.2
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "yard_fence_w",
 			"kind": "fence",
-			"at": [-3.4, 0, 0.0],
+			"at": [
+				-3.4,
+				0,
+				0.0
+			],
 			"yaw": 90,
 			"params": {
 				"length": 6.0,
@@ -193,19 +263,26 @@
 				"broken": true,
 				"seed": 721,
 				"mat": "planks",
-				"sink": 1.0
+				"sink": 1.8
 			}
 		},
 		{
 			"name": "garden",
 			"kind": "garden_bed",
-			"repeat": [[3.2, 0, -1.2, 90]],
+			"repeat": [
+				[
+					3.2,
+					0,
+					-1.2,
+					90
+				]
+			],
 			"params": {
 				"w": 1.1,
 				"d": 1.8,
 				"rows": 3,
 				"seed": 722,
-				"sink": 1.0
+				"sink": 1.8
 			}
 		}
 	]

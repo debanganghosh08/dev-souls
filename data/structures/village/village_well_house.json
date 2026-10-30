@@ -2,80 +2,206 @@
 	"_comment": "Village well pavilion: central stone well surrounded by four stone pillars, timber roof gables, stone sitting benches, steps and warm brazier.",
 	"name": "village_well_house",
 	"keep_out": [
-		[-2.7, -2.7, 5.4, 5.4]
+		[
+			-2.7,
+			-2.7,
+			5.4,
+			5.4
+		]
 	],
 	"pieces": [
 		{
 			"name": "foundation",
 			"kind": "block",
-			"at": [0.0, -2.0, 0.0],
-			"params": {"w": 5.4, "h": 2.0, "d": 5.4, "mat": "stone"}
+			"at": [
+				0.0,
+				-4.5,
+				0.0
+			],
+			"params": {
+				"w": 5.4,
+				"h": 4.5,
+				"d": 5.4,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "pavilion_floor",
 			"kind": "floor_slab",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"w": 5.0, "d": 5.0, "t": 0.12, "mat": "stone"}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"w": 5.0,
+				"d": 5.0,
+				"t": 0.12,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "pillars",
 			"kind": "pillar",
 			"repeat": [
-				[-2.0, 0.0, -2.0, 0],
-				[-2.0, 0.0, 2.0, 0],
-				[2.0, 0.0, -2.0, 0],
-				[2.0, 0.0, 2.0, 0]
+				[
+					-2.0,
+					0.0,
+					-2.0,
+					0
+				],
+				[
+					-2.0,
+					0.0,
+					2.0,
+					0
+				],
+				[
+					2.0,
+					0.0,
+					-2.0,
+					0
+				],
+				[
+					2.0,
+					0.0,
+					2.0,
+					0
+				]
 			],
-			"params": {"radius": 0.32, "h": 2.8, "sides": 8, "mat": "stone"}
+			"params": {
+				"radius": 0.32,
+				"h": 2.8,
+				"sides": 8,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "front_gable",
 			"kind": "gable",
-			"at": [0.0, 2.8, 2.0],
-			"params": {"w": 4.4, "rise": 1.4, "t": 0.25, "mat": "timber"}
+			"at": [
+				0.0,
+				2.8,
+				2.0
+			],
+			"params": {
+				"w": 4.4,
+				"rise": 1.4,
+				"t": 0.25,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "back_gable",
 			"kind": "gable",
-			"at": [0.0, 2.8, -2.0],
-			"params": {"w": 4.4, "rise": 1.4, "t": 0.25, "mat": "timber"}
+			"at": [
+				0.0,
+				2.8,
+				-2.0
+			],
+			"params": {
+				"w": 4.4,
+				"rise": 1.4,
+				"t": 0.25,
+				"mat": "timber"
+			}
 		},
 		{
 			"name": "roof",
 			"kind": "pitched_roof",
-			"at": [0.0, 2.8, 0.0],
-			"params": {"w": 5.2, "d": 5.2, "rise": 1.4, "t": 0.12, "overhang": 0.3, "mat": "roof"}
+			"at": [
+				0.0,
+				2.8,
+				0.0
+			],
+			"params": {
+				"w": 5.2,
+				"d": 5.2,
+				"rise": 1.4,
+				"t": 0.12,
+				"overhang": 0.3,
+				"mat": "roof"
+			}
 		},
 		{
 			"name": "well",
 			"kind": "well",
-			"at": [0.0, 0.0, 0.0],
-			"params": {"radius": 0.9, "h": 1.0, "post_h": 2.2, "mat": "stone", "wood": "planks", "sink": 0.8}
+			"at": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"params": {
+				"radius": 0.9,
+				"h": 1.0,
+				"post_h": 2.2,
+				"mat": "stone",
+				"wood": "planks",
+				"sink": 1.8
+			}
 		},
 		{
 			"name": "benches",
 			"kind": "block",
 			"repeat": [
-				[-1.6, 0.0, 0.0, 90],
-				[1.6, 0.0, 0.0, 90]
+				[
+					-1.6,
+					0.0,
+					0.0,
+					90
+				],
+				[
+					1.6,
+					0.0,
+					0.0,
+					90
+				]
 			],
-			"params": {"w": 1.6, "h": 0.45, "d": 0.5, "mat": "stone"}
+			"params": {
+				"w": 1.6,
+				"h": 0.45,
+				"d": 0.5,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "steps",
 			"kind": "stairs",
 			"repeat": [
-				[0.0, 0.0, 2.5, 180],
-				[0.0, 0.0, -2.5, 0]
+				[
+					0.0,
+					0.0,
+					2.5,
+					180
+				],
+				[
+					0.0,
+					0.0,
+					-2.5,
+					0
+				]
 			],
-			"params": {"w": 2.0, "rise": 1.25, "riser": 0.25, "tread": 0.35, "mat": "stone"}
+			"params": {
+				"w": 2.0,
+				"rise": 1.25,
+				"riser": 0.25,
+				"tread": 0.35,
+				"mat": "stone"
+			}
 		},
 		{
 			"name": "brazier",
 			"kind": "brazier",
-			"at": [0.0, 0.0, 1.4],
-			"params": {"radius": 0.42, "h": 1.05, "sink": 0.8}
+			"at": [
+				0.0,
+				0.0,
+				1.4
+			],
+			"params": {
+				"radius": 0.42,
+				"h": 1.05,
+				"sink": 1.8
+			}
 		}
 	]
 }
-
