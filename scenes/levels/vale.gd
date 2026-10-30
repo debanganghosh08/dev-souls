@@ -45,6 +45,7 @@ const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %
 @onready var _forest: Forest = %Forest
 @onready var _dressing: LevelDressing = %Dressing
 @onready var _grass: Grass = %Grass
+@onready var _rivers: Water = get_node_or_null(^"%Rivers") as Water
 @onready var _player: PlayerController = %Player
 @onready var _label: Label = %DebugLabel
 @onready var _water: MeshInstance3D = %Water
@@ -133,13 +134,22 @@ func _unhandled_input(event: InputEvent) -> void:
 func _place_water(hf: Heightfield) -> void:
 	var plane := PlaneMesh.new()
 	plane.size = Vector2.ONE * hf.pond_falloff() * 2.0
-	var material := StandardMaterial3D.new()
-	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.albedo_color = WATER_COLOUR
-	material.roughness = 0.08
-	material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	plane.material = material
-	_water_material = material
+	# The same moving water the river wears (W15). It falls back to flat glass if the shader is missing,
+	# because a level that will not load is worse than a level that looks plain.
+	var shader: Shader = load("res://scripts/systems/water.gdshader") as Shader
+	if shader != null:
+		var moving := ShaderMaterial.new()
+		moving.shader = shader
+		plane.material = moving
+		_water_material = null
+	else:
+		var material := StandardMaterial3D.new()
+		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		material.albedo_color = WATER_COLOUR
+		material.roughness = 0.08
+		material.cull_mode = BaseMaterial3D.CULL_DISABLED
+		plane.material = material
+		_water_material = material
 	_water.mesh = plane
 	var c: Vector2 = hf.pond_centre()
 	_water.global_position = Vector3(c.x, hf.water_level(), c.y)
@@ -152,6 +162,8 @@ func _bind_pond(hf: Heightfield) -> void:
 	if OS.get_cmdline_user_args().has("--probe-drained") and _flags != null:
 		_flags.set_flag(DRAINED_FLAG)
 	_drained = _flags != null and _flags.has(DRAINED_FLAG)
+	if _drained and _rivers != null:
+		_rivers.drain(DRAINED_FLAG)
 	_apply_pond_state(hf, true)
 	if _flags != null and not _flags.flag_set.is_connected(_on_flag_set):
 		_flags.flag_set.connect(_on_flag_set)
@@ -161,6 +173,8 @@ func _on_flag_set(id: StringName) -> void:
 	if id != DRAINED_FLAG or _drained:
 		return
 	_drained = true
+	if _rivers != null:
+		_rivers.drain(DRAINED_FLAG)
 	_apply_pond_state(_terrain.heightfield, false)
 
 

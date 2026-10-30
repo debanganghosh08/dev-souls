@@ -176,3 +176,55 @@ class _FakeGame:
 	func advance_time(hours: float) -> void:
 		advanced = hours
 		time_of_day = fposmod(time_of_day + hours, 24.0)
+
+
+# --- water (W14-W15) ---------------------------------------------------------------------------------------
+
+func test_the_vale_holds_water_and_the_pond_can_be_emptied() -> void:
+	var area: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/areas/vale.json"))
+	var waters: Array = area.get("waters", [])
+	# The Mirror Pond is a plane the level places on the basin (vale.gd._place_water), because it was
+	# there before this system was; `waters` is the rivers.
+	assert_true(waters.size() >= 1, "the vale has a river (%d entries)" % waters.size())
+	var river: Dictionary = {}
+	for raw: Variant in waters:
+		if str((raw as Dictionary).get("name", "")) == "river":
+			river = raw
+	assert_false(river.is_empty(), "the river runs")
+	assert_eq(str(river.get("drains_with", "")), "", "and it is not going anywhere")
+	# A channel is carved for the river, and it is gentle enough that the banks are not cliffs.
+	var channel: Dictionary = {}
+	for raw: Variant in area.get("crests", []):
+		if str((raw as Dictionary).get("name", "")) == "river_channel":
+			channel = raw
+	assert_false(channel.is_empty(), "the river runs in a channel, not across the grass")
+	assert_true(float(channel.get("height", 0.0)) < 0.0, "a channel is carved, so its height is negative")
+	var slope: float = absf(float(channel["height"])) / maxf(1.0, float(channel.get("blend", 1.0)))
+	assert_true(slope < 0.25, "its banks are walkable rather than a gorge (%.2f m per m)" % slope)
+
+
+func test_water_builds_a_surface_and_something_to_drown_in() -> void:
+	var water := Water.new()
+	_nodes.append(water)
+	water.rebuild([
+		{"name": "test_river", "points": [[0, 0], [40, 0], [80, 20]], "level": -1.0, "half_width": 6.0, "depth": 5.0},
+		{"name": "test_pool", "points": [[200, 200]], "radius": 30.0, "level": -2.0, "depth": 6.0,
+			"drains_with": "test_flag"},
+	])
+	var stats: Dictionary = water.stats()
+	assert_eq(int(stats["surfaces"]), 2, "a surface for each")
+	assert_eq(int(stats["volumes"]), 2, "and a volume under each")
+	var ribbon: ArrayMesh = Water.ribbon(Water.walk(PackedVector2Array([Vector2.ZERO, Vector2(40, 0)]), 6.0), 6.0, -1.0)
+	var verts: PackedVector3Array = ribbon.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	assert_true(verts.size() >= 8, "the ribbon follows its line (%d vertices)" % verts.size())
+	for v: Vector3 in verts:
+		assert_true(is_equal_approx(v.y, -1.0), "water is level")
+		assert_true(absf(v.z) <= 6.01, "and no wider than it was asked to be")
+	var pool: ArrayMesh = Water.disc(Vector2(200, 200), 30.0, -2.0)
+	var pond_verts: PackedVector3Array = pool.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	assert_true(pond_verts.size() > 40, "the pool is round, not a square")
+	for v: Vector3 in pond_verts:
+		assert_true(Vector2(v.x - 200.0, v.z - 200.0).length() <= 30.01, "and stays inside its radius")
+	# Draining takes the water away and the drowning with it; everything else stays.
+	assert_eq(water.drain(&"test_flag"), 2, "the pool's surface and its volume both went")
+	assert_eq(water.drain(&"nothing_named_this"), 0, "and nothing else did")

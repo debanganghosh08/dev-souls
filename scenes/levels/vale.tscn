@@ -62,7 +62,7 @@ script = ExtResource("5_dressing")
 data_path = "res://data/dressing/vale.json"
 auto_build = false
 
-[node name="Water" type="Node3D" parent="."]
+[node name="Rivers" type="Node3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("20_water")
 auto_build = true

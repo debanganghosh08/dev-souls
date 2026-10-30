@@ -59,6 +59,24 @@ func rebuild(waters: Array) -> void:
 	set_physics_process(_volumes > 0)
 
 
+## Empties every pool that was waiting on this flag: the surface goes and so does the drowning. The
+## Mirror Pond is the one that matters -- the player drains it to reach the Hearth, and water still lying
+## over the stair afterwards would be a lie and a death trap.
+func drain(flag: StringName) -> int:
+	var emptied: int = 0
+	for child: Node in get_children():
+		if str(child.get_meta(&"drains_with", "")) != String(flag):
+			continue
+		if child is Area3D:
+			(child as Area3D).monitoring = false
+			_drowning.erase(child)
+		if child is Node3D:
+			(child as Node3D).visible = false
+		emptied += 1
+	_drowning = _drowning.filter(func(n: Node) -> bool: return is_instance_valid(n))
+	return emptied
+
+
 func stats() -> Dictionary:
 	return {"surfaces": _surfaces, "volumes": _volumes, "drowning": _drowning.size()}
 
@@ -80,6 +98,35 @@ static func walk(points: PackedVector2Array, step: float) -> PackedVector2Array:
 
 
 ## The ribbon itself: two vertices per point, offset either side of the line by `half`.
+## A round pool: a fan of triangles about a centre. Used for the Mirror Pond, which a ribbon cannot be.
+static func disc(centre: Vector2, radius: float, level: float, sides: int = 48) -> ArrayMesh:
+	var mesh := ArrayMesh.new()
+	if radius <= 0.0:
+		return mesh
+	var verts := PackedVector3Array()
+	var normals := PackedVector3Array()
+	var uvs := PackedVector2Array()
+	var indices := PackedInt32Array()
+	verts.append(Vector3(centre.x, level, centre.y))
+	normals.append(Vector3.UP)
+	uvs.append(Vector2(0.5, 0.5))
+	for i: int in range(sides + 1):
+		var a: float = TAU * float(i) / float(sides)
+		verts.append(Vector3(centre.x + cos(a) * radius, level, centre.y + sin(a) * radius))
+		normals.append(Vector3.UP)
+		uvs.append(Vector2(0.5 + cos(a) * 0.5, 0.5 + sin(a) * 0.5))
+		if i > 0:
+			indices.append_array(PackedInt32Array([0, i, i + 1]))
+	var arrays: Array = []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = verts
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_TEX_UV] = uvs
+	arrays[Mesh.ARRAY_INDEX] = indices
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return mesh
+
+
 static func ribbon(points: PackedVector2Array, half: float, level: float) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
 	if points.size() < 2:
@@ -124,14 +171,16 @@ func _build_one(entry: Dictionary) -> void:
 		if raw is Array and (raw as Array).size() >= 2:
 			var p: Array = raw
 			points.append(Vector2(float(p[0]), float(p[1])))
-	if points.size() < 2:
+	var radius: float = float(entry.get("radius", 0.0))
+	# A pool is one centre and a radius; a river is a line. Requiring two points refused every pool.
+	if points.is_empty() or (points.size() < 2 and radius <= 0.0):
 		return
 	var half: float = maxf(0.5, float(entry.get("half_width", 8.0)))
 	var level: float = float(entry.get("level", 0.0))
 	var walked: PackedVector2Array = walk(points, segment)
 	var surface := MeshInstance3D.new()
 	surface.name = "Water_" + str(entry.get("name", _surfaces))
-	surface.mesh = ribbon(walked, half, level)
+	surface.mesh = disc(points[0], radius, level) if radius > 0.0 else ribbon(walked, half, level)
 	surface.material_override = _water_material()
 	surface.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(surface)
@@ -143,6 +192,15 @@ func _build_one(entry: Dictionary) -> void:
 	body.collision_mask = 1 | 2
 	body.monitoring = true
 	var depth: float = maxf(2.0, float(entry.get("depth", 6.0)))
+	if radius > 0.0:
+		var pool := CollisionShape3D.new()
+		var cyl := CylinderShape3D.new()
+		cyl.radius = radius
+		cyl.height = depth
+		pool.shape = cyl
+		pool.transform = Transform3D(Basis.IDENTITY, Vector3(points[0].x, level - depth * 0.5 + 0.4, points[0].y))
+		body.add_child(pool)
+		walked = PackedVector2Array()
 	for i: int in range(walked.size() - 1):
 		var a: Vector2 = walked[i]
 		var b: Vector2 = walked[i + 1]
@@ -157,6 +215,10 @@ func _build_one(entry: Dictionary) -> void:
 		var yaw: float = atan2(b.x - a.x, b.y - a.y)
 		shape.transform = Transform3D(Basis(Vector3.UP, yaw), Vector3(mid.x, level - depth * 0.5 + 0.4, mid.y))
 		body.add_child(shape)
+	var drains: String = str(entry.get("drains_with", ""))
+	if drains != "":
+		surface.set_meta(&"drains_with", drains)
+		body.set_meta(&"drains_with", drains)
 	body.body_entered.connect(_on_entered)
 	body.body_exited.connect(_on_exited)
 	add_child(body)
