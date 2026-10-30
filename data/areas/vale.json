@@ -75,36 +75,70 @@
       "name": "river_channel",
       "points": [
         [
-          340,
-          -150
+          340.0,
+          -150.0
         ],
         [
-          300,
-          -240
+          300.0,
+          -240.0
         ],
         [
-          190,
-          -300
+          190.0,
+          -300.0
         ],
         [
-          60,
-          -342
+          60.0,
+          -342.0
         ],
         [
-          -80,
-          -348
+          -80.0,
+          -348.0
         ],
         [
-          -200,
-          -320
+          -200.0,
+          -320.0
         ],
         [
-          -300,
-          -262
+          -300.0,
+          -262.0
         ],
         [
-          -330,
-          -180
+          -330.0,
+          -180.0
+        ]
+      ]
+    },
+    {
+      "_comment": "One of the two great hills the owner asked for (W16), sized to the ground that was actually free. A plateau cannot overlap a site, so these are as big as the valley had room for and no bigger.",
+      "blend": 44.7,
+      "half_width": 16.0,
+      "height": 13.4,
+      "name": "hill_1",
+      "points": [
+        [
+          318.0,
+          148.0
+        ],
+        [
+          346.0,
+          148.0
+        ]
+      ]
+    },
+    {
+      "_comment": "One of the two great hills the owner asked for (W16), sized to the ground that was actually free. A plateau cannot overlap a site, so these are as big as the valley had room for and no bigger.",
+      "blend": 39.9,
+      "half_width": 16.0,
+      "height": 12.0,
+      "name": "hill_2",
+      "points": [
+        [
+          -58.0,
+          -84.0
+        ],
+        [
+          -30.0,
+          -84.0
         ]
       ]
     }
@@ -302,36 +336,36 @@
       "name": "river",
       "points": [
         [
-          340,
-          -150
+          340.0,
+          -150.0
         ],
         [
-          300,
-          -240
+          300.0,
+          -240.0
         ],
         [
-          190,
-          -300
+          190.0,
+          -300.0
         ],
         [
-          60,
-          -342
+          60.0,
+          -342.0
         ],
         [
-          -80,
-          -348
+          -80.0,
+          -348.0
         ],
         [
-          -200,
-          -320
+          -200.0,
+          -320.0
         ],
         [
-          -300,
-          -262
+          -300.0,
+          -262.0
         ],
         [
-          -330,
-          -180
+          -330.0,
+          -180.0
         ]
       ]
     }

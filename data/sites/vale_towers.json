@@ -2,49 +2,67 @@
 	"_comment": "The tall towers of the Vale (W9-T). Three watchtowers of four and five storeys spread across the empty quarters, and the broken light tower on the islet in the Mirror Pond (the isle plateau in data/areas/vale.json exists for it). Each one is climbable to its head and carries a beacon there, so they are the landmarks a lost player steers by. Scenery only: no props. Ground was picked against the real heightfield, flat to 1 m across a 9 m footing and well clear of the water, the road and every other site. Rules in tests/test_towers.gd.",
 	"sites": [
 		{
-			"id": "watchtower_north",
-			"layout": "res://data/structures/towers/watchtower.json",
 			"at": [
 				-155.0,
 				-102.7
 			],
+			"id": "watchtower_north",
+			"layout": "res://data/structures/towers/watchtower.json",
 			"yaw": 135.0
 		},
 		{
-			"id": "watchtower_east",
-			"layout": "res://data/structures/towers/watchtower_ruined.json",
 			"at": [
 				252.0,
 				78.0
 			],
+			"id": "watchtower_east",
+			"layout": "res://data/structures/towers/watchtower_ruined.json",
 			"yaw": -120.0
 		},
 		{
-			"id": "watchtower_south",
-			"layout": "res://data/structures/towers/watchtower.json",
 			"at": [
 				36.6,
 				239.1
 			],
+			"id": "watchtower_south",
+			"layout": "res://data/structures/towers/watchtower.json",
 			"yaw": 20.0
 		},
 		{
-			"id": "pond_lighthouse",
-			"layout": "res://data/structures/towers/lighthouse.json",
 			"at": [
 				21.0,
 				27.0
 			],
+			"id": "pond_lighthouse",
+			"layout": "res://data/structures/towers/lighthouse.json",
 			"yaw": 150.0
 		},
 		{
-			"id": "overlook_tower",
-			"layout": "res://data/structures/towers/watchtower.json",
 			"at": [
 				-240.0,
 				8.0
 			],
+			"id": "overlook_tower",
+			"layout": "res://data/structures/towers/watchtower.json",
 			"yaw": 210.0
+		},
+		{
+			"at": [
+				332.0,
+				148.0
+			],
+			"id": "hill_tower_1",
+			"layout": "res://data/structures/towers/watchtower_ruined.json",
+			"yaw": 40.0
+		},
+		{
+			"at": [
+				-44.0,
+				-84.0
+			],
+			"id": "hill_tower_2",
+			"layout": "res://data/structures/towers/watchtower_ruined.json",
+			"yaw": 80.0
 		}
 	]
 }
