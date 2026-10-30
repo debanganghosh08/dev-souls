@@ -215,6 +215,27 @@
 				"tread": 0.35,
 				"mat": "stone"
 			}
+		},
+		{
+			"name": "hearth_fire",
+			"kind": "brazier",
+			"at": [
+				0,
+				0.14,
+				0.4
+			],
+			"yaw": 0,
+			"params": {
+				"h": 0.85,
+				"radius": 0.38,
+				"seed": 7716,
+				"sink": 0,
+				"energy": 2.2,
+				"range": 7.5,
+				"flame": 0.45,
+				"day": 0.95,
+				"cull": 48.0
+			}
 		}
 	]
 }

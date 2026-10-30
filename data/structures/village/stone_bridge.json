@@ -65,16 +65,24 @@
 			}
 		},
 		{
-			"name": "bridge_lamp",
-			"kind": "lamp_stone",
+			"name": "hearth_fire",
+			"kind": "brazier",
 			"at": [
-				1.9,
-				0.85,
-				2.6
+				0,
+				0.14,
+				0.4
 			],
+			"yaw": 0,
 			"params": {
+				"h": 0.85,
 				"radius": 0.38,
-				"sink": 1.8
+				"seed": 7712,
+				"sink": 0,
+				"energy": 2.2,
+				"range": 7.5,
+				"flame": 0.45,
+				"day": 0.95,
+				"cull": 48.0
 			}
 		}
 	]

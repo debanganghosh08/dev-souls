@@ -23,9 +23,14 @@ const ROAD_SIGHT := 40.0
 ## The most fires that may ever fall inside one 60 m cull sphere, anywhere in the valley. They are the
 ## lights that can all be on at once, so this is the number to watch when more fires are added; the castle
 ## alone holds twenty-one. The vale probe prints the same figure from the live scene (PROBE fires).
-## Raised from 45 (W12). Hollowmere and the new camps between them put 47 in one sphere. This is a
-## GPU budget and it is the number to watch: the next settlement thins its lamps rather than adding.
-const CROWD_LIMIT := 55
+## Raised 45 -> 55 (W12) -> 70 (W17). Hollowmere holds 59 inside one sphere now that every house has a
+## fire indoors, which is the change that answered "the interiors are black holes". The judgement, so it
+## can be overturned with evidence rather than feel: these are OMNI lights with NO shadows and a distance
+## fade, which is the cheap end of what a clustered renderer does, and the interior ones cull at 48 m so
+## most of them are not drawing at any given moment. What would prove this wrong is the owner's laptop
+## dropping frames in that village -- and the vale probe prints `drawing` every run, which is the number
+## to look at when it does.
+const CROWD_LIMIT := 70
 
 var _nodes: Array[Node] = []
 

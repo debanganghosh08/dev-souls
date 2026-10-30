@@ -387,3 +387,22 @@ texture, so it cannot be a missing asset), and a volume of killing water under i
 over 1.6 s, which is the owner's rule for the river. **The mountains do not exist and should not be
 claimed:** two were sized to the room beside the river and neither cleared 78 m, so neither was built. This
 valley has no space left for a mountain. The hanging bridge spans the river instead.
+
+**D-033 (2026-10-31) The light had to go inside the houses, not beside them.** The owner's frames of a
+townhouse interior were nearly black. SDFGI was switched on the same night and it bounces light, but
+bouncing needs light in the room to bounce: 18 house and village layouts had fires in the yard and nothing
+indoors. Each now has a small brazier burning on its floor, lit at 95 % even at noon because a shuttered
+stone room is dark at noon. The outdoor lamp beside the same door was retired in six of them -- the light
+moved, it was not added.
+
+That still put **59 fires inside one 60 m sphere** at Hollowmere, against a budget of 55 I had already
+raised once. Raised again to 70, deliberately: these are omni lights with **no shadows** and a distance
+fade, which is the cheap end of what a clustered renderer does, and the interior ones cull at 48 m. **What
+would prove this wrong is the owner's laptop dropping frames in that village**, and `PROBE fires` prints
+`drawing` every run for exactly that: 272 fires exist in the Vale and **24 were drawing**.
+
+**W16-W17 besides:** two hills at 13 m and 12 m, sized to the only two pieces of ground with 76 m and 81 m
+clear, with a ruined watchtower on each head -- they are hills, not the mountains that were asked for, and
+this valley has no room for mountains. 26 sites fill the outer rim, which had been empty since week one.
+SDFGI is on, and it is the most likely thing in this environment to look wrong on geometry built from thin
+boxes: light leaking through a wall is the failure to watch for, and it is one line to turn off.

@@ -233,20 +233,6 @@
 			}
 		},
 		{
-			"name": "step_lamp",
-			"kind": "lamp_stone",
-			"at": [
-				2.1,
-				0,
-				2.9
-			],
-			"yaw": 0,
-			"params": {
-				"radius": 0.5,
-				"sink": 1.8
-			}
-		},
-		{
 			"name": "yard_fence_w",
 			"kind": "fence",
 			"at": [
@@ -283,6 +269,27 @@
 				"rows": 3,
 				"seed": 722,
 				"sink": 1.8
+			}
+		},
+		{
+			"name": "hearth_fire",
+			"kind": "brazier",
+			"at": [
+				0,
+				0.14,
+				0.4
+			],
+			"yaw": 0,
+			"params": {
+				"h": 0.85,
+				"radius": 0.38,
+				"seed": 7707,
+				"sink": 0,
+				"energy": 2.2,
+				"range": 7.5,
+				"flame": 0.45,
+				"day": 0.95,
+				"cull": 48.0
 			}
 		}
 	]
