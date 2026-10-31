@@ -96,6 +96,10 @@ func _ready() -> void:
 	_dressing.build(LevelDressing.load_data(_dressing.data_path))
 	_grass.bind(_terrain, _grass_density, _forest.positions())
 	_grass.rebuild()
+	# The respawn point starts at the origin, which in this valley is a hole in the ground over the Hearth
+	# chamber. Claim it for the spawn before anything can die.
+	if _game != null and _game.respawn_point.is_equal_approx(Vector3.ZERO):
+		_game.set_respawn(&"vale", _spawn)
 	_player.global_position = _spawn
 	_player.velocity = Vector3.ZERO
 	if _game != null:
@@ -107,6 +111,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	_rescue_if_fallen()
 	if _sprint_running and _sprint_frame < SPRINT_FRAMES:
 		_sprint_step()
 	if not _label.visible:
@@ -259,6 +264,24 @@ func _physics_process(_delta: float) -> void:
 	_probe_done = true
 	_print_probe()
 	get_tree().quit()
+
+
+## Anything below this has left the world: the lowest ground in the Vale is the pond floor at about
+## -12 m, so -80 m is unreachable by walking. Falling through a terrain hole, a physics tunnel or a bad
+## respawn all end here, and all of them end the same way -- put back on solid ground rather than falling
+## for ever in the dark, which is what the owner filmed.
+const VOID_Y := -80.0
+
+
+func _rescue_if_fallen() -> void:
+	if _player == null or _player.global_position.y > VOID_Y:
+		return
+	var back: Vector3 = _spawn
+	if _game != null and not _game.respawn_point.is_equal_approx(Vector3.ZERO):
+		back = _game.respawn_point
+	_player.global_position = back + Vector3.UP * 1.0
+	_player.velocity = Vector3.ZERO
+	push_warning("Vale: the player fell out of the world and was put back at %s" % back)
 
 
 func _print_probe() -> void:

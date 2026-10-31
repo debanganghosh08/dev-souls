@@ -1,26 +1,194 @@
 {
 	"_comment": "Lights along the old road and out in the empty ground (W9-F), so a player walking at night always has something lit to walk towards. Lamps every ~19 m on alternating verges, a brighter brazier at every fourth, four watchfires that carry 32 m, four lost hearths out in the empty ground where the road is not, and two more lights on the way in from the spawn. Same schema as vale_pois.json: scenery only, no props. Every spot was picked against the real heightfield: 4.9 m off the valley polyline in data/areas/vale.json, at least 0.8 m above the water, falling no more than 1.2 m across its footing, and clear of the pond basin, both plateaus, every other site and every house anchor. Rules in tests/test_firelight.gd and tests/test_site_placement.gd.",
 	"sites": [
-		{"id": "way_lamp_01", "layout": "res://data/structures/pois/way_lamp.json", "at": [-162.6, 110.4], "yaw": -147.5},
-		{"id": "way_lamp_02", "layout": "res://data/structures/pois/way_lamp.json", "at": [-141.3, 108.4], "yaw": 32.5},
-		{"id": "way_lamp_03", "layout": "res://data/structures/pois/way_lamp.json", "at": [-125.2, 98.2], "yaw": 32.5},
-		{"id": "road_brazier_04", "layout": "res://data/structures/pois/road_brazier.json", "at": [-109.2, 88.0], "yaw": 32.5},
-		{"id": "way_lamp_05", "layout": "res://data/structures/pois/way_lamp.json", "at": [-93.2, 77.8], "yaw": 32.5},
-		{"id": "way_lamp_06", "layout": "res://data/structures/pois/way_lamp.json", "at": [88.2, -61.0], "yaw": 37.3},
-		{"id": "way_lamp_07", "layout": "res://data/structures/pois/way_lamp.json", "at": [97.3, -80.3], "yaw": -142.7},
-		{"id": "road_brazier_08", "layout": "res://data/structures/pois/road_brazier.json", "at": [118.2, -84.7], "yaw": 40.1},
-		{"id": "way_lamp_09", "layout": "res://data/structures/pois/way_lamp.json", "at": [126.4, -104.4], "yaw": -139.9},
-		{"id": "way_lamp_10", "layout": "res://data/structures/pois/way_lamp.json", "at": [147.2, -109.2], "yaw": 40.1},
-		{"id": "way_lamp_11", "layout": "res://data/structures/pois/way_lamp.json", "at": [155.5, -128.9], "yaw": -139.9},
-		{"id": "watchfire_castle_road", "layout": "res://data/structures/pois/watchfire.json", "at": [150.0, -97.0], "yaw": -145.0},
-		{"id": "watchfire_west_road", "layout": "res://data/structures/pois/watchfire.json", "at": [-112.0, 52.0], "yaw": 60.0},
-		{"id": "watchfire_east_rim", "layout": "res://data/structures/pois/watchfire.json", "at": [250.0, 60.0], "yaw": -110.0},
-		{"id": "watchfire_south_rim", "layout": "res://data/structures/pois/watchfire.json", "at": [-70.0, -255.0], "yaw": 40.0},
-		{"id": "lost_hearth_east_shore", "layout": "res://data/structures/pois/lost_hearth.json", "at": [118.0, 44.0], "yaw": 150.0},
-		{"id": "lost_hearth_north_rim", "layout": "res://data/structures/pois/lost_hearth.json", "at": [-35.4, -161.1], "yaw": 20.0},
-		{"id": "lost_hearth_west_field", "layout": "res://data/structures/pois/lost_hearth.json", "at": [-176.0, 84.0], "yaw": 110.0},
-		{"id": "lost_hearth_south_meadow", "layout": "res://data/structures/pois/lost_hearth.json", "at": [60.0, 185.0], "yaw": -60.0},
-		{"id": "brazier_spawn_way", "layout": "res://data/structures/pois/road_brazier.json", "at": [40.0, 95.0], "yaw": -180.0},
-		{"id": "lamp_east_shore", "layout": "res://data/structures/pois/way_lamp.json", "at": [140.0, 10.0], "yaw": 90.0}
+		{
+			"at": [
+				-162.6,
+				110.4
+			],
+			"id": "way_lamp_01",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": -147.5
+		},
+		{
+			"at": [
+				-141.3,
+				108.4
+			],
+			"id": "way_lamp_02",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": 32.5
+		},
+		{
+			"at": [
+				-125.2,
+				98.2
+			],
+			"id": "way_lamp_03",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": 32.5
+		},
+		{
+			"at": [
+				-109.2,
+				88.0
+			],
+			"id": "road_brazier_04",
+			"layout": "res://data/structures/pois/road_brazier.json",
+			"yaw": 32.5
+		},
+		{
+			"at": [
+				-93.2,
+				77.8
+			],
+			"id": "way_lamp_05",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": 32.5
+		},
+		{
+			"at": [
+				88.2,
+				-61.0
+			],
+			"id": "way_lamp_06",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": 37.3
+		},
+		{
+			"at": [
+				97.3,
+				-80.3
+			],
+			"id": "way_lamp_07",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": -142.7
+		},
+		{
+			"at": [
+				118.2,
+				-84.7
+			],
+			"id": "road_brazier_08",
+			"layout": "res://data/structures/pois/road_brazier.json",
+			"yaw": 40.1
+		},
+		{
+			"at": [
+				126.4,
+				-104.4
+			],
+			"id": "way_lamp_09",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": -139.9
+		},
+		{
+			"at": [
+				147.2,
+				-109.2
+			],
+			"id": "way_lamp_10",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": 40.1
+		},
+		{
+			"at": [
+				155.5,
+				-128.9
+			],
+			"id": "way_lamp_11",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": -139.9
+		},
+		{
+			"at": [
+				150.0,
+				-97.0
+			],
+			"id": "watchfire_castle_road",
+			"layout": "res://data/structures/pois/watchfire.json",
+			"yaw": -145.0
+		},
+		{
+			"at": [
+				-118.1,
+				66.8
+			],
+			"id": "watchfire_west_road",
+			"layout": "res://data/structures/pois/watchfire.json",
+			"yaw": 60.0
+		},
+		{
+			"at": [
+				250.0,
+				60.0
+			],
+			"id": "watchfire_east_rim",
+			"layout": "res://data/structures/pois/watchfire.json",
+			"yaw": -110.0
+		},
+		{
+			"at": [
+				-70.0,
+				-255.0
+			],
+			"id": "watchfire_south_rim",
+			"layout": "res://data/structures/pois/watchfire.json",
+			"yaw": 40.0
+		},
+		{
+			"at": [
+				118.0,
+				44.0
+			],
+			"id": "lost_hearth_east_shore",
+			"layout": "res://data/structures/pois/lost_hearth.json",
+			"yaw": 150.0
+		},
+		{
+			"at": [
+				-45.6,
+				-182.8
+			],
+			"id": "lost_hearth_north_rim",
+			"layout": "res://data/structures/pois/lost_hearth.json",
+			"yaw": 20.0
+		},
+		{
+			"at": [
+				-176.0,
+				84.0
+			],
+			"id": "lost_hearth_west_field",
+			"layout": "res://data/structures/pois/lost_hearth.json",
+			"yaw": 110.0
+		},
+		{
+			"at": [
+				60.0,
+				185.0
+			],
+			"id": "lost_hearth_south_meadow",
+			"layout": "res://data/structures/pois/lost_hearth.json",
+			"yaw": -60.0
+		},
+		{
+			"at": [
+				40.0,
+				95.0
+			],
+			"id": "brazier_spawn_way",
+			"layout": "res://data/structures/pois/road_brazier.json",
+			"yaw": -180.0
+		},
+		{
+			"at": [
+				140.0,
+				10.0
+			],
+			"id": "lamp_east_shore",
+			"layout": "res://data/structures/pois/way_lamp.json",
+			"yaw": 90.0
+		}
 	]
 }

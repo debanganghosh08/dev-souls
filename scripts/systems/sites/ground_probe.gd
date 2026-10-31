@@ -18,7 +18,11 @@ const MAX_DROP := 1.2
 ## but a small one, because the wayside lamps along the pond's west shore legitimately stand 0.5 m above it
 ## and a tool that called the existing map illegal would be no use for adding to it. A bigger building
 ## wants a bigger `footprint`, which is the parameter that actually scales with the thing being placed.
-const DRY_MARGIN := 0.4
+const DRY_MARGIN := 0.5
+## What `find` aims for, as opposed to what `report` accepts. A spot that only just clears the water by
+## the suite's own threshold is a spot that fails the moment the site standing on it is wider than the
+## probe that measured it -- which is how two sites ended up 7 cm under the line after the river went in.
+const FIND_MARGIN := 1.1
 const ROAD_CLEAR := 4.0
 const SITE_CLEAR := 8.0
 ## Kept clear of the ridge wall, matching tests/test_site_placement.gd. The limit itself is not a constant:
@@ -84,7 +88,7 @@ static func report(hf: Heightfield, road: PackedVector2Array, taken: Array, at: 
 ## This is what turns "put a smithy about here" into a placement that passes the suite.
 static func find(hf: Heightfield, road: PackedVector2Array, taken: Array, want: Vector2,
 		footprint: float = FOOTPRINT, reach: float = 40.0, steps: int = 8, ridge: float = INF) -> Vector2:
-	if report(hf, road, taken, want, footprint, ridge)["legal"]:
+	if _good_enough(report(hf, road, taken, want, footprint, ridge)):
 		return want
 	var ring: float = reach / float(maxi(1, steps))
 	for step: int in range(1, steps + 1):
@@ -93,9 +97,14 @@ static func find(hf: Heightfield, road: PackedVector2Array, taken: Array, want: 
 		for i: int in range(points):
 			var a: float = TAU * float(i) / float(points)
 			var spot := Vector2(want.x + cos(a) * radius, want.y + sin(a) * radius)
-			if report(hf, road, taken, spot, footprint, ridge)["legal"]:
+			if _good_enough(report(hf, road, taken, spot, footprint, ridge)):
 				return spot
 	return Vector2.INF
+
+
+## Legal, and clear of the water by FIND_MARGIN rather than by the bare minimum.
+static func _good_enough(row: Dictionary) -> bool:
+	return bool(row["legal"]) and float(row["lowest"]) >= float(row["water"]) + FIND_MARGIN
 
 
 ## Shortest distance from a point to a polyline, INF when the line has fewer than two points.

@@ -28,6 +28,10 @@ var state: State = State.BOOT:
 			_ended = false
 		state_changed.emit(old, value)
 var respawn_area: StringName = &"vale"
+## Where death returns the player. NEVER leave this at the origin: the Vale has a terrain hole there
+## for the Hearth chamber, and the owner found it the hard way -- drowned in the river, respawned at
+## (0, 0, 0), fell through the world. A level sets this to its spawn as soon as it loads (see
+## vale.gd), and a Hearth moves it on.
 var respawn_point: Vector3 = Vector3.ZERO
 var player_position: Vector3 = Vector3.ZERO
 var time_of_day: float = 8.0:

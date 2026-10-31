@@ -30,15 +30,6 @@
 		},
 		{
 			"at": [
-				91.3,
-				-294.7
-			],
-			"id": "rock_crag_03",
-			"layout": "res://data/structures/rocks/crag.json",
-			"yaw": -18.0
-		},
-		{
-			"at": [
 				51.6,
 				-216.0
 			],
@@ -201,33 +192,6 @@
 		},
 		{
 			"at": [
-				310.6,
-				-250.6
-			],
-			"id": "crossing_hanging_bridge_0",
-			"layout": "res://data/structures/rocks/hanging_bridge.json",
-			"yaw": -45.0
-		},
-		{
-			"at": [
-				195.9,
-				-313.8
-			],
-			"id": "crossing_river_bridge_1",
-			"layout": "res://data/structures/rocks/river_bridge.json",
-			"yaw": -23.0
-		},
-		{
-			"at": [
-				62.6,
-				-356.8
-			],
-			"id": "crossing_river_bridge_2",
-			"layout": "res://data/structures/rocks/river_bridge.json",
-			"yaw": -10.1
-		},
-		{
-			"at": [
 				-146.3,
 				-21.6
 			],
@@ -297,15 +261,6 @@
 			"id": "riverside_01",
 			"layout": "res://data/structures/village/workshop_leanto.json",
 			"yaw": 136.4
-		},
-		{
-			"at": [
-				-135.0,
-				-293.0
-			],
-			"id": "riverside_02",
-			"layout": "res://data/structures/village/walled_yard.json",
-			"yaw": 41.3
 		},
 		{
 			"at": [
@@ -585,6 +540,42 @@
 			"id": "rim_boulders_25",
 			"layout": "res://data/structures/rocks/boulders.json",
 			"yaw": -85.2
+		},
+		{
+			"at": [
+				306.2,
+				-237.0
+			],
+			"id": "crossing_01",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"yaw": -43.0
+		},
+		{
+			"at": [
+				64.3,
+				-332.8
+			],
+			"id": "crossing_03",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"yaw": -9.0
+		},
+		{
+			"at": [
+				-79.0,
+				-339.0
+			],
+			"id": "crossing_04",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"yaw": 4.0
+		},
+		{
+			"at": [
+				-202.9,
+				-314.2
+			],
+			"id": "crossing_05",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"yaw": 19.2
 		}
 	]
 }

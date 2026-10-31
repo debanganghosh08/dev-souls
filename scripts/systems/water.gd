@@ -127,7 +127,38 @@ static func disc(centre: Vector2, radius: float, level: float, sides: int = 48) 
 	return mesh
 
 
-static func ribbon(points: PackedVector2Array, half: float, level: float) -> ArrayMesh:
+## The level at each walked point, interpolated from the levels the authored points carried. A river whose
+## surface does not follow its bed disappears wherever the land rises over it.
+static func _levels_along(authored: PackedVector2Array, levels: PackedFloat32Array,
+		walked: PackedVector2Array, fallback: float) -> PackedFloat32Array:
+	var out := PackedFloat32Array()
+	var usable: bool = false
+	for v: float in levels:
+		usable = usable or not is_nan(v)
+	for w: Vector2 in walked:
+		if not usable:
+			out.append(fallback)
+			continue
+		# Nearest two authored points, weighted by how far between them this one sits.
+		var best_i: int = 0
+		var best_d: float = INF
+		for i: int in range(authored.size()):
+			var d: float = w.distance_to(authored[i])
+			if d < best_d:
+				best_d = d
+				best_i = i
+		var a_i: int = maxi(0, best_i - 1)
+		var b_i: int = mini(authored.size() - 1, best_i + 1)
+		var la: float = levels[a_i] if not is_nan(levels[a_i]) else fallback
+		var lb: float = levels[b_i] if not is_nan(levels[b_i]) else fallback
+		var span: float = authored[a_i].distance_to(authored[b_i])
+		var t: float = 0.5 if span < 0.01 else clampf(authored[a_i].distance_to(w) / span, 0.0, 1.0)
+		out.append(lerpf(la, lb, t))
+	return out
+
+
+static func ribbon(points: PackedVector2Array, half: float, level: float,
+		levels: PackedFloat32Array = PackedFloat32Array()) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
 	if points.size() < 2:
 		return mesh
@@ -146,8 +177,9 @@ static func ribbon(points: PackedVector2Array, half: float, level: float) -> Arr
 		var side: Vector2 = dir.normalized().orthogonal() * half
 		if i > 0:
 			run += here.distance_to(behind)
-		verts.append(Vector3(here.x - side.x, level, here.y - side.y))
-		verts.append(Vector3(here.x + side.x, level, here.y + side.y))
+		var y: float = levels[i] if i < levels.size() else level
+		verts.append(Vector3(here.x - side.x, y, here.y - side.y))
+		verts.append(Vector3(here.x + side.x, y, here.y + side.y))
 		normals.append(Vector3.UP)
 		normals.append(Vector3.UP)
 		uvs.append(Vector2(0.0, run * 0.08))
@@ -167,10 +199,12 @@ static func ribbon(points: PackedVector2Array, half: float, level: float) -> Arr
 
 func _build_one(entry: Dictionary) -> void:
 	var points := PackedVector2Array()
+	var levels := PackedFloat32Array()
 	for raw: Variant in entry.get("points", []):
 		if raw is Array and (raw as Array).size() >= 2:
 			var p: Array = raw
 			points.append(Vector2(float(p[0]), float(p[1])))
+			levels.append(float(p[2]) if (p as Array).size() >= 3 else NAN)
 	var radius: float = float(entry.get("radius", 0.0))
 	# A pool is one centre and a radius; a river is a line. Requiring two points refused every pool.
 	if points.is_empty() or (points.size() < 2 and radius <= 0.0):
@@ -180,7 +214,8 @@ func _build_one(entry: Dictionary) -> void:
 	var walked: PackedVector2Array = walk(points, segment)
 	var surface := MeshInstance3D.new()
 	surface.name = "Water_" + str(entry.get("name", _surfaces))
-	surface.mesh = disc(points[0], radius, level) if radius > 0.0 else ribbon(walked, half, level)
+	var walked_levels: PackedFloat32Array = _levels_along(points, levels, walked, level)
+	surface.mesh = disc(points[0], radius, level) if radius > 0.0 else ribbon(walked, half, level, walked_levels)
 	surface.material_override = _water_material()
 	surface.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(surface)
@@ -213,7 +248,11 @@ func _build_one(entry: Dictionary) -> void:
 		box.size = Vector3(half * 2.0, depth, span + 0.4)
 		shape.shape = box
 		var yaw: float = atan2(b.x - a.x, b.y - a.y)
-		shape.transform = Transform3D(Basis(Vector3.UP, yaw), Vector3(mid.x, level - depth * 0.5 + 0.4, mid.y))
+		var seg_level: float = level
+		if i < walked_levels.size():
+			seg_level = (walked_levels[i] + walked_levels[mini(i + 1, walked_levels.size() - 1)]) * 0.5
+		shape.transform = Transform3D(Basis(Vector3.UP, yaw),
+				Vector3(mid.x, seg_level - depth * 0.5 + 0.4, mid.y))
 		body.add_child(shape)
 	var drains: String = str(entry.get("drains_with", ""))
 	if drains != "":

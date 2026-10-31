@@ -111,8 +111,8 @@
 		},
 		{
 			"at": [
-				22.0,
-				-305.0
+				21.3,
+				-288.0
 			],
 			"id": "stone_ring_north",
 			"layout": "res://data/structures/pois/stone_ring.json",
@@ -129,8 +129,8 @@
 		},
 		{
 			"at": [
-				-62.0,
-				-297.0
+				-62.2,
+				-293.0
 			],
 			"id": "north_cairns_west",
 			"layout": "res://data/structures/pois/cairn_trio.json",
@@ -327,8 +327,8 @@
 		},
 		{
 			"at": [
-				-293.4,
-				-192.6
+				-286.9,
+				-189.9
 			],
 			"id": "hayfield_far_west",
 			"layout": "res://data/structures/pois/haystacks.json",
@@ -354,8 +354,8 @@
 		},
 		{
 			"at": [
-				-50.0,
-				255.0
+				9.5,
+				231.6
 			],
 			"id": "meadow_grave_south",
 			"layout": "res://data/structures/pois/lone_grave.json",
@@ -381,8 +381,8 @@
 		},
 		{
 			"at": [
-				110.0,
-				-310.0
+				53.3,
+				-310.2
 			],
 			"id": "north_rim_cairns",
 			"layout": "res://data/structures/pois/cairn_trio.json",

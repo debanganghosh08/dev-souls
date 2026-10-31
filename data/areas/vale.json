@@ -68,47 +68,6 @@
       ]
     },
     {
-      "_comment": "The bed the river runs in (W14): a crest with a NEGATIVE height, which carves instead of rising. One feature makes the mountains and the channel between them both.",
-      "blend": 20.0,
-      "half_width": 6.0,
-      "height": -2.4,
-      "name": "river_channel",
-      "points": [
-        [
-          340.0,
-          -150.0
-        ],
-        [
-          300.0,
-          -240.0
-        ],
-        [
-          190.0,
-          -300.0
-        ],
-        [
-          60.0,
-          -342.0
-        ],
-        [
-          -80.0,
-          -348.0
-        ],
-        [
-          -200.0,
-          -320.0
-        ],
-        [
-          -300.0,
-          -262.0
-        ],
-        [
-          -330.0,
-          -180.0
-        ]
-      ]
-    },
-    {
       "_comment": "One of the two great hills the owner asked for (W16), sized to the ground that was actually free. A plateau cannot overlap a site, so these are as big as the valley had room for and no bigger.",
       "blend": 44.7,
       "half_width": 16.0,
@@ -139,6 +98,68 @@
         [
           -30.0,
           -84.0
+        ]
+      ]
+    },
+    {
+      "_comment": "The river bed (W18), rim to rim. Shallow on purpose: this valley was laid out before it had a river and a gorge tilts the ground out from under what was already built (D-032).",
+      "blend": 20.0,
+      "half_width": 7.0,
+      "height": -2.4,
+      "name": "river_channel",
+      "points": [
+        [
+          338,
+          -142
+        ],
+        [
+          296,
+          -226
+        ],
+        [
+          188,
+          -282
+        ],
+        [
+          62,
+          -318
+        ],
+        [
+          -78,
+          -324
+        ],
+        [
+          -198,
+          -300
+        ],
+        [
+          -296,
+          -248
+        ],
+        [
+          -328,
+          -172
+        ]
+      ]
+    },
+    {
+      "_comment": "The same bed, broadened through its middle reach (W18), which is where the owner asked for the river at its widest.",
+      "blend": 18.0,
+      "half_width": 11.0,
+      "height": -2.8,
+      "name": "river_channel_wide",
+      "points": [
+        [
+          188,
+          -282
+        ],
+        [
+          62,
+          -318
+        ],
+        [
+          -78,
+          -324
         ]
       ]
     }
@@ -329,43 +350,75 @@
   "water_level": -5.0,
   "waters": [
     {
-      "_comment": "The river (W14). Scenery on top, a rule underneath: crossing it drowns you, which is what the owner asked for. It runs rim to rim through the emptiest ground in the valley.",
-      "depth": 5.0,
-      "half_width": 7.0,
-      "level": -0.7,
+      "_comment": "The river (W18). Each point carries its own surface level, taken from the bed under it and never allowed to rise as it goes: a flat surface over a bed that follows the land is why the river vanished in two places and the owner walked into the gap.",
+      "depth": 6.0,
+      "half_width": 7.5,
+      "level": -1.0,
       "name": "river",
       "points": [
         [
-          340.0,
-          -150.0
+          338.0,
+          -142.0,
+          -2.27
         ],
         [
-          300.0,
-          -240.0
+          296.0,
+          -226.0,
+          -2.27
         ],
         [
-          190.0,
-          -300.0
+          188.0,
+          -282.0,
+          -2.27
         ],
         [
-          60.0,
-          -342.0
+          62.0,
+          -318.0,
+          -2.27
         ],
         [
-          -80.0,
-          -348.0
+          -78.0,
+          -324.0,
+          -2.27
         ],
         [
-          -200.0,
-          -320.0
-        ],
-        [
+          -198.0,
           -300.0,
-          -262.0
+          -2.85
         ],
         [
-          -330.0,
-          -180.0
+          -296.0,
+          -248.0,
+          -2.85
+        ],
+        [
+          -328.0,
+          -172.0,
+          -2.85
+        ]
+      ]
+    },
+    {
+      "_comment": "Its widest reach (W18), between the cut hills.",
+      "depth": 6.5,
+      "half_width": 13.0,
+      "level": -1.0,
+      "name": "river_wide",
+      "points": [
+        [
+          188.0,
+          -282.0,
+          -2.27
+        ],
+        [
+          62.0,
+          -318.0,
+          -2.27
+        ],
+        [
+          -78.0,
+          -324.0,
+          -2.27
         ]
       ]
     }
