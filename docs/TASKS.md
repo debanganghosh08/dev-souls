@@ -148,13 +148,24 @@ a chapel, the flood pool, the crag castle and the road cut (D-032).
 **W16 · Hills and SDFGI.** `DONE`. Two hills of 13 m and 12 m with towers on them; global illumination on.
 **W17 · The rim, and light indoors.** `DONE`. 26 sites in the empty outer band; a fire inside 18 houses,
 which is what SDFGI needed in order to have anything to bounce (D-033).
-**W18 · A second area.** `READY`, and the honest next step. The Vale is full: 225 sites, and the last
-three things placed all had to be shrunk to fit. Mountains, a proper town in a bowl, and cut plateaus need
-ground that does not exist here. main.gd._begin_level() is the single entry point, and the structure,
-grass, fire, water and site systems are all area-driven already.
-**W19 · Profile the grass filter.** `READY`. Every new site enlarges the keep-out mask the grass consults,
-and the fill is the binding constraint on how much more the Vale can hold. Four levers were tried and
-three made it worse; it wants measurement, not another guess (D-031).
+**W18 · The respawn bug, the river, the bridges.** `DONE`. `Game.respawn_point` had defaulted to the
+origin, which in this valley is a hole in the ground; the river was a flat surface over a bed that follows
+the land. See `docs/reports/W14-W17.md` and D-032.
+**W19 · Names, the map, the hidden wood, and the grass fill.** `DONE`. `data/places.json` names nine
+quarters, twenty-six places and four river reaches; the map (minimap plus **M**) draws itself from the area
+file, `SiteRegistry` and the live `Forest`, so new content appears on it by itself; Thornwood is 3,674
+trees round Thornhollow and the Girdle; Wyrm's Rest and the Sunken Wheel are placed. The grass profiling
+that this item was originally about is answered in D-037: fewer, bigger lattice cells. See
+`docs/reports/W19.md`.
+**W20 · A second area.** `READY`, and still the honest next step. The Vale is now 250 sites and five
+plateaus, and W19 spent an hour finding one spot a 36 m plateau could stand without tilting a neighbour.
+Mountains, a proper town in a bowl and cut plateaus need ground that does not exist here.
+`main.gd._begin_level()` is the single entry point, and the structure, grass, fire, water, site and map
+systems are all area-driven already -- the map reads `area_name` and nothing else.
+**W21 · Look at W19 with eyes.** `READY`, and cheap. The map, the minimap, Thornwood, the Girdle, the dead
+dragon and the Sunken Wheel have only ever been drawn by a null renderer. Two recordings have overturned
+six things the tests called fine. Thirty seconds of walking into Thornwood from the south-east, and thirty
+of the map open, would settle more than another night of building.
 
 **W7-02 · Traps.** `READY`. Something that kills: a crypt floor that gives, a sluice that floods, a rotten
 bridge. Death already costs progress and keeps the save, so this is placement and triggers, not new systems.
@@ -189,8 +200,10 @@ A 256×256 `.ico` (and an `icon.svg` for the project) is all it takes; say what 
 build it, or drop a file in and I will wire it up.
 
 ## Open engineering questions
-- **Grass frame cost — being measured now (W6-04).** Previously unmeasured, and it may hitch when sprinting. The knobs are `fill_cells_per_frame`
-  and `density`. Nobody has put a number on it (W6-04).
+- **Grass frame cost — measured and fixed (W19, D-037).** The answer was fewer, bigger lattice cells: 15 m
+  rather than 12, with the density caps raised to match so the field is no thinner. Unfilled cells within
+  50 m of a sprinting player went 4 to 0 and frames over 4 ms went 44-92 to 0. The knob that was wrong was
+  `cell_size`; `fill_cells_per_frame` and the budget had both been tried and neither was it.
 - **Terrain build time is 5150 ms** on the owner's machine — the valley is silent for five seconds on load.
 - **D-013 undecided:** the photoscan props are 50–68k vertices each and will be instanced in the hundreds.
   Godot's automatic LODs, or a decimation step in the pipeline?

@@ -56,6 +56,13 @@ const THIN_MOVE := 2.0
 @export var auto_build: bool = false
 
 var cluster_points: PackedVector3Array = PackedVector3Array()
+## Edge of the buckets the cluster points are indexed into, in metres. Comfortably wider than any cell plus
+## its cluster reach, so a cell touches four buckets at worst.
+const CLUSTER_BUCKET := 64.0
+# The trees, bucketed. prepare() used to walk EVERY cluster point for every lattice cell it filled, which
+# cost nothing while the wood was six hundred trees and broke the sprint fill the day it became three
+# thousand four hundred (W19). The index is built once per bind and read once per cell.
+var _cluster_index: Dictionary = {}
 ## The area's zones (density, palette, tall grass and flowers by place), built from the data file's
 ## `zones` path once a Heightfield is bound; null leaves every layer on the land alone.
 var zones: GrassZones
@@ -130,8 +137,36 @@ func bind_heightfield(hf: Heightfield, filter: Callable = Callable(), clusters: 
 	_water = hf.water_level()
 	_density_filter = filter
 	cluster_points = clusters
+	_index_clusters()
 	_hf = hf
 	_build_zones()
+
+
+## Buckets every cluster point by position. Cheap, and it is the whole of the fix: the cost of preparing a
+## cell stops depending on how many trees the level planted anywhere else.
+func _index_clusters() -> void:
+	_cluster_index.clear()
+	for p: Vector3 in cluster_points:
+		var key := Vector2i(int(floor(p.x / CLUSTER_BUCKET)), int(floor(p.z / CLUSTER_BUCKET)))
+		if not _cluster_index.has(key):
+			_cluster_index[key] = PackedVector3Array()
+		(_cluster_index[key] as PackedVector3Array).append(p)
+
+
+## The cluster points that could reach into the cell at `origin`, gathered from the buckets that overlap it
+## grown by `reach`. A superset of what the cell needs, which is all prepare() wants: it filters again.
+func clusters_near(origin: Vector2, size: float, reach: float) -> PackedVector3Array:
+	var out := PackedVector3Array()
+	if _cluster_index.is_empty():
+		return out
+	var low := Vector2(origin.x - reach, origin.y - reach)
+	var high := Vector2(origin.x + size + reach, origin.y + size + reach)
+	for bx: int in range(int(floor(low.x / CLUSTER_BUCKET)), int(floor(high.x / CLUSTER_BUCKET)) + 1):
+		for bz: int in range(int(floor(low.y / CLUSTER_BUCKET)), int(floor(high.y / CLUSTER_BUCKET)) + 1):
+			var bucket: Variant = _cluster_index.get(Vector2i(bx, bz))
+			if bucket != null:
+				out.append_array(bucket as PackedVector3Array)
+	return out
 
 
 ## Builds the layers and the slot pool from `data`, or from data_path when it is empty (the normal case).
@@ -338,7 +373,8 @@ func _fill_pending(p: Vector3) -> void:
 			var slot: int = _free[_free_count]
 			_cells[key] = slot
 			_slot_key[slot] = key
-			_cell.prepare(key, cell_size, _height_sampler, _water, cluster_points, _cluster_reach, zones)
+			_cell.prepare(key, cell_size, _height_sampler, _water,
+					clusters_near(Vector2(key) * cell_size, cell_size, _cluster_reach), _cluster_reach, zones)
 			_partial_slot = slot
 			_partial_layer = 0
 			worked = true

@@ -14,7 +14,7 @@
 			"kind": "clump",
 			"zone": "grass",
 			"density": 3.2,
-			"max_per_cell": 700,
+			"max_per_cell": 977,
 			"max_slope": 32.0,
 			"blades": 3,
 			"segments": 3,
@@ -47,7 +47,7 @@
 			"kind": "clump",
 			"zone": "tall",
 			"density": 1.0,
-			"max_per_cell": 210,
+			"max_per_cell": 317,
 			"max_slope": 30.0,
 			"blades": 3,
 			"segments": 4,
@@ -80,7 +80,7 @@
 			"kind": "flower",
 			"zone": "flowers",
 			"density": 0.09,
-			"max_per_cell": 22,
+			"max_per_cell": 32,
 			"max_slope": 26.0,
 			"height": [
 				0.2,
@@ -110,7 +110,7 @@
 			"name": "pebbles",
 			"kind": "pebble",
 			"density": 0.22,
-			"max_per_cell": 36,
+			"max_per_cell": 71,
 			"max_slope": 42.0,
 			"scale": [
 				0.06,
@@ -133,7 +133,7 @@
 			"kind": "patch",
 			"texture": "res://assets/textures/wood/dry_decay_leaves/dry_decay_leaves_diff_2k.jpg",
 			"density": 0.14,
-			"max_per_cell": 22,
+			"max_per_cell": 45,
 			"max_slope": 36.0,
 			"scale": [
 				1.1,
@@ -161,7 +161,7 @@
 			"model": "res://assets/models/foliage/fern_02/fern_02_1k.gltf",
 			"mesh": "fern_02_b",
 			"density": 0.38,
-			"max_per_cell": 85,
+			"max_per_cell": 121,
 			"max_slope": 30.0,
 			"scale": [
 				0.45,
@@ -188,7 +188,7 @@
 			"model": "res://assets/models/foliage/shrub_03/shrub_03_1k.gltf",
 			"mesh": "shrub_03_a",
 			"density": 0.5,
-			"max_per_cell": 110,
+			"max_per_cell": 158,
 			"max_slope": 32.0,
 			"scale": [
 				0.5,

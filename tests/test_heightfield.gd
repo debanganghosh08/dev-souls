@@ -50,7 +50,8 @@ func test_pond_is_below_water_and_ridge_above_floor() -> void:
 
 
 func test_plateaus_are_flat_and_blend_smoothly() -> void:
-	assert_eq(_hf.plateaus().size(), 4, "the vale has a village, a castle, the pond islet and the overlook")
+	assert_eq(_hf.plateaus().size(), 5,
+			"the vale has a village, a castle, the pond islet, the overlook and the hidden wood's floor")
 	assert_true(_hf.height_at(21.0, 27.0) > _hf.water_level() + 2.0,
 			"the islet stands clear of the water, which is the whole point of it (%.2f over %.2f)"
 			% [_hf.height_at(21.0, 27.0), _hf.water_level()])

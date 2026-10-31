@@ -1,0 +1,423 @@
+{
+	"_comment": "What fell here (W19). A spine of vertebrae running twenty metres, ribs leaning off it, a wing bone folded under, and a skull at the head with its jaw open. Fenced off by whoever found it, with a fire at the fence so they could sit and look at it, and a shrine stone because by then they had decided what it meant. Built from blocks, pillars and headstones: there is no dragon in this kit, so this is one made of the parts there are.",
+	"name": "dead_dragon",
+	"keep_out": [
+		[
+			-13.0,
+			-9.0,
+			26.0,
+			18.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "spine",
+			"kind": "block",
+			"repeat": [
+				[
+					-9.5,
+					0.3,
+					0.4,
+					6
+				],
+				[
+					-7.6,
+					0.45,
+					0.1,
+					-4
+				],
+				[
+					-5.7,
+					0.6,
+					-0.2,
+					8
+				],
+				[
+					-3.8,
+					0.7,
+					-0.3,
+					-6
+				],
+				[
+					-1.9,
+					0.75,
+					-0.2,
+					3
+				],
+				[
+					0.0,
+					0.75,
+					0.0,
+					0
+				],
+				[
+					1.9,
+					0.7,
+					0.3,
+					-5
+				],
+				[
+					3.8,
+					0.6,
+					0.7,
+					7
+				],
+				[
+					5.7,
+					0.45,
+					1.2,
+					-3
+				],
+				[
+					7.6,
+					0.3,
+					1.9,
+					9
+				]
+			],
+			"params": {
+				"w": 1.3,
+				"h": 1.1,
+				"d": 1.6,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "ribs_north",
+			"kind": "pillar",
+			"repeat": [
+				[
+					-7.2,
+					0.5,
+					-1.2,
+					0
+				],
+				[
+					-4.9,
+					0.6,
+					-1.5,
+					0
+				],
+				[
+					-2.6,
+					0.7,
+					-1.6,
+					0
+				],
+				[
+					-0.3,
+					0.7,
+					-1.5,
+					0
+				],
+				[
+					2.0,
+					0.6,
+					-1.1,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.22,
+				"h": 4.2,
+				"sides": 6,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "ribs_south",
+			"kind": "pillar",
+			"repeat": [
+				[
+					-6.4,
+					0.5,
+					1.6,
+					0
+				],
+				[
+					-4.1,
+					0.6,
+					1.9,
+					0
+				],
+				[
+					-1.8,
+					0.65,
+					2.0,
+					0
+				],
+				[
+					0.5,
+					0.6,
+					1.8,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.2,
+				"h": 3.4,
+				"sides": 6,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "fallen_ribs",
+			"kind": "headstone",
+			"repeat": [
+				[
+					-3.0,
+					0.25,
+					4.2,
+					82
+				],
+				[
+					-0.6,
+					0.25,
+					4.6,
+					76
+				],
+				[
+					1.8,
+					0.25,
+					4.4,
+					88
+				]
+			],
+			"params": {
+				"w": 0.3,
+				"h": 3.0,
+				"t": 0.16,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "wing_spar",
+			"kind": "block",
+			"at": [
+				3.0,
+				0.3,
+				-4.4
+			],
+			"yaw": 24,
+			"params": {
+				"w": 9.0,
+				"h": 0.42,
+				"d": 0.42,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "wing_fingers",
+			"kind": "headstone",
+			"repeat": [
+				[
+					5.6,
+					0.2,
+					-6.6,
+					70
+				],
+				[
+					7.0,
+					0.2,
+					-5.2,
+					64
+				],
+				[
+					8.0,
+					0.2,
+					-3.6,
+					58
+				]
+			],
+			"params": {
+				"w": 0.26,
+				"h": 4.6,
+				"t": 0.14,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "skull",
+			"kind": "block",
+			"at": [
+				10.4,
+				0.15,
+				2.9
+			],
+			"yaw": -18,
+			"params": {
+				"w": 2.6,
+				"h": 1.5,
+				"d": 3.4,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "jaw",
+			"kind": "block",
+			"at": [
+				11.6,
+				0.05,
+				4.6
+			],
+			"yaw": -30,
+			"params": {
+				"w": 2.2,
+				"h": 0.5,
+				"d": 2.6,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "horns",
+			"kind": "headstone",
+			"repeat": [
+				[
+					9.6,
+					1.6,
+					1.9,
+					24
+				],
+				[
+					11.0,
+					1.6,
+					2.6,
+					-16
+				]
+			],
+			"params": {
+				"w": 0.3,
+				"h": 2.2,
+				"t": 0.18,
+				"mat": "bone"
+			}
+		},
+		{
+			"name": "fence",
+			"kind": "fence",
+			"repeat": [
+				[
+					0.0,
+					0.0,
+					-8.4,
+					0
+				],
+				[
+					0.0,
+					0.0,
+					8.4,
+					0
+				]
+			],
+			"params": {
+				"length": 26.0,
+				"h": 1.2,
+				"spacing": 2.2,
+				"rails": 2,
+				"broken": true,
+				"seed": 8101,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "fence_ends",
+			"kind": "fence",
+			"repeat": [
+				[
+					-12.6,
+					0.0,
+					0.0,
+					90
+				],
+				[
+					12.6,
+					0.0,
+					0.0,
+					90
+				]
+			],
+			"params": {
+				"length": 17.0,
+				"h": 1.2,
+				"spacing": 2.2,
+				"rails": 2,
+				"broken": true,
+				"seed": 8102,
+				"mat": "planks",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "watchers_fire",
+			"kind": "hearth_remains",
+			"at": [
+				-11.0,
+				0,
+				6.4
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.9,
+				"seed": 8103,
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "shrine_stone",
+			"kind": "headstone",
+			"at": [
+				-9.0,
+				0,
+				7.4
+			],
+			"yaw": 12,
+			"params": {
+				"w": 0.7,
+				"h": 1.3,
+				"t": 0.2,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "offerings",
+			"kind": "cairn",
+			"repeat": [
+				[
+					-10.2,
+					0,
+					8.4,
+					0
+				],
+				[
+					-7.6,
+					0,
+					8.0,
+					0
+				]
+			],
+			"params": {
+				"radius": 0.42,
+				"h": 0.8,
+				"count": 5,
+				"seed": 8104,
+				"mat": "stone",
+				"sink": 1.8
+			}
+		},
+		{
+			"name": "lamp",
+			"kind": "lamp_stone",
+			"at": [
+				13.6,
+				0,
+				5.4
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 0.5,
+				"sink": 1.8
+			}
+		}
+	]
+}

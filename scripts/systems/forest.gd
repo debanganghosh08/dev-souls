@@ -18,9 +18,14 @@ const PLACE_ATTEMPTS := 12
 @export var seed_value: int = 1
 @export var lod1_distance: float = 45.0
 @export var cull_distance: float = 140.0
-## Only the collider_count trees nearest the origin get a StaticBody3D. LIMITATION: every other tree is
-## walk-through until a streaming task gives colliders to whatever is near the player instead of the origin.
+## Only the collider_count trees nearest an anchor get a StaticBody3D. LIMITATION: every other tree is
+## walk-through until a streaming task gives colliders to whatever is near the player.
 @export var collider_count: int = 40
+## Where the colliders are spent. The origin is always one; add a point here and the trees round it are
+## solid too. The hidden wood needs this: a wall of wood you can walk straight through does not hide
+## anything, and the wood is 300 m from the origin, so "nearest the origin" would have spent every
+## collider back at the spawn.
+@export var collider_anchors: PackedVector2Array = PackedVector2Array()
 ## Edge length of the square chunks that visibility ranges (LOD and culling) are evaluated per.
 @export var chunk_size: float = 40.0
 ## Off when a level sets height_sampler / placement_filter first and calls rebuild() itself.
@@ -34,6 +39,16 @@ const PLACE_ATTEMPTS := 12
 @export var band_gap: float = 5.0
 @export var band_half: float = 26.0
 @export var band_count: int = 0
+@export_group("Grove")
+## A dense wood in one place, on top of the thinned radial forest: the owner asked for a forest of
+## thousands with something hidden inside it, and a wood you can lose a village in has to be far denser
+## than the scatter that covers the whole valley. A clearing is left at its heart for whatever stands
+## there, and the trees crowd hardest just inside the outer edge, which is what makes it read as a wall of
+## wood from outside and a room from within.
+@export var grove_centre: Vector2 = Vector2.ZERO
+@export var grove_radius: float = 0.0
+@export var grove_clearing: float = 0.0
+@export var grove_count: int = 0
 ## One tree far bigger than the rest, this far along the band (0 start, 1 end), at this scale: the landmark
 ## the owner asked for. Scale 0 leaves it out.
 @export_range(0.0, 1.0) var landmark_at: float = 0.5
@@ -61,6 +76,8 @@ func rebuild() -> void:
 	var plan: Dictionary = plan_layout(count, radius, clearing_radius, seed_value, archetype_mix)
 	merge_layout(plan, plan_band(band_points, band_gap, band_half, band_count, seed_value + 7919,
 			archetype_mix, landmark_at, landmark_scale))
+	merge_layout(plan, plan_grove(grove_centre, grove_radius, grove_clearing, grove_count,
+			seed_value + 104729, archetype_mix))
 	_layout = _grounded(plan)
 	_stats = {"per_archetype": {}, "trunk_vertices": 0, "card_vertices": 0, "card_vertices_lod1": 0,
 		"multimeshes": 0, "colliders": 0}
@@ -203,6 +220,48 @@ static func plan_band(points: PackedVector2Array, gap: float, half: float, tree_
 	return {"positions": positions, "archetypes": archetypes, "yaws": yaws, "scales": scales}
 
 
+## A dense ring of wood round a clearing. Density rises toward the outer edge so the wood closes behind
+## you: from inside the clearing it is a wall, and from outside there is no clearing at all.
+static func plan_grove(centre: Vector2, radius: float, clearing: float, tree_count: int, seed_v: int,
+		mix: Dictionary) -> Dictionary:
+	var positions := PackedVector3Array()
+	var archetypes := PackedStringArray()
+	var yaws := PackedFloat32Array()
+	var scales := PackedFloat32Array()
+	var out: Dictionary = {"positions": positions, "archetypes": archetypes, "yaws": yaws, "scales": scales}
+	if radius <= 0.0 or tree_count <= 0:
+		return out
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var names: Array[String] = []
+	var weights: Array[float] = []
+	for key: Variant in mix.keys():
+		if float(mix[key]) > 0.0:
+			names.append(str(key))
+			weights.append(float(mix[key]))
+	if names.is_empty():
+		return out
+	var inner: float = maxf(0.0, clearing)
+	# A wood asks for thousands of candidates and _too_close walks every tree placed so far, which is
+	# quadratic and would cost seconds of load time here. Same rule, read out of 1.6 m buckets.
+	var grid: Dictionary = {}
+	for i: int in tree_count:
+		# sqrt spreads evenly by area; the extra power crowds the outer edge, which is what makes the wood
+		# a wall from outside and a room from within.
+		var t: float = pow(rng.randf(), 0.55)
+		var r: float = lerpf(inner, radius, sqrt(t))
+		var a: float = rng.randf_range(0.0, TAU)
+		var cand: Vector2 = centre + Vector2(cos(a), sin(a)) * r
+		if _crowded(cand, grid):
+			continue
+		_mark(cand, grid)
+		positions.append(Vector3(cand.x, 0.0, cand.y))
+		archetypes.append(_weighted(names, weights, rng))
+		yaws.append(rng.randf_range(0.0, TAU))
+		scales.append(rng.randf_range(0.8, 1.45))
+	return out
+
+
 ## Pours `extra` into `into`, in place. Both carry the four parallel arrays.
 static func merge_layout(into: Dictionary, extra: Dictionary) -> void:
 	if (extra.get("positions", PackedVector3Array()) as PackedVector3Array).is_empty():
@@ -244,6 +303,38 @@ static func heading_at(points: PackedVector2Array, t: float) -> Vector2:
 func _grounded(layout: Dictionary) -> Dictionary:
 	var origin: Vector3 = global_position if is_inside_tree() else position
 	return GroundPlacement.ground_layout(layout, origin, height_sampler, placement_filter)
+
+
+## Distance from a tree to the nearest anchor, the origin included. Pure, so a test can check that a
+## far-off anchor really does win colliders away from the trees beside the spawn.
+static func anchor_distance(at: Vector3, anchors: PackedVector2Array) -> float:
+	var flat := Vector2(at.x, at.z)
+	var best: float = flat.length()
+	for a: Vector2 in anchors:
+		best = minf(best, flat.distance_to(a))
+	return best
+
+
+## Whether anything already in `grid` is inside MIN_SPACING of `cand`. The grid is keyed on MIN_SPACING
+## cells, so one candidate reads nine buckets however large the wood is.
+static func _crowded(cand: Vector2, grid: Dictionary) -> bool:
+	var key := Vector2i(floori(cand.x / MIN_SPACING), floori(cand.y / MIN_SPACING))
+	for dx: int in [-1, 0, 1]:
+		for dz: int in [-1, 0, 1]:
+			var bucket: Variant = grid.get(Vector2i(key.x + dx, key.y + dz))
+			if bucket == null:
+				continue
+			for p: Vector2 in bucket as PackedVector2Array:
+				if p.distance_squared_to(cand) < MIN_SPACING * MIN_SPACING:
+					return true
+	return false
+
+
+static func _mark(at: Vector2, grid: Dictionary) -> void:
+	var key := Vector2i(floori(at.x / MIN_SPACING), floori(at.y / MIN_SPACING))
+	if not grid.has(key):
+		grid[key] = PackedVector2Array()
+	(grid[key] as PackedVector2Array).append(at)
 
 
 static func _too_close(cand: Vector2, placed: PackedVector3Array) -> bool:
@@ -305,12 +396,12 @@ func _add_multimesh(node_name: String, mesh: ArrayMesh, xforms: Array[Transform3
 	_stats["multimeshes"] += 1
 
 
-## Cylinder StaticBody3D on the world layer for the collider_count trees nearest the origin only.
+## Cylinder StaticBody3D on the world layer for the collider_count trees nearest an anchor only.
 func _build_colliders(trees: Dictionary, positions: PackedVector3Array, names: PackedStringArray, yaws: PackedFloat32Array, scales: PackedFloat32Array) -> void:
 	var order: Array[int] = []
 	for i: int in positions.size():
 		order.append(i)
-	order.sort_custom(func(a: int, b: int) -> bool: return positions[a].length_squared() < positions[b].length_squared())
+	order.sort_custom(func(a: int, b: int) -> bool: return anchor_distance(positions[a], collider_anchors) < anchor_distance(positions[b], collider_anchors))
 	var limit: int = mini(collider_count, order.size())
 	for k: int in limit:
 		var i: int = order[k]

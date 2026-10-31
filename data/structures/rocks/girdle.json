@@ -1,0 +1,420 @@
+{
+	"_comment": "The Girdle (W19): a wall of crag, boulder and standing stone 56 m across, broken on one bearing. It is ONE layout rather than a ring of rock sites because the suite makes every pair of sites keep 1.5 m of daylight between their real footprints, and a crag's footprint is 13 m wide -- so a ring tight enough to read as a wall is a ring of sites that overlap. Pieces inside a layout may touch, which is what a rock wall does. The gap faces south-east, toward the rest of the Vale, with a fire either side of it.",
+	"name": "girdle",
+	"pieces": [
+		{
+			"name": "crag_00",
+			"kind": "crag",
+			"at": [
+				0.0,
+				0.0,
+				-25.93
+			],
+			"yaw": -0.9,
+			"params": {
+				"seed": 4000,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 9.5,
+				"radius": 3.9,
+				"slabs": 7
+			}
+		},
+		{
+			"name": "boulders_01",
+			"kind": "boulders",
+			"at": [
+				7.15,
+				0.0,
+				-28.99
+			],
+			"yaw": -13.9,
+			"params": {
+				"seed": 4001,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 5.3,
+				"count": 8,
+				"size": 1.5
+			}
+		},
+		{
+			"name": "standing_stones_02",
+			"kind": "standing_stones",
+			"at": [
+				13.03,
+				0.0,
+				-24.82
+			],
+			"yaw": 21.0,
+			"params": {
+				"seed": 4002,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 4.3,
+				"count": 7,
+				"h": 4.0
+			}
+		},
+		{
+			"name": "crag_03",
+			"kind": "crag",
+			"at": [
+				19.3,
+				0.0,
+				-21.79
+			],
+			"yaw": 51.7,
+			"params": {
+				"seed": 4003,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 8.6,
+				"radius": 3.9,
+				"slabs": 8
+			}
+		},
+		{
+			"name": "crag_04",
+			"kind": "crag",
+			"at": [
+				21.97,
+				0.0,
+				-15.16
+			],
+			"yaw": 50.1,
+			"params": {
+				"seed": 4004,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 7.7,
+				"radius": 4.2,
+				"slabs": 9
+			}
+		},
+		{
+			"name": "boulders_05",
+			"kind": "boulders",
+			"at": [
+				26.61,
+				0.0,
+				-10.09
+			],
+			"yaw": 95.7,
+			"params": {
+				"seed": 4005,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 4.5,
+				"count": 8,
+				"size": 2.1
+			}
+		},
+		{
+			"name": "crag_06",
+			"kind": "crag",
+			"at": [
+				27.79,
+				0.0,
+				-3.37
+			],
+			"yaw": 108.8,
+			"params": {
+				"seed": 4006,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 7.9,
+				"radius": 4.1,
+				"slabs": 6
+			}
+		},
+		{
+			"name": "boulders_07",
+			"kind": "boulders",
+			"at": [
+				29.81,
+				0.0,
+				3.62
+			],
+			"yaw": 105.5,
+			"params": {
+				"seed": 4007,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 5.3,
+				"count": 6,
+				"size": 1.6
+			}
+		},
+		{
+			"name": "standing_stones_13",
+			"kind": "standing_stones",
+			"at": [
+				0.0,
+				0.0,
+				29.18
+			],
+			"yaw": 160.9,
+			"params": {
+				"seed": 4013,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 3.7,
+				"count": 6,
+				"h": 3.4
+			}
+		},
+		{
+			"name": "crag_14",
+			"kind": "crag",
+			"at": [
+				-6.62,
+				0.0,
+				26.85
+			],
+			"yaw": 219.9,
+			"params": {
+				"seed": 4014,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 11.1,
+				"radius": 3.9,
+				"slabs": 6
+			}
+		},
+		{
+			"name": "crag_15",
+			"kind": "crag",
+			"at": [
+				-13.18,
+				0.0,
+				25.11
+			],
+			"yaw": 186.4,
+			"params": {
+				"seed": 4015,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 9.9,
+				"radius": 4.2,
+				"slabs": 7
+			}
+		},
+		{
+			"name": "boulders_16",
+			"kind": "boulders",
+			"at": [
+				-17.53,
+				0.0,
+				19.78
+			],
+			"yaw": 239.0,
+			"params": {
+				"seed": 4016,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 4.8,
+				"count": 8,
+				"size": 1.9
+			}
+		},
+		{
+			"name": "crag_17",
+			"kind": "crag",
+			"at": [
+				-22.98,
+				0.0,
+				15.86
+			],
+			"yaw": 211.0,
+			"params": {
+				"seed": 4017,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 9.2,
+				"radius": 3.9,
+				"slabs": 9
+			}
+		},
+		{
+			"name": "boulders_18",
+			"kind": "boulders",
+			"at": [
+				-24.48,
+				0.0,
+				9.28
+			],
+			"yaw": 226.6,
+			"params": {
+				"seed": 4018,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 5.2,
+				"count": 6,
+				"size": 1.7
+			}
+		},
+		{
+			"name": "standing_stones_19",
+			"kind": "standing_stones",
+			"at": [
+				-28.33,
+				0.0,
+				3.44
+			],
+			"yaw": 257.7,
+			"params": {
+				"seed": 4019,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 3.9,
+				"count": 8,
+				"h": 4.5
+			}
+		},
+		{
+			"name": "crag_20",
+			"kind": "crag",
+			"at": [
+				-29.78,
+				0.0,
+				-3.62
+			],
+			"yaw": 259.8,
+			"params": {
+				"seed": 4020,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 8.0,
+				"radius": 3.9,
+				"slabs": 8
+			}
+		},
+		{
+			"name": "crag_21",
+			"kind": "crag",
+			"at": [
+				-28.09,
+				0.0,
+				-10.65
+			],
+			"yaw": 285.7,
+			"params": {
+				"seed": 4021,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 8.6,
+				"radius": 3.6,
+				"slabs": 8
+			}
+		},
+		{
+			"name": "boulders_22",
+			"kind": "boulders",
+			"at": [
+				-21.36,
+				0.0,
+				-14.75
+			],
+			"yaw": 313.7,
+			"params": {
+				"seed": 4022,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 4.8,
+				"count": 7,
+				"size": 2.2
+			}
+		},
+		{
+			"name": "crag_23",
+			"kind": "crag",
+			"at": [
+				-19.73,
+				0.0,
+				-22.27
+			],
+			"yaw": 317.3,
+			"params": {
+				"seed": 4023,
+				"mat": "stone",
+				"sink": 3.2,
+				"h": 8.6,
+				"radius": 3.6,
+				"slabs": 7
+			}
+		},
+		{
+			"name": "boulders_24",
+			"kind": "boulders",
+			"at": [
+				-13.11,
+				0.0,
+				-24.98
+			],
+			"yaw": 311.0,
+			"params": {
+				"seed": 4024,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 4.9,
+				"count": 9,
+				"size": 1.5
+			}
+		},
+		{
+			"name": "standing_stones_25",
+			"kind": "standing_stones",
+			"at": [
+				-7.11,
+				0.0,
+				-28.85
+			],
+			"yaw": 342.7,
+			"params": {
+				"seed": 4025,
+				"mat": "stone",
+				"sink": 3.2,
+				"radius": 4.2,
+				"count": 6,
+				"h": 3.4
+			}
+		},
+		{
+			"name": "gate_fire_west",
+			"kind": "brazier",
+			"at": [
+				21.19,
+				0.0,
+				11.27
+			],
+			"yaw": 0.0,
+			"params": {
+				"h": 1.1,
+				"radius": 0.44,
+				"seed": 4101,
+				"sink": 1.8,
+				"energy": 3.0,
+				"range": 16.0
+			}
+		},
+		{
+			"name": "gate_fire_east",
+			"kind": "brazier",
+			"at": [
+				12.0,
+				0.0,
+				20.78
+			],
+			"yaw": 0.0,
+			"params": {
+				"h": 1.1,
+				"radius": 0.44,
+				"seed": 4102,
+				"sink": 1.8,
+				"energy": 3.0,
+				"range": 16.0
+			}
+		}
+	]
+}

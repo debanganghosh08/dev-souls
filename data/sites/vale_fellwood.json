@@ -1,0 +1,215 @@
+{
+	"_comment": "W19. Three places the owner asked for. THORNHOLLOW is the village hidden in the wood: seven sites on the fellwood plateau, ringed by THE GIRDLE (one layout, not a ring of sites -- see girdle.json) and buried in Thornwood's three thousand trees, with one gap to the south-east. It is a hamlet, not a town: the clearing is 56 m across and a cottage's footprint is 12 m, so seven is what fits inside the wall. WYRM'S REST is the dead dragon fenced off on Hollowmere's outskirts and THE SUNKEN WHEEL is the fallen hoop of stone alone in the eastern waste. Every spot was checked with tools/ground_report.gd.",
+	"sites": [
+		{
+			"id": "girdle",
+			"layout": "res://data/structures/rocks/girdle.json",
+			"at": [
+				-208.0,
+				-202.0
+			],
+			"yaw": 0.0
+		},
+		{
+			"id": "thornhollow_pyre",
+			"layout": "res://data/structures/village/village_square_pyre.json",
+			"at": [
+				-208.0,
+				-202.0
+			],
+			"yaw": 0.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"at": [
+						2.4,
+						0.14,
+						-1.8
+					],
+					"yaw": 24,
+					"set": {
+						"id": "thornhollow_pyre_stone",
+						"lore_key": "thornhollow_pyre"
+					}
+				}
+			]
+		},
+		{
+			"id": "thornhollow_cottage_north",
+			"layout": "res://data/structures/houses/cottage_intact.json",
+			"at": [
+				-203.7,
+				-215.3
+			],
+			"yaw": 198.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						1.9,
+						0.0,
+						2.1
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "thorn_warden",
+						"Talk/id": "thorn_warden_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "thornhollow_plaster_shack",
+			"layout": "res://data/structures/houses/shack_intact_plaster.json",
+			"at": [
+				-194.3,
+				-204.9
+			],
+			"yaw": 258.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						1.9,
+						0.0,
+						2.1
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "thorn_child",
+						"Talk/id": "thorn_child_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "thornhollow_well_house",
+			"layout": "res://data/structures/village/village_well_house.json",
+			"at": [
+				-198.6,
+				-191.6
+			],
+			"yaw": 318.0
+		},
+		{
+			"id": "thornhollow_cottage_south",
+			"layout": "res://data/structures/houses/cottage_intact.json",
+			"at": [
+				-212.3,
+				-188.7
+			],
+			"yaw": 18.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						1.9,
+						0.0,
+						2.1
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "thorn_widow",
+						"Talk/id": "thorn_widow_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "thornhollow_animal_pen",
+			"layout": "res://data/structures/village/animal_pen.json",
+			"at": [
+				-221.7,
+				-199.1
+			],
+			"yaw": 78.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						1.9,
+						0.0,
+						2.1
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "thorn_herder",
+						"Talk/id": "thorn_herder_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "thornhollow_woodcutters",
+			"layout": "res://data/structures/village/woodcutter_corridor.json",
+			"at": [
+				-217.4,
+				-212.4
+			],
+			"yaw": 138.0,
+			"props": [
+				{
+					"scene": "res://scenes/creatures/villager.tscn",
+					"at": [
+						1.9,
+						0.0,
+						2.1
+					],
+					"yaw": -140,
+					"set": {
+						"Talk/lore_key": "thorn_fletcher",
+						"Talk/id": "thorn_fletcher_talk"
+					}
+				}
+			]
+		},
+		{
+			"id": "wyrms_rest",
+			"layout": "res://data/structures/rocks/dead_dragon.json",
+			"at": [
+				-111.3,
+				185.6
+			],
+			"yaw": -62.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"at": [
+						-9.0,
+						0.14,
+						7.4
+					],
+					"yaw": 12,
+					"set": {
+						"id": "wyrms_rest_stone",
+						"lore_key": "wyrms_rest"
+					}
+				}
+			]
+		},
+		{
+			"id": "sunken_wheel",
+			"layout": "res://data/structures/rocks/fallen_ring.json",
+			"at": [
+				304.2,
+				-34.2
+			],
+			"yaw": 148.0,
+			"props": [
+				{
+					"scene": "res://scenes/props/lore_stone.tscn",
+					"at": [
+						0.0,
+						0.14,
+						3.4
+					],
+					"yaw": 180,
+					"set": {
+						"id": "sunken_wheel_stone",
+						"lore_key": "sunken_wheel"
+					}
+				}
+			]
+		}
+	]
+}

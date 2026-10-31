@@ -1,0 +1,428 @@
+{
+	"_comment": "W19. Names for everything, so the owner and I can say where a thing is instead of giving each other coordinates. This file is read by the map (scripts/ui/map_panel.gd) and by Places.region_at, and it is the only place a name lives: nothing here is duplicated into a site id. North is -Z in this project, which is how every site id already named itself, so the compass follows the data rather than the other way round.",
+	"area": "The Ashen Vale",
+	"regions": [
+		{
+			"name": "Mournhearth",
+			"compass": "the centre",
+			"centre": [
+				0.0,
+				0.0
+			],
+			"radius": 110.0,
+			"note": "The bowl the Mirror Pond lies in, and the one place in the Vale with a road through every side of it."
+		},
+		{
+			"name": "The Drowned March",
+			"compass": "N",
+			"centre": [
+				40.0,
+				-300.0
+			],
+			"radius": 170.0,
+			"note": "Flat country gone to water. The river crosses the whole of it and takes whoever tries the crossing."
+		},
+		{
+			"name": "Morrowfield",
+			"compass": "NE",
+			"centre": [
+				215.0,
+				-175.0
+			],
+			"radius": 150.0,
+			"note": "The castle's own ground, raised sixteen metres over everything round it and walled in cut stone."
+		},
+		{
+			"name": "The Greenwatch",
+			"compass": "E",
+			"centre": [
+				300.0,
+				10.0
+			],
+			"radius": 140.0,
+			"note": "The forest road and the wood either side of it, watched from a tower that has not been manned in years."
+		},
+		{
+			"name": "Wyrdreach",
+			"compass": "SE",
+			"centre": [
+				235.0,
+				185.0
+			],
+			"radius": 140.0,
+			"note": "A hidden valley with one gap in its wall, and a town inside the gap that does not advertise itself."
+		},
+		{
+			"name": "The Still Meadow",
+			"compass": "S",
+			"centre": [
+				20.0,
+				300.0
+			],
+			"radius": 150.0,
+			"note": "Open grass, three graves and a ring of stones. Nothing has happened here for a long time."
+		},
+		{
+			"name": "Hollowmere Downs",
+			"compass": "SW",
+			"centre": [
+				-150.0,
+				265.0
+			],
+			"radius": 160.0,
+			"note": "Hollowmere and its crofts, orchards, mill and graveyard: the largest living place in the Vale."
+		},
+		{
+			"name": "The Ashen Flats",
+			"compass": "W",
+			"centre": [
+				-300.0,
+				30.0
+			],
+			"radius": 150.0,
+			"note": "Farmland on the way out, and the Overlook above it, which is the only place you can see the whole Vale from."
+		},
+		{
+			"name": "The Fallow Marches",
+			"compass": "NW",
+			"centre": [
+				-250.0,
+				-220.0
+			],
+			"radius": 160.0,
+			"note": "Fields nobody has worked in living memory, a shrine at the rim for the people who left, and somewhere in the trees a village that would rather you did not find it."
+		}
+	],
+	"places": [
+		{
+			"name": "Castle Morrow",
+			"kind": "castle",
+			"at": [
+				200.0,
+				-160.0
+			],
+			"site": "castle_morrow",
+			"note": "The seat that gave this country its name."
+		},
+		{
+			"name": "Hollowmere",
+			"kind": "village",
+			"at": [
+				-120.0,
+				250.0
+			],
+			"site": "hollowmere_square",
+			"note": "Sixty buildings, a mill, a smithy and a bell."
+		},
+		{
+			"name": "Wyrdhollow",
+			"kind": "village",
+			"at": [
+				221.0,
+				166.0
+			],
+			"site": "wyrdhollow_00",
+			"note": "Six houses inside a ring of high ground with one gap."
+		},
+		{
+			"name": "Thornhollow",
+			"kind": "village",
+			"at": [
+				-208.0,
+				-202.0
+			],
+			"site": "thornhollow_pyre",
+			"note": "A village in a clearing, walled by stone and hidden by wood. Nobody here wanted to be found."
+		},
+		{
+			"name": "Riverend",
+			"kind": "village",
+			"at": [
+				-73.0,
+				-343.0
+			],
+			"site": "riverside_00",
+			"note": "Eight houses on the bank, as near the water as anyone dares."
+		},
+		{
+			"name": "Mirror Pond",
+			"kind": "water",
+			"at": [
+				0.0,
+				0.0
+			],
+			"site": "",
+			"note": "Eleven metres deep at the middle and perfectly still."
+		},
+		{
+			"name": "The Drowned Light",
+			"kind": "tower",
+			"at": [
+				21.0,
+				27.0
+			],
+			"site": "pond_lighthouse",
+			"note": "A broken light on an islet, still lit at the top."
+		},
+		{
+			"name": "The Overlook",
+			"kind": "vista",
+			"at": [
+				-240.0,
+				8.0
+			],
+			"site": "overlook_tower",
+			"note": "Twenty-two metres up. The whole Vale, from one place."
+		},
+		{
+			"name": "Thornwood",
+			"kind": "forest",
+			"at": [
+				-208.0,
+				-202.0
+			],
+			"site": "",
+			"note": "Three thousand trees round a clearing you cannot see into."
+		},
+		{
+			"name": "The Girdle",
+			"kind": "rock",
+			"at": [
+				-208.0,
+				-202.0
+			],
+			"site": "girdle",
+			"note": "A ring of crag and standing stone, broken at one bearing."
+		},
+		{
+			"name": "Wyrm's Rest",
+			"kind": "ruin",
+			"at": [
+				-111.0,
+				186.0
+			],
+			"site": "wyrms_rest",
+			"note": "What fell here, fenced off, with a fire at the fence."
+		},
+		{
+			"name": "The Sunken Wheel",
+			"kind": "ruin",
+			"at": [
+				304.0,
+				-34.0
+			],
+			"site": "sunken_wheel",
+			"note": "A hoop of worked stone going into the ground."
+		},
+		{
+			"name": "The Quiet Bell",
+			"kind": "chapel",
+			"at": [
+				87.0,
+				120.0
+			],
+			"site": "chapel",
+			"note": "A chapel with a lit altar and a bell nobody rings."
+		},
+		{
+			"name": "The Siege Ground",
+			"kind": "camp",
+			"at": [
+				224.0,
+				-108.0
+			],
+			"site": "siege_camp",
+			"note": "Pickets, graves and cold fires below the castle wall."
+		},
+		{
+			"name": "The Sunken Field",
+			"kind": "water",
+			"at": [
+				-14.0,
+				-192.0
+			],
+			"site": "flood_pool",
+			"note": "A field that filled and was never drained."
+		},
+		{
+			"name": "The Cutting",
+			"kind": "pass",
+			"at": [
+				-146.0,
+				-22.0
+			],
+			"site": "road_cut",
+			"note": "Where the road was cut through rock rather than round it."
+		},
+		{
+			"name": "The Cold Watch",
+			"kind": "tower",
+			"at": [
+				-155.0,
+				-103.0
+			],
+			"site": "watchtower_north",
+			"note": "Five storeys, four of them standing."
+		},
+		{
+			"name": "The Green Watch",
+			"kind": "tower",
+			"at": [
+				252.0,
+				78.0
+			],
+			"site": "watchtower_east",
+			"note": "The tower over the forest road."
+		},
+		{
+			"name": "The Still Watch",
+			"kind": "tower",
+			"at": [
+				37.0,
+				239.0
+			],
+			"site": "watchtower_south",
+			"note": "The tower over the meadow, and the quietest of the three."
+		},
+		{
+			"name": "The Mere Graves",
+			"kind": "graves",
+			"at": [
+				-62.0,
+				270.0
+			],
+			"site": "hollowmere_graveyard",
+			"note": "Hollowmere buries its own at the edge of the orchard."
+		},
+		{
+			"name": "Ashfarm",
+			"kind": "farm",
+			"at": [
+				-215.0,
+				-118.0
+			],
+			"site": "farmhouse",
+			"note": "The last farmhouse before the fallow ground."
+		},
+		{
+			"name": "Maren's Croft",
+			"kind": "house",
+			"at": [
+				70.0,
+				130.0
+			],
+			"site": "maren_cottage",
+			"note": "One cottage, one tally scratched into the lintel."
+		},
+		{
+			"name": "The Hermit's Shack",
+			"kind": "house",
+			"at": [
+				113.0,
+				273.0
+			],
+			"site": "hermit_shack",
+			"note": "Far from the road on purpose."
+		},
+		{
+			"name": "The Edge Shrine",
+			"kind": "shrine",
+			"at": [
+				-258.0,
+				-245.0
+			],
+			"site": "edge_shrine",
+			"note": "A tablet at the rim, facing out of the Vale."
+		},
+		{
+			"name": "The North Watch",
+			"kind": "tower",
+			"at": [
+				-30.0,
+				-280.0
+			],
+			"site": "north_watch",
+			"note": "A watch hut with a fire on its roof, over the river country."
+		},
+		{
+			"name": "The Fisher's Shack",
+			"kind": "house",
+			"at": [
+				-133.0,
+				-51.0
+			],
+			"site": "fisher_shack",
+			"note": "Nets, and no boat."
+		}
+	],
+	"waters": [
+		{
+			"name": "The Morrow Race",
+			"points": [
+				[
+					338.0,
+					-142.0
+				],
+				[
+					296.0,
+					-226.0
+				]
+			],
+			"note": "Fast, narrow and straight down off the castle ground."
+		},
+		{
+			"name": "The Wide Water",
+			"points": [
+				[
+					296.0,
+					-226.0
+				],
+				[
+					188.0,
+					-282.0
+				],
+				[
+					62.0,
+					-318.0
+				]
+			],
+			"note": "The river at its broadest, between two cut hills, with a span hanging over it on no supports."
+		},
+		{
+			"name": "Riverend Bank",
+			"points": [
+				[
+					62.0,
+					-318.0
+				],
+				[
+					-78.0,
+					-324.0
+				],
+				[
+					-198.0,
+					-300.0
+				]
+			],
+			"note": "The only reach anyone has built on."
+		},
+		{
+			"name": "The Last Mouth",
+			"points": [
+				[
+					-198.0,
+					-300.0
+				],
+				[
+					-296.0,
+					-248.0
+				],
+				[
+					-328.0,
+					-172.0
+				]
+			],
+			"note": "Where the river leaves the Vale and does not come back."
+		}
+	]
+}

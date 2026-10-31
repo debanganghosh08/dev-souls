@@ -107,5 +107,37 @@
 	"villager_wife": {
 		"title": "At the Well",
 		"body": "Draw if you like. It comes up clean, which is the only thing in this valley that still does."
+	},
+	"thornhollow_pyre": {
+		"title": "The Village Pyre",
+		"body": "They keep the fire in the middle and the stones at the edge. Ask them which came first and they will tell you the stones, and that the stones were standing before anyone was counting."
+	},
+	"thorn_warden": {
+		"title": "The Warden of the Gap",
+		"body": "You came through the gap. Nobody comes through the gap. Go back the way you came, and do not tell the road about us."
+	},
+	"thorn_child": {
+		"title": "The Child",
+		"body": "There is a wall of trees, and then there is us. I have never been past the trees. Father says that past the trees it is all roads."
+	},
+	"thorn_fletcher": {
+		"title": "The Fletcher",
+		"body": "Shafts out of the wood, heads out of the old field. We have no smith. We have never needed one and we do not want the noise."
+	},
+	"thorn_herder": {
+		"title": "The Herder",
+		"body": "Four goats and the stones. The stones keep the wolves out better than any fence I ever set, and I have set a great many fences."
+	},
+	"thorn_widow": {
+		"title": "The Widow",
+		"body": "My husband went out to find where the river went. The river goes to the end of the world. He should have asked me."
+	},
+	"wyrms_rest": {
+		"title": "Wyrm's Rest",
+		"body": "It came down in the long year and it has not moved since. We fenced it so the children would stop climbing the ribs, and then we raised a stone, so as not to look like people who only build fences."
+	},
+	"sunken_wheel": {
+		"title": "The Sunken Wheel",
+		"body": "A wheel of worked stone, eight paces across, standing on its edge and sinking. There is writing at the foot of it and the writing has gone. Whoever cut this did not cut it for us."
 	}
 }

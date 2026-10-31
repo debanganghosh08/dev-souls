@@ -406,3 +406,51 @@ clear, with a ruined watchtower on each head -- they are hills, not the mountain
 this valley has no room for mountains. 26 sites fill the outer rim, which had been empty since week one.
 SDFGI is on, and it is the most likely thing in this environment to look wrong on geometry built from thin
 boxes: light leaking through a wall is the failure to watch for, and it is one line to turn off.
+
+**D-034 (2026-10-31) Names live in one file, and a name that outlives its thing is a bug.** The owner asked
+for every castle, village, quarter and river reach to be named, so that we can say "the Girdle" instead of
+trading coordinates. They are all in `data/places.json` and nowhere else -- not duplicated into site ids,
+not repeated in the map. The risk with a names file is drift: a name goes on pointing at a site that was
+moved or deleted, and the map then labels bare ground. So `tests/test_places.gd` reads the names against
+the real `SiteRegistry` list and fails when a name points at nothing. **North is -Z**, which was not
+decided here: `north_watch` has sat at z = -280 and `south_ring` at z = +350 since week one, and the
+compass follows the data rather than the other way round.
+
+**D-035 (2026-10-31) The map keeps no list of its own.** The owner's rule was that the map show the world
+"exactly" and reflect anything new without being told. So the ridge, pond, river and flat ground are read
+from `data/areas/vale.json`, every building dot from `SiteRegistry` (coloured by the folder its layout
+lives in), the names from `data/places.json`, and the hidden wood off the live `Forest` node's own exports.
+Nothing on the map is enumerated by hand. A negative control that gave the map a hard-coded site list was
+caught by `tests/test_map.gd`. North is up and the map never rotates: a rotating minimap is easier to read
+while running and far harder to read against a drawn map with eight bearings marked on it.
+
+**D-036 (2026-10-31) A wall of rock is one layout, not a ring of sites.** Every pair of sites must keep
+1.5 m between their real OBBs, and a crag's footprint is 13 m across, so a ring of rock sites tight enough
+to read as a wall is a ring of sites that overlap -- the suite listed eleven such pairs on the first
+attempt. The Girdle is therefore a single layout of twenty-one rock groups on a 28 m circle: pieces inside
+a layout may touch, which is what a rock wall does, and the clearing inside stays free for the village
+because the layout's OBBs sit on the ring and not in the middle.
+
+Two more things that attempt taught, both of them about where a thing can go rather than what it is. **A
+plateau cannot be placed near another plateau**: the hidden village first stood in the south-east, where
+its 47 m skirt tilted Castle Morrow's flat top from 125 m away, because the castle's own skirt is 158 m
+long. And **a wood 290 m from the origin gets no colliders**, because `Forest` gave them to the trees
+nearest the origin -- a wall of wood you can walk straight through hides nothing. `collider_anchors` now
+says where the colliders are spent; the origin is always one of them.
+
+**D-037 (2026-10-31) The grass lattice wants FEWER, BIGGER cells.** The sprint probe had been failing two
+assertions -- cells still empty within 50 m of a sprinting player, and too many frames over 4 ms -- and
+**it failed at the previous commit too**, so this was a standing defect and not a regression. Profiling put
+the cost in the **fixed** cost of preparing a cell (a height grid, the zones, the nearby trees), not in the
+work inside it, and the lattice was paying it 81 times a settle. Smaller cells were tried first and made it
+worse: 10 and 11 unfilled cells at 9 m and 8 m against 4 at 12 m. The lattice is now **15 m cells** with
+every density cap and the density multiplier raised to match the larger cell, so the field is not thinner
+for it (2.34 instances per m² against 2.30 before).
+
+Unfilled cells within 50 m went 4 to 0, frames over 4 ms went 44-92 to 0, the 95th-percentile fill frame
+went 4.0 to 2.7 ms, and barely half as many frames do fill work at all. **What was traded** is the
+lattice's diagonal reach, about 60 m down to about 54 m; the shader fade starts at 50 m so it still
+completes inside the lattice, and grass stopping short on a diagonal is the sign that the radius needs
+raising. Two supporting fixes, both of which only became necessary now: the per-cell tree gather walked
+every tree in the level (fine at 600, not at 4,854) and reads 64 m buckets instead, and a wood's own
+spacing check walked every tree already planted, which is quadratic at five thousand candidates.

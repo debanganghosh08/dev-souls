@@ -1,426 +1,437 @@
 {
-  "_comment": "Ashen Vale landform, read by Heightfield.from_dict. Metres, world XZ with the Mirror Pond at the origin. Layers compose in this order: noise hills -> valley-floor channel (calms the noise) -> pond basin -> boundary ridge -> plateaus. Slope targets: valley floor and routes <= 30 deg (player floor_max_angle is 45), ridge upper half > 45 so it reads as a wall.",
-  "_comment_holes": "World XZ rects [x, z, w, h] where the terrain mesh AND collision are omitted so built structures can go underground. First: the castle crypt stairwell (tests/test_crypt_mouth.gd). Second: the stairwell down to the Hearth's chamber under the Mirror Pond, snapping to x -4..4, z -6..6 (tests/test_hearth_mouth.gd). Whatever is built must floor the SNAPPED hole, not the authored rect (D-014).",
-  "crests": [
-    {
-      "_comment": "The wall round the hidden valley (W12): a ring of high ground with one gap in it. The gap is the only way in, which is the whole point of the place.",
-      "blend": 24.0,
-      "half_width": 8.0,
-      "height": 18.0,
-      "name": "hidden_ring",
-      "points": [
-        [
-          252.3,
-          170.0
-        ],
-        [
-          249.1,
-          184.0
-        ],
-        [
-          240.1,
-          195.2
-        ],
-        [
-          212.8,
-          201.5
-        ],
-        [
-          199.9,
-          195.2
-        ],
-        [
-          190.9,
-          184.0
-        ],
-        [
-          187.7,
-          170.0
-        ],
-        [
-          190.9,
-          156.0
-        ],
-        [
-          199.9,
-          144.8
-        ],
-        [
-          212.8,
-          138.5
-        ],
-        [
-          227.2,
-          138.5
-        ],
-        [
-          240.1,
-          144.8
-        ],
-        [
-          249.1,
-          156.0
-        ],
-        [
-          252.3,
-          170.0
-        ]
-      ]
-    },
-    {
-      "_comment": "One of the two great hills the owner asked for (W16), sized to the ground that was actually free. A plateau cannot overlap a site, so these are as big as the valley had room for and no bigger.",
-      "blend": 44.7,
-      "half_width": 16.0,
-      "height": 13.4,
-      "name": "hill_1",
-      "points": [
-        [
-          318.0,
-          148.0
-        ],
-        [
-          346.0,
-          148.0
-        ]
-      ]
-    },
-    {
-      "_comment": "One of the two great hills the owner asked for (W16), sized to the ground that was actually free. A plateau cannot overlap a site, so these are as big as the valley had room for and no bigger.",
-      "blend": 39.9,
-      "half_width": 16.0,
-      "height": 12.0,
-      "name": "hill_2",
-      "points": [
-        [
-          -58.0,
-          -84.0
-        ],
-        [
-          -30.0,
-          -84.0
-        ]
-      ]
-    },
-    {
-      "_comment": "The river bed (W18), rim to rim. Shallow on purpose: this valley was laid out before it had a river and a gorge tilts the ground out from under what was already built (D-032).",
-      "blend": 20.0,
-      "half_width": 7.0,
-      "height": -2.4,
-      "name": "river_channel",
-      "points": [
-        [
-          338,
-          -142
-        ],
-        [
-          296,
-          -226
-        ],
-        [
-          188,
-          -282
-        ],
-        [
-          62,
-          -318
-        ],
-        [
-          -78,
-          -324
-        ],
-        [
-          -198,
-          -300
-        ],
-        [
-          -296,
-          -248
-        ],
-        [
-          -328,
-          -172
-        ]
-      ]
-    },
-    {
-      "_comment": "The same bed, broadened through its middle reach (W18), which is where the owner asked for the river at its widest.",
-      "blend": 18.0,
-      "half_width": 11.0,
-      "height": -2.8,
-      "name": "river_channel_wide",
-      "points": [
-        [
-          188,
-          -282
-        ],
-        [
-          62,
-          -318
-        ],
-        [
-          -78,
-          -324
-        ]
-      ]
-    }
-  ],
-  "holes": [
-    [
-      207.5,
-      -182.5,
-      6.0,
-      9.0
-    ],
-    [
-      -4.0,
-      -5.0,
-      8.0,
-      10.0
-    ]
-  ],
-  "material": {
-    "grass_slope_deg": 20.0,
-    "grass_tint": [
-      0.63,
-      0.82,
-      0.47
-    ],
-    "gravel_slope_deg": 28.0,
-    "mud_blend": 1.8,
-    "mud_height": 1.6,
-    "normal_strength": 0.8,
-    "road": {
-      "_comment": "The old road the terrain wears bare, same line as the valley channel and the grass zones.",
-      "feather": 4.6,
-      "half_width": 3.8,
-      "waypoints": [
-        [
-          -200.0,
-          140.0
-        ],
-        [
-          -90.0,
-          70.0
-        ],
-        [
-          0.0,
-          0.0
-        ],
-        [
-          105.0,
-          -80.0
-        ],
-        [
-          200.0,
-          -160.0
-        ],
-        [
-          -150.0,
-          196.0
-        ],
-        [
-          -96.0,
-          244.0
-        ],
-        [
-          -168.0,
-          126.0
-        ],
-        [
-          -240.0,
-          -18.0
-        ]
-      ]
-    },
-    "rock_slope_deg": 36.0,
-    "uv_metres_per_tile": 2.0
-  },
-  "noise": {
-    "amplitude": 12.0,
-    "frequency": 0.0028,
-    "gain": 0.45,
-    "lacunarity": 2.0,
-    "octaves": 4.0
-  },
-  "plateaus": [
-    {
-      "blend": 46.0,
-      "centre": [
-        -200.0,
-        140.0
-      ],
-      "height": 3.0,
-      "name": "village",
-      "radius": 58.0
-    },
-    {
-      "blend": 80.0,
-      "centre": [
-        200.0,
-        -160.0
-      ],
-      "height": 16.0,
-      "name": "castle",
-      "radius": 78.0
-    },
-    {
-      "_comment": "The islet in the Mirror Pond (W9-T): a stub of ground standing 2.6 m clear of the water for the broken light tower. Plateaus are applied after the basin is carved, which is what lets a rise sit inside the pond at all. It is set 28 m out on the perpendicular of the old road, so it crowds neither the pond seal at the centre nor the road that runs through the basin, and its skirt is long enough that the climb out of the water is walkable.",
-      "blend": 17.0,
-      "centre": [
-        21.0,
-        27.0
-      ],
-      "height": -2.4,
-      "name": "isle",
-      "radius": 7.0
-    },
-    {
-      "_comment": "The Overlook (W11): high ground the player climbs to see the valley, asked for twice and finally built. It is 22 m up over a 57 m skirt, which is as big as the Vale had room for: a plateau cannot overlap a site, because its skirt would tilt the ground out from under one, and nothing in this valley had more than 87 m of clear space left. A watchtower stands on top so there is a reason to climb it.",
-      "blend": 57.0,
-      "centre": [
-        -240.0,
-        8.0
-      ],
-      "height": 22.0,
-      "name": "overlook",
-      "radius": 22.0
-    }
-  ],
-  "pond": {
-    "centre": [
-      0.0,
-      0.0
-    ],
-    "depth": 11.0,
-    "falloff": 150.0,
-    "radius": 42.0
-  },
-  "ridge": {
-    "height": 95.0,
-    "inner_radius": 410.0,
-    "outer_radius": 520.0,
-    "wobble": 30.0,
-    "wobble_frequency": 0.004
-  },
-  "seed": 20261024.0,
-  "size": 1024.0,
-  "spawn": {
-    "clearance": 1.0,
-    "direction": [
-      0.55,
-      0.85
-    ],
-    "from": [
-      0.0,
-      0.0
-    ],
-    "max_distance": 140.0,
-    "max_slope": 24.0,
-    "min_distance": 48.0,
-    "step": 2.0
-  },
-  "valley": {
-    "blend": 34.0,
-    "depth": 1.5,
-    "flatten": 0.65,
-    "waypoints": [
-      [
-        -200.0,
-        140.0
-      ],
-      [
-        -90.0,
-        70.0
-      ],
-      [
-        0.0,
-        0.0
-      ],
-      [
-        105.0,
-        -80.0
-      ],
-      [
-        200.0,
-        -160.0
-      ]
-    ],
-    "width": 36.0
-  },
-  "water_level": -5.0,
-  "waters": [
-    {
-      "_comment": "The river (W18). Each point carries its own surface level, taken from the bed under it and never allowed to rise as it goes: a flat surface over a bed that follows the land is why the river vanished in two places and the owner walked into the gap.",
-      "depth": 6.0,
-      "half_width": 7.5,
-      "level": -1.0,
-      "name": "river",
-      "points": [
-        [
-          338.0,
-          -142.0,
-          -2.27
-        ],
-        [
-          296.0,
-          -226.0,
-          -2.27
-        ],
-        [
-          188.0,
-          -282.0,
-          -2.27
-        ],
-        [
-          62.0,
-          -318.0,
-          -2.27
-        ],
-        [
-          -78.0,
-          -324.0,
-          -2.27
-        ],
-        [
-          -198.0,
-          -300.0,
-          -2.85
-        ],
-        [
-          -296.0,
-          -248.0,
-          -2.85
-        ],
-        [
-          -328.0,
-          -172.0,
-          -2.85
-        ]
-      ]
-    },
-    {
-      "_comment": "Its widest reach (W18), between the cut hills.",
-      "depth": 6.5,
-      "half_width": 13.0,
-      "level": -1.0,
-      "name": "river_wide",
-      "points": [
-        [
-          188.0,
-          -282.0,
-          -2.27
-        ],
-        [
-          62.0,
-          -318.0,
-          -2.27
-        ],
-        [
-          -78.0,
-          -324.0,
-          -2.27
-        ]
-      ]
-    }
-  ]
+	"_comment": "Ashen Vale landform, read by Heightfield.from_dict. Metres, world XZ with the Mirror Pond at the origin. Layers compose in this order: noise hills -> valley-floor channel (calms the noise) -> pond basin -> boundary ridge -> plateaus. Slope targets: valley floor and routes <= 30 deg (player floor_max_angle is 45), ridge upper half > 45 so it reads as a wall.",
+	"_comment_holes": "World XZ rects [x, z, w, h] where the terrain mesh AND collision are omitted so built structures can go underground. First: the castle crypt stairwell (tests/test_crypt_mouth.gd). Second: the stairwell down to the Hearth's chamber under the Mirror Pond, snapping to x -4..4, z -6..6 (tests/test_hearth_mouth.gd). Whatever is built must floor the SNAPPED hole, not the authored rect (D-014).",
+	"crests": [
+		{
+			"_comment": "The wall round the hidden valley (W12): a ring of high ground with one gap in it. The gap is the only way in, which is the whole point of the place.",
+			"blend": 24.0,
+			"half_width": 8.0,
+			"height": 18.0,
+			"name": "hidden_ring",
+			"points": [
+				[
+					252.3,
+					170.0
+				],
+				[
+					249.1,
+					184.0
+				],
+				[
+					240.1,
+					195.2
+				],
+				[
+					212.8,
+					201.5
+				],
+				[
+					199.9,
+					195.2
+				],
+				[
+					190.9,
+					184.0
+				],
+				[
+					187.7,
+					170.0
+				],
+				[
+					190.9,
+					156.0
+				],
+				[
+					199.9,
+					144.8
+				],
+				[
+					212.8,
+					138.5
+				],
+				[
+					227.2,
+					138.5
+				],
+				[
+					240.1,
+					144.8
+				],
+				[
+					249.1,
+					156.0
+				],
+				[
+					252.3,
+					170.0
+				]
+			]
+		},
+		{
+			"_comment": "One of the two great hills the owner asked for (W16), sized to the ground that was actually free. A plateau cannot overlap a site, so these are as big as the valley had room for and no bigger.",
+			"blend": 44.7,
+			"half_width": 16.0,
+			"height": 13.4,
+			"name": "hill_1",
+			"points": [
+				[
+					318.0,
+					148.0
+				],
+				[
+					346.0,
+					148.0
+				]
+			]
+		},
+		{
+			"_comment": "One of the two great hills the owner asked for (W16), sized to the ground that was actually free. A plateau cannot overlap a site, so these are as big as the valley had room for and no bigger.",
+			"blend": 39.9,
+			"half_width": 16.0,
+			"height": 12.0,
+			"name": "hill_2",
+			"points": [
+				[
+					-58.0,
+					-84.0
+				],
+				[
+					-30.0,
+					-84.0
+				]
+			]
+		},
+		{
+			"_comment": "The river bed (W18), rim to rim. Shallow on purpose: this valley was laid out before it had a river and a gorge tilts the ground out from under what was already built (D-032).",
+			"blend": 20.0,
+			"half_width": 7.0,
+			"height": -2.4,
+			"name": "river_channel",
+			"points": [
+				[
+					338,
+					-142
+				],
+				[
+					296,
+					-226
+				],
+				[
+					188,
+					-282
+				],
+				[
+					62,
+					-318
+				],
+				[
+					-78,
+					-324
+				],
+				[
+					-198,
+					-300
+				],
+				[
+					-296,
+					-248
+				],
+				[
+					-328,
+					-172
+				]
+			]
+		},
+		{
+			"_comment": "The same bed, broadened through its middle reach (W18), which is where the owner asked for the river at its widest.",
+			"blend": 18.0,
+			"half_width": 11.0,
+			"height": -2.8,
+			"name": "river_channel_wide",
+			"points": [
+				[
+					188,
+					-282
+				],
+				[
+					62,
+					-318
+				],
+				[
+					-78,
+					-324
+				]
+			]
+		}
+	],
+	"holes": [
+		[
+			207.5,
+			-182.5,
+			6.0,
+			9.0
+		],
+		[
+			-4.0,
+			-5.0,
+			8.0,
+			10.0
+		]
+	],
+	"material": {
+		"grass_slope_deg": 20.0,
+		"grass_tint": [
+			0.63,
+			0.82,
+			0.47
+		],
+		"gravel_slope_deg": 28.0,
+		"mud_blend": 1.8,
+		"mud_height": 1.6,
+		"normal_strength": 0.8,
+		"road": {
+			"_comment": "The old road the terrain wears bare, same line as the valley channel and the grass zones.",
+			"feather": 4.6,
+			"half_width": 3.8,
+			"waypoints": [
+				[
+					-200.0,
+					140.0
+				],
+				[
+					-90.0,
+					70.0
+				],
+				[
+					0.0,
+					0.0
+				],
+				[
+					105.0,
+					-80.0
+				],
+				[
+					200.0,
+					-160.0
+				],
+				[
+					-150.0,
+					196.0
+				],
+				[
+					-96.0,
+					244.0
+				],
+				[
+					-168.0,
+					126.0
+				],
+				[
+					-240.0,
+					-18.0
+				]
+			]
+		},
+		"rock_slope_deg": 36.0,
+		"uv_metres_per_tile": 2.0
+	},
+	"noise": {
+		"amplitude": 12.0,
+		"frequency": 0.0028,
+		"gain": 0.45,
+		"lacunarity": 2.0,
+		"octaves": 4.0
+	},
+	"plateaus": [
+		{
+			"blend": 46.0,
+			"centre": [
+				-200.0,
+				140.0
+			],
+			"height": 3.0,
+			"name": "village",
+			"radius": 58.0
+		},
+		{
+			"blend": 80.0,
+			"centre": [
+				200.0,
+				-160.0
+			],
+			"height": 16.0,
+			"name": "castle",
+			"radius": 78.0
+		},
+		{
+			"_comment": "The islet in the Mirror Pond (W9-T): a stub of ground standing 2.6 m clear of the water for the broken light tower. Plateaus are applied after the basin is carved, which is what lets a rise sit inside the pond at all. It is set 28 m out on the perpendicular of the old road, so it crowds neither the pond seal at the centre nor the road that runs through the basin, and its skirt is long enough that the climb out of the water is walkable.",
+			"blend": 17.0,
+			"centre": [
+				21.0,
+				27.0
+			],
+			"height": -2.4,
+			"name": "isle",
+			"radius": 7.0
+		},
+		{
+			"_comment": "The Overlook (W11): high ground the player climbs to see the valley, asked for twice and finally built. It is 22 m up over a 57 m skirt, which is as big as the Vale had room for: a plateau cannot overlap a site, because its skirt would tilt the ground out from under one, and nothing in this valley had more than 87 m of clear space left. A watchtower stands on top so there is a reason to climb it.",
+			"blend": 57.0,
+			"centre": [
+				-240.0,
+				8.0
+			],
+			"height": 22.0,
+			"name": "overlook",
+			"radius": 22.0
+		},
+		{
+			"_comment": "The floor of the hidden wood (W19). Two things decide every number here. The ground: the Vale's empty quarters are lumpy noise, 4 to 6 m of drop across any footprint, and nothing can stand on that -- so the floor is made flat, at 0.8 m, which is about the natural height here, so the skirt barely has to lean. And the neighbours: the nearest site is 53 m away and a skirt that reaches past it tilts the ground out from under it, so radius plus blend is 46 and no more. The first attempt at this stood in the south-east, where it tilted Castle Morrow's flat top from 125 m away; the castle's skirt is 158 m long and there is no room beside it.",
+			"blend": 10.0,
+			"centre": [
+				-208.0,
+				-202.0
+			],
+			"height": 0.8,
+			"name": "fellwood",
+			"radius": 36.0
+		}
+	],
+	"pond": {
+		"centre": [
+			0.0,
+			0.0
+		],
+		"depth": 11.0,
+		"falloff": 150.0,
+		"radius": 42.0
+	},
+	"ridge": {
+		"height": 95.0,
+		"inner_radius": 410.0,
+		"outer_radius": 520.0,
+		"wobble": 30.0,
+		"wobble_frequency": 0.004
+	},
+	"seed": 20261024.0,
+	"size": 1024.0,
+	"spawn": {
+		"clearance": 1.0,
+		"direction": [
+			0.55,
+			0.85
+		],
+		"from": [
+			0.0,
+			0.0
+		],
+		"max_distance": 140.0,
+		"max_slope": 24.0,
+		"min_distance": 48.0,
+		"step": 2.0
+	},
+	"valley": {
+		"blend": 34.0,
+		"depth": 1.5,
+		"flatten": 0.65,
+		"waypoints": [
+			[
+				-200.0,
+				140.0
+			],
+			[
+				-90.0,
+				70.0
+			],
+			[
+				0.0,
+				0.0
+			],
+			[
+				105.0,
+				-80.0
+			],
+			[
+				200.0,
+				-160.0
+			]
+		],
+		"width": 36.0
+	},
+	"water_level": -5.0,
+	"waters": [
+		{
+			"_comment": "The river (W18). Each point carries its own surface level, taken from the bed under it and never allowed to rise as it goes: a flat surface over a bed that follows the land is why the river vanished in two places and the owner walked into the gap.",
+			"depth": 6.0,
+			"half_width": 7.5,
+			"level": -1.0,
+			"name": "river",
+			"points": [
+				[
+					338.0,
+					-142.0,
+					-2.27
+				],
+				[
+					296.0,
+					-226.0,
+					-2.27
+				],
+				[
+					188.0,
+					-282.0,
+					-2.27
+				],
+				[
+					62.0,
+					-318.0,
+					-2.27
+				],
+				[
+					-78.0,
+					-324.0,
+					-2.27
+				],
+				[
+					-198.0,
+					-300.0,
+					-2.85
+				],
+				[
+					-296.0,
+					-248.0,
+					-2.85
+				],
+				[
+					-328.0,
+					-172.0,
+					-2.85
+				]
+			]
+		},
+		{
+			"_comment": "Its widest reach (W18), between the cut hills.",
+			"depth": 6.5,
+			"half_width": 13.0,
+			"level": -1.0,
+			"name": "river_wide",
+			"points": [
+				[
+					188.0,
+					-282.0,
+					-2.27
+				],
+				[
+					62.0,
+					-318.0,
+					-2.27
+				],
+				[
+					-78.0,
+					-324.0,
+					-2.27
+				]
+			]
+		}
+	]
 }

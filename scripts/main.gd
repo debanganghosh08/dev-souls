@@ -32,6 +32,7 @@ var _hud: Hud
 var _death: DeathScreen
 var _pause: PauseMenu
 var _inventory_panel: InventoryPanel
+var _map: MapPanel
 var _item_card: ItemCard
 var _ending_card: EndingCard
 var _loading_path: String = ""
@@ -116,6 +117,9 @@ func _enter_level(scene: PackedScene) -> void:
 	_pause.quit_to_title_requested.connect(_leave_level)
 	_pause.get_node(^"%SettingsPanel").changed.connect(_push_settings_to_player)
 	_inventory_panel = INVENTORY_SCENE.instantiate()
+	# The map is built in code (MapPanel._build) rather than loaded from a .tscn: every node in it is
+	# placed by arithmetic, and a scene file would only repeat those numbers in a second place.
+	_map = MapPanel.new()
 	_item_card = ITEM_CARD_SCENE.instantiate()
 	# The journey's last screen never hands the game back, so it leaves for the title like the pause menu's
 	# "Save and Quit" does. It listens to Game.journey_ended itself; Main only owns the way out.
@@ -124,6 +128,7 @@ func _enter_level(scene: PackedScene) -> void:
 	_overlays.add_child(_hud)
 	_overlays.add_child(_death)
 	_overlays.add_child(_inventory_panel)
+	_overlays.add_child(_map)
 	_overlays.add_child(_pause)
 	_overlays.add_child(_ending_card)
 	_item_card_layer.add_child(_item_card)
@@ -131,7 +136,10 @@ func _enter_level(scene: PackedScene) -> void:
 	if player != null:
 		_hud.bind_player(player)
 		_inventory_panel.bind_player(player)
+		if player is Node3D:
+			_map.bind_player(player as Node3D)
 	_hud.bind_level(_level)
+	_map.bind_level(_level)
 	_loading.visible = false
 	if _game != null:
 		_game.state = _game.State.PLAYING
@@ -145,13 +153,14 @@ func _enter_level(scene: PackedScene) -> void:
 
 
 func _leave_level() -> void:
-	for overlay: Node in [_hud, _death, _pause, _inventory_panel, _item_card, _ending_card]:
+	for overlay: Node in [_hud, _death, _pause, _inventory_panel, _map, _item_card, _ending_card]:
 		if overlay != null:
 			overlay.queue_free()
 	_hud = null
 	_death = null
 	_pause = null
 	_inventory_panel = null
+	_map = null
 	_item_card = null
 	_ending_card = null
 	if _level != null:

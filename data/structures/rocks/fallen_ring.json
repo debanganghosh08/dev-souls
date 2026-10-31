@@ -1,0 +1,374 @@
+{
+	"_comment": "The Fallen Ring (W19): a hoop of worked stone eight metres across that stood upright once and is now half into the ground, broken open on one side, its lower arc buried. Nobody in the Vale built it and nobody left a word about what it was for -- there is a stone at its foot with an inscription on it and the inscription is worn off.",
+	"name": "fallen_ring",
+	"keep_out": [
+		[
+			-9.0,
+			-9.0,
+			18.0,
+			18.0
+		]
+	],
+	"pieces": [
+		{
+			"name": "foundation",
+			"kind": "block",
+			"at": [
+				0,
+				-4.0,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 5.0,
+				"h": 4.0,
+				"d": 5.0,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "arc_00",
+			"kind": "block",
+			"at": [
+				7.36,
+				1.2,
+				1.89
+			],
+			"yaw": -14.4,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_01",
+			"kind": "block",
+			"at": [
+				6.83,
+				1.8,
+				3.34
+			],
+			"yaw": -26.0,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_02",
+			"kind": "block",
+			"at": [
+				6.02,
+				2.36,
+				4.64
+			],
+			"yaw": -37.7,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_03",
+			"kind": "block",
+			"at": [
+				4.96,
+				2.83,
+				5.76
+			],
+			"yaw": -49.3,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_04",
+			"kind": "block",
+			"at": [
+				3.69,
+				3.2,
+				6.64
+			],
+			"yaw": -60.9,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_05",
+			"kind": "block",
+			"at": [
+				2.28,
+				3.45,
+				7.25
+			],
+			"yaw": -72.6,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_06",
+			"kind": "block",
+			"at": [
+				0.77,
+				3.58,
+				7.56
+			],
+			"yaw": -84.2,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_07",
+			"kind": "block",
+			"at": [
+				-0.77,
+				3.58,
+				7.56
+			],
+			"yaw": -95.8,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_08",
+			"kind": "block",
+			"at": [
+				-2.28,
+				3.45,
+				7.25
+			],
+			"yaw": -107.4,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_09",
+			"kind": "block",
+			"at": [
+				-3.69,
+				3.2,
+				6.64
+			],
+			"yaw": -119.1,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_10",
+			"kind": "block",
+			"at": [
+				-4.96,
+				2.83,
+				5.76
+			],
+			"yaw": -130.7,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_11",
+			"kind": "block",
+			"at": [
+				-6.02,
+				2.36,
+				4.64
+			],
+			"yaw": -142.3,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_12",
+			"kind": "block",
+			"at": [
+				-6.83,
+				1.8,
+				3.34
+			],
+			"yaw": -154.0,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "arc_13",
+			"kind": "block",
+			"at": [
+				-7.36,
+				1.2,
+				1.89
+			],
+			"yaw": -165.6,
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "fallen_arc",
+			"kind": "block",
+			"repeat": [
+				[
+					-6.4,
+					0.5,
+					-4.6,
+					24
+				],
+				[
+					-4.2,
+					0.4,
+					-6.8,
+					48
+				],
+				[
+					-1.4,
+					0.35,
+					-7.8,
+					70
+				]
+			],
+			"params": {
+				"w": 2.3,
+				"h": 1.5,
+				"d": 1.5,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "buried_arc",
+			"kind": "block",
+			"repeat": [
+				[
+					3.2,
+					-0.6,
+					-7.0,
+					-58
+				],
+				[
+					5.8,
+					-0.9,
+					-5.0,
+					-34
+				]
+			],
+			"params": {
+				"w": 2.4,
+				"h": 1.4,
+				"d": 1.4,
+				"mat": "blocks"
+			}
+		},
+		{
+			"name": "socket",
+			"kind": "floor_slab",
+			"at": [
+				0,
+				-0.2,
+				0
+			],
+			"yaw": 0,
+			"params": {
+				"w": 6.0,
+				"d": 6.0,
+				"t": 0.4,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "inscription",
+			"kind": "headstone",
+			"at": [
+				0,
+				0.2,
+				3.4
+			],
+			"yaw": 180,
+			"params": {
+				"w": 0.9,
+				"h": 1.4,
+				"t": 0.22,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "rubble",
+			"kind": "rubble",
+			"at": [
+				-2.0,
+				0,
+				5.0
+			],
+			"yaw": 0,
+			"params": {
+				"radius": 3.4,
+				"count": 8,
+				"mat": "blocks",
+				"seed": 8201
+			}
+		},
+		{
+			"name": "fire",
+			"kind": "brazier",
+			"at": [
+				2.6,
+				0,
+				4.2
+			],
+			"yaw": 0,
+			"params": {
+				"h": 1.0,
+				"radius": 0.42,
+				"seed": 8202,
+				"sink": 1.8,
+				"energy": 2.8,
+				"range": 14.0
+			}
+		}
+	]
+}
