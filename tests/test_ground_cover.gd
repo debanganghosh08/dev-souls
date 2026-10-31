@@ -35,6 +35,24 @@ func test_vale_probe_prints_grass_after_the_original_five_lines() -> void:
 		assert_true(order[i] < order[i + 1], "probe lines keep their order (%d before %d)" % [i, i + 1])
 
 
+# W19: the forest is 11,600 trees and only 320 of them are solid at any moment, because the bodies are a
+# pool that follows the player. What has to be true is not the count but the placement: the solid trees are
+# the ones the player is standing among, and at the spawn the nearest of them is within arm's reach of the
+# nearest tree. A pool dealt at the origin, or parked under the world, fails this.
+func test_the_solid_trees_are_the_ones_the_player_is_standing_among() -> void:
+	var line: Dictionary = _probe_line(_text, "PROBE forest ")
+	assert_true(not line.is_empty(), "probe printed the forest line")
+	if line.is_empty():
+		return
+	assert_true(int(line["trees"]) > 6000, "the Vale's five woods hold thousands of trees (%s)" % line["trees"])
+	assert_eq(line["on_ground"], "true", "every tree stands on the heightfield")
+	assert_true(int(line["dealt"]) > 0, "the collider pool was dealt onto trees (%s bodies)" % line["dealt"])
+	assert_true(int(line["dealt"]) <= int(line["pool"]), "and never beyond the pool it was given")
+	assert_true(float(line["nearest_solid"]) >= 0.0, "a solid tree exists somewhere above the world")
+	assert_true(float(line["nearest_solid"]) < 30.1,
+			"the nearest solid tree is inside the pool's reach of the player (%s m)" % line["nearest_solid"])
+
+
 func test_grass_grows_near_the_spawn_and_never_under_water_or_on_cliffs() -> void:
 	var line: Dictionary = _probe_line(_text, "PROBE grass ")
 	assert_true(not line.is_empty(), "probe printed the grass line")

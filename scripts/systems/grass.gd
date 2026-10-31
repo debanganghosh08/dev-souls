@@ -147,10 +147,13 @@ func bind_heightfield(hf: Heightfield, filter: Callable = Callable(), clusters: 
 func _index_clusters() -> void:
 	_cluster_index.clear()
 	for p: Vector3 in cluster_points:
+		# Plain Array, not PackedVector3Array: a packed array read back out of a Dictionary is a copy, so
+		# the append would be thrown away and every bucket would stay empty -- which reads as "no tree is
+		# near any cell" and quietly removes the clustering this index exists to serve.
 		var key := Vector2i(int(floor(p.x / CLUSTER_BUCKET)), int(floor(p.z / CLUSTER_BUCKET)))
 		if not _cluster_index.has(key):
-			_cluster_index[key] = PackedVector3Array()
-		(_cluster_index[key] as PackedVector3Array).append(p)
+			_cluster_index[key] = []
+		(_cluster_index[key] as Array).append(p)
 
 
 ## The cluster points that could reach into the cell at `origin`, gathered from the buckets that overlap it
@@ -164,8 +167,10 @@ func clusters_near(origin: Vector2, size: float, reach: float) -> PackedVector3A
 	for bx: int in range(int(floor(low.x / CLUSTER_BUCKET)), int(floor(high.x / CLUSTER_BUCKET)) + 1):
 		for bz: int in range(int(floor(low.y / CLUSTER_BUCKET)), int(floor(high.y / CLUSTER_BUCKET)) + 1):
 			var bucket: Variant = _cluster_index.get(Vector2i(bx, bz))
-			if bucket != null:
-				out.append_array(bucket as PackedVector3Array)
+			if bucket == null:
+				continue
+			for p: Vector3 in bucket as Array:
+				out.append(p)
 	return out
 
 

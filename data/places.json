@@ -40,7 +40,7 @@
 				10.0
 			],
 			"radius": 140.0,
-			"note": "The forest road and the wood either side of it, watched from a tower that has not been manned in years."
+			"note": "The forest road and Greenwatch Holt either side of it, watched from a tower that has not been manned in years."
 		},
 		{
 			"name": "Wyrdreach",
@@ -353,6 +353,36 @@
 			],
 			"site": "fisher_shack",
 			"note": "Nets, and no boat."
+		},
+		{
+			"name": "Greenwatch Holt",
+			"kind": "forest",
+			"at": [
+				296.0,
+				14.0
+			],
+			"site": "",
+			"note": "The Greenwatch was named for its wood and had no wood in it: a watchtower, a forest road and four camps on open ground."
+		},
+		{
+			"name": "Mirewood",
+			"kind": "forest",
+			"at": [
+				34.0,
+				-236.0
+			],
+			"site": "",
+			"note": "North of the river, between the cairns and the bank."
+		},
+		{
+			"name": "The Long Hedge",
+			"kind": "forest",
+			"at": [
+				-268.0,
+				18.0
+			],
+			"site": "",
+			"note": "West, under the Overlook."
 		}
 	],
 	"waters": [

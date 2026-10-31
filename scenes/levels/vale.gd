@@ -90,6 +90,7 @@ func _ready() -> void:
 	_forest.height_sampler = _terrain.height_at
 	_forest.placement_filter = _tree_allowed
 	_forest.rebuild()
+	_forest.track(_player)
 	_dressing.height_sampler = _terrain.height_at
 	_dressing.placement_filter = _prop_allowed
 	_dressing.normal_sampler = hf.normal_at
@@ -324,7 +325,19 @@ func _print_probe() -> void:
 	for t: Vector3 in _forest.positions():
 		var w: Vector3 = _forest.global_position + t
 		on_ground = on_ground and absf(w.y - _terrain.height_at(w.x, w.z)) < 0.05
-	print("PROBE forest trees=%d on_ground=%s" % [_forest.tree_count(), on_ground])
+	# The collider pool is the thing a screenshot cannot show: 11,600 trees and only a few hundred of them
+	# solid at a time, so what matters is whether the solid ones are the ones the player is standing among.
+	# `dealt` is how many bodies landed on a tree and `nearest_solid` how far the nearest of them is.
+	var nearest_solid: float = INF
+	for body: Node in _forest.get_children():
+		if body is StaticBody3D and (body as StaticBody3D).global_position.y > -1000.0:
+			nearest_solid = minf(nearest_solid, Vector2(
+					(body as StaticBody3D).global_position.x - _player.global_position.x,
+					(body as StaticBody3D).global_position.z - _player.global_position.z).length())
+	print("PROBE forest trees=%d on_ground=%s pool=%d dealt=%d nearest_solid=%.1f" % [
+		_forest.tree_count(), on_ground, _forest.collider_count, _forest.colliders_dealt(),
+		nearest_solid if nearest_solid < INF else -1.0,
+	])
 	print("PROBE dressing instances=%d multimeshes=%d colliders=%d" % [
 		_dressing.stats()["instances"], _dressing.stats()["multimeshes"], _dressing.stats()["colliders"],
 	])

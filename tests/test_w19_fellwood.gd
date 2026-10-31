@@ -66,7 +66,10 @@ func test_an_unasked_for_grove_plants_nothing() -> void:
 			"and nothing to plant, nothing planted")
 
 
-func test_the_colliders_follow_the_anchors_rather_than_the_origin() -> void:
+# anchor_distance decides where the collider pool sits BEFORE a player is bound -- one frame in the real
+# game, the whole run in a headless probe. It used to decide the colliders for the entire run, which is why
+# it exists; the pool follows the player now (see the pool test below) and this is only the fallback.
+func test_where_the_collider_pool_sits_before_a_player_is_bound() -> void:
 	var here := Vector3(2.0, 0.0, 3.0)
 	var far := Vector3(CENTRE.x, 0.0, CENTRE.y)
 	var none := PackedVector2Array()
@@ -78,10 +81,11 @@ func test_the_colliders_follow_the_anchors_rather_than_the_origin() -> void:
 	assert_true(is_equal_approx(Forest.anchor_distance(far, anchored), 0.0), "a tree on the anchor is at zero")
 	# The origin stays an anchor whatever else is listed, so the trees round the spawn never go soft.
 	assert_true(Forest.anchor_distance(here, anchored) < 4.0, "and the spawn is still an anchor")
+	# And the anchor the level picks has trees on it. Thornwood's centre was tried and is a 36 m clearing,
+	# so a headless probe with no player found nothing to make solid and dealt nothing at all.
 	var scene: String = FileAccess.get_file_as_string("res://scenes/levels/vale.tscn")
-	assert_true(scene.contains("collider_anchors = PackedVector2Array(-208, -202)"),
-			"the level anchors colliders in the wood")
-	assert_true(scene.contains("collider_count = 220"), "and pays for enough of them to be felt")
+	assert_true(scene.contains("collider_anchors = PackedVector2Array(40, 90)"),
+			"the level parks the pool on the forest band, where there are trees")
 
 
 # The wall is ONE layout rather than a ring of rock sites, because the suite makes every pair of sites keep
@@ -174,3 +178,63 @@ func test_the_two_set_pieces_are_where_they_were_put() -> void:
 		if p.has("at") and float((p["at"] as Array)[1]) > 2.0:
 			high += 1
 	assert_true(high >= 4, "the hoop stands up out of the ground rather than lying flat (%d pieces high)" % high)
+
+
+# The collider pool (W19). 11,600 trees and a few hundred bodies: what matters is not how many are solid but
+# whether the solid ones are the trees the player is standing among. Before W19 the bodies were made per
+# tree at load and never moved, so the trees you could lean on were decided before the game started -- fine
+# while the forest was six hundred trees round the spawn, useless across five woods.
+func test_the_collider_pool_follows_the_player_rather_than_being_decided_at_load() -> void:
+	var scene: String = FileAccess.get_file_as_string("res://scenes/levels/vale.tscn")
+	assert_true(scene.contains("collider_count = 320"), "the pool is 320 bodies")
+	assert_true(scene.contains("collider_reach = 30.0"), "dealt to the trees within 30 m")
+	var source: String = FileAccess.get_file_as_string("res://scripts/systems/forest.gd")
+	assert_true(source.contains("func deal(at: Vector3)"), "the pool can be dealt at a point")
+	assert_true(source.contains("func track(player: Node3D)"), "and told whose point to use")
+	assert_true(source.contains("body.position = Vector3(0.0, -4000.0, 0.0)"),
+			"a spare body is parked, not freed: freeing and remaking bodies is what makes a pool hitch")
+	var level: String = FileAccess.get_file_as_string("res://scenes/levels/vale.gd")
+	assert_true(level.contains("_forest.track(_player)"), "and the level hands it the player")
+	# The bodies are made once, not per tree: the pool is capped by collider_count whatever the forest holds.
+	assert_true(source.contains("var limit: int = mini(collider_count, _tree_rows.size())"),
+			"the pool never grows with the forest")
+
+
+func test_the_woods_are_data_so_a_quarter_can_be_filled_without_four_more_exports() -> void:
+	var groves: Array = Forest.groves_of("res://data/forest/vale_groves.json")
+	assert_true(groves.size() >= 3, "the Vale lists its other woods (%d)" % groves.size())
+	var asked: int = 0
+	for row: Variant in groves:
+		var g: Dictionary = row
+		assert_true(str(g.get("name", "")) != "", "every wood is named")
+		assert_true(float(g.get("radius", 0.0)) > 20.0, "%s is a wood, not a copse" % g["name"])
+		assert_true(int(g.get("count", 0)) > 1000, "%s asks for thousands (%s)" % [g["name"], g.get("count")])
+		var centre := Vector2(float((g["centre"] as Array)[0]), float((g["centre"] as Array)[1]))
+		# A wood past the ridge's inner radius less the tree margin would ask for trees that are thrown away.
+		assert_true(centre.length() + float(g["radius"]) < 390.0,
+				"%s stays inside the ground trees are allowed on (%.0f m out)"
+				% [g["name"], centre.length() + float(g["radius"])])
+		asked += int(g["count"])
+	assert_true(asked > 8000, "the open quarters ask for thousands of trees between them (%d)" % asked)
+	assert_eq(Forest.groves_of("res://data/forest/does_not_exist.json").size(), 0, "a missing file lists no woods")
+	assert_eq(Forest.groves_of("").size(), 0, "and so does no file at all")
+
+
+# A Packed*Array read back out of a Dictionary is a COPY in GDScript, so appending to it throws the append
+# away. forest.gd already carried a comment warning about this and W19 still walked into it three times in
+# one night: the wood's spacing check, the tree index behind the collider pool, and the grass cluster index.
+# Every one of them LOOKED right. The wood accepted all 15,000 of its candidates, stacked on top of each
+# other, because every spacing check read an empty copy; and the collider pool could not find a tree
+# anywhere in the Vale. This is the test that would have said so in one line.
+func test_the_woods_spacing_rule_is_actually_applied() -> void:
+	var plan: Dictionary = Forest.plan_grove(Vector2.ZERO, 40.0, 0.0, 4000, 31337, MIX)
+	var trees: PackedVector3Array = plan["positions"]
+	assert_true(trees.size() < 4000,
+			"4,000 candidates in a 40 m circle cannot all fit, so some were refused (%d placed)" % trees.size())
+	assert_true(trees.size() > 400, "but a great many did (%d)" % trees.size())
+	var closest: float = INF
+	for i: int in trees.size():
+		for j: int in range(i + 1, trees.size()):
+			closest = minf(closest, Vector2(trees[i].x - trees[j].x, trees[i].z - trees[j].z).length())
+	assert_true(closest >= Forest.MIN_SPACING - 0.001,
+			"and no two trees are closer than %.1f m (closest pair %.3f m)" % [Forest.MIN_SPACING, closest])

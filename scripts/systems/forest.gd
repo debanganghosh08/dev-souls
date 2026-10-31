@@ -9,6 +9,8 @@ extends Node3D
 
 const WORLD_LAYER := 1
 const MIN_SPACING := 1.6
+## Edge of the buckets the trees are indexed into, for asking which are near a point.
+const INDEX_BUCKET := 32.0
 const PLACE_ATTEMPTS := 12
 
 @export var archetype_mix: Dictionary = {"fir": 6.0, "pine": 3.0, "dead": 1.0}
@@ -18,13 +20,20 @@ const PLACE_ATTEMPTS := 12
 @export var seed_value: int = 1
 @export var lod1_distance: float = 45.0
 @export var cull_distance: float = 140.0
-## Only the collider_count trees nearest an anchor get a StaticBody3D. LIMITATION: every other tree is
-## walk-through until a streaming task gives colliders to whatever is near the player.
+## How many trees carry a StaticBody3D at once. The bodies are a POOL: they are made once and moved onto
+## whichever trees are near the player, so this is the number of solid trees in reach and not the number of
+## solid trees in the Vale. Sized against the densest wood -- see collider_reach.
 @export var collider_count: int = 40
-## Where the colliders are spent. The origin is always one; add a point here and the trees round it are
-## solid too. The hidden wood needs this: a wall of wood you can walk straight through does not hide
-## anything, and the wood is 300 m from the origin, so "nearest the origin" would have spent every
-## collider back at the spawn.
+## Trees within this many metres of the player are the ones that get the pool. At 11,600 trees the Vale has
+## woods holding about one tree per 10 m2, so 30 m is roughly 280 trees: the pool covers a dense wood at
+## this reach and no further. The pool is only re-dealt once the player has moved collider_step, so at a
+## sprint the solid shell still reaches some 20 m ahead of them.
+@export var collider_reach: float = 30.0
+## How far the player moves before the pool is re-dealt.
+@export var collider_step: float = 8.0
+## Where the pool sits before anything is tracked -- one frame in the real game, the whole run in a headless
+## probe with no player. Pick somewhere with trees: Thornwood's centre was tried and it is a 36 m clearing,
+## so the pool found nothing to be solid and dealt nothing at all.
 @export var collider_anchors: PackedVector2Array = PackedVector2Array()
 ## Edge length of the square chunks that visibility ranges (LOD and culling) are evaluated per.
 @export var chunk_size: float = 40.0
@@ -49,6 +58,10 @@ const PLACE_ATTEMPTS := 12
 @export var grove_radius: float = 0.0
 @export var grove_clearing: float = 0.0
 @export var grove_count: int = 0
+## More woods, as data. One wood is four exports; the owner asked for the Vale's open quarters to be filled,
+## and five woods would be twenty. Each row is {"name", "centre": [x, z], "radius", "clearing", "count"},
+## and the name is there so a failure can say which wood it came from.
+@export_file("*.json") var groves_path: String = ""
 ## One tree far bigger than the rest, this far along the band (0 start, 1 end), at this scale: the landmark
 ## the owner asked for. Scale 0 leaves it out.
 @export_range(0.0, 1.0) var landmark_at: float = 0.5
@@ -60,6 +73,15 @@ var height_sampler: Callable = Callable()
 var placement_filter: Callable = Callable()
 
 var _layout: Dictionary = {}
+# The collider pool and what it needs to deal itself out again: the trees' own data, a bucket index to ask
+# which are near a point, the bodies themselves, and where the pool was last dealt.
+var _bodies: Array[StaticBody3D] = []
+var _body_shapes: Array[CylinderShape3D] = []
+var _tree_index: Dictionary = {}
+var _tree_rows: Array[Dictionary] = []
+var _dealt_at: Vector3 = Vector3(INF, INF, INF)
+var _dealt: int = 0
+var _tracked: Node3D = null
 var _stats: Dictionary = {}
 var _built: Array[Node] = []
 
@@ -67,6 +89,12 @@ var _built: Array[Node] = []
 func _ready() -> void:
 	if auto_build:
 		rebuild()
+
+
+func _process(_delta: float) -> void:
+	if _tracked == null or not is_instance_valid(_tracked):
+		return
+	deal(_tracked.global_position)
 
 
 func rebuild() -> void:
@@ -78,6 +106,12 @@ func rebuild() -> void:
 			archetype_mix, landmark_at, landmark_scale))
 	merge_layout(plan, plan_grove(grove_centre, grove_radius, grove_clearing, grove_count,
 			seed_value + 104729, archetype_mix))
+	var extra: Array = groves_of(groves_path)
+	for i: int in extra.size():
+		var g: Dictionary = extra[i]
+		merge_layout(plan, plan_grove(_vec(g.get("centre")), float(g.get("radius", 0.0)),
+				float(g.get("clearing", 0.0)), int(g.get("count", 0)),
+				seed_value + 104729 + (i + 1) * 7717, archetype_mix))
 	_layout = _grounded(plan)
 	_stats = {"per_archetype": {}, "trunk_vertices": 0, "card_vertices": 0, "card_vertices_lod1": 0,
 		"multimeshes": 0, "colliders": 0}
@@ -220,6 +254,29 @@ static func plan_band(points: PackedVector2Array, gap: float, half: float, tree_
 	return {"positions": positions, "archetypes": archetypes, "yaws": yaws, "scales": scales}
 
 
+## The woods listed in `path`, or an empty array when there is no file or it is the wrong shape. A wood
+## with no name is dropped: an unnamed row is almost always a typo, and a silent one would be a wood that
+## nobody could find a mistake in.
+static func groves_of(path: String) -> Array:
+	var out: Array = []
+	if path == "" or not FileAccess.file_exists(path):
+		return out
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not data is Dictionary:
+		push_error("Forest: %s is not a JSON object" % path)
+		return out
+	for row: Variant in (data as Dictionary).get("groves", []):
+		if row is Dictionary and str((row as Dictionary).get("name", "")) != "":
+			out.append(row)
+	return out
+
+
+static func _vec(raw: Variant) -> Vector2:
+	if raw is Array and (raw as Array).size() >= 2:
+		return Vector2(float((raw as Array)[0]), float((raw as Array)[1]))
+	return Vector2.ZERO
+
+
 ## A dense ring of wood round a clearing. Density rises toward the outer edge so the wood closes behind
 ## you: from inside the clearing it is a wall, and from outside there is no clearing at all.
 static func plan_grove(centre: Vector2, radius: float, clearing: float, tree_count: int, seed_v: int,
@@ -305,6 +362,76 @@ func _grounded(layout: Dictionary) -> Dictionary:
 	return GroundPlacement.ground_layout(layout, origin, height_sampler, placement_filter)
 
 
+## Puts the collider pool on the trees nearest `at`, nearest first, and returns how many bodies were used.
+## Does nothing when the player has not moved collider_step since the last deal, so a frame of walking costs
+## one distance check. Public so a test can drive it without a scene tree.
+func deal(at: Vector3) -> int:
+	if _bodies.is_empty():
+		return 0
+	if _dealt_at.distance_squared_to(at) < collider_step * collider_step:
+		return _dealt
+	_dealt_at = at
+	var near: Array[int] = near_trees(at, collider_reach)
+	near.sort_custom(func(a: int, b: int) -> bool:
+		return _flat(_tree_rows[a]["at"], at) < _flat(_tree_rows[b]["at"], at))
+	var used: int = mini(_bodies.size(), near.size())
+	for k: int in _bodies.size():
+		var body: StaticBody3D = _bodies[k]
+		if k >= used:
+			# A body with nothing to stand on is parked far below the world rather than freed: freeing and
+			# remaking bodies on every deal is what makes a streaming pool hitch.
+			body.position = Vector3(0.0, -4000.0, 0.0)
+			continue
+		var row: Dictionary = _tree_rows[near[k]]
+		_body_shapes[k].radius = float(row["radius"])
+		_body_shapes[k].height = float(row["height"])
+		body.transform = Transform3D(Basis.from_euler(Vector3(0.0, float(row["yaw"]), 0.0)),
+				(row["at"] as Vector3) + Vector3.UP * float(row["height"]) * 0.5)
+	_dealt = used
+	return used
+
+
+## Which trees are within `reach` of `at`, by index, read out of the bucket index rather than by walking
+## every tree. Unordered.
+func near_trees(at: Vector3, reach: float) -> Array[int]:
+	var out: Array[int] = []
+	var lo := Vector2(at.x - reach, at.z - reach)
+	var hi := Vector2(at.x + reach, at.z + reach)
+	var reach_sq: float = reach * reach
+	for bx: int in range(floori(lo.x / INDEX_BUCKET), floori(hi.x / INDEX_BUCKET) + 1):
+		for bz: int in range(floori(lo.y / INDEX_BUCKET), floori(hi.y / INDEX_BUCKET) + 1):
+			var bucket: Variant = _tree_index.get(Vector2i(bx, bz))
+			if bucket == null:
+				continue
+			for i: int in bucket as Array:
+				if _flat(_tree_rows[i]["at"], at) <= reach_sq:
+					out.append(i)
+	return out
+
+
+## How many bodies the last deal put on a tree.
+func colliders_dealt() -> int:
+	return _dealt
+
+
+## Follows `player` from the next frame on. Null parks the pool back on the anchors.
+func track(player: Node3D) -> void:
+	_tracked = player
+	if player == null:
+		_dealt_at = Vector3(INF, INF, INF)
+		deal(_first_anchor())
+
+
+static func _flat(a: Vector3, b: Vector3) -> float:
+	return Vector2(a.x - b.x, a.z - b.z).length_squared()
+
+
+func _first_anchor() -> Vector3:
+	if collider_anchors.is_empty():
+		return Vector3.ZERO
+	return Vector3(collider_anchors[0].x, 0.0, collider_anchors[0].y)
+
+
 ## Distance from a tree to the nearest anchor, the origin included. Pure, so a test can check that a
 ## far-off anchor really does win colliders away from the trees beside the spawn.
 static func anchor_distance(at: Vector3, anchors: PackedVector2Array) -> float:
@@ -317,6 +444,10 @@ static func anchor_distance(at: Vector3, anchors: PackedVector2Array) -> float:
 
 ## Whether anything already in `grid` is inside MIN_SPACING of `cand`. The grid is keyed on MIN_SPACING
 ## cells, so one candidate reads nine buckets however large the wood is.
+## The buckets hold plain Arrays, NOT PackedVector2Arrays: a packed array read back out of a Dictionary is
+## a copy, so `(grid[key] as PackedVector2Array).append(p)` throws the append away and every candidate then
+## passes. That is not a guess -- it is how this went wrong the first time, and the wood placed every one of
+## 15,000 candidates on top of itself.
 static func _crowded(cand: Vector2, grid: Dictionary) -> bool:
 	var key := Vector2i(floori(cand.x / MIN_SPACING), floori(cand.y / MIN_SPACING))
 	for dx: int in [-1, 0, 1]:
@@ -324,7 +455,7 @@ static func _crowded(cand: Vector2, grid: Dictionary) -> bool:
 			var bucket: Variant = grid.get(Vector2i(key.x + dx, key.y + dz))
 			if bucket == null:
 				continue
-			for p: Vector2 in bucket as PackedVector2Array:
+			for p: Vector2 in bucket as Array:
 				if p.distance_squared_to(cand) < MIN_SPACING * MIN_SPACING:
 					return true
 	return false
@@ -333,8 +464,8 @@ static func _crowded(cand: Vector2, grid: Dictionary) -> bool:
 static func _mark(at: Vector2, grid: Dictionary) -> void:
 	var key := Vector2i(floori(at.x / MIN_SPACING), floori(at.y / MIN_SPACING))
 	if not grid.has(key):
-		grid[key] = PackedVector2Array()
-	(grid[key] as PackedVector2Array).append(at)
+		grid[key] = []
+	(grid[key] as Array).append(at)
 
 
 static func _too_close(cand: Vector2, placed: PackedVector3Array) -> bool:
@@ -396,30 +527,45 @@ func _add_multimesh(node_name: String, mesh: ArrayMesh, xforms: Array[Transform3
 	_stats["multimeshes"] += 1
 
 
-## Cylinder StaticBody3D on the world layer for the collider_count trees nearest an anchor only.
+## Builds the collider pool and deals it out for the first time. The pool is collider_count bodies, made
+## once here and moved onto whichever trees are near the player from then on (see deal). Before W19 the
+## bodies were made per tree and never moved, which meant the trees you could lean on were decided at load:
+## fine while the forest was six hundred trees round the spawn, useless at 11,600 across five woods.
 func _build_colliders(trees: Dictionary, positions: PackedVector3Array, names: PackedStringArray, yaws: PackedFloat32Array, scales: PackedFloat32Array) -> void:
-	var order: Array[int] = []
+	_tree_rows.clear()
+	_tree_index.clear()
 	for i: int in positions.size():
-		order.append(i)
-	order.sort_custom(func(a: int, b: int) -> bool: return anchor_distance(positions[a], collider_anchors) < anchor_distance(positions[b], collider_anchors))
-	var limit: int = mini(collider_count, order.size())
-	for k: int in limit:
-		var i: int = order[k]
 		var tree: Dictionary = (trees[names[i]] as Dictionary)["lod0"]
+		_tree_rows.append({
+			"at": positions[i],
+			"yaw": yaws[i],
+			"radius": float(tree["collider_radius"]) * scales[i],
+			"height": float(tree["height"]) * scales[i],
+		})
+		# Plain Array, not PackedInt32Array: see _crowded. A packed array out of a Dictionary is a copy.
+		var key := Vector2i(floori(positions[i].x / INDEX_BUCKET), floori(positions[i].z / INDEX_BUCKET))
+		if not _tree_index.has(key):
+			_tree_index[key] = []
+		(_tree_index[key] as Array).append(i)
+	var limit: int = mini(collider_count, _tree_rows.size())
+	for k: int in limit:
 		var shape := CylinderShape3D.new()
-		shape.radius = float(tree["collider_radius"]) * scales[i]
-		shape.height = float(tree["height"]) * scales[i]
+		shape.radius = 0.2
+		shape.height = 1.0
 		var body := StaticBody3D.new()
-		body.name = "TreeBody_%d" % i
+		body.name = "TreeBody_%d" % k
 		body.collision_layer = WORLD_LAYER
 		body.collision_mask = 0
-		body.transform = Transform3D(Basis.from_euler(Vector3(0.0, yaws[i], 0.0)), positions[i] + Vector3.UP * shape.height * 0.5)
 		var col := CollisionShape3D.new()
 		col.shape = shape
 		body.add_child(col)
 		add_child(body)
 		_built.append(body)
+		_bodies.append(body)
+		_body_shapes.append(shape)
 		_stats["colliders"] += 1
+	_dealt_at = Vector3(INF, INF, INF)
+	deal(_first_anchor())
 
 
 static func _vertex_count(mesh: ArrayMesh) -> int:

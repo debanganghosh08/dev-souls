@@ -1,0 +1,38 @@
+{
+	"_comment": "The Vale's woods (W19). Thornwood, the one round the hidden village, is on the Forest node itself because the map reads its centre and radius off those exports to draw the wood. These are the others: the owner asked for the open quarters to be filled with forest, thousands of trees at a time. A wood needs no flat ground and no clearance from buildings, because Vale._tree_allowed already refuses water, cliffs, the ridge, the plateaus and anything near a site -- so a wood is dropped on a quarter and grows in the gaps. Each asks for far more trees than it plants: the 1.6 m spacing rule refuses the rest once the ground is full, and asking for what we want to plant would plant half of it.",
+	"groves": [
+		{
+			"name": "Greenwatch Holt",
+			"centre": [
+				296.0,
+				14.0
+			],
+			"radius": 86.0,
+			"clearing": 0.0,
+			"count": 4200,
+			"note": "The Greenwatch was named for its wood and had no wood in it: a watchtower, a forest road and four camps on open ground. This is the wood the name was promising."
+		},
+		{
+			"name": "Mirewood",
+			"centre": [
+				34.0,
+				-236.0
+			],
+			"radius": 78.0,
+			"clearing": 0.0,
+			"count": 3400,
+			"note": "North of the river, between the cairns and the bank. Thin where the ground turns to water, which is the point of it: you can see the river through the trunks a long time before you reach it."
+		},
+		{
+			"name": "The Long Hedge",
+			"centre": [
+				-268.0,
+				18.0
+			],
+			"radius": 64.0,
+			"clearing": 0.0,
+			"count": 2200,
+			"note": "West, under the Overlook. Low and wind-bent rather than tall -- the scatter already covers this quarter, so this thickens it into something you have to walk round rather than through."
+		}
+	]
+}

@@ -454,3 +454,31 @@ completes inside the lattice, and grass stopping short on a diagonal is the sign
 raising. Two supporting fixes, both of which only became necessary now: the per-cell tree gather walked
 every tree in the level (fine at 600, not at 4,854) and reads 64 m buckets instead, and a wood's own
 spacing check walked every tree already planted, which is quadratic at five thousand candidates.
+
+**D-038 (2026-10-31) Tree colliders are a pool that follows the player.** Before W19 a StaticBody3D was
+made per tree at load for the `collider_count` trees nearest an anchor, and never moved -- so which trees
+you could lean on was decided before the game started. That was fine while the forest was six hundred trees
+round the spawn and useless at 6,157 across five woods, three of which are 300 m from the origin. The
+bodies are now made once and **dealt** onto whichever trees are within `collider_reach` of the player,
+re-dealt once they have moved `collider_step`. 320 bodies at 30 m covers the densest wood the Vale has; a
+spare body is parked at y = -4000 rather than freed, because freeing and remaking bodies on every deal is
+what makes a streaming pool hitch. `collider_anchors` survives as where the pool sits before a player is
+bound -- one frame in the real game, the whole run in a headless probe -- and the level parks it on the
+forest band, because Thornwood's centre was tried and is a 36 m clearing, so the pool found nothing to make
+solid and dealt nothing at all.
+
+**D-039 (2026-10-31) A Packed array read out of a Dictionary is a COPY, and it cost three bugs in one
+night.** `(dict[key] as PackedVector2Array).append(p)` appends to a copy and throws it away. `forest.gd`
+already carried a comment saying so, from weeks earlier, and W19 still walked into it three times: the
+wood's spacing check, the tree index behind the collider pool, and the grass cluster index. **All three
+looked like they worked.** The woods accepted all 15,000 of their candidates, stacked on top of each other,
+because every spacing check read an empty bucket; the collider pool could not find a tree anywhere in the
+Vale; and the grass clustering had quietly stopped happening. The tree count only looked generous. Every
+bucket index in these systems now holds a plain `Array`, and
+`test_w19_fellwood.test_the_woods_spacing_rule_is_actually_applied` measures the closest pair of trees in a
+crowded grove, which is the one line that would have said so.
+
+**The lesson is not about GDScript.** All three indexes were added as optimisations, and an optimisation
+that silently does nothing is indistinguishable from one that works unless something measures the thing it
+was meant to preserve. The spacing index had no test of its own; the two that did -- the grass fill and the
+grove's tree count -- both reported *better* numbers with the bug than without it.

@@ -53,12 +53,14 @@ grove_centre = Vector2(-208, -202)
 grove_radius = 95.0
 grove_clearing = 36.0
 grove_count = 5200
+groves_path = "res://data/forest/vale_groves.json"
 clearing_radius = 0.0
 seed_value = 20261024
 lod1_distance = 60.0
 cull_distance = 220.0
-collider_count = 220
-collider_anchors = PackedVector2Array(-208, -202)
+collider_count = 320
+collider_reach = 30.0
+collider_anchors = PackedVector2Array(40, 90)
 auto_build = false
 
 [node name="Dressing" type="Node3D" parent="."]
