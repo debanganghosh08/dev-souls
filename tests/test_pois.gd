@@ -11,10 +11,19 @@ const POIS_FILE := "vale_pois.json"
 const LAYOUT_DIR := "res://data/structures/pois/"
 const VALE_SCENE := "res://scenes/levels/vale.tscn"
 const PROBE_FRAME_CAP := "1200"
-## From the W8 brief: each house is placed within 15 m of one of these.
-const HOUSE_ANCHORS: Array = [[70, 130], [-133, -51], [-87, 112], [-158, 130], [-218, 92], [-127, 198], [-250, 150],
-		[-111, 158], [-295, -60], [-154, -200], [-215, -118], [-51, -197], [-30, -280], [-110, -234], [138, -16],
-		[107, -34], [300, -10], [326, -51], [113, 273], [-258, -245]]
+## Where the houses actually are, read off data/sites/vale_houses.json. This was a hard-coded copy of the
+## W8 brief's twenty anchors until W20, when cutting a real bed for the river moved north_watch and the
+## list went on insisting a house stood at (-30, -280) where there was no longer one. A list of positions
+## kept beside the positions it describes will drift; this one cannot.
+static func house_anchors() -> Array:
+	var out: Array = []
+	var doc: Variant = JSON.parse_string(
+			FileAccess.get_file_as_string("res://data/sites/vale_houses.json"))
+	if doc is Dictionary:
+		for raw: Variant in (doc as Dictionary).get("sites", []):
+			var at: Array = (raw as Dictionary)["at"]
+			out.append([float(at[0]), float(at[1])])
+	return out
 const HOUSE_CLEARANCE := 25.0
 const MIN_SITES := 25
 const MIN_LAYOUTS := 12
@@ -133,13 +142,14 @@ func test_every_keep_out_rect_holds_a_piece() -> void:
 # --- the placements ---------------------------------------------------------------------------------------
 
 func test_every_poi_keeps_clear_of_every_house_anchor() -> void:
-	assert_eq(HOUSE_ANCHORS.size(), 20, "the twenty house anchors of the brief")
+	var anchors: Array = house_anchors()
+	assert_eq(anchors.size(), 20, "the twenty houses of the brief")
 	assert_true(_sites.size() >= MIN_SITES, "at least %d points of interest are placed (%d)" % [MIN_SITES, _sites.size()])
 	for site: Dictionary in _sites:
 		var obbs: Array[Dictionary] = SiteRegistry.world_obbs(site)
 		assert_true(obbs.size() > 0, "%s has a footprint to measure" % site["id"])
 		for obb: Dictionary in obbs:
-			for a: Array in HOUSE_ANCHORS:
+			for a: Array in anchors:
 				var d: float = _obb_distance(obb, Vector2(float(a[0]), float(a[1])))
 				assert_true(d >= HOUSE_CLEARANCE, "%s keeps %.0f m from the house anchor %s (%.1f m)"
 						% [site["id"], HOUSE_CLEARANCE, str(a), d])

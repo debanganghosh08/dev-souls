@@ -34,12 +34,25 @@ var _valley_width: float = 0.0
 var _valley_blend: float = 0.0
 var _valley_depth: float = 0.0
 var _valley_flatten: float = 0.0
+# The box the old road fits in, grown by its width and blend. See _channel.
+var _valley_box: Rect2 = Rect2()
 var _plateaus: Array[Dictionary] = []
 ## Lines of raised ground (W12). Each is {points, height, half_width, blend}: within half_width of the
 ## polyline the ground stands `height` above whatever was there, falling to nothing over `blend`. A closed
 ## ring walls in a valley; a gap left in the ring is the only way into it. Applied BEFORE plateaus, so the
 ## village and castle sites still flatten whatever a crest did underneath them.
 var _crests: Array[Dictionary] = []
+## River beds (W20). A crest with a negative height digs a fixed depth below WHATEVER THE GROUND DOES, and
+## that is not what a river is: the owner filmed one that was dry for 22 of its 31 steps, because the land
+## along it rises to +11 m and the channel rose with it while the water stayed at -2.3. A cut is absolute
+## instead. Each is {points (x, z, surface_y), half_width, bank, depth}: the bed is carved to
+## surface_y - depth within half_width of the line and slopes back up to the original ground over `bank`,
+## and the ground is only ever LOWERED. So the water surface is a single descending line from source to
+## mouth, the bed is always below it, and where the land is high the river runs in a gorge.
+var _cuts: Array[Dictionary] = []
+# The union of every cut's box. height_at runs millions of times while the terrain builds and most
+# of the Vale is nowhere near a river; this is the one comparison that says so before anything else.
+var _cuts_box: Rect2 = Rect2()
 # World-space rectangles where the terrain is omitted entirely — mesh and collision — so built structures can
 # descend below the surface (the castle crypt, later the Wood's drowned shrine and the Barrens' caves).
 # Whatever is built there must enclose the opening itself; the terrain simply stops.
@@ -85,6 +98,11 @@ static func from_dict(data: Dictionary) -> Heightfield:
 	hf._valley_blend = maxf(0.0, float(valley.get("blend", 0.0)))
 	hf._valley_depth = float(valley.get("depth", 0.0))
 	hf._valley_flatten = clampf(float(valley.get("flatten", 0.0)), 0.0, 1.0)
+	if hf._valley.size() >= 2:
+		hf._valley_box = Rect2(hf._valley[0], Vector2.ZERO)
+		for q: Vector2 in hf._valley:
+			hf._valley_box = hf._valley_box.expand(q)
+		hf._valley_box = hf._valley_box.grow(hf._valley_width + hf._valley_blend + 1.0)
 	for raw: Variant in data.get("crests", []):
 		if not raw is Dictionary:
 			continue
@@ -93,10 +111,50 @@ static func from_dict(data: Dictionary) -> Heightfield:
 		for point: Variant in crest.get("points", []):
 			pts.append(_vec2(point))
 		if pts.size() >= 2:
+			# A box round each crest, for the same reason the cuts have one: _crest runs on every height
+			# sample in the game and the hidden valley's wall is thirteen segments long, so without this
+			# every sample anywhere in the Vale walked all thirteen of them.
+			var span: float = maxf(0.5, float(crest.get("half_width", 8.0))) + maxf(1.0, float(crest.get("blend", 30.0)))
+			var crest_box := Rect2(pts[0], Vector2.ZERO)
+			for q: Vector2 in pts:
+				crest_box = crest_box.expand(q)
 			hf._crests.append({"name": str(crest.get("name", "")), "points": pts,
 				"height": float(crest.get("height", 0.0)),
 				"half_width": maxf(0.5, float(crest.get("half_width", 8.0))),
-				"blend": maxf(1.0, float(crest.get("blend", 30.0)))})
+				"blend": maxf(1.0, float(crest.get("blend", 30.0))),
+				"box": crest_box.grow(span + 1.0)})
+	for raw: Variant in data.get("cuts", []):
+		if not raw is Dictionary:
+			continue
+		var cut: Dictionary = raw
+		var line := PackedVector3Array()
+		for q: Variant in cut.get("points", []):
+			if q is Array and (q as Array).size() >= 3:
+				var row: Array = q
+				line.append(Vector3(float(row[0]), float(row[2]), float(row[1])))
+		if line.size() >= 2:
+			# Most of the Vale is nowhere near a river. This box is what lets _cut say so in two
+			# comparisons: it runs on EVERY height sample in the game -- the terrain mesh, every grass
+			# cell's height grid, every normal -- and walking twelve segments for all of them cost the
+			# grass fill its budget the day the river went in.
+			var reach: float = maxf(0.5, float(cut.get("half_width", 9.0))) + maxf(1.0, float(cut.get("bank", 18.0)))
+			var box := Rect2(Vector2(line[0].x, line[0].z), Vector2.ZERO)
+			for q: Vector3 in line:
+				box = box.expand(Vector2(q.x, q.z))
+			# One box per segment as well, so a point inside the river's overall box still only does real
+			# arithmetic for the one or two segments that could actually reach it.
+			var segment_boxes: Array = []
+			for k: int in line.size() - 1:
+				var seg := Rect2(Vector2(line[k].x, line[k].z), Vector2.ZERO)
+				seg = seg.expand(Vector2(line[k + 1].x, line[k + 1].z))
+				segment_boxes.append(seg.grow(reach + 1.0))
+			hf._cuts.append({"name": str(cut.get("name", "")), "points": line,
+				"half_width": maxf(0.5, float(cut.get("half_width", 9.0))),
+				"bank": maxf(1.0, float(cut.get("bank", 18.0))),
+				"depth": maxf(0.1, float(cut.get("depth", 2.2))),
+				"box": box.grow(reach + 1.0), "segment_boxes": segment_boxes})
+			var added: Rect2 = hf._cuts[hf._cuts.size() - 1]["box"]
+			hf._cuts_box = added if hf._cuts.size() == 1 else hf._cuts_box.merge(added)
 	for p: Variant in data.get("plateaus", []):
 		if p is Dictionary:
 			hf._plateaus.append({"centre": _vec2(p.get("centre", [0, 0])), "radius": maxf(0.0, float(p.get("radius", 0.0))),
@@ -163,6 +221,9 @@ func height_at(x: float, z: float) -> float:
 	h += _ridge(px, pz)
 	h = _crest(px, pz, h)
 	h = _plateau(px, pz, h)
+	# Last, and only ever downwards: a river is the lowest thing in the landscape it runs through, and
+	# anything that could raise ground back over the water has already had its say by now.
+	h = _cut(px, pz, h)
 	return 0.0 if is_nan(h) or is_inf(h) else h
 
 
@@ -178,7 +239,10 @@ func _ridge(px: float, pz: float) -> float:
 
 
 func _channel(px: float, pz: float, h: float) -> float:
-	if _valley.size() < 2:
+	# The old road runs through the middle of the Vale and nowhere else, so most samples can say so
+	# in one comparison instead of walking its four segments. height_at runs millions of times
+	# while the terrain builds and this is the cheapest half-second in the whole load.
+	if _valley.size() < 2 or not _valley_box.has_point(Vector2(px, pz)):
 		return h
 	var p := Vector2(px, pz)
 	var best: float = INF
@@ -197,6 +261,8 @@ func _crest(px: float, pz: float, h: float) -> float:
 	var up: float = 0.0
 	var down: float = 0.0
 	for crest: Dictionary in _crests:
+		if not (crest["box"] as Rect2).has_point(p):
+			continue
 		var line: PackedVector2Array = crest["points"]
 		var d: float = INF
 		for i: int in line.size() - 1:
@@ -218,9 +284,113 @@ func crests() -> Array[Dictionary]:
 	return _crests
 
 
+func cuts() -> Array[Dictionary]:
+	return _cuts
+
+
+## The box every river fits inside, for anything that wants to skip the rivers in one comparison.
+func cuts_box() -> Rect2:
+	return _cuts_box
+
+
+## Digs the river beds. Absolute: the bed is put at the water surface less `depth`, wherever the ground
+## happened to be, and the ground is only lowered -- so this cannot lift a hill or fill a hollow, and a cut
+## that misses its mark leaves the land as it found it rather than building a wall across it.
+##
+## This runs on EVERY height sample in the game: the terrain mesh, every grass cell's height grid, every
+## normal. The first version walked all twelve river segments with Geometry2D for each of them and took the
+## grass lattice's prepare cost from 34 ms to 181 ms a settle. Hence the boxes -- one round the whole river
+## system, one round each segment -- and the arithmetic written out rather than called.
+func _cut(px: float, pz: float, h: float) -> float:
+	if _cuts.is_empty() or not _cuts_box.has_point(Vector2(px, pz)):
+		return h
+	for cut: Dictionary in _cuts:
+		if not (cut["box"] as Rect2).has_point(Vector2(px, pz)):
+			continue
+		var near: Vector2 = _nearest_on(cut, px, pz)
+		var half: float = cut["half_width"]
+		var w: float = 1.0 - _smooth(half, half + float(cut["bank"]), near.y)
+		if w <= 0.0:
+			continue
+		h = minf(h, lerpf(h, near.x - float(cut["depth"]), w))
+	return h
+
+
+## The water surface of one cut nearest (px, pz), and how far away that point is: [surface_y, distance].
+## Segments whose own box does not reach here are skipped without any arithmetic at all, which is most of
+## them for any point that is near the river and all of them for any point that is not.
+func _nearest_on(cut: Dictionary, px: float, pz: float) -> Vector2:
+	var line: PackedVector3Array = cut["points"]
+	var boxes: Array = cut["segment_boxes"]
+	var best: float = INF
+	var surface: float = 0.0
+	for i: int in line.size() - 1:
+		if not (boxes[i] as Rect2).has_point(Vector2(px, pz)):
+			continue
+		var ax: float = line[i].x
+		var az: float = line[i].z
+		var dx: float = line[i + 1].x - ax
+		var dz: float = line[i + 1].z - az
+		var span: float = dx * dx + dz * dz
+		var f: float = 0.0 if span < 0.000001 else clampf(((px - ax) * dx + (pz - az) * dz) / span, 0.0, 1.0)
+		var ox: float = px - (ax + dx * f)
+		var oz: float = pz - (az + dz * f)
+		var d: float = sqrt(ox * ox + oz * oz)
+		if d < best:
+			best = d
+			surface = lerpf(line[i].y, line[i + 1].y, f)
+	return Vector2(surface, best)
+
+
+## The water surface over every river, at the point nearest (x, z): [surface_y, distance]. Everything that
+## scatters asks this before it grows -- a tree standing in the river is the kind of thing a test cannot
+## see and a recording shows at once.
+func surface_at(x: float, z: float) -> Vector2:
+	if not _cuts_box.has_point(Vector2(x, z)):
+		return Vector2(-INF, INF)
+	var best: float = INF
+	var surface: float = -INF
+	for cut: Dictionary in _cuts:
+		if not (cut["box"] as Rect2).has_point(Vector2(x, z)):
+			continue
+		var near: Vector2 = _nearest_on(cut, x, z)
+		if near.y < best:
+			best = near.y
+			surface = near.x
+	return Vector2(surface, best)
+
+
+## True when (x, z) is wet, or within `margin` of being wet: near enough to a river that its surface
+## reaches here, and standing lower than that surface. Every scatter filter asks this before it grows,
+## because a tree standing in the river is the sort of thing no test sees and a recording shows at once.
+func in_river(x: float, z: float, margin: float = 0.0) -> bool:
+	if _cuts.is_empty():
+		return false
+	if not _cuts_box.grow(margin).has_point(Vector2(x, z)):
+		return false
+	var level: Vector2 = surface_at(x, z)
+	if level.y > reach_of_cuts() + margin:
+		return false
+	return height_at(x, z) < level.x + margin
+
+
+## How far from a cut's centre line its bank still reaches, over all the cuts there are.
+func reach_of_cuts() -> float:
+	var out: float = 0.0
+	for cut: Dictionary in _cuts:
+		out = maxf(out, float(cut["half_width"]) + float(cut["bank"]))
+	return out
+
+
+
 func _plateau(px: float, pz: float, h: float) -> float:
 	var p := Vector2(px, pz)
 	for site: Dictionary in _plateaus:
+		# Squared first: most samples are nowhere near most plateaus, and a square root for each of
+		# them on every height sample in the game is a square root nobody needed.
+		var reach: float = float(site["radius"]) + float(site["blend"])
+		if p.distance_squared_to(site["centre"]) > reach * reach:
+			continue
 		var d: float = p.distance_to(site["centre"])
 		var r: float = site["radius"]
 		var w: float = 1.0 - _smooth(r, r + float(site["blend"]), d)

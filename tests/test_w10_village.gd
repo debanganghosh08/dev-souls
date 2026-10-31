@@ -192,15 +192,53 @@ func test_the_vale_holds_water_and_the_pond_can_be_emptied() -> void:
 			river = raw
 	assert_false(river.is_empty(), "the river runs")
 	assert_eq(str(river.get("drains_with", "")), "", "and it is not going anywhere")
-	# A channel is carved for the river, and it is gentle enough that the banks are not cliffs.
+	# A bed is cut for the river, and -- the part that matters -- the bed and the water are the SAME
+	# numbers, so they cannot drift apart. They did: the bed was a crest of fixed depth below whatever the
+	# land did, the surface was a fixed height, the land between them rises to +13 m, and the owner filmed
+	# a river that was dry for 22 of its 31 steps (W20, D-040).
 	var channel: Dictionary = {}
-	for raw: Variant in area.get("crests", []):
-		if str((raw as Dictionary).get("name", "")) == "river_channel":
+	for raw: Variant in area.get("cuts", []):
+		if str((raw as Dictionary).get("name", "")) == "river":
 			channel = raw
-	assert_false(channel.is_empty(), "the river runs in a channel, not across the grass")
-	assert_true(float(channel.get("height", 0.0)) < 0.0, "a channel is carved, so its height is negative")
-	var slope: float = absf(float(channel["height"])) / maxf(1.0, float(channel.get("blend", 1.0)))
-	assert_true(slope < 0.25, "its banks are walkable rather than a gorge (%.2f m per m)" % slope)
+	assert_false(channel.is_empty(), "the river runs in a bed cut for it, not across the grass")
+	# The same LINE, point for point and metre for metre. Counting them was not enough: a negative
+	# control that moved the water's source without moving the bed's sailed straight past a test
+	# that only compared how many points there were -- and that drift is exactly what put a dry
+	# riverbed in the owner's recording.
+	var bed_points: Array = channel["points"]
+	var water_points: Array = river["points"]
+	assert_eq(bed_points.size(), water_points.size(), "the bed and the water have the same points")
+	for i: int in mini(bed_points.size(), water_points.size()):
+		var bed_p: Array = bed_points[i]
+		var water_p: Array = water_points[i]
+		for k: int in 3:
+			assert_true(absf(float(bed_p[k]) - float(water_p[k])) < 0.001,
+				"bed and water agree at point %d (%.2f against %.2f)" % [i, float(bed_p[k]), float(water_p[k])])
+	var falling: bool = true
+	var last: float = INF
+	for raw: Variant in channel["points"]:
+		var point: Array = raw
+		falling = falling and float(point[2]) <= last + 0.001
+		last = float(point[2])
+	assert_true(falling, "and the water only ever runs downhill, source to mouth")
+	assert_true(float(channel.get("depth", 0.0)) > 1.5,
+			"the bed is dug clear of the surface (%.1f m)" % float(channel.get("depth", 0.0)))
+	# The cut is as deep as the land above it, which in the north-east is 19 m -- the owner asked for
+	# rock-cut hills with the river between them. What has to stay true is the SLOPE of the bank:
+	# the wall of a gorge you cannot climb out of is a trap, not scenery.
+	var hf: Heightfield = Heightfield.from_dict(area)
+	var steepest: float = 0.0
+	for raw: Variant in channel["points"]:
+		var point: Array = raw
+		var at := Vector2(float(point[0]), float(point[1]))
+		var out: Vector2 = at.normalized() * float(channel["half_width"])
+		var side := Vector2(-out.y, out.x).normalized()
+		var bank: float = float(channel["half_width"]) + float(channel["bank"])
+		for dir: Vector2 in [side, -side]:
+			var rise: float = hf.height_at(at.x + dir.x * bank, at.y + dir.y * bank) - (float(point[2]) - float(channel["depth"]))
+			steepest = maxf(steepest, absf(rise) / float(channel["bank"]))
+	assert_true(steepest < 0.85,
+		"the bank is climbable however deep the cut gets (%.2f m per m)" % steepest)
 
 
 func test_water_builds_a_surface_and_something_to_drown_in() -> void:

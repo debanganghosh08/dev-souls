@@ -25,6 +25,9 @@ Run from the project root (`C:/Projects/porty/dev-souls`):
 |---|---|
 | Version check | `"$GODOTC" --version` |
 | Import assets / build the `.godot` cache (first run, or after new files) | `"$GODOTC" --headless --import` |
+| Walk a river and print its depth step by step (W20) | `"$GODOTC" --headless --script tools/river_report.gd -- --step 20` |
+| Run the suite's site placement rules in seconds, not four minutes | `"$GODOTC" --headless --script tools/site_check.gd` |
+| Find a legal home for every site a terrain change displaced | `"$GODOTC" --headless --script tools/resettle.gd -- --reach 140` |
 | Run the test suite | `"$GODOTC" --headless --script tests/run_tests.gd` |
 | Open the editor | `"$GODOT" --editor` (owner only — do not leave running) |
 | Play the game | `"$GODOT"` (owner only) |

@@ -57,8 +57,8 @@
 		},
 		{
 			"at": [
-				239.7,
-				-226.9
+				238.3,
+				-224.1
 			],
 			"id": "rock_crag_07",
 			"layout": "res://data/structures/rocks/crag.json",
@@ -174,8 +174,8 @@
 		},
 		{
 			"at": [
-				-13.3,
-				-220.0
+				-9.3,
+				-213.1
 			],
 			"id": "fill_standing_stones_07",
 			"layout": "res://data/structures/rocks/standing_stones.json",
@@ -219,8 +219,8 @@
 		},
 		{
 			"at": [
-				-90.0,
-				-298.7
+				-58.9,
+				-268.8
 			],
 			"id": "war_camp_c",
 			"layout": "res://data/structures/rocks/war_camp.json",
@@ -246,8 +246,8 @@
 		},
 		{
 			"at": [
-				-35.6,
-				-299.8
+				-40.5,
+				-279.2
 			],
 			"id": "riverside_00",
 			"layout": "res://data/structures/village/townhouse.json",
@@ -255,8 +255,8 @@
 		},
 		{
 			"at": [
-				-103.7,
-				-275.1
+				-128.5,
+				-204.8
 			],
 			"id": "riverside_01",
 			"layout": "res://data/structures/village/workshop_leanto.json",
@@ -264,8 +264,8 @@
 		},
 		{
 			"at": [
-				-61.5,
-				-379.3
+				-65.7,
+				-289.6
 			],
 			"id": "riverside_03",
 			"layout": "res://data/structures/houses/cottage_intact.json",
@@ -273,8 +273,8 @@
 		},
 		{
 			"at": [
-				-104.5,
-				-314.3
+				-90.2,
+				-276.2
 			],
 			"id": "riverside_04",
 			"layout": "res://data/structures/village/village_well_house.json",
@@ -282,8 +282,8 @@
 		},
 		{
 			"at": [
-				-99.9,
-				-371.7
+				-72.2,
+				-270.0
 			],
 			"id": "riverside_05",
 			"layout": "res://data/structures/village/animal_pen.json",
@@ -291,8 +291,8 @@
 		},
 		{
 			"at": [
-				-24.2,
-				-384.0
+				-23.8,
+				-268.0
 			],
 			"id": "riverside_06",
 			"layout": "res://data/structures/houses/barn_intact.json",
@@ -300,8 +300,8 @@
 		},
 		{
 			"at": [
-				-81.0,
-				-374.6
+				-73.6,
+				-280.0
 			],
 			"id": "riverside_07",
 			"layout": "res://data/structures/village/market_stalls.json",
@@ -480,8 +480,8 @@
 		},
 		{
 			"at": [
-				-189.5,
-				-257.5
+				-210.3,
+				-231.0
 			],
 			"id": "rim_graveyard_19",
 			"layout": "res://data/structures/rocks/graveyard.json",
@@ -489,8 +489,8 @@
 		},
 		{
 			"at": [
-				-164.6,
-				-275.8
+				-123.4,
+				-217.6
 			],
 			"id": "rim_sword_monument_20",
 			"layout": "res://data/structures/rocks/sword_monument.json",
@@ -498,8 +498,8 @@
 		},
 		{
 			"at": [
-				1.1,
-				-283.2
+				0.6,
+				-272.1
 			],
 			"id": "rim_war_camp_21",
 			"layout": "res://data/structures/rocks/war_camp.json",
@@ -507,8 +507,8 @@
 		},
 		{
 			"at": [
-				46.1,
-				-286.2
+				41.7,
+				-276.3
 			],
 			"id": "rim_crag_22",
 			"layout": "res://data/structures/rocks/crag.json",
@@ -516,8 +516,8 @@
 		},
 		{
 			"at": [
-				197.8,
-				-241.5
+				196.6,
+				-239.0
 			],
 			"id": "rim_boulders_23",
 			"layout": "res://data/structures/rocks/boulders.json",
@@ -540,42 +540,6 @@
 			"id": "rim_boulders_25",
 			"layout": "res://data/structures/rocks/boulders.json",
 			"yaw": -85.2
-		},
-		{
-			"at": [
-				306.2,
-				-237.0
-			],
-			"id": "crossing_01",
-			"layout": "res://data/structures/rocks/river_bridge.json",
-			"yaw": -43.0
-		},
-		{
-			"at": [
-				64.3,
-				-332.8
-			],
-			"id": "crossing_03",
-			"layout": "res://data/structures/rocks/river_bridge.json",
-			"yaw": -9.0
-		},
-		{
-			"at": [
-				-79.0,
-				-339.0
-			],
-			"id": "crossing_04",
-			"layout": "res://data/structures/rocks/river_bridge.json",
-			"yaw": 4.0
-		},
-		{
-			"at": [
-				-202.9,
-				-314.2
-			],
-			"id": "crossing_05",
-			"layout": "res://data/structures/rocks/river_bridge.json",
-			"yaw": 19.2
 		}
 	]
 }

@@ -29,6 +29,8 @@ var _zones: Array[Dictionary] = []
 var _road: PackedVector2Array = PackedVector2Array()
 var _road_half: float = 2.5
 var _road_feather: float = 4.0
+# The box the road fits in, grown by how far its zone reaches. See road_distance.
+var _road_box: Rect2 = Rect2()
 var _max_density: float = 1.0
 var _green: FastNoiseLite
 var _light: FastNoiseLite
@@ -55,6 +57,11 @@ static func from_dict(data: Dictionary, hf: Heightfield) -> GrassZones:
 		for wp: Variant in waypoints:
 			if wp is Array and (wp as Array).size() >= 2:
 				zones._road.append(Vector2(float(wp[0]), float(wp[1])))
+	if zones._road.size() >= 2:
+		zones._road_box = Rect2(zones._road[0], Vector2.ZERO)
+		for q: Vector2 in zones._road:
+			zones._road_box = zones._road_box.expand(q)
+		zones._road_box = zones._road_box.grow(zones._road_half + zones._road_feather + 1.0)
 	var noise: Dictionary = data.get("colour_noise", {})
 	zones._green_amount = clampf(float(noise.get("green", 0.0)), 0.0, 1.0)
 	zones._light_amount = clampf(float(noise.get("light", 0.0)), 0.0, 1.0)
@@ -87,10 +94,16 @@ func zone_names() -> Array[String]:
 
 
 ## Distance to the old road's centre line, INF when the area has no road.
+## How far (x, z) is from the old road. Every grass cell asks this for each of the 81 points in its
+## height grid, for the road zone, and the road is four segments -- so a box round it answers for
+## most of the Vale without any of that, and the answer only has to be exact where the zone can
+## actually reach (it fades out at _road_half + _road_feather).
 func road_distance(x: float, z: float) -> float:
 	if _road.size() < 2:
 		return INF
 	var p := Vector2(x, z)
+	if not _road_box.has_point(p):
+		return INF
 	var best: float = INF
 	for i: int in _road.size() - 1:
 		best = minf(best, p.distance_to(Geometry2D.get_closest_point_to_segment(p, _road[i], _road[i + 1])))

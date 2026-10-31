@@ -402,7 +402,7 @@
 		},
 		{
 			"at": [
-				-30.0,
+				-18.0,
 				-280.0
 			],
 			"id": "north_watch",
@@ -649,8 +649,8 @@
 		},
 		{
 			"at": [
-				-258.0,
-				-245.0
+				-250.9,
+				-232.4
 			],
 			"id": "edge_shrine",
 			"layout": "res://data/structures/houses/shrine_intact.json",

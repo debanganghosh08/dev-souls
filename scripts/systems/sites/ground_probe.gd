@@ -61,6 +61,10 @@ static func report(hf: Heightfield, road: PackedVector2Array, taken: Array, at: 
 			nearest = d
 			nearest_id = str(site.get("id", "?"))
 	var dry: bool = low >= water + DRY_MARGIN
+	# W20: the Vale has rivers now, and they are cut to their own surface rather than to the pond's. A
+	# spot can be well clear of water_level and still be in the middle of the river, which is how a well
+	# house came to stand 4 m from the centre line of one.
+	var ashore: bool = not hf.in_river(at.x, at.y, half + DRY_MARGIN)
 	var flat: bool = high - low <= MAX_DROP
 	var off_road: bool = road_distance >= ROAD_CLEAR
 	var clear: bool = nearest >= SITE_CLEAR
@@ -80,7 +84,8 @@ static func report(hf: Heightfield, road: PackedVector2Array, taken: Array, at: 
 		"off_road": off_road,
 		"clear": clear,
 		"inside_ridge": inside,
-		"legal": dry and flat and off_road and clear and inside,
+		"ashore": ashore,
+		"legal": dry and flat and off_road and clear and inside and ashore,
 	}
 
 
@@ -144,7 +149,7 @@ static func road_of(area: Dictionary) -> PackedVector2Array:
 static func line(row: Dictionary) -> String:
 	var at: Vector2 = row["at"]
 	var flags: String = ""
-	for key: String in ["dry", "flat", "off_road", "clear", "inside_ridge"]:
+	for key: String in ["dry", "flat", "off_road", "clear", "inside_ridge", "ashore"]:
 		if not bool(row[key]):
 			flags += " NOT_" + key.to_upper()
 	return "%8.1f %8.1f  ground=%7.2f drop=%5.2f road=%6.1f nearest=%6.1f (%s)  %s%s" % [

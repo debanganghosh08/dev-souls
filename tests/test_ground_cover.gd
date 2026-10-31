@@ -44,7 +44,9 @@ func test_the_solid_trees_are_the_ones_the_player_is_standing_among() -> void:
 	assert_true(not line.is_empty(), "probe printed the forest line")
 	if line.is_empty():
 		return
-	assert_true(int(line["trees"]) > 6000, "the Vale's five woods hold thousands of trees (%s)" % line["trees"])
+	# Fewer than before W20: cutting a real bed for the river, and refusing to grow in it, took some
+	# hundreds of trees out of the north. Still thousands, which is what the owner asked for.
+	assert_true(int(line["trees"]) > 5000, "the Vale's five woods hold thousands of trees (%s)" % line["trees"])
 	assert_eq(line["on_ground"], "true", "every tree stands on the heightfield")
 	assert_true(int(line["dealt"]) > 0, "the collider pool was dealt onto trees (%s bodies)" % line["dealt"])
 	assert_true(int(line["dealt"]) <= int(line["pool"]), "and never beyond the pool it was given")
@@ -143,11 +145,16 @@ func test_vale_palette_has_a_horizon_glow_at_dawn_and_dusk() -> void:
 	assert_true(glow > before * 2.0, "the horizon brightens into sunrise, not a step (%s vs %s)" % [glow, before])
 	assert_true(after > glow * 0.8, "daylight keeps the horizon lit after the glow")
 	assert_true(float(vale.sample(0.0)["ambient_energy"]) >= 0.1, "midnight keeps enough ambient for silhouettes")
-	# W9-G: thinned to a third. At 0.034 the fog was a wall at ~60 m -- the castle, the houses and all
-	# 103 fires were invisible, which is most of why the owner said the world felt empty. It is still
-	# hazy, and still thickest at dawn and dusk (below); it just no longer hides what was built.
+	# W9-G thinned this to a third because at 0.034 the fog was a wall at ~60 m. W20 thinned it again,
+	# to a third of that, because the owner filmed the same grey wall a second time -- and the reason
+	# the first fix did not hold is that it was the only fog when it was made. Volumetric fog was
+	# switched on afterwards (W16) and the two stack; this range now accounts for both.
 	var noon_fog: float = float(vale.sample(12.0)["fog_density"])
-	assert_true(noon_fog >= 0.008 and noon_fog <= 0.02, "the vale stays hazy at noon without hiding it (%.3f)" % noon_fog)
+	assert_true(noon_fog >= 0.002 and noon_fog <= 0.006,
+		"the vale stays hazy at noon without hiding it (%.4f)" % noon_fog)
+	var scene: String = FileAccess.get_file_as_string("res://scenes/environment/sky.tscn")
+	assert_true(scene.contains("volumetric_fog_density = 0.0045"),
+		"and the volumetric fog over the top of it is thin too, because they add up")
 
 
 func test_aligned_basis_tilts_part_way_and_stays_upright_without_a_normal() -> void:

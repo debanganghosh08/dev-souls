@@ -34,15 +34,6 @@
 			"yaw": 0.0
 		},
 		{
-			"id": "hollowmere_bridge_north",
-			"layout": "res://data/structures/village/stone_bridge.json",
-			"at": [
-				-120.0,
-				222.0
-			],
-			"yaw": 0.0
-		},
-		{
 			"id": "hollowmere_gate_north",
 			"layout": "res://data/structures/village/village_gate.json",
 			"at": [
@@ -88,15 +79,6 @@
 					}
 				}
 			]
-		},
-		{
-			"id": "hollowmere_bridge_south",
-			"layout": "res://data/structures/village/stone_bridge.json",
-			"at": [
-				-120.0,
-				277.0
-			],
-			"yaw": 0.0
 		},
 		{
 			"id": "hollowmere_gate_south",

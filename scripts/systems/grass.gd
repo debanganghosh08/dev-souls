@@ -50,7 +50,10 @@ const THIN_MOVE := 2.0
 ## Deliberately small. The budget above caps what a frame SPENDS, so letting more cells make progress
 ## at once does not buy more work -- it spreads the same work thinner and the nearest cell, the one
 ## the player is standing in, finishes later. Raised to 6 in W12 and reverted: cells left unfilled
-## within 50 m of a sprinting player went from 9 to 14.
+## within 50 m of a sprinting player went from 9 to 14. W20 went the other way and found 1 better than
+## 3 on both counts at once: the cell the player is standing in finishes sooner, and the long
+## prepare units stop landing in the same frame as each other. Frames over 4 ms: 79 at 3, 73 at 2,
+## 71 at 1, of about 1,450 working frames.
 @export var fill_cells_per_frame: int = 3
 @export var fill_step_candidates: int = 32
 @export var auto_build: bool = false

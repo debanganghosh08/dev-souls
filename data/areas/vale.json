@@ -102,64 +102,19 @@
 			]
 		},
 		{
-			"_comment": "The river bed (W18), rim to rim. Shallow on purpose: this valley was laid out before it had a river and a gorge tilts the ground out from under what was already built (D-032).",
-			"blend": 20.0,
-			"half_width": 7.0,
-			"height": -2.4,
-			"name": "river_channel",
+			"_comment": "The shoulder over the Wide Water (W20). The owner asked for two cut hills with the river running between them at its widest; this is the north one. There is no south one, and saying so is better than pretending: the river runs within 60 m of the ridge clearance for most of its length and a hill on that side would stand outside the Vale. The gorge wall itself is 19 m deep in the north-east, which is the cut hill the request was really after.",
+			"blend": 38.0,
+			"half_width": 15.0,
+			"height": 11.0,
+			"name": "wide_water_shoulder",
 			"points": [
 				[
-					338,
-					-142
+					-78.0,
+					-276.0
 				],
 				[
-					296,
-					-226
-				],
-				[
-					188,
-					-282
-				],
-				[
-					62,
-					-318
-				],
-				[
-					-78,
-					-324
-				],
-				[
-					-198,
-					-300
-				],
-				[
-					-296,
-					-248
-				],
-				[
-					-328,
-					-172
-				]
-			]
-		},
-		{
-			"_comment": "The same bed, broadened through its middle reach (W18), which is where the owner asked for the river at its widest.",
-			"blend": 18.0,
-			"half_width": 11.0,
-			"height": -2.8,
-			"name": "river_channel_wide",
-			"points": [
-				[
-					188,
-					-282
-				],
-				[
-					62,
-					-318
-				],
-				[
-					-78,
-					-324
+					-10.0,
+					-272.0
 				]
 			]
 		}
@@ -361,75 +316,180 @@
 	"water_level": -5.0,
 	"waters": [
 		{
-			"_comment": "The river (W18). Each point carries its own surface level, taken from the bed under it and never allowed to rise as it goes: a flat surface over a bed that follows the land is why the river vanished in two places and the owner walked into the gap.",
-			"depth": 6.0,
-			"half_width": 7.5,
-			"level": -1.0,
+			"_comment": "The water itself, on exactly the line data/areas/vale.json cuts for it: same points, same elevations. The surface and the bed cannot drift apart because they are the same numbers.",
 			"name": "river",
+			"half_width": 9.0,
+			"depth": 6.0,
+			"level": -4.0,
 			"points": [
 				[
-					338.0,
-					-142.0,
-					-2.27
+					362.0,
+					-158.0,
+					-4.2
 				],
 				[
-					296.0,
-					-226.0,
-					-2.27
+					348.0,
+					-150.0,
+					-4.4
 				],
 				[
-					188.0,
-					-282.0,
-					-2.27
+					312.0,
+					-240.0,
+					-4.8
+				],
+				[
+					196.0,
+					-296.0,
+					-5.4
 				],
 				[
 					62.0,
-					-318.0,
-					-2.27
+					-330.0,
+					-5.9
 				],
 				[
 					-78.0,
-					-324.0,
-					-2.27
+					-336.0,
+					-6.3
 				],
 				[
-					-198.0,
+					-200.0,
+					-312.0,
+					-6.7
+				],
+				[
 					-300.0,
-					-2.85
+					-256.0,
+					-7.0
 				],
 				[
-					-296.0,
-					-248.0,
-					-2.85
+					-336.0,
+					-176.0,
+					-7.3
 				],
 				[
-					-328.0,
-					-172.0,
-					-2.85
+					-350.0,
+					-168.0,
+					-7.5
 				]
 			]
 		},
 		{
-			"_comment": "Its widest reach (W18), between the cut hills.",
-			"depth": 6.5,
-			"half_width": 13.0,
-			"level": -1.0,
+			"_comment": "The Wide Water's broader surface, over the broader cut.",
 			"name": "river_wide",
+			"half_width": 15.0,
+			"depth": 7.0,
+			"level": -5.0,
 			"points": [
 				[
-					188.0,
-					-282.0,
-					-2.27
+					196.0,
+					-296.0,
+					-5.4
 				],
 				[
 					62.0,
-					-318.0,
-					-2.27
+					-330.0,
+					-5.9
 				],
 				[
 					-78.0,
-					-324.0,
-					-2.27
+					-336.0,
+					-6.3
+				],
+				[
+					-200.0,
+					-312.0,
+					-6.7
+				]
+			]
+		}
+	],
+	"cuts": [
+		{
+			"_comment": "The river bed (W20). ABSOLUTE, not relative: the bed is cut to the water surface less `depth` whatever the ground was doing, and the ground is only ever lowered. The old river was a crest of fixed depth and the land along this line rises to +13 m, so the channel climbed with it while the water sat at -2.3 -- the owner filmed a river that was dry for 22 of its 31 steps, with the surface floating above sunken banks so you could walk underneath it. The surface falls from -4.2 m at the eastern rim to -7.5 m at the western one, a 0.4 % gradient over 863 m and never rises, so where the land is high the river runs in a gorge and where it is low it runs in a shallow trough.",
+			"name": "river",
+			"half_width": 9.0,
+			"bank": 28.0,
+			"depth": 2.4,
+			"points": [
+				[
+					362.0,
+					-158.0,
+					-4.2
+				],
+				[
+					348.0,
+					-150.0,
+					-4.4
+				],
+				[
+					312.0,
+					-240.0,
+					-4.8
+				],
+				[
+					196.0,
+					-296.0,
+					-5.4
+				],
+				[
+					62.0,
+					-330.0,
+					-5.9
+				],
+				[
+					-78.0,
+					-336.0,
+					-6.3
+				],
+				[
+					-200.0,
+					-312.0,
+					-6.7
+				],
+				[
+					-300.0,
+					-256.0,
+					-7.0
+				],
+				[
+					-336.0,
+					-176.0,
+					-7.3
+				],
+				[
+					-350.0,
+					-168.0,
+					-7.5
+				]
+			]
+		},
+		{
+			"_comment": "The Wide Water (W20): the middle reach, broader and deeper, which is where the owner asked for the river at its widest and a span hanging over it.",
+			"name": "river_wide",
+			"half_width": 15.0,
+			"bank": 30.0,
+			"depth": 3.2,
+			"points": [
+				[
+					196.0,
+					-296.0,
+					-5.4
+				],
+				[
+					62.0,
+					-330.0,
+					-5.9
+				],
+				[
+					-78.0,
+					-336.0,
+					-6.3
+				],
+				[
+					-200.0,
+					-312.0,
+					-6.7
 				]
 			]
 		}

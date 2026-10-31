@@ -34,6 +34,11 @@ const DRAINED_FLAG := &"pond_drained"
 const WATER_FALL_SEC := 7.0
 ## Grass stops this far inside the ridge's inner radius; the ridge slopes would kill it anyway.
 const GRASS_RIDGE_MARGIN := 30.0
+## Edge of the squares the riverbank mask is built on. Grass asks it once per blade and there are
+## tens of thousands of blades a second while the lattice fills, so the question has to be a
+## dictionary lookup rather than a walk down the river's twelve segments -- which is what it was for
+## one afternoon, and it cost the fill half a millisecond a frame.
+const WET_CELL := 3.0
 ## Built ground, from data/sites/ (D-022). Grass stops this far outside a wall or floor; trees and scattered
 ## props need more room than a point, so they keep a clearance.
 const SITE_KEEP_OUT_MARGIN := 0.3
@@ -54,6 +59,8 @@ const READOUT := "pos  (%.1f, %.1f, %.1f)\nterrain h  %.2f   slope  %.1f deg   %
 var _game: Node
 var _flags: Node
 var _keep_out: KeepOutMask
+# Squares of the map that a river reaches into, built once from the heightfield. See WET_CELL.
+var _wet: Dictionary = {}
 var _water_material: StandardMaterial3D
 var _drained: bool = false
 var _spawn: Vector3 = Vector3.ZERO
@@ -85,6 +92,7 @@ func _ready() -> void:
 	_bind_pond(hf)
 	# Before anything scatters: every placement filter below asks this mask what is built where.
 	_keep_out = SiteRegistry.keep_out("vale", SITE_KEEP_OUT_MARGIN)
+	_build_wet_mask(hf)
 	if _settlements != null:
 		_settlements.build(hf)
 	_forest.height_sampler = _terrain.height_at
@@ -211,6 +219,10 @@ func _tree_allowed(x: float, z: float) -> bool:
 	var hf: Heightfield = _terrain.heightfield
 	if hf.height_at(x, z) < hf.water_level() + TREE_SHORE_CLEARANCE or hf.slope_at(x, z) > TREE_MAX_SLOPE:
 		return false
+	# A river is not the pond and has its own surface, falling from -4.2 m to -7.5 m along its length. The
+	# pond's water_level says nothing about it, which is why the owner filmed trees standing in the water.
+	if hf.in_river(x, z, TREE_SHORE_CLEARANCE):
+		return false
 	if Vector2(x, z).length() > hf.ridge_inner_radius() - RIDGE_MARGIN:
 		return false
 	if _keep_out != null and _keep_out.blocks_near(x, z, TREE_SITE_CLEARANCE):
@@ -221,9 +233,35 @@ func _tree_allowed(x: float, z: float) -> bool:
 	return true
 
 
+## Marks every WET_CELL square a river reaches into. A square counts as wet if any of its corners is,
+## so the mask errs on the side of a bare strip at the waterline, which is what a bank looks like.
+func _build_wet_mask(hf: Heightfield) -> void:
+	_wet.clear()
+	var box: Rect2 = hf.cuts_box()
+	if box.size.x <= 0.0 or box.size.y <= 0.0:
+		return
+	var x: float = box.position.x
+	while x <= box.end.x:
+		var z: float = box.position.y
+		while z <= box.end.y:
+			if hf.in_river(x, z, 0.3):
+				for dx: int in [-1, 0]:
+					for dz: int in [-1, 0]:
+						_wet[Vector2i(floori(x / WET_CELL) + dx, floori(z / WET_CELL) + dz)] = true
+			z += WET_CELL
+		x += WET_CELL
+
+
+## Whether a river reaches this square. One lookup; see WET_CELL.
+func _is_wet(x: float, z: float) -> bool:
+	return not _wet.is_empty() and _wet.has(Vector2i(floori(x / WET_CELL), floori(z / WET_CELL)))
+
+
 func _prop_allowed(x: float, z: float) -> bool:
 	var hf: Heightfield = _terrain.heightfield
 	if _keep_out != null and _keep_out.blocks_near(x, z, PROP_SITE_CLEARANCE):
+		return false
+	if hf.in_river(x, z, TREE_SHORE_CLEARANCE * 0.5):
 		return false
 	return hf.height_at(x, z) >= hf.water_level() + TREE_SHORE_CLEARANCE * 0.5 and hf.slope_at(x, z) <= PROP_MAX_SLOPE
 
@@ -237,6 +275,9 @@ func _grass_density(x: float, z: float) -> float:
 	if Vector2(x, z).length() > hf.ridge_inner_radius() - GRASS_RIDGE_MARGIN:
 		return 0.0
 	if _keep_out != null and _keep_out.blocks(x, z):
+		return 0.0
+	# Grass stops at the waterline, and the rivers carry their own waterline (W20).
+	if _is_wet(x, z):
 		return 0.0
 	return 1.0
 

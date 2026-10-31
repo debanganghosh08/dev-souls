@@ -1,0 +1,41 @@
+{
+	"_comment": "The river crossings (W20). The old four were placed 15 m to the SIDE of the water and a river_bridge is 36 m long, so not one of them reached the river -- the owner walked the whole bank and found one bridge with nothing under it. These are centred ON the line and turned across it. The hanging bridge is at the Wide Water, where the owner asked for a span with no supports under it.",
+	"sites": [
+		{
+			"id": "crossing_castle_road",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"at": [
+				312.3,
+				-239.2
+			],
+			"yaw": 68.2
+		},
+		{
+			"id": "crossing_hanging",
+			"layout": "res://data/structures/rocks/hanging_bridge.json",
+			"at": [
+				120.9,
+				-315.1
+			],
+			"yaw": 14.2
+		},
+		{
+			"id": "crossing_riverend",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"at": [
+				-92.6,
+				-333.1
+			],
+			"yaw": -11.1
+		},
+		{
+			"id": "crossing_west",
+			"layout": "res://data/structures/rocks/river_bridge.json",
+			"at": [
+				-277.7,
+				-268.5
+			],
+			"yaw": -29.2
+		}
+	]
+}

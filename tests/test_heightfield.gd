@@ -72,9 +72,14 @@ func test_plateaus_are_flat_and_blend_smoothly() -> void:
 			for n: int in samples:
 				var p: Vector2 = c + dir * (r + float(n + 1) * RING_STEP)
 				var h: float = _hf.height_at(p.x, p.y)
+				if _hf.in_river(p.x, p.y, _hf.reach_of_cuts()):
+					prev = h
+					continue
 				step = maxf(step, absf(h - prev))
 				prev = h
 		assert_true(worst <= FLAT_TOLERANCE, "%s is flat across its radius (max deviation %.3f)" % [site["name"], worst])
+		# W20: the river is cut to an absolute depth and it crosses the castle's skirt 120 m out. A gorge
+		# through a skirt is a gorge, not a fault in the skirt, so the samples inside one are not counted.
 		assert_true(step <= MAX_SKIRT_STEP, "%s skirt has no step over %.2f m per %.1f m (worst %.2f)" % [site["name"], MAX_SKIRT_STEP, RING_STEP, step])
 		assert_true(centre_slope < 0.5, "%s centre reads as level (slope %.2f)" % [site["name"], centre_slope])
 

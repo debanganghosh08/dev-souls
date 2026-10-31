@@ -129,8 +129,8 @@
 		},
 		{
 			"at": [
-				-70.0,
-				-255.0
+				-80.2,
+				-267.3
 			],
 			"id": "watchfire_south_rim",
 			"layout": "res://data/structures/pois/watchfire.json",

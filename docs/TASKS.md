@@ -162,7 +162,13 @@ plateaus, and W19 spent an hour finding one spot a 36 m plateau could stand with
 Mountains, a proper town in a bowl and cut plateaus need ground that does not exist here.
 `main.gd._begin_level()` is the single entry point, and the structure, grass, fire, water, site and map
 systems are all area-driven already -- the map reads `area_name` and nothing else.
-**W21 · Look at W19 with eyes.** `READY`, and cheap. The map, the minimap, Thornwood, the Girdle, the dead
+**W20 · The river, the light and the trees.** `DONE`. The owner recorded ten minutes and found a river
+with no water in it, bridges beside the water rather than over it, a world too dark to see and trees three
+storeys too tall. The bed is cut to an absolute elevation now and the water is the same numbers as the bed
+(D-040); the bridges cross the river and are tested for it (D-041); there is one fog instead of two and
+the sun is 2.4x what it was (D-042); and `height_at` came out 1.9x faster on the way past (D-043). See
+`docs/reports/W20.md`.
+**W21 · Look at W19 and W20 with eyes.** `READY`, and cheap. The map, the minimap, Thornwood, the Girdle, the dead
 dragon and the Sunken Wheel have only ever been drawn by a null renderer. Two recordings have overturned
 six things the tests called fine. Thirty seconds of walking into Thornwood from the south-east, and thirty
 of the map open, would settle more than another night of building.

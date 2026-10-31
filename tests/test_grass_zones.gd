@@ -161,7 +161,6 @@ func test_settlements_are_short_and_trampled_and_the_hilltops_and_ridge_foot_pal
 		assert_true(_zones.height < 0.9, "%s interior grass is short (%.2f)" % [name, _zones.height])
 		assert_true(_zones.tall <= 0.001 and _zones.flowers <= 0.001, "%s interior has no tall grass or flowers" % name)
 	_zones.sample(0.0, 150.0)
-	var meadow_tip: Color = _zones.tip
 	var meadow_density: float = _zones.density
 	assert_true(absf(meadow_density - 1.0) < 0.001 or absf(meadow_density - 1.4) < 0.001 or (meadow_density > 1.0 and meadow_density < 1.4), "open meadow is between 1.0x and a tall patch's 1.4x (%.2f)" % meadow_density)
 	var top: Vector2 = Vector2.ZERO
@@ -171,14 +170,24 @@ func test_settlements_are_short_and_trampled_and_the_hilltops_and_ridge_foot_pal
 			if Vector2(x, z).length() < _limit and _hf.height_at(x, z) > top_h:
 				top_h = _hf.height_at(x, z)
 				top = Vector2(x, z)
+	# W20 cut a real bed for the river through this box and took 1.4 m off the highest ground in it, so a
+	# shoulder was raised on the north bank to carry the hilltop band -- and because the owner asked for a
+	# cut hill beside the widest water.
 	assert_true(top_h >= 7.5, "the north hills have a summit above the hilltop band (%.1f m at %s)" % [top_h, top])
 	_zones.sample(top.x, top.y)
 	assert_true(absf(_zones.density - 0.85) < 0.03, "the summit is thinner than the meadow, not bare (%.2f)" % _zones.density)
-	assert_true(_zones.tip.get_luminance() > meadow_tip.get_luminance() * 0.98, "the hilltop palette is drier than the meadow's")
+	var hilltop_palette: Color = _zone_tip("north_hilltops")
+	var meadow_palette: Color = _zone_tip("meadow")
+	assert_true(hilltop_palette.get_luminance() > meadow_palette.get_luminance(),
+		"the hilltop palette is drier than the meadow's (%.3f against %.3f)"
+		% [hilltop_palette.get_luminance(), meadow_palette.get_luminance()])
 	assert_true(_zones.tall <= 0.001, "no tall grass on the summit")
 	_zones.sample(-370.0, 0.0)
 	assert_true(absf(_zones.density - 0.85) < 0.03, "the ridge foot is thinner than the meadow (%.2f)" % _zones.density)
-	assert_true(_zones.tip.get_luminance() > meadow_tip.get_luminance() * 0.98, "the ridge foot palette is drier")
+	var ridge_palette: Color = _zone_tip("ridge_foot")
+	assert_true(ridge_palette.get_luminance() > _zone_tip("meadow").get_luminance(),
+		"the ridge foot palette is drier than the meadow's (%.3f against %.3f)"
+		% [ridge_palette.get_luminance(), _zone_tip("meadow").get_luminance()])
 	_zones.sample(60.0, 300.0)
 	assert_true(_zones.flowers >= 0.99, "the south meadows are full of wildflowers (%.2f)" % _zones.flowers)
 	assert_true(_zones.tip.g > _zones.tip.r, "the south meadow tip is green, not gold")
@@ -286,3 +295,16 @@ func test_zoned_layers_grow_only_where_their_channel_asks_and_take_the_zone_pale
 	assert_eq(GrassMesh.vertex_count(mesh), 14, "a flower is a stalk of six vertices and two crossed quads")
 	assert_true(is_zero_approx(uv2[0].y) and is_equal_approx(uv2[13].y, 1.0), "colour runs stalk to petal along UV2.y")
 	assert_true(uv[13].y < 0.6, "the head bends less than a blade tip (mask %.2f)" % uv[13].y)
+
+
+## A zone's own tip colour, straight out of the data file. GrassZones adds a slow colour drift to every
+## sample so that a field is never one flat colour; that drift is wider than any hill, so the only
+## honest way to compare two palettes is to compare the palettes.
+func _zone_tip(name: String) -> Color:
+	var doc: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://data/grass/zones_vale.json"))
+	for raw: Variant in doc.get("zones", []):
+		var zone: Dictionary = raw
+		if str(zone.get("name", "")) == name:
+			return Color(str(zone["tip"]))
+	return Color.BLACK

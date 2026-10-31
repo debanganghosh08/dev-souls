@@ -315,7 +315,7 @@ static func plan_grove(centre: Vector2, radius: float, clearing: float, tree_cou
 		positions.append(Vector3(cand.x, 0.0, cand.y))
 		archetypes.append(_weighted(names, weights, rng))
 		yaws.append(rng.randf_range(0.0, TAU))
-		scales.append(rng.randf_range(0.8, 1.45))
+		scales.append(rng.randf_range(0.8, 1.2))
 	return out
 
 

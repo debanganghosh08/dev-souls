@@ -482,3 +482,65 @@ crowded grove, which is the one line that would have said so.
 that silently does nothing is indistinguishable from one that works unless something measures the thing it
 was meant to preserve. The spacing index had no test of its own; the two that did -- the grass fill and the
 grove's tree count -- both reported *better* numbers with the bug than without it.
+
+**D-040 (2026-10-31) A river bed is cut to an ABSOLUTE elevation, never to a depth below the ground.**
+The owner played for ten minutes and came back with "the river is not properly cut out, no proper water,
+and I found one bridge with nothing under it". All of it was true. The bed was a *crest* with a negative
+height, which digs a fixed depth below whatever the ground happens to be doing -- and the ground along this
+line rises to +13 m, so the channel climbed with it while the water sat at a flat -2.3. `tools/river_report.gd`,
+written to find out, said **22 of the river's 31 steps were dry**, with the bed standing up to 13.5 m ABOVE
+the water surface.
+
+Two more things fell out of the same cause. The "large black wall" the owner has now filmed twice is the
+**underside of the water**: where the banks had sunk below the surface you could walk in under the sheet.
+And nothing grew correctly near it, because every scatter filter asked the POND's water level (-5.0) about
+a river running on its own surface -- hence the dead trees standing in the water.
+
+A `cut` is now its own feature: a polyline of (x, z, water surface), a half width, a bank and a depth. The
+bed is put at `surface - depth` wherever the ground was, the ground is only ever LOWERED, and the water
+surface is the same list of numbers, so the two cannot drift apart. The surface falls from -4.2 m at the
+eastern rim to -7.5 m at the western one and never rises -- a 0.4 % gradient, which is what a river has.
+Where the land is high the river is now a gorge: **18.7 m deep in the north-east**, which is also the
+"rock-cut hills with the river between them" the owner asked for in W13.
+
+The cost of this was two dozen sites standing in the new bed, moved with `tools/resettle.gd` (which asks
+GroundProbe for a legal spot and repeats until nothing conflicts), and three new tools kept because the
+next river will need them too: `river_report.gd` walks a water body and prints its depth step by step,
+`site_check.gd` runs the suite's placement rules in seconds instead of four minutes, and `resettle.gd`
+rehouses whatever a terrain change displaced.
+
+**D-041 (2026-10-31) A bridge has to be told to cross the river.** All four were placed 15 m to the SIDE
+of the line, and a `river_bridge` is 36 m long, so not one of them reached the water: the owner walked the
+whole bank and found a single span over dry ground. Nothing checked, because the suite only ever asked
+whether a site was *legal*, and a bridge is exempt from the placement rules by design -- which turned out
+to mean exempt from everything. `tests/test_w20_river.gd` now asserts that each crossing sits within the
+channel's half width of the centre line, is turned across the flow rather than along it, and has at least
+a metre of water under it. All three fail when any one of them is undone.
+
+**The W18 report claimed "four bridges placed (one hanging)" and that was wrong.** There was no hanging
+bridge in the data at all; `crossing_02` had been dropped during the routing attempts and nobody noticed,
+because a missing site is silent. There is one now, over the Wide Water, and a test that counts it.
+
+**D-042 (2026-10-31) Two fogs were running at once, and the first one's fix was made before the second
+existed.** W9-G thinned the classic fog to a third because "at 0.034 the fog was a wall at ~60 m" -- and it
+was the only fog then. Volumetric fog was switched on in W16 and the two multiply, so the owner filmed the
+same grey wall a second time and said "I cannot see anything". Daylight now runs the sun at 1.78 rather
+than 0.74, ambient at 0.75 rather than 0.5, classic fog at a third of what W9-G left and the volumetric
+layer at 0.0045 rather than 0.016, with shadows reaching 260 m rather than 120. Night is still dark; the
+test that guards the fog now checks both layers, because checking one of two multiplying numbers is how
+this came back.
+
+**Also, and the owner spotted it before I did: half the forest was dead.** The archetype mix ran
+`dead 5, fir 3, pine 2`, and a dead tree has no foliage, so the 10,000 trees W19 planted came out as
+thousands of bare poles -- "the trees are long". The mix is now `fir 5, pine 4, dead 1.5` and the heights
+are cut by about a third: a pine was 26 m before the forest's own 1.45x scale took it to 37 m, which is a
+twelve-storey tree.
+
+**D-043 (2026-10-31) height_at runs millions of times, and nothing in it was boxed.** Adding the river cut
+made the terrain build visibly slower, which was the prompt to look at what the rest of it costs: `_crest`
+walked the hidden valley's **thirteen** segments for every sample taken anywhere in the Vale, `_channel`
+walked the road's four, and `_plateau` took five square roots. Each feature now carries a bounding box and
+is skipped in one comparison. **height_at is 1.9x faster than it was before the river went in**, 160k
+samples over the whole map going 1244 ms to 669 ms with a river in it that was not there before, and the
+load went 17.3 s to 12.3 s. The lesson is the ordinary one: the cost was in the oldest code, and it took
+adding something new to make anyone measure it.
