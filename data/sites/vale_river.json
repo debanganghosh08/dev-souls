@@ -1,0 +1,68 @@
+{
+	"_comment": "W21-F: what stands along the river, built at run time by Settlements from layouts that already exist (data/structures/pois/). The owner asked for villages and camps along the river 'just like Elden Ring'; this is the modest first pass, and it also closes the reach gap tests/test_world_reach.gd found at (0, -380): the far bank of the Wide Water, a 7 m strip between the bank's rim and the ridge clearance, had nothing on it, so a walker there was 95 m from anything built. FAR BANK: a lost hearth and a waymarker cairn, the fire somebody who was waiting to cross did not walk away from (The Drowned March 'takes whoever tries the crossing', data/places.json). WIDE WATER CAMP: a travellers' camp and its cairn on the south bank at the hanging bridge's foot. LAST MOUTH CAMP: a camp, a bank fire and a cairn on the south bank of the river's last reach, between Riverend and the western crossing. Scenery only, no props, no new names: nothing here is in data/places.json because none of it is a named place. Every spot was checked with tools/site_check.gd; the far-bank sites sit as near the rim as the ridge clearance (25 m) allows.",
+	"sites": [
+		{
+			"at": [
+				14.0,
+				-378.0
+			],
+			"id": "far_bank_hearth",
+			"layout": "res://data/structures/pois/lost_hearth.json",
+			"yaw": 170.0
+		},
+		{
+			"at": [
+				-12.0,
+				-378.0
+			],
+			"id": "far_bank_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				96.0,
+				-258.0
+			],
+			"id": "wide_water_camp",
+			"layout": "res://data/structures/pois/campsite.json",
+			"yaw": -20.0
+		},
+		{
+			"at": [
+				118.0,
+				-262.0
+			],
+			"id": "wide_water_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		},
+		{
+			"at": [
+				-186.4,
+				-254.8
+			],
+			"id": "last_mouth_camp",
+			"layout": "res://data/structures/pois/campsite.json",
+			"yaw": 70.0
+		},
+		{
+			"at": [
+				-140.0,
+				-262.0
+			],
+			"id": "last_mouth_fire",
+			"layout": "res://data/structures/pois/shore_fire.json",
+			"yaw": 20.0
+		},
+		{
+			"at": [
+				-180.0,
+				-262.0
+			],
+			"id": "last_mouth_cairn",
+			"layout": "res://data/structures/pois/cairn_lone.json",
+			"yaw": 0.0
+		}
+	]
+}

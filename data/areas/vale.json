@@ -145,10 +145,26 @@
 		"mud_height": 1.6,
 		"normal_strength": 0.8,
 		"road": {
-			"_comment": "The old road the terrain wears bare, same line as the valley channel and the grass zones.",
+			"_comment": "The roads the terrain wears bare (W21-F). ONE polyline: the shader draws every consecutive pair of waypoints as a segment and holds at most TerrainMaterial.MAX_ROAD_SEGMENTS (8) of them, so a branch costs a double-back and nothing may be appended as a stray point -- the two points that were, after the castle and after Hollowmere, drew a 499 m track from the castle over the pond to Hollowmere's crofts and a second one back across the village to the Overlook. Read it in order: the Cutting's north-east mouth, its south-west mouth (the pair runs on the cut's own axis, between the two rock faces), the village plateau; the plateau out to Hollowmere's crofts and back (the spur, drawn twice, which is what a branch costs); then the old road, the valley polyline verbatim, plateau to crossroads to pond to the castle. Not fitted, because 8 is full: the castle to its own crossing (1 segment, but the gate is on the south side so it is really 3), and the Cutting on to Riverend (2 more). Those need the shader array raised to 12, or a road mask baked to a texture.",
 			"feather": 4.6,
 			"half_width": 3.8,
 			"waypoints": [
+				[
+					-136.5,
+					-34.2
+				],
+				[
+					-156.1,
+					-9.0
+				],
+				[
+					-200.0,
+					140.0
+				],
+				[
+					-150.0,
+					196.0
+				],
 				[
 					-200.0,
 					140.0
@@ -168,22 +184,6 @@
 				[
 					200.0,
 					-160.0
-				],
-				[
-					-150.0,
-					196.0
-				],
-				[
-					-96.0,
-					244.0
-				],
-				[
-					-168.0,
-					126.0
-				],
-				[
-					-240.0,
-					-18.0
 				]
 			]
 		},

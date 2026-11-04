@@ -10,7 +10,7 @@
 		{"name": "castle plateau core", "min": [122, -238], "max": [278, -82]},
 		{"name": "spawn shore", "min": [30, 55], "max": [75, 100]}
 	],
-	"zones": "pond east x 80..170 z -60..120 | pond west x -170..-80 z -40..130 | pond south x -90..90 z 80..200 | pond north x -120..100 z -200..-80 | castle approach x 90..230 z -80..40 | village approach x -140..-60 z 120..220 | ridge foot west x -380..-270 z -160..160 (thin) | ridge foot east x 270..380 z -40..220 (thin) | ridge foot north x -200..120 z -380..-280 (thin)",
+	"zones": "pond east x 80..170 z -60..120 | pond west x -170..-80 z -40..130 | pond south x -90..90 z 80..200 | pond north x -120..100 z -200..-80 | castle approach x 90..230 z -80..40 | village approach x -140..-60 z 120..220 | ridge foot west x -380..-270 z -160..160 (thin) | ridge foot east x 270..380 z -40..220 (thin) | ridge foot north x -200..120 z -380..-280 (thin) | wide water camp x 70..130 z -300..-245 (W21-F: the south bank at the hanging bridge's foot) | last mouth camp x -210..-125 z -290..-240 (W21-F: the south bank of the last reach) | far bank x -30..50 z -385..-360 (W21-F, thin: the strip beyond the Wide Water)",
 	"sets": [
 		{
 			"name": "boulders_low", "model": "res://assets/models/rocks/namaqualand_boulder_02/namaqualand_boulder_02_1k.gltf", "mesh": "boulder_02",
@@ -21,7 +21,9 @@
 				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 14.0},
 				{"zone": {"min": [-380, -160], "max": [-270, 160]}, "count": 5, "min_gap": 16.0},
 				{"zone": {"min": [270, -40], "max": [380, 220]}, "count": 5, "min_gap": 16.0},
-				{"zone": {"min": [-200, -380], "max": [120, -280]}, "count": 4, "min_gap": 16.0}
+				{"zone": {"min": [-200, -380], "max": [120, -280]}, "count": 4, "min_gap": 16.0},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 2, "min_gap": 14.0},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 2, "min_gap": 14.0}
 			]
 		},
 		{
@@ -41,7 +43,9 @@
 				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 5, "min_gap": 7.0},
 				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 5, "min_gap": 7.0},
 				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 4, "min_gap": 7.0},
-				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 7.0}
+				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 7.0},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 3, "min_gap": 7.0},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 3, "min_gap": 7.0}
 			]
 		},
 		{
@@ -62,7 +66,10 @@
 				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 8, "min_gap": 3.0},
 				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 8, "min_gap": 3.0},
 				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 8, "min_gap": 3.0},
-				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 6, "min_gap": 3.0}
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 6, "min_gap": 3.0},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 6, "min_gap": 3.0},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 6, "min_gap": 3.0},
+				{"zone": {"min": [-30, -385], "max": [50, -360]}, "count": 3, "min_gap": 4.0}
 			]
 		},
 		{
@@ -73,7 +80,9 @@
 				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 8, "min_gap": 3.0},
 				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 6, "min_gap": 3.0},
 				{"zone": {"min": [-380, -160], "max": [-270, 160]}, "count": 6, "min_gap": 6.0},
-				{"zone": {"min": [270, -40], "max": [380, 220]}, "count": 6, "min_gap": 6.0}
+				{"zone": {"min": [270, -40], "max": [380, 220]}, "count": 6, "min_gap": 6.0},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 4, "min_gap": 4.0},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 4, "min_gap": 4.0}
 			]
 		},
 		{
@@ -104,7 +113,9 @@
 				{"zone": {"min": [80, -60], "max": [170, 120]}, "count": 4, "min_gap": 10.0},
 				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 4, "min_gap": 10.0},
 				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 4, "min_gap": 10.0},
-				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 3, "min_gap": 10.0}
+				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 3, "min_gap": 10.0},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 3, "min_gap": 10.0},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 3, "min_gap": 10.0}
 			]
 		},
 		{
@@ -115,7 +126,9 @@
 				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 5, "min_gap": 12.0},
 				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 4, "min_gap": 12.0},
 				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 4, "min_gap": 12.0},
-				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 3, "min_gap": 12.0}
+				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 3, "min_gap": 12.0},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 2, "min_gap": 12.0},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 2, "min_gap": 12.0}
 			]
 		},
 		{
@@ -159,7 +172,10 @@
 				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 5, "min_gap": 5.0},
 				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 5, "min_gap": 5.0},
 				{"zone": {"min": [-170, -40], "max": [-80, 130]}, "count": 4, "min_gap": 5.0},
-				{"zone": {"min": [-200, -380], "max": [120, -280]}, "count": 4, "min_gap": 8.0}
+				{"zone": {"min": [-200, -380], "max": [120, -280]}, "count": 4, "min_gap": 8.0},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 3, "min_gap": 5.0},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 3, "min_gap": 5.0},
+				{"zone": {"min": [-30, -385], "max": [50, -360]}, "count": 2, "min_gap": 8.0}
 			]
 		},
 		{
@@ -181,7 +197,10 @@
 				{"zone": {"min": [-90, 80], "max": [90, 200]}, "count": 10, "min_gap": 1.5},
 				{"zone": {"min": [-120, -200], "max": [100, -80]}, "count": 10, "min_gap": 1.5},
 				{"zone": {"min": [90, -80], "max": [230, 40]}, "count": 8, "min_gap": 1.5},
-				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 8, "min_gap": 1.5}
+				{"zone": {"min": [-140, 120], "max": [-60, 220]}, "count": 8, "min_gap": 1.5},
+				{"zone": {"min": [70, -300], "max": [130, -245]}, "count": 6, "min_gap": 1.5},
+				{"zone": {"min": [-210, -290], "max": [-125, -240]}, "count": 6, "min_gap": 1.5},
+				{"zone": {"min": [-30, -385], "max": [50, -360]}, "count": 3, "min_gap": 2.0}
 			]
 		}
 	]
