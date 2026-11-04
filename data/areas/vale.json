@@ -316,9 +316,10 @@
 	"water_level": -5.0,
 	"waters": [
 		{
-			"_comment": "The water itself, on exactly the line data/areas/vale.json cuts for it: same points, same elevations. The surface and the bed cannot drift apart because they are the same numbers.",
+			"_comment": "The water itself, on exactly the line the cuts below dig for it: same points, same elevations. The surface and the bed cannot drift apart because they are the same numbers. W21: `half_width` is the channel (the map draws it); `spread` is how much further the SHEET runs out over the bank, equal to the cut's bank, so the water meets the ground wherever the sloping bank crosses the surface instead of stopping 10-20 m short of it on bare bed. The kill volume is as wide as the sheet but starts Water.WADE_DEPTH under the surface, so the shallows are wadeable and the bank is dry.",
 			"name": "river",
 			"half_width": 9.0,
+			"spread": 28.0,
 			"depth": 6.0,
 			"level": -4.0,
 			"points": [
@@ -375,9 +376,10 @@
 			]
 		},
 		{
-			"_comment": "The Wide Water's broader surface, over the broader cut.",
+			"_comment": "The Wide Water's broader surface, over the broader cut. It shares its points with the river, so Water folds it into the river's one sheet (wider here) rather than drawing a second sheet on the same plane, which flickered.",
 			"name": "river_wide",
 			"half_width": 15.0,
+			"spread": 30.0,
 			"depth": 7.0,
 			"level": -5.0,
 			"points": [

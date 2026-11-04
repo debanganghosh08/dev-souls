@@ -288,13 +288,29 @@ func test_zoned_layers_grow_only_where_their_channel_asks_and_take_the_zone_pale
 	assert_ne(meadow_c, gold_c, "the two cells' blades are tinted differently")
 	assert_true(gold_c.r > gold_c.g and gold_c.r > meadow_c.r, "the golden cell's tip leans red-gold (%s vs %s)" % [gold_c, meadow_c])
 	var petal: Color = colors[["flowers", Vector2i(10, 0)]]
-	assert_true(petal.get_luminance() > 0.3, "a flower head is a bright speck (%s)" % petal)
+	# W21-D: palettes upload linear, so a violet petal is no longer "bright" by luminance alone; what a
+	# head must be is one of the layer's petal colours under its shade jitter, never the grass palette.
+	assert_true(_is_shade_of(petal, flowers.colors), "a flower head is a petal colour times its shade (%s)" % petal)
+	assert_false(_is_shade_of(petal, PackedColorArray([gold_c, meadow_c])), "a flower head is not a grass tip")
+	assert_true(petal.get_luminance() > 0.12, "a flower head is a bright speck (%s)" % petal)
 	var mesh: ArrayMesh = GrassMesh.flower(RandomNumberGenerator.new())
 	var uv2: PackedVector2Array = mesh.surface_get_arrays(0)[Mesh.ARRAY_TEX_UV2]
 	var uv: PackedVector2Array = mesh.surface_get_arrays(0)[Mesh.ARRAY_TEX_UV]
 	assert_eq(GrassMesh.vertex_count(mesh), 14, "a flower is a stalk of six vertices and two crossed quads")
 	assert_true(is_zero_approx(uv2[0].y) and is_equal_approx(uv2[13].y, 1.0), "colour runs stalk to petal along UV2.y")
 	assert_true(uv[13].y < 0.6, "the head bends less than a blade tip (mask %.2f)" % uv[13].y)
+
+
+## True when `c` is one of `options` scaled by a single factor inside the per-instance shade range.
+func _is_shade_of(c: Color, options: PackedColorArray) -> bool:
+	for o: Color in options:
+		if o.g <= 0.0:
+			continue
+		var k: float = c.g / o.g
+		if k >= GrassMesh.SHADE_MIN - 0.001 and k <= GrassMesh.SHADE_MIN + GrassMesh.SHADE_RANGE + 0.001 \
+				and absf(c.r - o.r * k) < 0.002 and absf(c.b - o.b * k) < 0.002:
+			return true
+	return false
 
 
 ## A zone's own tip colour, straight out of the data file. GrassZones adds a slow colour drift to every

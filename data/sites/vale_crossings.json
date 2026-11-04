@@ -1,41 +1,45 @@
 {
-	"_comment": "The river crossings (W20). The old four were placed 15 m to the SIDE of the water and a river_bridge is 36 m long, so not one of them reached the river -- the owner walked the whole bank and found one bridge with nothing under it. These are centred ON the line and turned across it. The hanging bridge is at the Wide Water, where the owner asked for a span with no supports under it.",
+	"_comment": "The river crossings (W20, floored and re-aimed W21). W20 centred them on the line but turned them with a mirrored formula (atan2(dx, -dz) for atan2(dx, dz)), so each stood 22-58 degrees off square and two had an end in the river's next leg; and they were floored at terrain max under a footprint lying wholly inside the cut, which is the riverbed, so every deck was under the water. Now: yaw is the true perpendicular to the reach each stands on; ground:\"water\" (Settlements) floors a site at the river's surface plus a clearance, or at the bank where that is higher; the layouts are 90 m, what the cut is across, and grow their own stairs down to whichever bank height they find. crossing_castle_road moved 85 m down its reach: at the 42-degree bend where it stood, a 90 m span has the other leg of the river under its far half whatever way it is turned, and the only spot left on the short leg put an end 27 m up the ridge skirt. The river runs along the ridge, so one end of crossing_west sits on the skirt's first metres; that end's bank is high and the far end gets the stair. The hanging bridge is at the Wide Water, where the owner asked for a span with no supports under it.",
 	"sites": [
 		{
 			"id": "crossing_castle_road",
 			"layout": "res://data/structures/rocks/river_bridge.json",
+			"ground": "water",
 			"at": [
-				312.3,
-				-239.2
+				236.4,
+				-276.5
 			],
-			"yaw": 68.2
+			"yaw": 154.2
 		},
 		{
 			"id": "crossing_hanging",
 			"layout": "res://data/structures/rocks/hanging_bridge.json",
+			"ground": "water",
 			"at": [
 				120.9,
 				-315.1
 			],
-			"yaw": 14.2
+			"yaw": 165.8
 		},
 		{
 			"id": "crossing_riverend",
 			"layout": "res://data/structures/rocks/river_bridge.json",
+			"ground": "water",
 			"at": [
 				-92.6,
 				-333.1
 			],
-			"yaw": -11.1
+			"yaw": 11.1
 		},
 		{
 			"id": "crossing_west",
 			"layout": "res://data/structures/rocks/river_bridge.json",
+			"ground": "water",
 			"at": [
-				-277.7,
-				-268.5
+				-282.0,
+				-266.1
 			],
-			"yaw": -29.2
+			"yaw": 29.2
 		}
 	]
 }

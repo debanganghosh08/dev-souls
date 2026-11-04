@@ -35,8 +35,9 @@ var sink: float = 0.0
 var shadows: bool = false
 var vertex_count: int = 0
 ## Palette when the layer is not zoned (or the area has no zones): root at the ground, tip at the top.
-var root_color: Color = GrassZones.DEFAULT_ROOT
-var tip_color: Color = GrassZones.DEFAULT_TIP
+## Linear, like every colour here: the data's sRGB hex goes through GrassZones.palette (W21-D).
+var root_color: Color = GrassZones.DEFAULT_ROOT.srgb_to_linear()
+var tip_color: Color = GrassZones.DEFAULT_TIP.srgb_to_linear()
 ## A blade drifts toward dry_tint by up to dry_amount of the way, per instance, so a field is never one colour.
 var dry_tint: Color = Color.WHITE
 var dry_amount: float = 0.0
@@ -99,7 +100,7 @@ static func from_dict(d: Dictionary, seed_v: int, index: int) -> GrassLayer:
 		layer.zone_channel = ""
 	for v: Variant in d.get("colors", []):
 		if v is String and Color.html_is_valid(v):
-			layer.colors.append(Color.html(v))
+			layer.colors.append(GrassZones.palette(v, Color.WHITE))
 	if layer.patch_min < 1.0:
 		layer._patch = FastNoiseLite.new()
 		layer._patch.seed = seed_v + index * 7919
@@ -335,7 +336,6 @@ static func _range(v: Variant, fallback: Vector2) -> Vector2:
 	return fallback
 
 
+## sRGB in (data hex or fallback), linear out: see GrassZones.palette.
 static func _color(v: Variant, fallback: Color) -> Color:
-	if v is String and Color.html_is_valid(v):
-		return Color.html(v)
-	return fallback
+	return GrassZones.palette(v, fallback)

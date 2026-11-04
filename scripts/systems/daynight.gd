@@ -1,10 +1,23 @@
 class_name DayNightCycle
 extends Node
-## Drives Game's clock and paints the world from the active area's SkyProfile: sun/moon lights, the
-## ProceduralSkyMaterial, fog and ambient on the Environment. Game owns the hour; this node only advances
-## it through Game.advance_time() and reacts to Game.time_changed. Palettes come from data/daynight.json.
+## Drives Game's clock and paints the world from the active area's SkyProfile: sun/moon lights, the sky
+## ShaderMaterial (scripts/systems/sky.gdshader: gradient, halo, clouds, stars), both fog layers and ambient
+## on the Environment. Game owns the hour; this node only advances it through Game.advance_time() and reacts
+## to Game.time_changed. Palettes come from data/daynight.json.
 
 const DATA_PATH := "res://data/daynight.json"
+## Sky shader uniforms written per repaint. Named after the ProceduralSkyMaterial properties they replaced.
+const SKY_TOP := &"sky_top_color"
+const SKY_HORIZON := &"sky_horizon_color"
+const SKY_CURVE := &"sky_curve"
+const GROUND_HORIZON := &"ground_horizon_color"
+const GROUND_BOTTOM := &"ground_bottom_color"
+const SUN_ANGLE_MAX := &"sun_angle_max"
+const SUN_CURVE := &"sun_curve"
+const CLOUD_COVER := &"cloud_cover"
+const CLOUD_COLOR := &"cloud_color"
+const CLOUD_SHADE := &"cloud_shade"
+const STAR_ALPHA := &"star_alpha"
 const FALLBACK_AREA := &"vale"
 const HOURS_PER_DAY := 24.0
 const SUNRISE_HOUR := 6.0
@@ -35,12 +48,16 @@ const APPLY_THRESHOLD_HOURS := 0.01
 ## Peak moon light energy, scaled by the profile's star_alpha so a dusk moon is dimmer than a midnight one.
 @export var moon_energy: float = 0.12
 @export var moon_color: Color = Color(0.62, 0.7, 0.86)
+## Volumetric fog density as a multiple of the profile's classic fog_density, so the two layers rise and
+## fall together. W20 found them multiplying into a grey wall because one was animated and the other was a
+## fixed number in sky.tscn; 1.25 reproduces W20's tuned noon pair (0.0036 classic, 0.0045 volumetric).
+@export var volumetric_fog_ratio: float = 1.25
 
 var _game: Node
 var _profiles: Dictionary = {}
 var _profile: SkyProfile = SkyProfile.new()
 var _env: Environment
-var _sky_mat: ProceduralSkyMaterial
+var _sky_mat: ShaderMaterial
 var _sun: DirectionalLight3D
 var _moon: DirectionalLight3D
 var _sun_disc: DirectionalLight3D
@@ -123,7 +140,7 @@ func _bind_nodes() -> void:
 	if world != null:
 		_env = world.environment
 		if _env != null and _env.sky != null:
-			_sky_mat = _env.sky.sky_material as ProceduralSkyMaterial
+			_sky_mat = _env.sky.sky_material as ShaderMaterial
 	_sun = get_node_or_null(sun_path) as DirectionalLight3D
 	_moon = get_node_or_null(moon_path) as DirectionalLight3D
 	_sun_disc = get_node_or_null(sun_disc_path) as DirectionalLight3D
@@ -171,16 +188,22 @@ func _apply(hours: float) -> void:
 		_sun_disc.light_energy = float(_current["sun_disc_energy"]) / (1.0 + fog * haze_dim) if sun_up else 0.0
 		_sun_disc.visible = sun_up
 	if _sky_mat != null:
-		_sky_mat.sky_top_color = _current["sky_top"]
-		_sky_mat.sky_horizon_color = _current["sky_horizon"]
-		_sky_mat.ground_horizon_color = _current["fog_color"]
-		_sky_mat.ground_bottom_color = _current["ground_color"]
-		_sky_mat.sky_curve = maxf(0.01, float(_current["sky_curve"]))
-		_sky_mat.sun_angle_max = clampf(float(_current["sun_glow_deg"]) * (1.0 + fog * haze_widen), 1.0, 90.0)
-		_sky_mat.sun_curve = maxf(0.01, float(_current["sun_glow_curve"]))
+		_sky_mat.set_shader_parameter(SKY_TOP, _current["sky_top"])
+		_sky_mat.set_shader_parameter(SKY_HORIZON, _current["sky_horizon"])
+		_sky_mat.set_shader_parameter(GROUND_HORIZON, _current["fog_color"])
+		_sky_mat.set_shader_parameter(GROUND_BOTTOM, _current["ground_color"])
+		_sky_mat.set_shader_parameter(SKY_CURVE, maxf(0.01, float(_current["sky_curve"])))
+		_sky_mat.set_shader_parameter(SUN_ANGLE_MAX, clampf(float(_current["sun_glow_deg"]) * (1.0 + fog * haze_widen), 1.0, 90.0))
+		_sky_mat.set_shader_parameter(SUN_CURVE, maxf(0.01, float(_current["sun_glow_curve"])))
+		_sky_mat.set_shader_parameter(CLOUD_COVER, clampf(float(_current["cloud_cover"]), 0.0, 1.0))
+		_sky_mat.set_shader_parameter(CLOUD_COLOR, _current["cloud_color"])
+		_sky_mat.set_shader_parameter(CLOUD_SHADE, _current["cloud_shade"])
+		_sky_mat.set_shader_parameter(STAR_ALPHA, clampf(float(_current["star_alpha"]), 0.0, 1.0))
 	if _env != null:
 		_env.fog_light_color = _current["fog_color"]
-		_env.fog_density = _current["fog_density"]
+		_env.fog_density = fog
+		# Same curve, fixed ratio: there is one haze knob per hour, not two that can drift apart.
+		_env.volumetric_fog_density = fog * maxf(0.0, volumetric_fog_ratio)
 		_env.ambient_light_color = _current["sky_horizon"]
 		_env.ambient_light_energy = _current["ambient_energy"]
 

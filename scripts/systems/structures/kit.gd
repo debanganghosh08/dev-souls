@@ -93,15 +93,16 @@ static func arch(w: float, h: float, t: float, mat: String, ow: float, oh: float
 
 
 ## Solid flight climbing toward -Z. Every step is its own box so the step-up probe finds a real tread.
+## `skirt` carries every box that far below the foot, for a flight over ground that dips away under it.
 static func stairs(w: float, rise: float, mat: String, riser: float = DEFAULT_RISER, tread: float = DEFAULT_TREAD,
-		name: String = "") -> Dictionary:
+		name: String = "", skirt: float = 0.0) -> Dictionary:
 	var b := builder(mat, name)
 	var capped: float = minf(riser, MAX_RISER)
 	var steps: int = maxi(1, ceili(rise / capped - 0.001))
 	var actual: float = rise / float(steps)
 	for i: int in range(steps):
 		var top: float = actual * float(i + 1)
-		b.add_box(_at(0.0, top * 0.5, -tread * (float(i) + 0.5)), Vector3(w, top, tread))
+		b.add_box(_at(0.0, (top - skirt) * 0.5, -tread * (float(i) + 0.5)), Vector3(w, top + skirt, tread))
 	var piece: Dictionary = _piece(b, mat, "stairs")
 	piece["riser"] = actual
 	piece["steps"] = steps

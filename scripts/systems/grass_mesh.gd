@@ -12,7 +12,9 @@ extends RefCounted
 
 const GRASS_SHADER := "res://scripts/systems/grass.gdshader"
 const PATCH_SHADER := "res://scripts/systems/ground_patch.gdshader"
-const TIP_WIDTH_FRACTION := 0.12
+## W21-D: 0.12 -> 0.25. A needle tip is under a pixel from a few metres and shimmers; a broader tip keeps
+## the top half of the blade, the lit part, on screen. Same vertex count.
+const TIP_WIDTH_FRACTION := 0.25
 const LEAN_MIN := 0.18
 const LEAN_MAX := 0.42
 ## Per-blade brightness jitter, encoded in vertex alpha as (shade - SHADE_MIN) / SHADE_RANGE; the shader

@@ -113,6 +113,31 @@ func test_from_dict_survives_missing_keys_and_bad_colours() -> void:
 	assert_true(SkyProfile.from_dict({}).sample(3.0).has("fog_density"), "an empty profile still samples")
 
 
+func test_cloud_keys_fall_back_and_blend() -> void:
+	# wood and barrens omit most of the newer keys and rely on this path; a keyframe without cloud keys must
+	# still sample all three, and at the default values. Breaking it: drop "cloud_cover" from FLOAT_KEYS
+	# (sample() stops returning it) or from DEFAULTS (add_keyframe indexes a missing key).
+	var bare: SkyProfile = _profile([_kf(6.0, 0.1, "#102030")])
+	var s: Dictionary = bare.sample(6.0)
+	assert_true(_near(s["cloud_cover"], SkyProfile.DEFAULTS["cloud_cover"]), "cloud_cover falls back to the default")
+	assert_eq(s["cloud_color"], SkyProfile.DEFAULTS["cloud_color"], "cloud_color falls back to the default")
+	assert_eq(s["cloud_shade"], SkyProfile.DEFAULTS["cloud_shade"], "cloud_shade falls back to the default")
+	assert_true((SkyProfile.DEFAULTS["cloud_color"] as Color).get_luminance() <= (SkyProfile.DEFAULTS["sky_horizon"] as Color).get_luminance() + EPS,
+		"a defaulted cloud is no brighter than the defaulted horizon, so a bare keyframe cannot grow a glowing slab")
+	assert_true((SkyProfile.DEFAULTS["cloud_shade"] as Color).get_luminance() < (SkyProfile.DEFAULTS["cloud_color"] as Color).get_luminance(),
+		"a cloud's core is darker than its lit edge")
+	# And the keys interpolate like every other key: a keyframe that sets them, halfway to one that does not.
+	var p: SkyProfile = SkyProfile.from_dict({"keyframes": [
+		{"hour": 0.0, "cloud_cover": 1.0, "cloud_color": "#ffffff", "cloud_shade": "#000000"},
+		{"hour": 12.0, "cloud_cover": 0.0, "cloud_color": "#000000", "cloud_shade": "#ffffff"},
+	]})
+	var mid: Dictionary = p.sample(6.0)
+	assert_true(_near(mid["cloud_cover"], 0.5), "cloud_cover lerps (got %s)" % mid["cloud_cover"])
+	assert_true((mid["cloud_color"] as Color).is_equal_approx(Color(0.5, 0.5, 0.5)), "cloud_color lerps to mid grey")
+	assert_true((mid["cloud_shade"] as Color).is_equal_approx(Color(0.5, 0.5, 0.5)), "cloud_shade lerps to mid grey")
+	assert_true(_near(p.sample(0.0)["cloud_cover"], 1.0) and _near(p.sample(12.0)["cloud_cover"], 0.0), "the keyframes sample exactly")
+
+
 func test_colour_values_can_be_colors_or_hex_strings() -> void:
 	var p: SkyProfile = SkyProfile.from_dict({"keyframes": [
 		{"hour": 0.0, "fog_color": Color.RED}, {"hour": 12.0, "fog_color": "#0000ff"},

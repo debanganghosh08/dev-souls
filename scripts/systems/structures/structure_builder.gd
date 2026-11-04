@@ -15,6 +15,13 @@ extends Node3D
 
 static var _shared: Dictionary = {}
 
+## Terrain height at a world (x, z), for a piece that reaches for the ground: a bridge approach is a flight
+## of stairs whose length nobody can write into a layout, because the bank stands at a different height at
+## every crossing. Settlements supplies the heightfield; a builder given none skips such pieces.
+var ground_at: Callable = Callable()
+## Where this builder stands in the world, so a layout-local point can be looked up in `ground_at`.
+var site_transform: Transform3D = Transform3D.IDENTITY
+
 var _built: bool = false
 var _layout: Dictionary = {}
 var _stats: Dictionary = {}
@@ -126,7 +133,7 @@ static func make_piece(kind: String, p: Dictionary, name: String = "") -> Dictio
 		"arch":
 			return StructureKit.arch(_f(p, "w", 4.0), _f(p, "h", 4.0), _f(p, "t", 0.6), mat, _f(p, "ow", 1.6), _f(p, "oh", 2.6), name)
 		"stairs":
-			return StructureKit.stairs(_f(p, "w", 1.4), _f(p, "rise", 2.0), mat, _f(p, "riser", StructureKit.DEFAULT_RISER), _f(p, "tread", StructureKit.DEFAULT_TREAD), name)
+			return StructureKit.stairs(_f(p, "w", 1.4), _f(p, "rise", 2.0), mat, _f(p, "riser", StructureKit.DEFAULT_RISER), _f(p, "tread", StructureKit.DEFAULT_TREAD), name, _f(p, "skirt", 0.0))
 		"floor_slab":
 			return StructureKit.floor_slab(_f(p, "w", 4.0), _f(p, "d", 4.0), _f(p, "t", 0.3), mat, name)
 		"block":
@@ -163,6 +170,10 @@ static func make_piece(kind: String, p: Dictionary, name: String = "") -> Dictio
 func _spawn(entry: Dictionary, index: int) -> void:
 	var kind: String = str(entry.get("kind", ""))
 	var name: String = str(entry.get("name", "%s_%d" % [kind, index]))
+	if str(entry.get("reach", "")) == "ground":
+		for top: Transform3D in placements_of(entry):
+			_spawn_flight(entry, top, name)
+		return
 	var piece: Dictionary = _piece_for(entry, kind, name, index)
 	if piece.is_empty():
 		return
@@ -175,15 +186,53 @@ func _spawn(entry: Dictionary, index: int) -> void:
 	else:
 		node = StructureKit.make_multi(piece, transforms, name)
 		_stats["multimeshes"] += 1
+	_attach(node, entry, piece, transforms.size())
+
+
+## A flight of stairs from a landing down to wherever the ground is (`"reach": "ground"` on a `stairs`
+## entry). `at`/`repeat` give the TOP of the flight and it descends toward the placement's +Z, one tread at a
+## time, until the next tread would lie under the terrain; the ground at the foot is then within a riser of
+## it, which the player steps off. Two ends of one bridge land on two different banks, so a flight is built
+## per placement and never shared. The node carries a `flight` meta ({steps, rise, run}) for the tests.
+func _spawn_flight(entry: Dictionary, top: Transform3D, label: String) -> void:
+	if not ground_at.is_valid():
+		return
+	var p: Dictionary = entry.get("params", {})
+	var riser: float = minf(_f(p, "riser", StructureKit.DEFAULT_RISER), StructureKit.MAX_RISER)
+	var tread: float = _f(p, "tread", StructureKit.DEFAULT_TREAD)
+	var most: int = int(_f(p, "max_steps", 120.0))
+	var steps: int = 0
+	while steps < most and _ground_under(top * Vector3(0.0, 0.0, tread * float(steps + 1))) < top.origin.y - riser * float(steps + 1):
+		steps += 1
+	if steps == 0:
+		return
+	var rise: float = riser * float(steps)
+	var run: float = tread * float(steps)
+	var piece: Dictionary = StructureKit.stairs(_f(p, "w", 4.0), rise, str(p.get("mat", "stone")), riser, tread,
+			label, _f(p, "skirt", 0.0))
+	var node: Node3D = StructureKit.make_node(piece, label)
+	node.transform = Transform3D(top.basis, top * Vector3(0.0, -rise, run))
+	node.set_meta(&"flight", {"steps": steps, "rise": rise, "run": run})
+	_stats["meshes"] += 1
+	_attach(node, entry, piece, 1)
+
+
+## Terrain height under a layout-local point, in layout-local y.
+func _ground_under(local: Vector3) -> float:
+	var world: Vector3 = site_transform * local
+	return float(ground_at.call(world.x, world.z)) - site_transform.origin.y
+
+
+func _attach(node: Node3D, entry: Dictionary, piece: Dictionary, instances: int) -> void:
 	var group: String = str(entry.get("group", ""))
 	node.set_meta(&"group", group)
 	_groups[group] = _groups.get(group, 0) + 1
 	add_child(node)
 	var shapes: Array = piece["shapes"]
 	_stats["pieces"] += 1
-	_stats["instances"] += transforms.size()
-	_stats["colliders"] += shapes.size() * transforms.size()
-	_stats["verts"] += int(piece["verts"]) * transforms.size()
+	_stats["instances"] += instances
+	_stats["colliders"] += shapes.size() * instances
+	_stats["verts"] += int(piece["verts"]) * instances
 
 
 static func _f(d: Dictionary, key: String, fallback: float) -> float:

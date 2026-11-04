@@ -10,10 +10,23 @@ extends Node3D
 ## `drown_seconds`, which reads as the current taking them.
 ##
 ## Shapes come from data (data/areas/*.json "waters"), so a new river is a row in a file and the channel it
-## runs in is a negative crest in the same file. Nothing here knows where any particular river is.
+## runs in is a cut in the same file. Nothing here knows where any particular river is.
+##
+## A water is {name, points: [[x, z, level], ...], half_width, spread, depth} (W21). `half_width` is the
+## channel: the part dug to full depth, the width the map draws. `spread` is how much further the SHEET runs
+## out on either side, into the bank, the way the Mirror Pond's disc runs under its shore. The bank is a
+## long slope, so the ground meets the surface somewhere out in it; a sheet only as wide as the channel left
+## ten to twenty metres of bare bed between its edge and the real waterline, and the owner filmed "the water
+## is not rendering". A reach that shares its points with a longer water (the Wide Water) is folded into it,
+## so the river is one sheet with a width at every point, and two sheets never fight over the same pixels.
 
 const WATER_LAYER := 8
 const DROWN_GROUP := &"player"
+## The water only takes you once it is this deep at your feet. The sheet runs over the shallows of the
+## bank now, and a kill box reaching up to the surface would drown you on ground an ankle under it.
+const WADE_DEPTH := 0.5
+## Two points closer than this are the same point, which is how a reach is known to belong to a river.
+const SAME_POINT := 1.0
 
 ## Metres between the points the ribbon is built from. Smaller follows a bend more closely and costs more.
 @export var segment: float = 6.0
@@ -45,17 +58,16 @@ static func waters_of(path: String) -> Array:
 	return waters if waters is Array else []
 
 
-## `waters` is a list of {name, points: [[x, z], ...], level, half_width}. One mesh and one kill volume per
-## entry; both are rebuilt from scratch, so calling this twice is safe.
+## One mesh and one kill volume per water, reaches folded into the water that owns their points; both are
+## rebuilt from scratch, so calling this twice is safe.
 func rebuild(waters: Array) -> void:
 	for child: Node in get_children():
 		remove_child(child)
 		child.queue_free()
 	_surfaces = 0
 	_volumes = 0
-	for raw: Variant in waters:
-		if raw is Dictionary:
-			_build_one(raw)
+	for entry: Dictionary in fold_reaches(waters):
+		_build_one(entry)
 	set_physics_process(_volumes > 0)
 
 
@@ -81,6 +93,82 @@ func stats() -> Dictionary:
 	return {"surfaces": _surfaces, "volumes": _volumes, "drowning": _drowning.size()}
 
 
+static func points_of(entry: Dictionary) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	for raw: Variant in entry.get("points", []):
+		if raw is Array and (raw as Array).size() >= 2:
+			out.append(Vector2(float((raw as Array)[0]), float((raw as Array)[1])))
+	return out
+
+
+## The level each point carries, NAN where it carries none.
+static func levels_of(entry: Dictionary) -> PackedFloat32Array:
+	var out := PackedFloat32Array()
+	for raw: Variant in entry.get("points", []):
+		if raw is Array and (raw as Array).size() >= 2:
+			out.append(float((raw as Array)[2]) if (raw as Array).size() >= 3 else NAN)
+	return out
+
+
+## How far the sheet reaches from the line: the channel plus the spread over the bank.
+static func sheet_half(entry: Dictionary) -> float:
+	return maxf(0.5, float(entry.get("half_width", 8.0))) + maxf(0.0, float(entry.get("spread", 0.0)))
+
+
+## Every water with its sheet half width at every point under "_halves" (and its points under "_points").
+## A reach -- a water whose every point is a point of a longer one -- is folded into that water: its width
+## wins at the points it shares and so does its depth, and it builds nothing of its own.
+static func fold_reaches(waters: Array) -> Array[Dictionary]:
+	var all: Array[Dictionary] = []
+	for raw: Variant in waters:
+		if raw is Dictionary:
+			var entry: Dictionary = (raw as Dictionary).duplicate()
+			entry["_points"] = points_of(entry)
+			var halves := PackedFloat32Array()
+			halves.resize((entry["_points"] as PackedVector2Array).size())
+			halves.fill(sheet_half(entry))
+			entry["_halves"] = halves
+			all.append(entry)
+	var out: Array[Dictionary] = []
+	for entry: Dictionary in all:
+		var spine: Dictionary = _spine_of(entry, all)
+		if spine.is_empty():
+			out.append(entry)
+			continue
+		var spine_points: PackedVector2Array = spine["_points"]
+		var halves: PackedFloat32Array = (spine["_halves"] as PackedFloat32Array).duplicate()
+		for p: Vector2 in (entry["_points"] as PackedVector2Array):
+			for i: int in spine_points.size():
+				if p.distance_to(spine_points[i]) < SAME_POINT:
+					halves[i] = maxf(halves[i], sheet_half(entry))
+		spine["_halves"] = halves
+		spine["depth"] = maxf(float(spine.get("depth", 6.0)), float(entry.get("depth", 6.0)))
+	return out
+
+
+## The longest other water that has every one of this one's points, or nothing.
+static func _spine_of(entry: Dictionary, all: Array[Dictionary]) -> Dictionary:
+	var mine: PackedVector2Array = entry["_points"]
+	var best: Dictionary = {}
+	if mine.size() < 2:
+		return best
+	for other: Dictionary in all:
+		var theirs: PackedVector2Array = other["_points"]
+		if is_same(other, entry) or theirs.size() <= mine.size():
+			continue
+		if not best.is_empty() and theirs.size() <= (best["_points"] as PackedVector2Array).size():
+			continue
+		var covered: bool = true
+		for p: Vector2 in mine:
+			var found: bool = false
+			for q: Vector2 in theirs:
+				found = found or p.distance_to(q) < SAME_POINT
+			covered = covered and found
+		if covered:
+			best = other
+	return best
+
+
 ## Points every `segment` metres along the polyline, so a ribbon follows a bend instead of cutting it.
 static func walk(points: PackedVector2Array, step: float) -> PackedVector2Array:
 	var out := PackedVector2Array()
@@ -97,7 +185,6 @@ static func walk(points: PackedVector2Array, step: float) -> PackedVector2Array:
 	return out
 
 
-## The ribbon itself: two vertices per point, offset either side of the line by `half`.
 ## A round pool: a fan of triangles about a centre. Used for the Mirror Pond, which a ribbon cannot be.
 static func disc(centre: Vector2, radius: float, level: float, sides: int = 48) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
@@ -127,8 +214,11 @@ static func disc(centre: Vector2, radius: float, level: float, sides: int = 48) 
 	return mesh
 
 
-## The level at each walked point, interpolated from the levels the authored points carried. A river whose
-## surface does not follow its bed disappears wherever the land rises over it.
+## A per-point value (the level, the sheet's half width) at each walked point: the authored values of the
+## nearest segment, blended by how far along it the point lies -- the same arithmetic as
+## Heightfield._nearest_on, so the sheet and the bed it was cut for are the same numbers to the millimetre.
+## (Blending between the two authored neighbours of the nearest POINT, as this once did, put a small step in
+## the surface wherever the nearest point changed.) NAN values fall back to `fallback`.
 static func _levels_along(authored: PackedVector2Array, levels: PackedFloat32Array,
 		walked: PackedVector2Array, fallback: float) -> PackedFloat32Array:
 	var out := PackedFloat32Array()
@@ -136,29 +226,29 @@ static func _levels_along(authored: PackedVector2Array, levels: PackedFloat32Arr
 	for v: float in levels:
 		usable = usable or not is_nan(v)
 	for w: Vector2 in walked:
-		if not usable:
+		if not usable or authored.is_empty() or levels.size() < authored.size():
 			out.append(fallback)
 			continue
-		# Nearest two authored points, weighted by how far between them this one sits.
-		var best_i: int = 0
-		var best_d: float = INF
-		for i: int in range(authored.size()):
-			var d: float = w.distance_to(authored[i])
-			if d < best_d:
-				best_d = d
-				best_i = i
-		var a_i: int = maxi(0, best_i - 1)
-		var b_i: int = mini(authored.size() - 1, best_i + 1)
-		var la: float = levels[a_i] if not is_nan(levels[a_i]) else fallback
-		var lb: float = levels[b_i] if not is_nan(levels[b_i]) else fallback
-		var span: float = authored[a_i].distance_to(authored[b_i])
-		var t: float = 0.5 if span < 0.01 else clampf(authored[a_i].distance_to(w) / span, 0.0, 1.0)
-		out.append(lerpf(la, lb, t))
+		var value: float = levels[0] if not is_nan(levels[0]) else fallback
+		var best: float = INF
+		for i: int in range(authored.size() - 1):
+			var ab: Vector2 = authored[i + 1] - authored[i]
+			var span: float = ab.length_squared()
+			var f: float = 0.0 if span < 0.000001 else clampf((w - authored[i]).dot(ab) / span, 0.0, 1.0)
+			var d: float = w.distance_squared_to(authored[i] + ab * f)
+			if d < best:
+				best = d
+				var la: float = levels[i] if not is_nan(levels[i]) else fallback
+				var lb: float = levels[i + 1] if not is_nan(levels[i + 1]) else fallback
+				value = lerpf(la, lb, f)
+		out.append(value)
 	return out
 
 
+## The ribbon itself: two vertices per point, offset either side of the line by `half` (or by that point's
+## own entry in `halves`, for a river that widens).
 static func ribbon(points: PackedVector2Array, half: float, level: float,
-		levels: PackedFloat32Array = PackedFloat32Array()) -> ArrayMesh:
+		levels: PackedFloat32Array = PackedFloat32Array(), halves: PackedFloat32Array = PackedFloat32Array()) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
 	if points.size() < 2:
 		return mesh
@@ -174,7 +264,7 @@ static func ribbon(points: PackedVector2Array, half: float, level: float,
 		var dir: Vector2 = (ahead - behind)
 		if dir.length_squared() < 0.0001:
 			dir = Vector2.RIGHT
-		var side: Vector2 = dir.normalized().orthogonal() * half
+		var side: Vector2 = dir.normalized().orthogonal() * (halves[i] if i < halves.size() else half)
 		if i > 0:
 			run += here.distance_to(behind)
 		var y: float = levels[i] if i < levels.size() else level
@@ -197,30 +287,29 @@ static func ribbon(points: PackedVector2Array, half: float, level: float,
 	return mesh
 
 
+## `entry` is a water as fold_reaches hands it out, "_points" and "_halves" filled in.
 func _build_one(entry: Dictionary) -> void:
-	var points := PackedVector2Array()
-	var levels := PackedFloat32Array()
-	for raw: Variant in entry.get("points", []):
-		if raw is Array and (raw as Array).size() >= 2:
-			var p: Array = raw
-			points.append(Vector2(float(p[0]), float(p[1])))
-			levels.append(float(p[2]) if (p as Array).size() >= 3 else NAN)
+	var points: PackedVector2Array = entry.get("_points", points_of(entry))
+	var levels: PackedFloat32Array = levels_of(entry)
 	var radius: float = float(entry.get("radius", 0.0))
 	# A pool is one centre and a radius; a river is a line. Requiring two points refused every pool.
 	if points.is_empty() or (points.size() < 2 and radius <= 0.0):
 		return
-	var half: float = maxf(0.5, float(entry.get("half_width", 8.0)))
+	var half: float = sheet_half(entry)
+	var halves: PackedFloat32Array = entry.get("_halves", PackedFloat32Array())
 	var level: float = float(entry.get("level", 0.0))
 	var walked: PackedVector2Array = walk(points, segment)
 	var surface := MeshInstance3D.new()
 	surface.name = "Water_" + str(entry.get("name", _surfaces))
 	var walked_levels: PackedFloat32Array = _levels_along(points, levels, walked, level)
-	surface.mesh = disc(points[0], radius, level) if radius > 0.0 else ribbon(walked, half, level, walked_levels)
+	var walked_halves: PackedFloat32Array = _levels_along(points, halves, walked, half)
+	surface.mesh = disc(points[0], radius, level) if radius > 0.0 else ribbon(walked, half, level, walked_levels, walked_halves)
 	surface.material_override = _water_material()
 	surface.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(surface)
 	_surfaces += 1
-	# The rule, under the scenery: one box per step, deep enough that the bed is inside it.
+	# The rule, under the scenery: one box per step, as wide as the sheet, its top WADE_DEPTH under the
+	# surface and deep enough that the bed is inside it. Ground above that top is a bank, not a river.
 	var body := Area3D.new()
 	body.name = "Drown_" + str(entry.get("name", _volumes))
 	body.collision_layer = 0
@@ -233,7 +322,7 @@ func _build_one(entry: Dictionary) -> void:
 		cyl.radius = radius
 		cyl.height = depth
 		pool.shape = cyl
-		pool.transform = Transform3D(Basis.IDENTITY, Vector3(points[0].x, level - depth * 0.5 + 0.4, points[0].y))
+		pool.transform = Transform3D(Basis.IDENTITY, Vector3(points[0].x, level - WADE_DEPTH - depth * 0.5, points[0].y))
 		body.add_child(pool)
 		walked = PackedVector2Array()
 	for i: int in range(walked.size() - 1):
@@ -245,14 +334,17 @@ func _build_one(entry: Dictionary) -> void:
 			continue
 		var shape := CollisionShape3D.new()
 		var box := BoxShape3D.new()
-		box.size = Vector3(half * 2.0, depth, span + 0.4)
+		var width: float = half * 2.0
+		if i + 1 < walked_halves.size():
+			width = walked_halves[i] + walked_halves[i + 1]
+		box.size = Vector3(width, depth, span + 0.4)
 		shape.shape = box
 		var yaw: float = atan2(b.x - a.x, b.y - a.y)
 		var seg_level: float = level
-		if i < walked_levels.size():
-			seg_level = (walked_levels[i] + walked_levels[mini(i + 1, walked_levels.size() - 1)]) * 0.5
+		if i + 1 < walked_levels.size():
+			seg_level = (walked_levels[i] + walked_levels[i + 1]) * 0.5
 		shape.transform = Transform3D(Basis(Vector3.UP, yaw),
-				Vector3(mid.x, seg_level - depth * 0.5 + 0.4, mid.y))
+				Vector3(mid.x, seg_level - WADE_DEPTH - depth * 0.5, mid.y))
 		body.add_child(shape)
 	var drains: String = str(entry.get("drains_with", ""))
 	if drains != "":

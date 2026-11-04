@@ -7,11 +7,16 @@ extends Node3D
 ##
 ## Ground: a site's floor goes at the HIGHEST terrain point under its footprint by default, so no corner ever
 ## hangs over a gap; the layout is expected to carry a foundation that reaches down into the low side. `ground`
-## may instead be "min" or an absolute height, and `lift` adds to whichever is chosen.
+## may instead be "min", an absolute height, or "water": the river's surface at the site plus WATER_CLEARANCE,
+## or the highest ground under the footprint if that is higher (a crossing: the deck must clear the water
+## wherever the bed is, and must meet the bank wherever the bank is). `lift` adds to whichever is chosen.
 ##
 ## Props: {"scene": "res://scenes/props/chest.tscn", "at": [x, y, z], "yaw": deg, "set": {"prop": value}}.
 ## `at` is site-local, with y = 0 the site's floor. `set` assigns exported properties by name, so a new
 ## interactable needs no code here. Every interactable `id` must be unique in the area (test_sites.gd).
+
+## Metres of air a `ground: "water"` site keeps between its floor (the deck's underside) and the water.
+const WATER_CLEARANCE := 2.0
 
 ## Metres beyond which a site's meshes stop drawing. A house is a few metres across; at 300 m it is pixels.
 @export var draw_distance: float = 320.0
@@ -76,19 +81,33 @@ static func ground_height(site: Dictionary, hf: Heightfield, step: float = 1.0) 
 	if mode is float or mode is int:
 		return float(mode) + lift
 	var span: Vector2 = ground_span(site, hf, step)
+	if str(mode) == "water":
+		# surface_at is -INF away from any river, so a "water" site with no river under it is a "max" site.
+		var at: Vector2 = SiteRegistry.at_of(site)
+		return maxf(hf.surface_at(at.x, at.y).x + WATER_CLEARANCE, span.y) + lift
 	return (span.x if str(mode) == "min" else span.y) + lift
+
+
+## The builder for a site, set up the way the level builds it: the layout, shared pieces, and the terrain
+## under it for any piece that reaches for the ground. Public so a test builds exactly what the game does.
+static func builder_for(site: Dictionary, hf: Heightfield, floor_y: float) -> StructureBuilder:
+	var builder := StructureBuilder.new()
+	builder.name = "Builder"
+	builder.layout_path = str(site.get("layout", ""))
+	builder.share_pieces = true
+	builder.ground_at = hf.height_at
+	builder.site_transform = SiteRegistry.site_transform(site, floor_y)
+	builder.build()
+	return builder
 
 
 func _spawn_site(site: Dictionary, hf: Heightfield) -> void:
 	var root := Node3D.new()
 	root.name = str(site.get("id", "site_%d" % _sites)).validate_node_name()
-	root.transform = SiteRegistry.site_transform(site, ground_height(site, hf, sample_step))
+	var floor_y: float = ground_height(site, hf, sample_step)
+	root.transform = SiteRegistry.site_transform(site, floor_y)
 	root.set_meta(&"site_id", str(site.get("id", "")))
-	var builder := StructureBuilder.new()
-	builder.name = "Builder"
-	builder.layout_path = str(site.get("layout", ""))
-	builder.share_pieces = true
-	builder.build()
+	var builder: StructureBuilder = builder_for(site, hf, floor_y)
 	root.add_child(builder)
 	_pieces += int(builder.stats().get("pieces", 0))
 	_limit_draw(builder)

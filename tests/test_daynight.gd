@@ -45,7 +45,7 @@ func test_sky_scene_is_self_contained() -> void:
 	assert_not_null(env, "WorldEnvironment has its own Environment")
 	assert_eq(env.background_mode, Environment.BG_SKY, "background is the sky")
 	assert_not_null(env.sky, "Environment has a Sky")
-	assert_true(env.sky.sky_material is ProceduralSkyMaterial, "the sky uses a ProceduralSkyMaterial")
+	assert_true(env.sky.sky_material is ShaderMaterial, "the sky uses the custom sky ShaderMaterial (W21)")
 	assert_true(env.fog_enabled, "fog is enabled")
 	assert_true(env.glow_enabled, "glow is enabled")
 	assert_eq(env.tonemap_mode, Environment.TONE_MAPPER_ACES, "tonemapper is ACES")
@@ -92,7 +92,7 @@ func test_noon_and_midnight_light_states() -> void:
 	var sun: DirectionalLight3D = _sky.get_node(_sky.sun_path) as DirectionalLight3D
 	var moon: DirectionalLight3D = _sky.get_node(_sky.moon_path) as DirectionalLight3D
 	var env: Environment = (_sky.get_node(_sky.environment_path) as WorldEnvironment).environment
-	var sky_mat: ProceduralSkyMaterial = env.sky.sky_material as ProceduralSkyMaterial
+	var sky_mat: ShaderMaterial = env.sky.sky_material as ShaderMaterial
 	_game.advance_time(12.0 - _game.time_of_day)
 	assert_true(_sky.sun_is_up(), "sun is up at noon")
 	assert_true(sun.visible and sun.shadow_enabled, "sun is visible and casts shadows at noon")
@@ -104,8 +104,9 @@ func test_noon_and_midnight_light_states() -> void:
 	assert_true(sun.light_color.is_equal_approx(noon["sun_color"]), "sun colour follows the profile")
 	assert_true(is_equal_approx(env.fog_density, noon["fog_density"]), "fog density follows the profile")
 	assert_true(env.fog_light_color.is_equal_approx(noon["fog_color"]), "fog colour follows the profile")
-	assert_true(sky_mat.sky_top_color.is_equal_approx(noon["sky_top"]), "sky top follows the profile")
-	assert_true(sky_mat.sky_horizon_color.is_equal_approx(noon["sky_horizon"]), "sky horizon follows the profile")
+	assert_true((sky_mat.get_shader_parameter(DayNightCycle.SKY_TOP) as Color).is_equal_approx(noon["sky_top"]), "sky top follows the profile")
+	assert_true((sky_mat.get_shader_parameter(DayNightCycle.SKY_HORIZON) as Color).is_equal_approx(noon["sky_horizon"]), "sky horizon follows the profile")
+	assert_true(is_equal_approx(env.volumetric_fog_density, float(noon["fog_density"]) * _sky.volumetric_fog_ratio), "volumetric fog follows the profile at the fixed ratio")
 	assert_true(is_equal_approx(env.ambient_light_energy, noon["ambient_energy"]), "ambient energy follows the profile")
 	_game.advance_time(12.0)
 	assert_true(is_equal_approx(_game.time_of_day, 0.0), "clock wrapped to midnight")

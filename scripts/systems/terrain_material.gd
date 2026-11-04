@@ -16,6 +16,22 @@ const MAPS := {"albedo": "diff", "normal": "nor_gl", "rough": "rough"}
 const FALLBACK := {"albedo": Color(0.45, 0.45, 0.43), "normal": Color(0.5, 0.5, 1.0), "rough": Color(0.9, 0.9, 0.9)}
 ## Matches the array in terrain.gdshader.
 const MAX_ROAD_SEGMENTS := 8
+## W21-E defaults, baked here so an area file that says nothing about them still gets unbroken tiles and a
+## mottled field. Scales are metres. Keys of the same name in the area's "material" block override them.
+## tile_break_metres: size of one rotation region of the planar textures. A few tiles, not one (every tile
+## would flip and the blend zone would cover everything) and not thirty (the stripes return inside a region).
+const TILE_BREAK_METRES := 9.0
+## macro_metres: the slow brightness mottle; the shader adds a second octave at 0.27x of it.
+const MACRO_METRES := 61.0
+## macro_variation: +- fraction of albedo the mottle may move. Clamped to [0, MACRO_VARIATION_MAX].
+const MACRO_VARIATION := 0.12
+const MACRO_VARIATION_MAX := 0.5
+## tint_metres: size of a dry or lush patch of grass.
+const TINT_METRES := 31.0
+## grass_tint_dry / grass_tint_lush: multipliers swung between by the tint noise, both near luminance 1 so
+## they move hue (warm and yellow against cool and green), not brightness, which is the macro's job.
+const GRASS_TINT_DRY := Vector3(1.08, 0.99, 0.84)
+const GRASS_TINT_LUSH := Vector3(0.92, 1.02, 1.06)
 
 static var _cached: ShaderMaterial
 static var _missing: int = 0
@@ -39,9 +55,21 @@ static func get_material(settings: Dictionary, water_level: float) -> ShaderMate
 	material.set_shader_parameter("mud_blend", maxf(0.01, float(settings.get("mud_blend", 2.0))))
 	material.set_shader_parameter("normal_strength", float(settings.get("normal_strength", 0.8)))
 	material.set_shader_parameter("grass_tint", _colour(settings.get("grass_tint", null)))
+	_set_variation(material, settings)
 	_set_road(material, settings)
 	_cached = material
 	return material
+
+
+## W21-E anti-tiling and colour variation. Every value has a baked default (the constants above), so the
+## area file needs no new key; a zero or negative tile_break_metres is allowed and turns the breaking off.
+static func _set_variation(material: ShaderMaterial, settings: Dictionary) -> void:
+	material.set_shader_parameter("tile_break_metres", maxf(0.0, float(settings.get("tile_break_metres", TILE_BREAK_METRES))))
+	material.set_shader_parameter("macro_metres", maxf(1.0, float(settings.get("macro_metres", MACRO_METRES))))
+	material.set_shader_parameter("macro_variation", clampf(float(settings.get("macro_variation", MACRO_VARIATION)), 0.0, MACRO_VARIATION_MAX))
+	material.set_shader_parameter("tint_metres", maxf(1.0, float(settings.get("tint_metres", TINT_METRES))))
+	material.set_shader_parameter("grass_tint_dry", _colour(settings.get("grass_tint_dry", null), GRASS_TINT_DRY))
+	material.set_shader_parameter("grass_tint_lush", _colour(settings.get("grass_tint_lush", null), GRASS_TINT_LUSH))
 
 
 ## The worn track, from the same valley polyline the grass zones and the placement rules already use, so
@@ -67,12 +95,13 @@ static func _set_road(material: ShaderMaterial, settings: Dictionary) -> void:
 	material.set_shader_parameter("road_feather", maxf(0.01, float(road.get("feather", 4.0))))
 
 
-## [r, g, b] from the area file, white when absent, so an area that says nothing looks as it always did.
-static func _colour(value: Variant) -> Vector3:
+## [r, g, b] from the area file, `fallback` (white unless said otherwise) when absent, so an area that says
+## nothing looks as it always did.
+static func _colour(value: Variant, fallback: Vector3 = Vector3.ONE) -> Vector3:
 	if value is Array and (value as Array).size() >= 3:
 		var a: Array = value
 		return Vector3(float(a[0]), float(a[1]), float(a[2]))
-	return Vector3.ONE
+	return fallback
 
 
 static func clear_cache() -> void:

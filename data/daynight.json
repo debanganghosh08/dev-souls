@@ -1,5 +1,5 @@
 {
-	"_comment": "Per-area palettes read by DayNightCycle through SkyProfile. Besides the colours: sun_disc_energy is the HDR brightness of the sky-only sun disc (above the 1.2 glow threshold it blooms, so it reads as glare); sun_glow_deg / sun_glow_curve are the ProceduralSkyMaterial halo (small curve = steep falloff then a long faint tail; fog widens the halo and dims the disc on top of these); sky_curve is how tightly the horizon colour hugs the horizon (smaller = thinner band). The vale's 5.5/6.0/6.75 and 17.25/18.0/18.75 keyframes are the dawn and dusk horizon glow: a brief desaturated rose-grey band low in the sky while the dome stays dark, so sunrise and sunset ramp instead of switching. W20: the owner recorded ten minutes and could not see. Daylight sun energy was raised about 2.4x, ambient about 1.5x and fog cut to a third; night was left dark but its ambient lifted a little, because a souls game is gloomy and a game you cannot see is not gloomy, it is broken.",
+	"_comment": "Per-area palettes read by DayNightCycle through SkyProfile. Besides the colours: sun_disc_energy is the HDR brightness of the sky-only sun disc (above the 1.2 glow threshold it blooms, so it reads as glare); sun_glow_deg / sun_glow_curve are the ProceduralSkyMaterial halo (small curve = steep falloff then a long faint tail; fog widens the halo and dims the disc on top of these); sky_curve is how tightly the horizon colour hugs the horizon (smaller = thinner band). The vale's 5.5/6.0/6.75 and 17.25/18.0/18.75 keyframes are the dawn and dusk horizon glow: a brief desaturated rose-grey band low in the sky while the dome stays dark, so sunrise and sunset ramp instead of switching. W20: the owner recorded ten minutes and could not see. Daylight sun energy was raised about 2.4x, ambient about 1.5x and fog cut to a third; night was left dark but its ambient lifted a little, because a souls game is gloomy and a game you cannot see is not gloomy, it is broken. W21: the sky is a custom ShaderMaterial (scripts/systems/sky.gdshader) with the same gradient and halo as ProceduralSkyMaterial plus clouds and stars. cloud_cover is the fraction of the dome the FBM cloud layer fills (0 clear, 1 overcast); cloud_color is the lit thin edge of a cloud and cloud_shade its thick core, both given per hour so night clouds are near-black over a near-black dome instead of a grey slab. star_alpha also drives the star field now. Volumetric fog is no longer a static number in sky.tscn: it is fog_density times DayNightCycle.volumetric_fog_ratio (1.25, which reproduces the W20 noon value of 0.0045 from 0.0036), so the two fog layers rise and fall together and cannot silently multiply into a wall again.",
 	"vale": {
 		"keyframes": [
 			{
@@ -16,7 +16,10 @@
 				"sun_disc_energy": 0.0,
 				"sun_glow_deg": 8.0,
 				"sun_glow_curve": 0.3,
-				"sky_curve": 0.15
+				"sky_curve": 0.15,
+				"cloud_cover": 0.5,
+				"cloud_color": "#0d1118",
+				"cloud_shade": "#070910"
 			},
 			{
 				"hour": 4.5,
@@ -32,7 +35,10 @@
 				"sun_disc_energy": 0.0,
 				"sun_glow_deg": 8.0,
 				"sun_glow_curve": 0.3,
-				"sky_curve": 0.15
+				"sky_curve": 0.15,
+				"cloud_cover": 0.5,
+				"cloud_color": "#141921",
+				"cloud_shade": "#0a0d12"
 			},
 			{
 				"hour": 5.5,
@@ -48,7 +54,10 @@
 				"sun_disc_energy": 0.0,
 				"sun_glow_deg": 14.0,
 				"sun_glow_curve": 0.4,
-				"sky_curve": 0.12
+				"sky_curve": 0.12,
+				"cloud_cover": 0.55,
+				"cloud_color": "#43403f",
+				"cloud_shade": "#1c1d22"
 			},
 			{
 				"hour": 6.0,
@@ -64,7 +73,10 @@
 				"sun_disc_energy": 1.4,
 				"sun_glow_deg": 18.0,
 				"sun_glow_curve": 0.45,
-				"sky_curve": 0.1
+				"sky_curve": 0.1,
+				"cloud_cover": 0.55,
+				"cloud_color": "#a08a7c",
+				"cloud_shade": "#3a3539"
 			},
 			{
 				"hour": 6.75,
@@ -80,7 +92,10 @@
 				"sun_disc_energy": 2.25,
 				"sun_glow_deg": 15.0,
 				"sun_glow_curve": 0.4,
-				"sky_curve": 0.13
+				"sky_curve": 0.13,
+				"cloud_cover": 0.55,
+				"cloud_color": "#9c9088",
+				"cloud_shade": "#4a4a50"
 			},
 			{
 				"hour": 9.0,
@@ -96,7 +111,10 @@
 				"sun_disc_energy": 3.0,
 				"sun_glow_deg": 11.0,
 				"sun_glow_curve": 0.35,
-				"sky_curve": 0.15
+				"sky_curve": 0.15,
+				"cloud_cover": 0.6,
+				"cloud_color": "#a9adb3",
+				"cloud_shade": "#6a6f78"
 			},
 			{
 				"hour": 12.0,
@@ -112,7 +130,10 @@
 				"sun_disc_energy": 3.5,
 				"sun_glow_deg": 9.0,
 				"sun_glow_curve": 0.32,
-				"sky_curve": 0.15
+				"sky_curve": 0.15,
+				"cloud_cover": 0.6,
+				"cloud_color": "#b8bcc2",
+				"cloud_shade": "#767b84"
 			},
 			{
 				"hour": 15.0,
@@ -128,7 +149,10 @@
 				"sun_disc_energy": 3.0,
 				"sun_glow_deg": 10.0,
 				"sun_glow_curve": 0.34,
-				"sky_curve": 0.15
+				"sky_curve": 0.15,
+				"cloud_cover": 0.62,
+				"cloud_color": "#afb0b4",
+				"cloud_shade": "#6e7076"
 			},
 			{
 				"hour": 17.25,
@@ -144,7 +168,10 @@
 				"sun_disc_energy": 2.25,
 				"sun_glow_deg": 15.0,
 				"sun_glow_curve": 0.4,
-				"sky_curve": 0.13
+				"sky_curve": 0.13,
+				"cloud_cover": 0.6,
+				"cloud_color": "#a0908a",
+				"cloud_shade": "#504b4e"
 			},
 			{
 				"hour": 18.0,
@@ -160,7 +187,10 @@
 				"sun_disc_energy": 1.3,
 				"sun_glow_deg": 19.0,
 				"sun_glow_curve": 0.45,
-				"sky_curve": 0.1
+				"sky_curve": 0.1,
+				"cloud_cover": 0.6,
+				"cloud_color": "#a2806f",
+				"cloud_shade": "#3c3538"
 			},
 			{
 				"hour": 18.75,
@@ -176,7 +206,10 @@
 				"sun_disc_energy": 0.0,
 				"sun_glow_deg": 14.0,
 				"sun_glow_curve": 0.4,
-				"sky_curve": 0.12
+				"sky_curve": 0.12,
+				"cloud_cover": 0.55,
+				"cloud_color": "#44414a",
+				"cloud_shade": "#1e1d24"
 			},
 			{
 				"hour": 20.0,
@@ -192,7 +225,10 @@
 				"sun_disc_energy": 0.0,
 				"sun_glow_deg": 8.0,
 				"sun_glow_curve": 0.3,
-				"sky_curve": 0.15
+				"sky_curve": 0.15,
+				"cloud_cover": 0.5,
+				"cloud_color": "#171c25",
+				"cloud_shade": "#0b0e14"
 			},
 			{
 				"hour": 22.0,
@@ -208,7 +244,10 @@
 				"sun_disc_energy": 0.0,
 				"sun_glow_deg": 8.0,
 				"sun_glow_curve": 0.3,
-				"sky_curve": 0.15
+				"sky_curve": 0.15,
+				"cloud_cover": 0.5,
+				"cloud_color": "#0e121a",
+				"cloud_shade": "#070911"
 			}
 		]
 	},
@@ -224,7 +263,10 @@
 				"fog_density": 0.024,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.21,
-				"star_alpha": 1.0
+				"star_alpha": 1.0,
+				"cloud_cover": 0.8,
+				"cloud_color": "#080c0a",
+				"cloud_shade": "#040605"
 			},
 			{
 				"hour": 4.5,
@@ -236,7 +278,10 @@
 				"fog_density": 0.026,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.23,
-				"star_alpha": 0.8
+				"star_alpha": 0.8,
+				"cloud_cover": 0.8,
+				"cloud_color": "#0e1511",
+				"cloud_shade": "#070a08"
 			},
 			{
 				"hour": 6.5,
@@ -248,7 +293,10 @@
 				"fog_density": 0.027,
 				"sun_energy": 0.1,
 				"ambient_energy": 0.35,
-				"star_alpha": 0.1
+				"star_alpha": 0.1,
+				"cloud_cover": 0.8,
+				"cloud_color": "#4a5447",
+				"cloud_shade": "#262c25"
 			},
 			{
 				"hour": 9.0,
@@ -260,7 +308,10 @@
 				"fog_density": 0.023,
 				"sun_energy": 0.3,
 				"ambient_energy": 0.36,
-				"star_alpha": 0.0
+				"star_alpha": 0.0,
+				"cloud_cover": 0.8,
+				"cloud_color": "#667262",
+				"cloud_shade": "#3a4238"
 			},
 			{
 				"hour": 12.0,
@@ -272,7 +323,10 @@
 				"fog_density": 0.02,
 				"sun_energy": 0.36,
 				"ambient_energy": 0.4,
-				"star_alpha": 0.0
+				"star_alpha": 0.0,
+				"cloud_cover": 0.8,
+				"cloud_color": "#727e6c",
+				"cloud_shade": "#414a3f"
 			},
 			{
 				"hour": 15.0,
@@ -284,7 +338,10 @@
 				"fog_density": 0.022,
 				"sun_energy": 0.3,
 				"ambient_energy": 0.37,
-				"star_alpha": 0.0
+				"star_alpha": 0.0,
+				"cloud_cover": 0.8,
+				"cloud_color": "#6a7564",
+				"cloud_shade": "#3c443a"
 			},
 			{
 				"hour": 17.5,
@@ -296,7 +353,10 @@
 				"fog_density": 0.026,
 				"sun_energy": 0.16,
 				"ambient_energy": 0.37,
-				"star_alpha": 0.05
+				"star_alpha": 0.05,
+				"cloud_cover": 0.8,
+				"cloud_color": "#4b5446",
+				"cloud_shade": "#272d25"
 			},
 			{
 				"hour": 19.5,
@@ -308,7 +368,10 @@
 				"fog_density": 0.025,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.25,
-				"star_alpha": 0.7
+				"star_alpha": 0.7,
+				"cloud_cover": 0.8,
+				"cloud_color": "#141c17",
+				"cloud_shade": "#0a0e0b"
 			},
 			{
 				"hour": 22.0,
@@ -320,7 +383,10 @@
 				"fog_density": 0.024,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.21,
-				"star_alpha": 1.0
+				"star_alpha": 1.0,
+				"cloud_cover": 0.8,
+				"cloud_color": "#090d0b",
+				"cloud_shade": "#040605"
 			}
 		]
 	},
@@ -336,7 +402,10 @@
 				"fog_density": 0.005,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.2,
-				"star_alpha": 1.0
+				"star_alpha": 1.0,
+				"cloud_cover": 0.3,
+				"cloud_color": "#0c1120",
+				"cloud_shade": "#070a13"
 			},
 			{
 				"hour": 4.5,
@@ -348,7 +417,10 @@
 				"fog_density": 0.005,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.22,
-				"star_alpha": 0.8
+				"star_alpha": 0.8,
+				"cloud_cover": 0.3,
+				"cloud_color": "#1e2331",
+				"cloud_shade": "#0f1219"
 			},
 			{
 				"hour": 6.5,
@@ -360,7 +432,10 @@
 				"fog_density": 0.007,
 				"sun_energy": 0.35,
 				"ambient_energy": 0.39,
-				"star_alpha": 0.1
+				"star_alpha": 0.1,
+				"cloud_cover": 0.3,
+				"cloud_color": "#b08270",
+				"cloud_shade": "#4a3a36"
 			},
 			{
 				"hour": 9.0,
@@ -372,7 +447,10 @@
 				"fog_density": 0.003,
 				"sun_energy": 0.95,
 				"ambient_energy": 0.5,
-				"star_alpha": 0.0
+				"star_alpha": 0.0,
+				"cloud_cover": 0.3,
+				"cloud_color": "#cbb59a",
+				"cloud_shade": "#7a6a5a"
 			},
 			{
 				"hour": 12.0,
@@ -384,7 +462,10 @@
 				"fog_density": 0.003,
 				"sun_energy": 1.15,
 				"ambient_energy": 0.56,
-				"star_alpha": 0.0
+				"star_alpha": 0.0,
+				"cloud_cover": 0.3,
+				"cloud_color": "#d8c6ad",
+				"cloud_shade": "#8a7c68"
 			},
 			{
 				"hour": 15.0,
@@ -396,7 +477,10 @@
 				"fog_density": 0.003,
 				"sun_energy": 1.0,
 				"ambient_energy": 0.52,
-				"star_alpha": 0.0
+				"star_alpha": 0.0,
+				"cloud_cover": 0.3,
+				"cloud_color": "#d2bb9e",
+				"cloud_shade": "#826f5e"
 			},
 			{
 				"hour": 17.5,
@@ -408,7 +492,10 @@
 				"fog_density": 0.005,
 				"sun_energy": 0.45,
 				"ambient_energy": 0.32,
-				"star_alpha": 0.05
+				"star_alpha": 0.05,
+				"cloud_cover": 0.3,
+				"cloud_color": "#b87a5c",
+				"cloud_shade": "#4e3a32"
 			},
 			{
 				"hour": 19.5,
@@ -420,7 +507,10 @@
 				"fog_density": 0.005,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.25,
-				"star_alpha": 0.7
+				"star_alpha": 0.7,
+				"cloud_cover": 0.3,
+				"cloud_color": "#242b3e",
+				"cloud_shade": "#11151f"
 			},
 			{
 				"hour": 22.0,
@@ -432,7 +522,10 @@
 				"fog_density": 0.005,
 				"sun_energy": 0.0,
 				"ambient_energy": 0.2,
-				"star_alpha": 1.0
+				"star_alpha": 1.0,
+				"cloud_cover": 0.3,
+				"cloud_color": "#0d1220",
+				"cloud_shade": "#080b14"
 			}
 		]
 	}

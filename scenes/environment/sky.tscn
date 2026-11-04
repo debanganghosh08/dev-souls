@@ -1,19 +1,38 @@
-[gd_scene load_steps=5 format=3 uid="uid://skyenv0w2010"]
+[gd_scene load_steps=7 format=3 uid="uid://skyenv0w2010"]
 
 [ext_resource type="Script" uid="uid://brnr2a787p8c4" path="res://scripts/systems/daynight.gd" id="1_cycle"]
+[ext_resource type="Shader" path="res://scripts/systems/sky.gdshader" id="2_skyshader"]
 
-[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
-sky_top_color = Color(0.29, 0.34, 0.41, 1)
-sky_horizon_color = Color(0.59, 0.61, 0.63, 1)
-sky_curve = 0.15
-ground_bottom_color = Color(0.17, 0.18, 0.19, 1)
-ground_horizon_color = Color(0.53, 0.55, 0.57, 1)
-sun_angle_max = 10.0
-sun_curve = 0.35
+[sub_resource type="ShaderMaterial" id="SkyMat"]
+shader = ExtResource("2_skyshader")
+shader_parameter/sky_top_color = Color(0.27, 0.33, 0.41, 1)
+shader_parameter/sky_horizon_color = Color(0.58, 0.6, 0.64, 1)
+shader_parameter/sky_curve = 0.15
+shader_parameter/ground_bottom_color = Color(0.17, 0.18, 0.19, 1)
+shader_parameter/ground_horizon_color = Color(0.52, 0.55, 0.58, 1)
+shader_parameter/ground_curve = 0.02
+shader_parameter/sun_angle_max = 9.0
+shader_parameter/sun_curve = 0.32
+shader_parameter/cloud_cover = 0.6
+shader_parameter/cloud_color = Color(0.72, 0.74, 0.76, 1)
+shader_parameter/cloud_shade = Color(0.46, 0.48, 0.52, 1)
+shader_parameter/cloud_scale = 0.9
+shader_parameter/cloud_softness = 0.35
+shader_parameter/cloud_wind = Vector2(0.008, 0.004)
+shader_parameter/cloud_dome = 0.25
+shader_parameter/cloud_horizon_fade = 0.12
+shader_parameter/cloud_sun_glow = 0.25
+shader_parameter/star_alpha = 0.0
+shader_parameter/star_density = 60.0
+shader_parameter/star_cutoff = 0.985
+shader_parameter/star_color = Color(0.55, 0.6, 0.7, 1)
 
 [sub_resource type="Sky" id="Sky"]
 sky_material = SubResource("SkyMat")
 process_mode = 2
+
+[sub_resource type="CameraAttributesPractical" id="CamAttr"]
+exposure_multiplier = 1.0
 
 [sub_resource type="Environment" id="Env"]
 background_mode = 2
@@ -22,7 +41,7 @@ ambient_light_source = 2
 ambient_light_color = Color(0.59, 0.61, 0.63, 1)
 ambient_light_energy = 0.7
 tonemap_mode = 3
-tonemap_white = 4.0
+tonemap_white = 2.0
 sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_bounce_feedback = 0.4
@@ -44,10 +63,10 @@ volumetric_fog_anisotropy = 0.3
 volumetric_fog_length = 220.0
 volumetric_fog_detail_spread = 2.0
 volumetric_fog_ambient_inject = 0.45
-adjustment_enabled = true
-adjustment_brightness = 1.02
-adjustment_contrast = 1.12
-adjustment_saturation = 1.14
+adjustment_enabled = false
+adjustment_brightness = 1.0
+adjustment_contrast = 1.0
+adjustment_saturation = 1.0
 ssao_enabled = true
 ssao_radius = 1.2
 ssao_intensity = 1.5
@@ -74,6 +93,7 @@ sun_disc_path = NodePath("SunDisc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Env")
+camera_attributes = SubResource("CamAttr")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0)

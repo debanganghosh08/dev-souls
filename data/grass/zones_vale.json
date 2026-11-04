@@ -1,5 +1,5 @@
 {
-	"_comment": "Grass zones for the Ashen Vale (W8-G, docs/WORLD_PLAN.md section 4), read by GrassZones.from_dict and painted in this order: a later zone lerps over an earlier one by its weight, so order is paint order (the castle hill comes after the hilltops and the ridge foot because its skirt reaches both, and the hill is the owner's first complaint). Each zone: name; shape (or shapes, multiplied together) with type base | noise {frequency, range [lo, hi] of the noise mapped 0..1} | rect {min, max, feather} | ring {centre [x, z] | 'pond' | 'plateau:<name>', inner, outer, feather} | top {plateau, feather: the paved disc} | skirt {plateau, feather: rim down to the foot of the blend} | height {range [lo, hi] metres} | road {the old road, from the area's valley waypoints}; and the channels it sets (a missing channel leaves the one painted before): density is a multiplier on the meadow's, height on blade height, tall and flowers are 0..1 weights for the tall-grass and wildflower layers, root/tip the blade palette. road.half_width is the bare middle, feather the metres it blends out over. colour_noise drifts every palette toward green or gold (green) and lighter or darker (light) over 1/frequency metres. EVERY palette and density here is UNVERIFIED by eye: headless proves coverage and counts, never the look. Retune freely.",
+	"_comment": "Grass zones for the Ashen Vale (W8-G, docs/WORLD_PLAN.md section 4), read by GrassZones.from_dict and painted in this order: a later zone lerps over an earlier one by its weight, so order is paint order (the castle hill comes after the hilltops and the ridge foot because its skirt reaches both, and the hill is the owner's first complaint). Each zone: name; shape (or shapes, multiplied together) with type base | noise {frequency, range [lo, hi] of the noise mapped 0..1} | rect {min, max, feather} | ring {centre [x, z] | 'pond' | 'plateau:<name>', inner, outer, feather} | top {plateau, feather: the paved disc} | skirt {plateau, feather: rim down to the foot of the blend} | height {range [lo, hi] metres} | road {the old road, from the area's valley waypoints}; and the channels it sets (a missing channel leaves the one painted before): density is a multiplier on the meadow's, height on blade height, tall and flowers are 0..1 weights for the tall-grass and wildflower layers, root/tip the blade palette. road.half_width is the bare middle, feather the metres it blends out over. colour_noise drifts every palette toward green or gold (green) and lighter or darker (light) over 1/frequency metres. EVERY palette and density here is UNVERIFIED by eye: headless proves coverage and counts, never the look. Retune freely. W21-D: every hex is sRGB and is converted to linear at parse (it used to be uploaded as linear, twice as bright as written -- the neon white-green); tips pulled a step darker for the 1.39 noon sun, the castle hill given its own golden tip so the field by the castle is not the tall-patch green, and colour_noise raised with a new mottle term (lightness over ~20 m, mottle_frequency / mottle) so one field is not one flat green. tests/test_w21_grass.gd pins the luminance band.",
 	"seed": 20261024,
 	"road": {
 		"waypoints": "valley",
@@ -7,9 +7,11 @@
 		"feather": 5.0
 	},
 	"colour_noise": {
-		"frequency": 0.0045,
-		"green": 0.16,
-		"light": 0.1
+		"frequency": 0.008,
+		"green": 0.2,
+		"light": 0.12,
+		"mottle_frequency": 0.045,
+		"mottle": 0.1
 	},
 	"zones": [
 		{
@@ -22,7 +24,7 @@
 			"tall": 0.0,
 			"flowers": 0.6,
 			"root": "#27351a",
-			"tip": "#7f9340"
+			"tip": "#6f8a3c"
 		},
 		{
 			"name": "tall_patches",
@@ -38,7 +40,7 @@
 			"height": 1.15,
 			"tall": 1.0,
 			"root": "#33401e",
-			"tip": "#9aa64e"
+			"tip": "#8c9a46"
 		},
 		{
 			"name": "pond_shore",
@@ -54,7 +56,7 @@
 			"tall": 0.0,
 			"flowers": 0.4,
 			"root": "#23331f",
-			"tip": "#6f8f4a"
+			"tip": "#62864a"
 		},
 		{
 			"name": "south_meadows",
@@ -73,7 +75,7 @@
 			"density": 1.1,
 			"flowers": 1.0,
 			"root": "#26381c",
-			"tip": "#7fa046"
+			"tip": "#6d943e"
 		},
 		{
 			"name": "southwest_farms",
@@ -94,7 +96,7 @@
 			"tall": 1.0,
 			"flowers": 0.2,
 			"root": "#33401e",
-			"tip": "#9aa64e"
+			"tip": "#8c9a46"
 		},
 		{
 			"name": "north_hilltops",
@@ -124,7 +126,7 @@
 			"tall": 0.0,
 			"flowers": 0.0,
 			"root": "#303a22",
-			"tip": "#90985a"
+			"tip": "#848c52"
 		},
 		{
 			"name": "ridge_foot",
@@ -143,7 +145,7 @@
 			"tall": 0.0,
 			"flowers": 0.0,
 			"root": "#303a22",
-			"tip": "#90985a"
+			"tip": "#848c52"
 		},
 		{
 			"name": "castle_hill",
@@ -156,8 +158,8 @@
 			"height": 1.2,
 			"tall": 1.0,
 			"flowers": 0.2,
-			"root": "#33401e",
-			"tip": "#9aa64e"
+			"root": "#35401f",
+			"tip": "#93964a"
 		},
 		{
 			"name": "castle_courtyard",
@@ -171,7 +173,7 @@
 			"tall": 0.0,
 			"flowers": 0.0,
 			"root": "#2b3320",
-			"tip": "#79834d"
+			"tip": "#6c7647"
 		},
 		{
 			"name": "village",
@@ -185,7 +187,7 @@
 			"tall": 0.0,
 			"flowers": 0.0,
 			"root": "#2b3320",
-			"tip": "#79834d"
+			"tip": "#6c7647"
 		},
 		{
 			"name": "road",
@@ -197,7 +199,7 @@
 			"tall": 0.0,
 			"flowers": 0.0,
 			"root": "#2b3320",
-			"tip": "#79834d"
+			"tip": "#6c7647"
 		}
 	]
 }

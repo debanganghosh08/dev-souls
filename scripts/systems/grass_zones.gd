@@ -8,9 +8,19 @@ extends RefCounted
 ## colour noise across the valley so no two fields are quite the same green. Pure: no nodes, only the
 ## Heightfield (plateaus, pond, the old road's polyline, ground height), so tests can sample it directly.
 ## Every number in the data is for the owner to retune by eye; headless proves density and coverage only.
+##
+## Colour space (W21-D): every palette in the data is sRGB hex, the way a colour picker shows it, and the
+## terrain's grass_tint is a `source_color` uniform the engine converts to linear for the shader. A
+## MultiMesh instance colour is uploaded untouched, so until W21-D the blades took the hex values AS
+## linear albedo: #7f9340's green of 0.58 is a linear albedo twice what the hex means (0.29), and under
+## the noon sun (energy 1.39 + ambient 0.59) ACES put it on screen at about (0.92, 0.94, 0.79): the
+## owner's "neon white-green". W21-B removed the saturation and contrast boosts and the white-4.0
+## tonemap, which took the neon off, but not the brightness, which is a colour-space bug. palette()
+## converts once at parse, so the hex now means what it says and sits in the same space as the ground.
 
 enum Shape { BASE, NOISE, RECT, RING, TOP, SKIRT, HEIGHT, ROAD }
 
+## sRGB, as authored; linear copies are made where they are used (see palette()).
 const DEFAULT_ROOT := Color("#2f3a1e")
 const DEFAULT_TIP := Color("#9a9a52")
 const MIN_FEATHER := 0.01
@@ -21,9 +31,11 @@ var density: float = 1.0
 var height: float = 1.0
 var tall: float = 0.0
 var flowers: float = 0.0
-var root: Color = DEFAULT_ROOT
-var tip: Color = DEFAULT_TIP
+var root: Color = DEFAULT_ROOT.srgb_to_linear()
+var tip: Color = DEFAULT_TIP.srgb_to_linear()
 
+var _base_root: Color = DEFAULT_ROOT.srgb_to_linear()
+var _base_tip: Color = DEFAULT_TIP.srgb_to_linear()
 var _hf: Heightfield
 var _zones: Array[Dictionary] = []
 var _road: PackedVector2Array = PackedVector2Array()
@@ -34,8 +46,11 @@ var _road_box: Rect2 = Rect2()
 var _max_density: float = 1.0
 var _green: FastNoiseLite
 var _light: FastNoiseLite
+# W21-D: a third, finer lightness noise (tens of metres, not hundreds) so one field is not one flat green.
+var _mottle: FastNoiseLite
 var _green_amount: float = 0.0
 var _light_amount: float = 0.0
+var _mottle_amount: float = 0.0
 
 
 static func load_file(path: String, hf: Heightfield) -> GrassZones:
@@ -67,6 +82,8 @@ static func from_dict(data: Dictionary, hf: Heightfield) -> GrassZones:
 	zones._light_amount = clampf(float(noise.get("light", 0.0)), 0.0, 1.0)
 	zones._green = _noise(seed_v + 17, float(noise.get("frequency", 0.005)))
 	zones._light = _noise(seed_v + 29, float(noise.get("frequency", 0.005)) * 0.7)
+	zones._mottle_amount = clampf(float(noise.get("mottle", 0.0)), 0.0, 1.0)
+	zones._mottle = _noise(seed_v + 41, float(noise.get("mottle_frequency", 0.04)))
 	var index: int = 0
 	for raw: Variant in data.get("zones", []):
 		if not raw is Dictionary:
@@ -136,8 +153,8 @@ func sample(x: float, z: float) -> void:
 	height = 1.0
 	tall = 0.0
 	flowers = 0.0
-	root = DEFAULT_ROOT
-	tip = DEFAULT_TIP
+	root = _base_root
+	tip = _base_tip
 	if is_nan(x) or is_nan(z) or is_inf(x) or is_inf(z):
 		density = 0.0
 		return
@@ -164,9 +181,9 @@ func sample(x: float, z: float) -> void:
 			tip = tip.lerp(zone["tip"], w)
 	# Slow colour drift: one noise pushes toward green or toward gold, another lightens or darkens, both
 	# over hundreds of metres, so a field reads as one colour and the next field as a slightly different one.
-	if _green_amount > 0.0 or _light_amount > 0.0:
+	if _green_amount > 0.0 or _light_amount > 0.0 or _mottle_amount > 0.0:
 		var g: float = _green.get_noise_2d(x, z) * _green_amount
-		var l: float = 1.0 + _light.get_noise_2d(x, z) * _light_amount
+		var l: float = 1.0 + _light.get_noise_2d(x, z) * _light_amount + _mottle.get_noise_2d(x, z) * _mottle_amount
 		var m := Color((1.0 - 0.6 * g) * l, (1.0 + 0.5 * g) * l, (1.0 - 0.3 * g) * l, 1.0)
 		root = root * m
 		tip = tip * m
@@ -239,9 +256,15 @@ func _parse_zone(d: Dictionary, seed_v: int, index: int) -> Dictionary:
 		zone["has_" + channel] = d.has(channel)
 		zone[channel] = maxf(0.0, float(d.get(channel, 0.0)))
 	zone["has_palette"] = d.has("root") and d.has("tip")
-	zone["root"] = _color(d.get("root"), DEFAULT_ROOT)
-	zone["tip"] = _color(d.get("tip"), DEFAULT_TIP)
+	zone["root"] = palette(d.get("root"), DEFAULT_ROOT)
+	zone["tip"] = palette(d.get("tip"), DEFAULT_TIP)
 	return zone
+
+
+## A palette colour from the data (sRGB hex, or `fallback` in sRGB) as the linear colour the shader
+## wants. Every grass colour goes through here: zone palettes, layer fallbacks, dry tints, petals, pebbles.
+static func palette(v: Variant, fallback: Color) -> Color:
+	return _color(v, fallback).srgb_to_linear()
 
 
 func _parse_shape(d: Dictionary, seed_v: int, index: int) -> Dictionary:

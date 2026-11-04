@@ -544,3 +544,43 @@ is skipped in one comparison. **height_at is 1.9x faster than it was before the 
 samples over the whole map going 1244 ms to 669 ms with a river in it that was not there before, and the
 load went 17.3 s to 12.3 s. The lesson is the ordinary one: the cost was in the oldest code, and it took
 adding something new to make anyone measure it.
+
+**D-044 (2026-11-04) W20's "turned across the river" test was a mirror image, and passed bridges that were
+not square.** The check used `atan2(dx, -dz)` where the true perpendicular is `atan2(dx, dz)`; `Basis(UP, yaw)`
+sends +Z to `(sin yaw, cos yaw)`, so the two agree only on an axis-aligned reach. Every one of the four
+crossings stood **22 to 58 degrees off square** while the test reported them correct. `crossing_castle_road`
+was worst: its axis ran *along* the next leg of the river, with its own end 3.7 m from that leg's centreline.
+The yaws are now the true perpendicular, `castle_road` moved 85 m off a 42-degree bend where no 90 m span can
+sit square whichever way it turns, and the negative control is that all four of W20's own yaws now fail the
+corrected test. The lesson is the W20 lesson again, one layer down: a test that checks the wrong quantity is
+worse than no test, because it is reported as proof.
+
+**D-045 (2026-11-04) the bridges were built underwater by construction, not by accident.** A crossing site
+used `ground:"max"`, the highest terrain under its footprint -- but `river_bridge`'s footprint is 13.5 x 48 m
+and the river cut is 56 to 74 m wide, so the footprint lies **entirely inside the cut** and "the highest
+terrain" is still riverbed. The deck went in at that floor, metres below a water surface of -4.2 to -7.5.
+Sites now take `ground:"water"`, which is `max(surface_at(site) + 2.0, footprint max)`, so a crossing is
+placed against the water it spans and cannot sink again when the terrain moves. The deck also grew 30 m to
+90 m with three piers and abutments, because the old 30 m deck could not reach across a 74 m cut; and each end
+now walks a terrain-fitted flight down to the bank, since the owner's complaint was not that the bridge looked
+wrong but that **"we cannot get into the bridge"**.
+
+**D-046 (2026-11-04) the grass was white because a hex colour was uploaded as linear.** Grass palettes are
+authored as sRGB hex, but a MultiMesh instance colour uploads raw, so every blade took the hex as **linear**
+albedo -- green 0.58 where the hex means 0.29, about double. The terrain's `grass_tint` never had the fault
+because it is a `source_color` uniform the engine linearises on the way in. This is why the field read as neon
+white-green through two lighting passes that each looked correct on their own: W21-B's exposure and tonemap
+work removed the blowout and the field was still white, because the data going in was wrong, not the light.
+`GrassZones.palette()` now converts sRGB to linear once at parse; the JSON stays hex. The negative control is
+direct: every authored hex, read as linear, falls outside the band the test now pins.
+
+**D-047 (2026-11-04) "pixelated" was aliasing, and the project had none of the usual defences.** The owner
+said the game looked "completely pixelated" beside Elden Ring. `project.godot` ran Forward Plus with
+`msaa_3d=2` and **no TAA, no FXAA and no anisotropic filtering at all**; alpha-tested conifer foliage crawls
+without temporal AA and ground texture at grazing angles degrades into stripes without anisotropy. Both are on
+now (TAA, debanding, 16x), with the shadow atlas at 8192. Separately the ground had **no anti-tiling of any
+kind**: a 2 m texture tile repeating across a 1024 m heightfield, which is the banding in his frames. The
+terrain shader now uses Quilez texture repetition -- a noise picks one of 8 rotated, rescaled copies of the UV
+per region and cross-fades at the edges, with normals un-rotated so bumps still light correctly -- plus macro
+brightness and hue variation so the vale is not one flat green. Gating the mud and gravel fetches on their own
+weights paid for it in the common case: open grass went 9 texture fetches to 6.

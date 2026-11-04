@@ -1,12 +1,12 @@
 {
-	"_comment": "The hanging bridge (W14): a plank deck slung between two towers on a rope of iron, high over the river. The owner asked for it between the two great hills; this is the span, and the hills are crests in the area file.",
+	"_comment": "The hanging bridge (W14, lengthened W21): a plank deck slung between two towers on a rope of iron, high over the river. The owner asked for a complete span from this side to that side: the Wide Water's cut is 90 m across, so the deck is 80 m between anchors at +-40 and the site is floored with ground:\"water\" (the surface plus a clearance, or the bank if higher), with the deck 5 m above that. The anchors reach 21 m down so they stand on whatever the bank is. Each end has an `approach` flight with `reach: ground`: StructureBuilder walks it down from the anchor top until it meets the ground, which is the climb up to the span -- there was no way onto the old deck at all. The hills either side are crests in the area file.",
 	"name": "hanging_bridge",
 	"keep_out": [
 		[
 			-5.0,
-			-30.0,
+			-45.0,
 			10.0,
-			60.0
+			90.0
 		]
 	],
 	"pieces": [
@@ -16,20 +16,20 @@
 			"repeat": [
 				[
 					0,
-					-4.0,
-					-27.0,
+					-21.0,
+					-40.0,
 					0
 				],
 				[
 					0,
-					-4.0,
-					27.0,
+					-21.0,
+					40.0,
 					0
 				]
 			],
 			"params": {
 				"w": 4.5,
-				"h": 9.0,
+				"h": 26.0,
 				"d": 4.5,
 				"mat": "castle_wall"
 			}
@@ -41,13 +41,13 @@
 				[
 					0,
 					5.0,
-					-27.0,
+					-40.0,
 					0
 				],
 				[
 					0,
 					5.0,
-					27.0,
+					40.0,
 					0
 				]
 			],
@@ -70,7 +70,7 @@
 			"yaw": 0,
 			"params": {
 				"w": 3.2,
-				"d": 54.0,
+				"d": 80.0,
 				"t": 0.22,
 				"mat": "planks"
 			}
@@ -93,7 +93,7 @@
 				]
 			],
 			"params": {
-				"w": 54.0,
+				"w": 80.0,
 				"h": 1.1,
 				"t": 0.12,
 				"mat": "planks"
@@ -119,8 +119,32 @@
 			"params": {
 				"w": 0.16,
 				"h": 0.16,
-				"d": 54.0,
+				"d": 80.0,
 				"mat": "iron"
+			}
+		},
+		{
+			"name": "approach",
+			"kind": "stairs",
+			"reach": "ground",
+			"repeat": [
+				[
+					0,
+					5.0,
+					42.25,
+					0
+				],
+				[
+					0,
+					5.0,
+					-42.25,
+					180
+				]
+			],
+			"params": {
+				"w": 3.0,
+				"skirt": 3.0,
+				"mat": "stone"
 			}
 		},
 		{
@@ -128,15 +152,15 @@
 			"kind": "lamp_stone",
 			"repeat": [
 				[
-					-2.6,
+					-1.9,
 					5.0,
-					-24.0,
+					-40.0,
 					0
 				],
 				[
-					2.6,
+					1.9,
 					5.0,
-					24.0,
+					40.0,
 					0
 				]
 			],

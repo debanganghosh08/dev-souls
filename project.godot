@@ -32,7 +32,16 @@ common/physics_ticks_per_second=60
 [rendering]
 
 renderer/rendering_method="forward_plus"
+; W21: the owner called the game "completely pixelated". It was aliasing, not resolution: alpha-scissor
+; foliage shimmers without temporal AA, ground texture stripes at grazing angles without anisotropic
+; filtering, and a 260 m shadow reach on a 4096 atlas is ~13 cm per texel at the far split. MSAA 2x stays
+; because alpha-to-coverage on the foliage shaders needs it. No FXAA: it would stack a second blur on TAA.
 anti_aliasing/quality/msaa_3d=2
+anti_aliasing/quality/use_taa=true
+anti_aliasing/quality/use_debanding=true
+textures/default_filters/anisotropic_filtering_level=4
+lights_and_shadows/directional_shadow/size=8192
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
 
 [layer_names]
 

@@ -57,6 +57,12 @@ static func scale_for(span: float, rect: Rect2) -> float:
 	return short / maxf(1.0, span)
 
 
+## The panel direction a compass bearing points in: 0 is up (north), 90 is right (east).
+static func heading(bearing_deg: float) -> Vector2:
+	var a: float = deg_to_rad(bearing_deg)
+	return Vector2(sin(a), -cos(a))
+
+
 ## The reverse of to_panel, so a click on the full map can say where in the world it landed.
 static func to_world(panel: Vector2, centre: Vector2, span: float, rect: Rect2) -> Vector2:
 	var scale: float = scale_for(span, rect)

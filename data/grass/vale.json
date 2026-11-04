@@ -1,5 +1,5 @@
 {
-	"_comment": "Ground cover for scenes/levels/vale.tscn, read by Grass.rebuild(). Lattice radius/cell size live on the Grass node; this file holds the wind, the zones file and the layers. zones is the GrassZones data (data/grass/zones_vale.json): where grass is dense or sparse, tall or short, and what colour; a layer with zone 'grass' scales its density by the zone's, 'tall' and 'flowers' by those 0..1 weights, and zoned blades take the zone's palette and height, so root_color/tip_color here are the fallback when no zone applies. density is instances per square metre on ideal ground in a 1.0x zone (before Grass.density_at and the multipliers below); a 'grass' layer's candidate pool is sized for the densest zone, so max_per_cell must hold density x the zones' max density x cell area. scale is uniform, height the blade height in metres (clump and flower only); dry_tint/dry_amount drift each blade part way toward a straw colour; patch_min/patch_frequency is low-frequency noise that thins the field in patches (1.0 = none); hollow boosts density in cells below their surroundings (negative on knolls); cluster thickens within radius of the Forest's trees and falls to `outside` beyond radius+falloff; fade is [start, end] metres over which the shader sinks the piece into the ground; far_fraction is the share still drawn at the lattice edge; align tilts toward the ground normal (0 upright, 1 flat); colors are the wildflower head colours, one per instance. W9-G (2026-10-28), from the owner's gameplay recording: the blades were ~1 m fans a metre apart over bare ground, which read as desert agave. The base layer is now three times denser with blades half as tall and a third as wide, barely tilted (align), patched far more evenly (patch_min), and green rather than straw; the ground under it carries grass_tint from data/areas/vale.json. Palettes are UNVERIFIED by eye (W8-G): the owner asked for beautiful, dark-fantasy grass, not the old ashen no-green brief; headless cannot judge it.",
+	"_comment": "Ground cover for scenes/levels/vale.tscn, read by Grass.rebuild(). Lattice radius/cell size live on the Grass node; this file holds the wind, the zones file and the layers. zones is the GrassZones data (data/grass/zones_vale.json): where grass is dense or sparse, tall or short, and what colour; a layer with zone 'grass' scales its density by the zone's, 'tall' and 'flowers' by those 0..1 weights, and zoned blades take the zone's palette and height, so root_color/tip_color here are the fallback when no zone applies. density is instances per square metre on ideal ground in a 1.0x zone (before Grass.density_at and the multipliers below); a 'grass' layer's candidate pool is sized for the densest zone, so max_per_cell must hold density x the zones' max density x cell area. scale is uniform, height the blade height in metres (clump and flower only); dry_tint/dry_amount drift each blade part way toward a straw colour; patch_min/patch_frequency is low-frequency noise that thins the field in patches (1.0 = none); hollow boosts density in cells below their surroundings (negative on knolls); cluster thickens within radius of the Forest's trees and falls to `outside` beyond radius+falloff; fade is [start, end] metres over which the shader sinks the piece into the ground; far_fraction is the share still drawn at the lattice edge; align tilts toward the ground normal (0 upright, 1 flat); colors are the wildflower head colours, one per instance. W9-G (2026-10-28), from the owner's gameplay recording: the blades were ~1 m fans a metre apart over bare ground, which read as desert agave. The base layer is now three times denser with blades half as tall and a third as wide, barely tilted (align), patched far more evenly (patch_min), and green rather than straw; the ground under it carries grass_tint from data/areas/vale.json. Palettes are UNVERIFIED by eye (W8-G): the owner asked for beautiful, dark-fantasy grass, not the old ashen no-green brief; headless cannot judge it. W21-D (2026-11-04), from the owner's recording ('completely pixelated', close grass neon white-green, the castle field a mown lawn): every hex colour here and in the zones file is sRGB and is now converted to linear at parse (GrassZones.palette), which is the fix for the white-green -- the hex was being uploaded as linear albedo, twice as bright as it reads; the tips were also pulled a step darker because the noon sun is 1.39. The base blades are taller (0.18-0.42 m, was 0.10-0.24), wider (0.04, was 0.026) with a broader tip, and the shader widens them further with distance, so the mid field covers instead of thinning to ground; far_fraction and fade keep more of the field drawn to the lattice edge and sink it inside the lattice's reach (60 m) instead of beyond it. No density, max_per_cell, blades or segments changed: the CPU fill D-037 fought is the same work.",
 	"seed": 20261024,
 	"zones": "res://data/grass/zones_vale.json",
 	"wind": {
@@ -18,17 +18,17 @@
 			"max_slope": 32.0,
 			"blades": 3,
 			"segments": 3,
-			"blade_width": 0.026,
+			"blade_width": 0.04,
 			"height": [
-				0.1,
-				0.24
+				0.18,
+				0.42
 			],
 			"scale": [
 				0.85,
 				1.1
 			],
 			"root_color": "#27351a",
-			"tip_color": "#7f9340",
+			"tip_color": "#6f8a3c",
 			"dry_tint": "#9d9a66",
 			"dry_amount": 0.2,
 			"patch_frequency": 0.05,
@@ -36,10 +36,10 @@
 			"hollow": 0.35,
 			"align": 0.22,
 			"sink": 0.03,
-			"far_fraction": 0.45,
+			"far_fraction": 0.65,
 			"fade": [
-				56.0,
-				70.0
+				44.0,
+				60.0
 			]
 		},
 		{
@@ -61,7 +61,7 @@
 				1.15
 			],
 			"root_color": "#33401e",
-			"tip_color": "#9aa64e",
+			"tip_color": "#8c9a46",
 			"dry_tint": "#b9ab75",
 			"dry_amount": 0.22,
 			"patch_frequency": 0.05,
@@ -69,10 +69,10 @@
 			"hollow": 0.4,
 			"align": 0.35,
 			"sink": 0.04,
-			"far_fraction": 0.4,
+			"far_fraction": 0.55,
 			"fade": [
-				48.0,
-				66.0
+				40.0,
+				58.0
 			]
 		},
 		{

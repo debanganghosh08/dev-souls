@@ -138,7 +138,11 @@ func test_every_bridge_stands_on_the_river_and_crosses_it() -> void:
 			var on: Vector2 = Geometry2D.get_closest_point_to_segment(at, a, b)
 			if at.distance_to(on) < best:
 				best = at.distance_to(on)
-				heading = rad_to_deg(atan2(b.x - a.x, -(b.y - a.y)))
+				# The yaw that points along the river: Basis(UP, yaw) sends +Z to (sin yaw, cos yaw), so
+				# atan2(dx, dz). W20 wrote atan2(dx, -dz), the mirror image, which agrees only on an axis-
+				# aligned reach: every crossing passed here 22-58 degrees off square, and two of them had
+				# an end standing in the river's next leg (W21).
+				heading = rad_to_deg(atan2(b.x - a.x, b.y - a.y))
 		assert_true(best < float(cut["half_width"]),
 				"%s stands over the water, not beside it (%.1f m off the line)" % [site["id"], best])
 		# And turned across the flow: the layouts run along their own Z, so a crossing is the river's

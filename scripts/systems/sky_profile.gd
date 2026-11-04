@@ -4,18 +4,25 @@ extends RefCounted
 ## no singletons, so tests build it directly. The palettes themselves live in data/daynight.json.
 
 const HOURS_PER_DAY := 24.0
-const COLOR_KEYS: Array[String] = ["sun_color", "sky_top", "sky_horizon", "ground_color", "fog_color"]
+## cloud_color is the lit thin edge of a cloud, cloud_shade its thick core (W21 sky shader).
+const COLOR_KEYS: Array[String] = ["sun_color", "sky_top", "sky_horizon", "ground_color", "fog_color",
+	"cloud_color", "cloud_shade"]
 ## sun_disc_energy brightens the sky-only sun disc (HDR, so it blooms); sun_glow_deg / sun_glow_curve are
-## the ProceduralSkyMaterial halo around it; sky_curve is how tightly the horizon band hugs the horizon.
+## the sky shader's halo around it; sky_curve is how tightly the horizon band hugs the horizon;
+## cloud_cover is the fraction of the dome the cloud layer fills (0 clear, 1 overcast).
 const FLOAT_KEYS: Array[String] = ["fog_density", "sun_energy", "ambient_energy", "star_alpha",
-	"sun_disc_energy", "sun_glow_deg", "sun_glow_curve", "sky_curve"]
+	"sun_disc_energy", "sun_glow_deg", "sun_glow_curve", "sky_curve", "cloud_cover"]
 ## Flat grey dusk used when a file is missing or a keyframe omits a key: never pretty, never a crash.
+## The cloud colours sit at the default horizon's brightness so a keyframe that omits them gets clouds
+## no brighter than its own haze.
 const DEFAULTS: Dictionary = {
 	"sun_color": Color(0.8, 0.78, 0.74),
 	"sky_top": Color(0.28, 0.32, 0.38),
 	"sky_horizon": Color(0.5, 0.5, 0.52),
 	"ground_color": Color(0.2, 0.2, 0.22),
 	"fog_color": Color(0.5, 0.5, 0.52),
+	"cloud_color": Color(0.5, 0.5, 0.52),
+	"cloud_shade": Color(0.3, 0.3, 0.32),
 	"fog_density": 0.02,
 	"sun_energy": 0.6,
 	"ambient_energy": 0.4,
@@ -24,6 +31,7 @@ const DEFAULTS: Dictionary = {
 	"sun_glow_deg": 10.0,
 	"sun_glow_curve": 0.35,
 	"sky_curve": 0.15,
+	"cloud_cover": 0.5,
 }
 
 var _keyframes: Array[Dictionary] = []

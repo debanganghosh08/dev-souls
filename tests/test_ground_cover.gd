@@ -106,18 +106,21 @@ func test_sky_splits_scene_sun_from_sky_disc_and_fog_hazes_the_halo() -> void:
 	game.state = game.State.PLAYING
 	sky._inject(game)
 	sky._ready()
-	var mat: ProceduralSkyMaterial = (sky.get_node(sky.environment_path) as WorldEnvironment).environment.sky.sky_material
+	# W21-B: the sky is a ShaderMaterial now (clouds and stars), not a ProceduralSkyMaterial.
+	# The halo still lives in the same uniform name, so this test keeps asserting the same thing.
+	var mat: ShaderMaterial = (sky.get_node(sky.environment_path) as WorldEnvironment).environment.sky.sky_material
 	sky.start_hour = 12.0
 	game.time_of_day = 12.0
 	sky._on_time_changed(12.0)
-	var noon_glow: float = mat.sun_angle_max
+	var noon_glow: float = float(mat.get_shader_parameter("sun_angle_max"))
 	var noon_energy: float = disc.light_energy if disc != null else 0.0
 	assert_true(noon_glow < 20.0, "noon halo is narrower than the old 20 degree disc (%s)" % noon_glow)
 	assert_true(noon_glow > 5.0, "noon halo is still a soft glow, not a hard point (%s)" % noon_glow)
 	assert_true(noon_energy > 1.2, "noon disc is HDR-bright so it blooms (%s)" % noon_energy)
 	game.time_of_day = 6.25
 	sky._on_time_changed(6.25)
-	assert_true(mat.sun_angle_max > noon_glow, "the foggy dawn halo is wider than noon (%s vs %s)" % [mat.sun_angle_max, noon_glow])
+	var dawn_glow: float = float(mat.get_shader_parameter("sun_angle_max"))
+	assert_true(dawn_glow > noon_glow, "the foggy dawn halo is wider than noon (%s vs %s)" % [dawn_glow, noon_glow])
 	if disc != null:
 		assert_true(disc.light_energy < noon_energy and disc.light_energy > 0.0, "the dawn disc is dimmer than noon (%s)" % disc.light_energy)
 	game.time_of_day = 0.0

@@ -1,12 +1,12 @@
 {
-	"_comment": "A crossing (W14): piers standing in the channel, a deck over them and a parapet either side, with a lamp at each end. The river kills, so a bridge is not scenery -- it is the only way across.",
+	"_comment": "A crossing (W14, rebuilt W21). Local y = 0 is the deck's UNDERSIDE and the site is floored with ground:\"water\" (Settlements): the river's surface plus a clearance, or the bank if that is higher, so the deck is never in the water and never under the bank. The first build stood on terrain max under a footprint that lay wholly inside the cut, which is the riverbed -- the owner filmed the deck a few metres under the surface. The river's cut is 74 m across (90 m at the Wide Water), so the deck runs the full 90 m: 30 m of span on three piers in the channel and a 30 m causeway on a solid abutment either side, both reaching far below any bed. The two `approach` flights have no length written here: `reach: ground` makes StructureBuilder walk each one down from the deck end until it meets the bank, so a low bank gets a long stair and a high bank a short one. The river kills, so a bridge is not scenery -- it is the only way across.",
 	"name": "river_bridge",
 	"keep_out": [
 		[
 			-4.5,
-			-16.0,
+			-45.0,
 			9.0,
-			32.0
+			90.0
 		]
 	],
 	"pieces": [
@@ -16,21 +16,51 @@
 			"repeat": [
 				[
 					0,
-					-13.0,
-					-6.0,
+					-26.0,
+					-10.0,
 					0
 				],
 				[
 					0,
-					-13.0,
-					6.0,
+					-26.0,
+					0.0,
+					0
+				],
+				[
+					0,
+					-26.0,
+					10.0,
 					0
 				]
 			],
 			"params": {
 				"w": 2.2,
-				"h": 13.0,
+				"h": 26.0,
 				"d": 3.0,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "abutments",
+			"kind": "block",
+			"repeat": [
+				[
+					0,
+					-24.0,
+					-30.0,
+					0
+				],
+				[
+					0,
+					-24.0,
+					30.0,
+					0
+				]
+			],
+			"params": {
+				"w": 6.0,
+				"h": 24.0,
+				"d": 30.0,
 				"mat": "stone"
 			}
 		},
@@ -45,7 +75,7 @@
 			"yaw": 0,
 			"params": {
 				"w": 6.0,
-				"d": 30.0,
+				"d": 90.0,
 				"t": 0.5,
 				"mat": "stone"
 			}
@@ -68,9 +98,33 @@
 				]
 			],
 			"params": {
-				"w": 30.0,
+				"w": 90.0,
 				"h": 0.95,
 				"t": 0.35,
+				"mat": "stone"
+			}
+		},
+		{
+			"name": "approach",
+			"kind": "stairs",
+			"reach": "ground",
+			"repeat": [
+				[
+					0,
+					0.5,
+					45.0,
+					0
+				],
+				[
+					0,
+					0.5,
+					-45.0,
+					180
+				]
+			],
+			"params": {
+				"w": 6.0,
+				"skirt": 3.0,
 				"mat": "stone"
 			}
 		},
@@ -79,15 +133,15 @@
 			"kind": "lamp_stone",
 			"repeat": [
 				[
-					-3.6,
-					0,
-					-14.0,
+					-2.3,
+					0.5,
+					-43.5,
 					0
 				],
 				[
-					3.6,
-					0,
-					14.0,
+					2.3,
+					0.5,
+					43.5,
 					0
 				]
 			],

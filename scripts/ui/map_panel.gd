@@ -18,6 +18,9 @@ signal closed()
 @export var fade_out_sec: float = 0.10
 ## Metres across the full map. 1,100 covers the Vale's 1,024 m with a margin round the ridge.
 @export var full_span: float = 1100.0
+## Microseconds of relief building per frame while playing (W21-C). Three milliseconds leaves the rest of
+## a 60 fps frame alone; the whole picture is done a few seconds after the level loads.
+const RELIEF_BUDGET_USEC := 3000
 
 var _mini: MapView
 var _full: MapView
@@ -30,6 +33,7 @@ var _player: Node3D
 var _level: Node
 var _game: Node
 var _world: Dictionary = {}
+var _relief: MapRelief
 var _open: bool = false
 var _tween: Tween
 
@@ -51,10 +55,19 @@ func bind_level(level: Node) -> void:
 ## Reads the area, its sites and the names. Public so a test can hand it a world without a scene tree.
 func load_world(area: String) -> void:
 	_world = gather(area, _grove_of(_level))
+	# The relief is sampled from the Heightfield once per area and kept: bind_level calls this a second
+	# time for the grove, and the grove is drawn over the relief, not into it.
+	if _relief == null or _relief.key != area:
+		_relief = MapRelief.create(_world["area"], area, MapRelief.DEFAULT_PX, full_span)
+	_mini.relief = _relief
+	_full.relief = _relief
 	_mini.world = _world
 	_full.world = _world
-	_mini.queue_redraw()
-	_full.queue_redraw()
+
+
+## The cached land picture both views draw. Public so a test can check it is one object, built once.
+func relief() -> MapRelief:
+	return _relief
 
 
 ## Everything a map needs, in one dictionary. Pure apart from reading files, so a test can call it.
@@ -88,6 +101,11 @@ func open() -> void:
 	_game.state = _game.State.PAUSED
 	UiUtil.set_mouse_captured(false)
 	_full_root.visible = true
+	# Opened before the per-frame slices finished: finish now, once, rather than show half a map.
+	if _relief != null and not _relief.is_ready():
+		_relief.build_all()
+		_full.queue_redraw()
+		_mini.queue_redraw()
 	_refresh()
 	_fade_to(1.0, fade_in_sec)
 	opened.emit()
@@ -121,6 +139,9 @@ func _input(event: InputEvent) -> void:
 
 
 func _process(_delta: float) -> void:
+	if _relief != null and not _relief.is_ready() and _relief.step(RELIEF_BUDGET_USEC):
+		_mini.queue_redraw()
+		_full.queue_redraw()
 	_refresh()
 
 
