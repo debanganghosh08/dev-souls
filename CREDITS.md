@@ -60,3 +60,13 @@ Generated from `tools/assets-manifest.json` by `node tools/fetch-assets.mjs --cr
 | Hooded Adventurer (`y9KWOVG21R`) | Quaternius | https://poly.pizza/m/y9KWOVG21R | CC0 1.0 | 1 (1.5 MB) |
 | Horse (`qvTrSG9pZF`) | Quaternius | https://poly.pizza/m/qvTrSG9pZF | CC0 1.0 | 1 (1.1 MB) |
 | Wolf (`P1gU3Qkr9r`) | Quaternius | https://poly.pizza/m/P1gU3Qkr9r | CC0 1.0 | 1 (963.6 KB) |
+
+## Agent skills (documentation, not shipped in the game)
+
+- **awesome-gamedev-agent-skills** — https://github.com/gamedev-skills/awesome-gamedev-agent-skills —
+  Apache License 2.0, Copyright 2026 Abhishek Barali and contributors. Installed under
+  `.claude/skills/` at commit `19d93f9` (2026-10-28): the master `router` plus the 16 `godot` skills
+  and four discipline skills (performance-optimization, shader-programming, procedural-gen,
+  level-design). `LICENSE` and `NOTICE` are kept beside them as the licence requires. These are
+  reference documents for agents working on this repo; none of it is compiled into or exported with
+  the game.
