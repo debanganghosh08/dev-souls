@@ -36,3 +36,9 @@ assets/
 # Gameplay recordings the owner sends for review: 90 MB+ of video, and D-005 keeps
 # binaries out of git. Frames are pulled from them locally and thrown away.
 game_recordings/
+
+# Documentation screenshots ARE tracked. The rules above keep the game's art out of the repo
+# (D-005); these are a handful of small JPEGs the README needs to render, not assets the game
+# loads. Nothing under assets/ is exempted.
+!docs/screens/
+!docs/screens/*.jpg
