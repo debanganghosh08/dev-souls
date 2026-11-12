@@ -14,6 +14,10 @@ building, and code that turns it into stone.
 [![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078d4)](#play-it)
 [![Art](https://img.shields.io/badge/art-CC0%20only-ff8800)](CREDITS.md)
 
+<img src="docs/screens/rooftop-beacon.jpg" alt="A watch-fire burning on the wall of Castle Morrow, the Ashen Vale in fog below" width="100%">
+
+<sub>A watch-fire on the wall of Castle Morrow, the Vale going grey below it.</sub>
+
 </div>
 
 ---
@@ -25,16 +29,27 @@ building, and code that turns it into stone.
 
 ## Screenshots
 
-<!--
-  TODO (owner): drop 3-4 PNGs into docs/screens/ and uncomment.
-  Good shots: the Vale at dawn from the ridge, the castle silhouette, the river gorge from a
-  bridge, the full map screen. 1600px wide, PNG, under ~600 KB each.
--->
+<table>
+<tr>
+<td width="50%"><img src="docs/screens/map.jpg" alt="The full-screen map of the Ashen Vale, showing relief, rivers and named places"></td>
+<td width="50%"><img src="docs/screens/ashen-vale.jpg" alt="The Ashen Vale: pine woods and meadow under a pale sky"></td>
+</tr>
+<tr>
+<td><b>The map is the world.</b> Its relief is sampled from the same <code>height_at()</code> the ground is built from, so it cannot drift out of step with the terrain. 9 regions, 29 named places, 4 waters.</td>
+<td><b>The Ashen Vale.</b> ~5,500 trees across six woods, and 28,000 grass instances filled in around you as you walk.</td>
+</tr>
+<tr>
+<td><img src="docs/screens/hollowmere-house.jpg" alt="A lit cottage in Hollowmere at night, fire burning outside"></td>
+<td><img src="docs/screens/village-dusk.jpg" alt="The village at dusk, lit windows among the pines"></td>
+</tr>
+<tr>
+<td><b>Hollowmere.</b> Not a model — a JSON layout of blocks, slabs, walls and stairs, turned into stone and collision at load.</td>
+<td><b>Dusk.</b> 289 fires burn in the Vale, each one casting real light.</td>
+</tr>
+</table>
 
-| | |
-|---|---|
-| _screenshot: the Ashen Vale at dawn_ | _screenshot: Castle Morrow_ |
-| _screenshot: the river gorge_ | _screenshot: the map_ |
+<sub>Captured from a real playthrough on 9 November 2026. No water shot here — the river and the
+Mirror Pond simply weren't visited in that run; the blue in the map is where they are.</sub>
 
 ---
 
